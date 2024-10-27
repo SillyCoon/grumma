@@ -1,0 +1,18 @@
+---
+import { Exercises } from "@components/solid/Exercise/Exercises";
+import Layout from "@layouts/Layout.astro";
+import type { Lesson } from "src/server/feature/space-repetition/types/Lesson";
+import { GET as getReview } from "../../api/sr/review";
+
+const review = (await (await getReview(Astro)).json()) as Lesson[];
+---
+
+<Layout title="Review">
+  <Exercises
+    transition:animate="fade"
+    transition:persist="exercises"
+    transition:persist-props
+    client:only
+    exercises={review.map((r) => r.exercise)}
+  />
+</Layout>

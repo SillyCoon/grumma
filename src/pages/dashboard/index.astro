@@ -1,0 +1,46 @@
+---
+import { Dashboard } from "@components/solid/dashboard/Dashboard";
+import Layout from "@layouts/Layout.astro";
+
+import { GET as fetchSchedule } from "@api/sr/schedule";
+import type { Schedule } from "src/server/feature/space-repetition/types/Schedule";
+const schedule: Schedule = await (await fetchSchedule(Astro)).json();
+const { user } = Astro.locals;
+---
+
+<Layout title="Dashboard">
+  <section class="mx-32 gap-5 flex flex-col">
+    <div class="prose">
+      <h2>Welcome, <span class="text-secondary">{user?.name}</span>!</h2>
+    </div>
+    <div class="flex gap-5">
+      <a
+        class="flex-grow card bg-secondary text-secondary-content cursor-pointer"
+        href="/sr/lesson"
+      >
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">Learn</h2>
+        </div>
+      </a>
+      <a
+        class="flex-grow card bg-primary text-primary-content cursor-pointer"
+        href="/sr/review"
+      >
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">Reviews</h2>
+        </div>
+      </a>
+    </div>
+
+    <div class="card w-96 shadow-md text-secondary">
+      <div class="card-body">
+        <h2 class="card-title">Reviews Schedule</h2>
+        <Dashboard
+          schedule={schedule}
+          date={new Date()}
+          client:only="solid-js"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

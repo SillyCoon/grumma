@@ -1,0 +1,20 @@
+---
+import { Exercises } from "../../../components/solid/Exercise/Exercises";
+import Layout from "../../../layouts/Layout.astro";
+import { fetchGrammarPoint } from "@grammar-sdk";
+
+const id = Astro.params.id;
+
+const grammarPoint = id ? await fetchGrammarPoint(id) : null;
+const exercises = grammarPoint?.exercises ?? [];
+---
+
+<Layout title="Practice">
+  <Exercises
+    transition:animate="fade"
+    client:only
+    transition:persist="exercises"
+    transition:persist-props
+    client:only
+    exercises={exercises}/>
+</Layout>

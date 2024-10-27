@@ -1,0 +1,57 @@
+---
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="Help">
+  <article class="max-w-4xl mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold mb-6 text-center">
+      🌟 Welcome to our website! 🌟<br />
+      To fully utilize our spaced repetition system, we recommend the following approach:
+    </h2>
+    <ul class="list-none grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <li class="bg-blue-200 rounded-lg p-4 flex items-center">
+        <span class="text-3xl mr-4">&#10140;</span>
+        <span>
+          If you wish to study a new grammar point, click the <span
+            class="bg-yellow-200 rounded px-2">Learn</span
+          > button. It will suggest the next unstudied grammar point in order of
+          difficulty.</span
+        >
+      </li>
+      <li class="bg-green-200 rounded-lg p-4 flex items-center">
+        <span class="text-3xl mr-4">&#10140;</span>
+        After carefully reading through the grammar point, click the arrow on the
+        right side of the page. You will then be tested once on the grammar you have
+        just studied.
+      </li>
+      <li class="bg-purple-200 rounded-lg p-4 flex items-center">
+        <span class="text-3xl mr-4">&#10140;</span>
+        Following this short test, the grammar point will be added to your review
+        queue.
+      </li>
+    </ul>
+    <p class="mt-8 mb-4">
+      If you wish to learn more points, simply repeat the same steps.
+    </p>
+    <p class="mb-4">
+      All points studied through the <span class="bg-yellow-200 rounded px-2"
+        >Learn</span
+      > button will occasionally appear during reviews via the <span
+        class="bg-yellow-200 rounded px-2">Review</span
+      > button. Therefore, your final step is to do reviews through the <span
+        class="bg-yellow-200 rounded px-2">Review</span
+      > button as often as possible. Soon, the points for which you provide correct
+      answers will appear in your review less frequently!
+    </p>
+    <p class="mb-4">
+      If you wish to study certain grammar points intensively, you can navigate
+      to the point from the start page and click the <span
+        class="bg-yellow-200 rounded px-2">Practice</span
+      > button. You will receive all possible exercises for that point until you
+      solve them all correctly. It will not affect your spaced repetition queue.
+    </p>
+    <p class="text-center">
+      We wish you the best on your language-learning journey! 🚀
+    </p>
+  </article>
+</Layout>

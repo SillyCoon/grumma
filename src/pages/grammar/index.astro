@@ -1,0 +1,13 @@
+---
+import { Grammar } from "../../components/solid/Grammar";
+import Layout from "../../layouts/Layout.astro";
+import { fetchGrammar } from "@grammar-sdk";
+import { GET as fetchGpInReview } from "@api/sr/review/list";
+
+const grammar = await fetchGrammar();
+const inReview = (await (await fetchGpInReview(Astro)).json()) as string[];
+---
+
+<Layout title="Grammar" transition:persist>
+  <Grammar grammar={grammar} inReview={inReview} />
+</Layout>

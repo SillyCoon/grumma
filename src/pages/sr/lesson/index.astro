@@ -1,0 +1,24 @@
+---
+import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
+import Layout from "../../../layouts/Layout.astro";
+
+import type { Lesson } from "../../../server/feature/space-repetition/types/Lesson";
+import { fetchExplanation } from "../../../services/grammar";
+import { GET as getLessons } from "../../api/sr/lesson";
+
+const lesson = (await (await getLessons(Astro)).json())[0] as Lesson;
+const explanation = lesson ? await fetchExplanation(lesson.id) : undefined;
+---
+
+<Layout title="Lessons">
+  {
+    lesson && (
+      <GrammarPoint
+        client:visible
+        {...lesson}
+        explanation={explanation}
+        next="/sr/lesson/start"
+      />
+    )
+  }
+</Layout>

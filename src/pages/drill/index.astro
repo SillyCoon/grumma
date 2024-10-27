@@ -1,0 +1,20 @@
+---
+import { Exercises } from "../../components/solid/Exercise/Exercises";
+import Layout from "../../layouts/Layout.astro";
+import type { Drill } from "../../models/drill";
+import { type Exercise, fetchGrammar } from "@grammar-sdk";
+import { GET as fetchDrill } from "../api/drill";
+
+const drills: Drill[] = await (await fetchDrill(Astro)).json();
+const grammar = await fetchGrammar();
+const inDrill = drills
+	.map((r) => grammar.find((g) => g.id === r.grammarPointId))
+	.map((g) => g?.exercises)
+	.filter((e) => !!e)
+	.flat()
+	.filter((e): e is Exercise => !!e);
+---
+
+<Layout title="gRUmma drill">
+  <Exercises client:only exercises={inDrill} />
+</Layout>

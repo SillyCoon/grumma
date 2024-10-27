@@ -1,0 +1,46 @@
+---
+import { SignIn, SignOut } from "auth-astro/components";
+import HeaderNav from "./HeaderNav.astro";
+
+import { GET as getReiewCount } from "src/pages/api/sr/review/count";
+import { getSession } from "auth-astro/server";
+import Logo from "./Logo.astro";
+
+const session = await getSession(Astro.request);
+const reviewCount =
+  session && ((await (await getReiewCount(Astro)).json()) as number);
+---
+
+<header class="bg-primary p-4 sticky top-0 z-50">
+  <div class="container mx-auto flex justify-between items-center">
+    <a class="text-3xl font-bold text-white" href="/"><Logo /></a>
+    <div class="flex justify-between gap-5">
+      <HeaderNav text="Learn" link="/sr/lesson" />
+      <HeaderNav
+        text="Review"
+        link="/sr/review"
+        badgeContent={reviewCount ?? ""}
+      />
+      <HeaderNav text="Grammar" link="/grammar/" />
+      <HeaderNav text="Help" link="/help" />
+      <!-- <HeaderNav text="Drill" link="/drill/" /> -->
+      {
+        !session && (
+          <SignIn class="text-xl font-bold text-white" provider="google">
+            Login
+          </SignIn>
+        )
+      }
+      {
+        session && (
+          <SignOut
+            class="text-lg font-bold text-white"
+            params={{ redurect: true, callbackUrl: "/" }}
+          >
+            Logout
+          </SignOut>
+        )
+      }
+    </div>
+  </div>
+</header>

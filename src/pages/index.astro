@@ -1,0 +1,13 @@
+---
+import { getSession } from "auth-astro/server";
+import WelcomeScreen from "../components/WelcomeScreen.astro";
+import Layout from "../layouts/Layout.astro";
+
+const session = await getSession(Astro.request);
+
+if (session) return Astro.redirect("/grammar");
+---
+
+<Layout title="gRUmma">
+  <WelcomeScreen />
+</Layout>

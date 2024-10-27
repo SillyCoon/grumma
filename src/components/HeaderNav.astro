@@ -1,0 +1,24 @@
+---
+import { Badge } from "./ui/badge";
+
+export interface Props {
+  text: string;
+  link: string;
+  badgeContent?: string | number;
+}
+const { text, link, badgeContent } = Astro.props;
+---
+
+<a
+  class="flex align-center gap-1 text-primary-foreground text-xl font-bold px-4 py-2 hover:shadow-md hover:bg-secondary/20"
+  href={link}
+>
+  <span>{text}</span>
+  {
+    badgeContent && (
+      <Badge variant="success" round>
+        {badgeContent}
+      </Badge>
+    )
+  }
+</a>

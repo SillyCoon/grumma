@@ -15,11 +15,24 @@ FROM build-deps AS build
 COPY . .
 RUN npm run build
 
+
+
 FROM base AS runtime
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 
+ARG AUTH_SECRET
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+# ARG PUBLIC_API
+
+
 ENV HOST=0.0.0.0
 ENV PORT=8080
+ENV AUTH_SECRET=${AUTH_SECRET}
+ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+ENV GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+# ENV PUBLIC_API=${PUBLIC_API}
+
 EXPOSE 8080
 CMD node ./dist/server/entry.mjs

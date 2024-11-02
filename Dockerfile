@@ -1,6 +1,5 @@
 FROM node:lts-alpine AS base
 WORKDIR /app
-ARG AUTH_SECRET
 
 # By copying only the package.json and package-lock.json here, we ensure that the following `-deps` steps are independent of the source code.
 # Therefore, the `-deps` steps will be skipped if only the source code changes.
@@ -15,8 +14,8 @@ RUN npm install --production=false
 FROM build-deps AS build
 COPY . .
 
-ENV AUTH_SECRET=${AUTH_SECRET}
-RUN npm run build
+RUN --mount=type=secret,id=auth-secret,env=AUTH_SECRET\
+    npm run build
 
 FROM base AS runtime
 COPY --from=prod-deps /app/node_modules ./node_modules

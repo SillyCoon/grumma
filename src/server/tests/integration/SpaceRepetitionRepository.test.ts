@@ -4,8 +4,8 @@ import {
 	getAttempts,
 	removeFromRepetitions,
 	saveAttempt,
-} from "./SpaceRepetitionRepository";
-import type { Attempt } from "./types/Attempt";
+} from "../../feature/space-repetition/SpaceRepetitionRepository";
+import type { Attempt } from "../../feature/space-repetition/types/Attempt";
 import { v4 as uuid } from "uuid";
 import { firestore, timestampToDate } from "src/server/firestore";
 

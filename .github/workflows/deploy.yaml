@@ -1,4 +1,4 @@
-name: Docker Publish
+name: Deploy
 on:
   push:
     branches: [ "master" ]
@@ -7,16 +7,19 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  PROJECT_ID: gramma-400100 
+  SERVICE: grumma-oss
+  REGION: us-central1
 
 jobs:
-  build:
-
+  publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
       id-token: write
-
+    outputs:
+      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,3 +64,37 @@ jobs:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+  deploy:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: '${{ env.PROJECT_ID }}'
+          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+      - name: Create Service declaration   
+        run: |-
+          export IMAGE="${{ needs.publish.outputs.image }}"
+          export SERVICE="${{ env.SERVICE }}"
+          envsubst < ./deploy-cloudrun/service.template.yaml > service.yaml
+          cat service.yaml
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          metadata: 'service.yaml' 
+
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
+
+

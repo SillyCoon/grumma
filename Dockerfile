@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 FROM base AS prod-deps
-RUN npm install --production
+RUN npm install --omit=dev
 
 FROM base AS build-deps
 RUN npm install --production=false
@@ -14,7 +14,7 @@ RUN npm install --production=false
 FROM build-deps AS build
 COPY . .
 
-RUN --mount=type=secret,id=auth-secret,env=AUTH_SECRET\
+RUN --mount=type=secret,id=auth-secret,env=AUTH_SECRET \
     npm run build
 
 FROM base AS runtime

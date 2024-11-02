@@ -83,7 +83,7 @@ jobs:
         run: |-
           export IMAGE="${{ needs.publish.outputs.image }}"
           export SERVICE="${{ env.SERVICE }}"
-          envsubst < ./deploy-cloudrun/service.template.yaml > service.yaml
+          envsubst < gcloud/service.template.yaml > service.yaml
           cat service.yaml
 
       - name: Deploy to Cloud Run

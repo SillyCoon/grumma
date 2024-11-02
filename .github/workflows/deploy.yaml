@@ -5,11 +5,11 @@ on:
     tags: [ 'v*.*.*' ]
 
 env:
-  # REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: grumma
   PROJECT_ID: gramma-400100 
   SERVICE: grumma-oss
   REGION: us-central1
+  REGISTRY: asia-northeast1-docker.pkg.dev/gramma-400100/grumma
 
 jobs:
   publish:
@@ -19,8 +19,7 @@ jobs:
       packages: write
       id-token: write
     outputs:
-      # image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha}}
-      image: '${{ env.IMAGE_NAME }}:${{ github.sha}}'
+      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -38,12 +37,23 @@ jobs:
       #     registry: ${{ env.REGISTRY }}
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: '${{ env.PROJECT_ID }}'
+          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+      - name: Docker auth
+        run: |-
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           tags: |
             type=sha,format=long,prefix=
           

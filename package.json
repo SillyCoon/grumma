@@ -13,9 +13,9 @@
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
-		"@astrojs/node": "^8.3.3",
+		"@astrojs/node": "^8.3.4",
 		"@astrojs/solid-js": "4.2.0",
-		"@astrojs/tailwind": "^5.1.0",
+		"@astrojs/tailwind": "^5.1.2",
 		"@auth/core": "^0.32.0",
 		"@auth/firebase-adapter": "^1.5.0",
 		"@digitallinguistics/transliterate": "^0.4.0",
@@ -23,7 +23,7 @@
 		"@google-cloud/storage": "^7.11.0",
 		"@kobalte/core": "^0.13.5",
 		"@solid-primitives/refs": "^1.0.8",
-		"astro": "^4.14.2",
+		"astro": "^4.16.8",
 		"astro-loading-indicator": "^0.5.0",
 		"auth-astro": "^4.1.2",
 		"chart.js": "^4.4.2",

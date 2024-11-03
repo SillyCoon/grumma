@@ -8,7 +8,7 @@ env:
   IMAGE_NAME: grumma
   PROJECT_ID: gramma-400100 
   SERVICE: grumma-oss
-  REGION: asisa-northeast1
+  REGION: asia-northeast1
   REGISTRY: asia-northeast1-docker.pkg.dev/gramma-400100/grumma
 
 jobs:
@@ -33,7 +33,6 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
-          project_id: '${{ env.PROJECT_ID }}'
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: ${{secrets.SERVICE_ACCOUNT}}
 

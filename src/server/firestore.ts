@@ -1,7 +1,6 @@
-import { initFirestore } from "@auth/firebase-adapter";
-import type { Timestamp } from "firebase-admin/firestore";
+import { Firestore, type Timestamp } from "@google-cloud/firestore";
 
-export const firestore = initFirestore();
+export const firestore = new Firestore();
 
 export const timestampToDate = (timestamp: Date | string | Timestamp) => {
 	if (timestamp instanceof Date || typeof timestamp === "string") {

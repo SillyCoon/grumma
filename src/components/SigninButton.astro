@@ -1,11 +1,9 @@
 ---
-import { SignIn } from "auth-astro/components";
 ---
 
-<SignIn
+<a
   class="text-xl font-bold text-blue-600"
-  provider="google"
-  options={{ redirect: true, callbackUrl: "/grammar" }}
+  href="/signin"
 >
   Login
-</SignIn>
+</a>

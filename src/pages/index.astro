@@ -1,9 +1,9 @@
 ---
-import { getSession } from "auth-astro/server";
+import { supabase } from "libs/supabase";
 import WelcomeScreen from "../components/WelcomeScreen.astro";
 import Layout from "../layouts/Layout.astro";
 
-const session = await getSession(Astro.request);
+const session = (await supabase.auth.getUser()).data.user;
 
 if (session) return Astro.redirect("/grammar");
 ---

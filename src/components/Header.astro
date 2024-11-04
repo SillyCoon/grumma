@@ -1,12 +1,11 @@
 ---
-import { SignIn, SignOut } from "auth-astro/components";
 import HeaderNav from "./HeaderNav.astro";
 
 import { GET as getReiewCount } from "src/pages/api/sr/review/count";
-import { getSession } from "auth-astro/server";
 import Logo from "./Logo.astro";
+import { supabase } from "libs/supabase";
 
-const session = await getSession(Astro.request);
+const session = (await supabase.auth.getUser()).data.user;
 const reviewCount =
   session && ((await (await getReiewCount(Astro)).json()) as number);
 ---
@@ -26,19 +25,16 @@ const reviewCount =
       <!-- <HeaderNav text="Drill" link="/drill/" /> -->
       {
         !session && (
-          <SignIn class="text-xl font-bold text-white" provider="google">
+          <a class="text-xl font-bold text-white" href="/auth/signin">
             Login
-          </SignIn>
+          </a>
         )
       }
       {
         session && (
-          <SignOut
-            class="text-lg font-bold text-white"
-            params={{ redurect: true, callbackUrl: "/" }}
-          >
+          <a class="text-lg font-bold text-white" href="/api/auth/signout">
             Logout
-          </SignOut>
+          </a>
         )
       }
     </div>

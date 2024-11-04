@@ -1,7 +1,7 @@
 export interface ExerciseDto {
 	en: string;
 	ru: string;
-	helper: string;
+	helper: string | null;
 }
 
 export interface GrammarPointDto {
@@ -15,10 +15,10 @@ export interface GrammarPointDto {
 	exercises: ExerciseDto[];
 }
 
-export interface GrammarPointDtoFromDB {
+export interface GrammarPointDb {
 	id: number;
 	title: string;
-	structure: string;
-	order?: number;
+	structure: string | null;
+	order: number | null;
 	exercises: ExerciseDto[];
 }

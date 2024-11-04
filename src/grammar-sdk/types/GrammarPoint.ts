@@ -1,6 +1,6 @@
 import { Example } from "./Example";
 import type { Exercise } from "./Exercise";
-import type { GrammarPointDto, GrammarPointDtoFromDB } from "./dto";
+import type { GrammarPointDto, GrammarPointDb } from "./dto";
 
 export interface GrammarPoint {
 	id: string;
@@ -29,18 +29,18 @@ export const GrammarPoint = (g: GrammarPointDto): GrammarPoint => {
 			en: e.en,
 			ruGrammar: extractGrammar(e.ru) ?? "",
 			enGrammar: extractGrammar(e.en) ?? "",
-			draft: e.helper,
+			draft: e.helper ?? "",
 			order: i,
 		})),
 	};
 };
 
-export const GrammarPointFromDB = (g: GrammarPointDtoFromDB): GrammarPoint => {
+export const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
 	return {
 		id: `${g.id}`,
 		title: g.title,
-		structure: g.structure,
-		order: g.order,
+		structure: g.structure ?? "",
+		order: g.order ?? undefined,
 		examples: g.exercises.map((e) => ({
 			ru: Example(e.ru),
 			en: Example(e.en),
@@ -51,7 +51,7 @@ export const GrammarPointFromDB = (g: GrammarPointDtoFromDB): GrammarPoint => {
 			en: e.en,
 			ruGrammar: extractGrammar(e.ru) ?? "",
 			enGrammar: extractGrammar(e.en) ?? "",
-			draft: e.helper,
+			draft: e.helper ?? "",
 			order: i,
 		})),
 	};

@@ -1,3 +1,3 @@
-import type { User as AuthUser } from "@auth/core/types";
+import type { User as SbUser } from "@supabase/supabase-js";
 
-export type User = Pick<AuthUser, "id" | "email" | "name">;
+export type User = SbUser;

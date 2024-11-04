@@ -1,9 +1,9 @@
+// @ts-check
 import node from "@astrojs/node";
 import solidJs from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
 import spotlightjs from "@spotlightjs/astro";
 import { defineConfig } from "astro/config";
-import auth from "auth-astro";
 import gleam from "vite-gleam";
 
 // https://astro.build/config
@@ -15,7 +15,6 @@ export default defineConfig({
 			applyBaseStyles: false,
 		}),
 		spotlightjs(),
-		auth(),
 	],
 	output: "server",
 	adapter: node({

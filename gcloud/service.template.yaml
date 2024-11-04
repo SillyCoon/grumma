@@ -32,6 +32,11 @@ spec:
               secretKeyRef:
                 key: latest
                 name: GOOGLE_CLIENT_SECRET
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                key: latest
+                name: DATABASE_URL
         resources:
           limits:
             cpu: 1000m

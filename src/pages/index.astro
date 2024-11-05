@@ -2,15 +2,10 @@
 import WelcomeScreen from "../components/WelcomeScreen.astro";
 import Layout from "../layouts/Layout.astro";
 import { actions } from "astro:actions";
-import { navigate } from "astro:transitions/client";
 
 if (Astro.locals.user) return Astro.redirect("/grammar");
 
 const result = Astro.getActionResult(actions.login);
-
-if (result && !result.error) {
-  navigate(result.data.url);
-}
 ---
 
 <Layout title="gRUmma">

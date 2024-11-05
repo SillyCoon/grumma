@@ -14,6 +14,8 @@ if (result && !result.error) {
 ---
 
 <Layout title="gRUmma">
+  <!-- HACK: to do a client side redirect correctly
+   caused by Transitions   -->
   <grumma-navigator data-navigate={result?.data?.url}> </grumma-navigator>
   <WelcomeScreen />
 </Layout>

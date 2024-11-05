@@ -3,11 +3,11 @@ import HeaderNav from "./HeaderNav.astro";
 
 import { GET as getReiewCount } from "src/pages/api/sr/review/count";
 import Logo from "./Logo.astro";
-import { supabase } from "libs/supabase";
+import { actions } from "astro:actions";
 
-const session = (await supabase.auth.getUser()).data.user;
+const user = Astro.locals.user;
 const reviewCount =
-  session && ((await (await getReiewCount(Astro)).json()) as number);
+  user && ((await (await getReiewCount(Astro)).json()) as number);
 ---
 
 <header class="bg-primary p-4 sticky top-0 z-50">
@@ -24,17 +24,19 @@ const reviewCount =
       <HeaderNav text="Help" link="/help" />
       <!-- <HeaderNav text="Drill" link="/drill/" /> -->
       {
-        !session && (
+        !user && (
           <a class="text-xl font-bold text-white" href="/auth/signin">
             Login
           </a>
         )
       }
       {
-        session && (
-          <a class="text-lg font-bold text-white" href="/api/auth/signout">
-            Logout
-          </a>
+        user && (
+          <form method="POST" action={actions.logout}>
+            <button type="submit" class="text-lg font-bold text-white">
+              Logout
+            </button>
+          </form>
         )
       }
     </div>

@@ -1,13 +1,32 @@
 ---
-import { supabase } from "libs/supabase";
 import WelcomeScreen from "../components/WelcomeScreen.astro";
 import Layout from "../layouts/Layout.astro";
+import { actions } from "astro:actions";
+import { navigate } from "astro:transitions/client";
 
-const session = (await supabase.auth.getUser()).data.user;
+if (Astro.locals.user) return Astro.redirect("/grammar");
 
-if (session) return Astro.redirect("/grammar");
+const result = Astro.getActionResult(actions.login);
+
+if (result && !result.error) {
+  navigate(result.data.url);
+}
 ---
 
 <Layout title="gRUmma">
+  <!-- HACK: to do a client side redirect correctly
+   caused by Transitions   -->
+  <grumma-navigator data-navigate={result?.data?.url}> </grumma-navigator>
   <WelcomeScreen />
 </Layout>
+<script>
+  class Navigator extends HTMLElement {
+    connectedCallback() {
+      // Read the message from the data attribute.
+      const message = this.dataset.navigate;
+      if (message) window.location.href = message;
+    }
+  }
+
+  customElements.define("grumma-navigator", Navigator);
+</script>

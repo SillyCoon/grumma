@@ -1,7 +1,6 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import { createSupabaseServerInstance } from "libs/supabase";
-import { PUBLIC_URL } from "astro:env/server";
 
 export const server = {
 	login: defineAction({
@@ -10,7 +9,7 @@ export const server = {
 			provider: z.string(),
 		}),
 		handler: async (input, context) => {
-			console.log("Base URL", PUBLIC_URL);
+			console.log("Base URL", process.env.PUBLIC_URL);
 			console.log("META", import.meta.env);
 
 			const supabase = createSupabaseServerInstance({
@@ -20,7 +19,7 @@ export const server = {
 			const { data, error } = await supabase.auth.signInWithOAuth({
 				provider: "google",
 				options: {
-					redirectTo: `${PUBLIC_URL}/api/auth/callback`,
+					redirectTo: `${process.env.PUBLIC_URL}/api/auth/callback`,
 				},
 			});
 

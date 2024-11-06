@@ -66,8 +66,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            PUBLIC_URL=${{ env.PUBLIC_URL }}
 
       - name: Sign the published Docker image
         env:

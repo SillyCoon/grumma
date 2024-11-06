@@ -4,7 +4,7 @@ import { createSupabaseServerInstance } from "libs/supabase";
 
 export function getBaseUrl(): string {
 	return (
-		process.env.PUBLIC_URL || `http://localhost:${process.env.PORT ?? 4321}`
+		import.meta.env.PUBLIC_URL || `http://localhost:${process.env.PORT ?? 4321}`
 	);
 }
 

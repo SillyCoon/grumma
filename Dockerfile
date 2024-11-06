@@ -15,10 +15,13 @@ RUN npm install --production=false
 FROM build-deps AS build
 COPY . .
 
+ARG PUBLIC_URL
+ENV PUBLIC_URL=$PUBLIC_URL
+
 RUN --mount=type=secret,id=auth-secret,env=AUTH_SECRET \
-    --mount=type=secret,id=supabase-url,env=SUPABASE_URL \
-    --mount=type=secret,id=supabase-key,env=SUPABASE_KEY \
-    npm run build
+  --mount=type=secret,id=supabase-url,env=SUPABASE_URL \
+  --mount=type=secret,id=supabase-key,env=SUPABASE_KEY \
+  npm run build
 
 FROM base AS runtime
 COPY --from=prod-deps /app/node_modules ./node_modules

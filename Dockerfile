@@ -15,12 +15,8 @@ RUN npm install --production=false
 FROM build-deps AS build
 COPY . .
 
-ARG PUBLIC_URL
-ENV PUBLIC_URL=$PUBLIC_URL
-
 RUN --mount=type=secret,id=supabase-url,env=SUPABASE_URL \
   --mount=type=secret,id=supabase-key,env=SUPABASE_KEY \
-  PUBLIC_URL=${PUBLIC_URL} \
   npm run build
 
 FROM base AS runtime

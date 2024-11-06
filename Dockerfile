@@ -25,7 +25,6 @@ COPY --from=build /app/dist ./dist
 
 ENV HOST=0.0.0.0
 ENV PORT=8080
-ENV PUBLIC_URL=https://grumma-oss-55861693007.asia-northeast1.run.app
 
 EXPOSE 8080
 CMD node ./dist/server/entry.mjs

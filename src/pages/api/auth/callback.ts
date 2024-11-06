@@ -15,7 +15,6 @@ export const GET: APIRoute = async ({ cookies, request, url, redirect }) => {
 	});
 	const { error, data } = await supabase.auth.exchangeCodeForSession(authCode);
 
-	console.log("sooka data", data);
 	if (error) {
 		return new Response(error.message, { status: 500 });
 	}

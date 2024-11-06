@@ -15,6 +15,9 @@ export const server = {
 			provider: z.string(),
 		}),
 		handler: async (input, context) => {
+			console.log("Base URL", getBaseUrl());
+			console.log("META", import.meta.env);
+
 			const baseUrl = getBaseUrl();
 			const supabase = createSupabaseServerInstance({
 				headers: context.request.headers,

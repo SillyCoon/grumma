@@ -19,21 +19,6 @@ spec:
               value: https://grumma-oss-55861693007.asia-northeast1.run.app
             - name: PUBLIC_API
               value: https://scala-notion-h2mjeyfyja-an.a.run.app
-            - name: AUTH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  key: latest
-                  name: AUTH_SECRET
-            - name: GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  key: latest
-                  name: GOOGLE_CLIENT_ID
-            - name: GOOGLE_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  key: latest
-                  name: GOOGLE_CLIENT_SECRET
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:

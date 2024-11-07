@@ -2,37 +2,50 @@ import type { User } from "../../../models/user";
 import type { Attempt } from "./types/Attempt";
 import { v4 as uuid } from "uuid";
 import type { Stage } from "./types/Stage";
-import { firestore, timestampToDate } from "src/server/firestore";
+import type { DbClient } from "libs/db";
+import { and, eq } from "drizzle-orm";
+import { spaceRepetitions } from "libs/db/schema";
 
-export const getAttempts = async (user: User): Promise<Attempt[]> => {
-	const tries = await firestore
-		.collection("sr")
-		.where("userId", "==", user.id)
-		.get();
-	return tries.docs
-		.map((d) => d.data() as Attempt)
-		.map((a) => ({ ...a, answeredAt: timestampToDate(a.answeredAt) }));
+export const getAttempts = async (
+	db: DbClient,
+	user: User,
+): Promise<Attempt[]> => {
+	const tries = await db.query.spaceRepetitions.findMany({
+		where: eq(spaceRepetitions.userId, user.id),
+	});
+	return tries.map((t) => ({
+		...t,
+		grammarPointId: `${t.grammarPointId}`,
+		stage: t.stage as Stage,
+		answer: t.answer ?? "",
+	}));
 };
 
 export const saveAttempt = async (
+	db: DbClient,
 	attempt: Attempt,
 	user: User,
 ): Promise<void> => {
-	await firestore.collection("sr").add({ ...attempt, userId: user.id });
+	await db.insert(spaceRepetitions).values({
+		...attempt,
+		grammarPointId: +attempt.grammarPointId,
+		userId: user.id,
+	});
 };
 
 export const removeFromRepetitions = async (
+	db: DbClient,
 	user: User,
 	grammarPointId: string,
 ) => {
-	const query = firestore
-		.collection("sr")
-		.where("grammarPointId", "==", grammarPointId)
-		.where("userId", "==", user.id);
-	const batch = firestore.batch();
-	const snapshot = await query.get();
-	snapshot.docs.forEach((doc) => batch.delete(doc.ref));
-	await batch.commit();
+	await db
+		.delete(spaceRepetitions)
+		.where(
+			and(
+				eq(spaceRepetitions.userId, user.id),
+				eq(spaceRepetitions.grammarPointId, +grammarPointId),
+			),
+		);
 };
 
 const ManualAttempt = (grammarPointId: string, answeredAt: Date): Attempt => ({
@@ -45,12 +58,14 @@ const ManualAttempt = (grammarPointId: string, answeredAt: Date): Attempt => ({
 });
 
 export const addToRepetitions = async (
+	db: DbClient,
 	user: User,
 	grammarPointId: string,
 	when: Date,
 ) => {
-	await firestore.collection("sr").add({
+	await db.insert(spaceRepetitions).values({
 		userId: user.id,
 		...ManualAttempt(grammarPointId, when),
+		grammarPointId: +grammarPointId,
 	});
 };

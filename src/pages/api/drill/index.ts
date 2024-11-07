@@ -11,7 +11,7 @@ export const POST: APIRoute = async ({ locals: { user }, request }) => {
 	});
 };
 
-export const GET: APIRoute = async ({ locals: { user }, request }) => {
+export const GET: APIRoute = async ({ locals: { user } }) => {
 	const drill = user && (await getDrill(user));
 
 	return new Response(JSON.stringify(drill), {

@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, test, expect } from "vitest";
 import type { Attempt } from "./types/Attempt";
 import { faker } from "@faker-js/faker";
 import type { Stage } from "./types/Stage";
-import { addMinute, addSecond } from "@formkit/tempo";
+import { addMinute } from "@formkit/tempo";
 import { NaiveAlgorithm } from "./NaiveAlgorithm";
 import { StageSettings } from "./StageSettings";
 

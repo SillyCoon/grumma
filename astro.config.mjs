@@ -4,7 +4,6 @@ import solidJs from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
 import spotlightjs from "@spotlightjs/astro";
 import { defineConfig, envField } from "astro/config";
-import gleam from "vite-gleam";
 
 // https://astro.build/config
 export default defineConfig({

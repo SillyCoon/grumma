@@ -7,16 +7,18 @@
 		"test": "vitest run --exclude '**/tests/integration/**'",
 		"test:integration": "vitest run integration",
 		"start": "astro dev",
-		"build": "astro build",
+		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
+		"@astrojs/check": "^0.9.4",
 		"@astrojs/node": "^8.3.4",
 		"@astrojs/solid-js": "4.2.0",
 		"@astrojs/tailwind": "^5.1.2",
+		"@astrojs/ts-plugin": "^1.10.4",
 		"@digitallinguistics/transliterate": "^0.4.0",
 		"@formkit/tempo": "^0.1.1",
 		"@google-cloud/firestore": "^7.10.0",
@@ -67,7 +69,7 @@
 		"storybook-solidjs-vite": "^1.0.0-beta.2",
 		"tailwindcss": "^3.4.10",
 		"ts-gleam": "^1.0.1",
-		"typescript": "^5.4.5",
+		"typescript": "^5.6.3",
 		"vite-gleam": "^0.4.2",
 		"vitest": "^1.6.0"
 	}

@@ -4,6 +4,9 @@
 		"plugins": [
 			{
 				"name": "ts-gleam"
+			},
+			{
+				"name": "@astrojs/ts-plugin"
 			}
 		],
 		"jsx": "preserve",
@@ -19,5 +22,6 @@
 			"~/*": ["./src/*"]
 		},
 		"typeRoots": ["node_modules/@types", "src/types"]
-	}
+	},
+	"exclude": ["node_modules", "dist"]
 }

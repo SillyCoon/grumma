@@ -1,17 +1,17 @@
 import { relations } from "drizzle-orm";
-import { pgSchema, serial, text, integer } from "drizzle-orm/pg-core";
+import { integer, pgSchema, text } from "drizzle-orm/pg-core";
 
 export const grumma = pgSchema("grumma");
 
-export const grammarPoints = grumma.table("GrammarPoint", {
+export const grammarPoints = grumma.table("grammar_point", {
 	id: integer("id").primaryKey(),
 	order: integer(),
 	structure: text(),
 	title: text().notNull().unique(),
 });
 
-export const exercises = grumma.table("Exercise", {
-	id: serial().primaryKey(),
+export const exercises = grumma.table("exercise", {
+	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	grammarPointId: integer()
 		.notNull()
 		.references(() => grammarPoints.id),

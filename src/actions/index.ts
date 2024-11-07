@@ -2,6 +2,7 @@ import { ActionError, defineAction } from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro:schema";
 import { createSupabaseServerInstance } from "libs/supabase";
+import { fetchGrammarPointFromDb } from "~/grammar-sdk/db";
 
 export const server = {
 	login: defineAction({
@@ -49,6 +50,15 @@ export const server = {
 			return {
 				ok: true,
 			};
+		},
+	}),
+	grammarPoint: defineAction({
+		accept: "json",
+		input: z.object({
+			grammarPointId: z.string(),
+		}),
+		handler: async (input, context) => {
+			return fetchGrammarPointFromDb(input.grammarPointId);
 		},
 	}),
 };

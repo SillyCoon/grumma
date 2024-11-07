@@ -9,8 +9,8 @@ import type { Exercise as ExerciseType } from "@grammar-sdk";
 
 import { normalizeAnswer, parseToExercise } from "./utils";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
-import { fetchGrammarPointFromApi as fetchGrammarPoint } from "../../../grammar-sdk/realtime";
 import { TransliterateInput } from "./TransliterateInput";
+import { actions } from "astro:actions";
 
 export interface ExerciseProps {
 	exercise: ExerciseType;
@@ -112,7 +112,10 @@ export const Exercise = (props: ExerciseProps) => {
 };
 
 const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
-	const [gp] = createResource(props.grammarPointId, fetchGrammarPoint);
+	const [gp] = createResource(
+		{ grammarPointId: props.grammarPointId },
+		actions.grammarPoint,
+	);
 	let ref: HTMLDivElement;
 
 	createEffect(() => {
@@ -127,7 +130,8 @@ const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
 		<Show when={gp()}>
 			{(g) => (
 				<div ref={ref}>
-					<GrammarPoint {...g()} />
+					{/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
+					{g() && <GrammarPoint {...g().data!} />}
 				</div>
 			)}
 		</Show>

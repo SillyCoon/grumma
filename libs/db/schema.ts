@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { integer, pgSchema, text } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	integer,
+	pgSchema,
+	text,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 export const grumma = pgSchema("grumma");
 
@@ -31,3 +38,16 @@ export const exercisesRelations = relations(exercises, ({ one }) => ({
 		references: [grammarPoints.id],
 	}),
 }));
+
+export const spaceRepetitions = grumma.table("space_repetition", {
+	id: integer().primaryKey().generatedAlwaysAsIdentity(),
+	answer: text(),
+	answeredAt: timestamp().notNull(),
+	grammarPointId: integer()
+		.notNull()
+		.references(() => grammarPoints.id),
+	isCorrect: boolean().notNull(),
+	reviewSessionId: uuid().notNull(),
+	stage: integer().notNull(),
+	userId: text().notNull(),
+});

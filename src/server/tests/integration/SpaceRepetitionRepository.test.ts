@@ -1,4 +1,11 @@
-import { beforeEach, describe, expect, test } from "vitest";
+import {
+	afterAll,
+	beforeAll,
+	beforeEach,
+	describe,
+	expect,
+	test,
+} from "vitest";
 import {
 	addToRepetitions,
 	getAttempts,
@@ -7,7 +14,13 @@ import {
 } from "../../feature/space-repetition/SpaceRepetitionRepository";
 import type { Attempt } from "../../feature/space-repetition/types/Attempt";
 import { v4 as uuid } from "uuid";
-import { firestore, timestampToDate } from "src/server/firestore";
+import { grammarPoints, spaceRepetitions } from "libs/db/schema";
+import {
+	PostgreSqlContainer,
+	type StartedPostgreSqlContainer,
+} from "@testcontainers/postgresql";
+import { execSync } from "node:child_process";
+import { makeDb } from "libs/db";
 
 const mockAttempt = (grammarPointId: string): Attempt => {
 	return {
@@ -21,12 +34,38 @@ const mockAttempt = (grammarPointId: string): Attempt => {
 };
 
 describe("SpaceRepetitionRepository", () => {
+	let postgresContainer: StartedPostgreSqlContainer;
+	let db: ReturnType<typeof makeDb>;
+
+	beforeAll(async () => {
+		postgresContainer = await new PostgreSqlContainer()
+			.withExposedPorts({ container: 5432, host: 6543 })
+			.start();
+
+		execSync(
+			`DATABASE_URL=${postgresContainer.getConnectionUri()} bunx --yes drizzle-kit push`,
+		);
+
+		db = makeDb(postgresContainer.getConnectionUri());
+
+		await db.insert(grammarPoints).values([
+			{
+				id: 1,
+				title: "hello",
+			},
+			{
+				id: 2,
+				title: "goodbye",
+			},
+		]);
+	}, 30000);
+
+	afterAll(async () => {
+		await postgresContainer.stop();
+	});
+
 	beforeEach(async () => {
-		const query = firestore.collection("sr").where("userId", "in", ["1", "2"]);
-		const batch = firestore.batch();
-		const snapshot = await query.get();
-		snapshot.docs.forEach((doc) => batch.delete(doc.ref));
-		await batch.commit();
+		await db.delete(spaceRepetitions);
 	});
 
 	test("saveAttempt", async () => {
@@ -42,28 +81,23 @@ describe("SpaceRepetitionRepository", () => {
 			reviewSessionId: uuid(),
 		};
 
-		await saveAttempt(attempt, user);
+		await saveAttempt(db, attempt, user);
 
-		const result = await firestore
-			.collection("sr")
-			.where("userId", "==", user.id)
-			.where("grammarPointId", "==", grammarPointId)
-			.get();
+		const result = await db.query.spaceRepetitions.findMany();
 
-		expect(result.size).toEqual(1);
+		expect(result.length).toEqual(1);
 
-		const doc = result.docs[0].data();
-		const attemptWithoutDate = attempt;
-
-		expect({ ...doc, answeredAt: timestampToDate(doc.answeredAt) }).toEqual({
-			...attemptWithoutDate,
+		expect(result[0]).toEqual({
+			...attempt,
+			id: expect.any(Number),
+			grammarPointId: +grammarPointId,
 			userId: user.id,
 		});
 	});
 
 	test("getAttempts", async () => {
 		const otherUserAttempt = mockAttempt("2");
-		await saveAttempt(otherUserAttempt, { id: "2" });
+		await saveAttempt(db, otherUserAttempt, { id: "2" });
 
 		const user = { id: "1" };
 		const grammarPointId = "1";
@@ -77,16 +111,18 @@ describe("SpaceRepetitionRepository", () => {
 			reviewSessionId: uuid(),
 		};
 
-		await saveAttempt(attempt, user);
+		await saveAttempt(db, attempt, user);
 
-		const result = await getAttempts(user);
+		const result = await getAttempts(db, user);
 
-		expect(result).toEqual([{ ...attempt, userId: user.id }]);
+		expect(result).toEqual([
+			{ ...attempt, id: expect.any(Number), userId: user.id },
+		]);
 	});
 
 	test("removeFromRepetitions", async () => {
 		const otherUserAttempt = mockAttempt("2");
-		await saveAttempt(otherUserAttempt, { id: "2" });
+		await saveAttempt(db, otherUserAttempt, { id: "2" });
 
 		const user = { id: "1" };
 		const grammarPointId = "1";
@@ -100,17 +136,19 @@ describe("SpaceRepetitionRepository", () => {
 			reviewSessionId: uuid(),
 		};
 
-		await saveAttempt(attempt, user);
+		await saveAttempt(db, attempt, user);
 
-		await removeFromRepetitions(user, grammarPointId);
+		await removeFromRepetitions(db, user, grammarPointId);
 
-		const result = await getAttempts(user);
+		const result = await getAttempts(db, user);
 
 		expect(result).toEqual([]);
 
-		const otherUserResult = await getAttempts({ id: "2" });
+		const otherUserResult = await getAttempts(db, { id: "2" });
 
-		expect(otherUserResult).toEqual([{ ...otherUserAttempt, userId: "2" }]);
+		expect(otherUserResult).toEqual([
+			{ ...otherUserAttempt, id: expect.any(Number), userId: "2" },
+		]);
 	});
 
 	test("addToRepetitions", async () => {
@@ -118,12 +156,13 @@ describe("SpaceRepetitionRepository", () => {
 		const grammarPointId = "1";
 		const addedAt = new Date();
 
-		await addToRepetitions(user, grammarPointId, addedAt);
+		await addToRepetitions(db, user, grammarPointId, addedAt);
 
-		const result = await getAttempts(user);
+		const result = await getAttempts(db, user);
 
 		expect(result).toEqual([
 			{
+				id: expect.any(Number),
 				grammarPointId,
 				stage: 0,
 				answer: "added manually",

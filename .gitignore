@@ -28,4 +28,3 @@ pnpm-debug.log*
 erl_crash.dump
 
 *storybook.log
-src/env.d.ts

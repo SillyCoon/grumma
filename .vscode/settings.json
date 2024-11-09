@@ -1,8 +1,10 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
+    "astro",
     "digitallinguistics",
     "grumma",
+    "supabase",
     "torfl"
   ]
 }

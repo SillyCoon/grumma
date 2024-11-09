@@ -57,7 +57,7 @@ export const server = {
 		input: z.object({
 			grammarPointId: z.string(),
 		}),
-		handler: async (input, context) => {
+		handler: async (input, _context) => {
 			return fetchGrammarPointFromDb(input.grammarPointId);
 		},
 	}),

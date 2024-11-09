@@ -13,6 +13,7 @@ export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
 		.toArray()
 		.toSorted((a, b) => a.order - b.order),
 	...gp,
+	torfl: "A1",
 });
 
 export const mockExample = (): Example => [

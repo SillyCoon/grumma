@@ -1,7 +1,4 @@
-import {
-	fetchGrammarFromDb,
-	fetchGrammarPointFromDb,
-} from "./db";
+import { fetchGrammarFromDb, fetchGrammarPointFromDb } from "./db";
 import { fetchGrammarFromApi, fetchGrammarPointFromApi } from "./realtime";
 
 export const fetchGrammarPoint = (id: string) => {

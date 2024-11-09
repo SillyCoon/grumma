@@ -12,7 +12,8 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"build-storybook": "storybook build",
+		"check": "biome check ."
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.4",

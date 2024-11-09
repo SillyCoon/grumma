@@ -14,9 +14,9 @@ export default defineConfig({
 					context: "server",
 					access: "public",
 					default: "http://localhost:4321",
-				})
-			}
-		}
+				}),
+			},
+		},
 	},
 	integrations: [
 		solid({ devtools: import.meta.env.DEV }),

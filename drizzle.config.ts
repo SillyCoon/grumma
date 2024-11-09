@@ -8,5 +8,5 @@ export default defineConfig({
 	},
 	schemaFilter: ["grumma"],
 	tablesFilter: ["*"],
-	verbose: true
+	verbose: true,
 });

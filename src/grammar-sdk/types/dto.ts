@@ -13,6 +13,7 @@ export interface GrammarPointDto {
 	structure: string;
 	order?: number;
 	exercises: ExerciseDto[];
+	torfl: string;
 }
 
 export interface GrammarPointDb {
@@ -21,4 +22,5 @@ export interface GrammarPointDb {
 	structure: string | null;
 	order: number | null;
 	exercises: ExerciseDto[];
+	torfl: string;
 }

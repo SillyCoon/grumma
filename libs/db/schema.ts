@@ -6,6 +6,7 @@ import {
 	text,
 	timestamp,
 	uuid,
+	varchar,
 } from "drizzle-orm/pg-core";
 
 export const grumma = pgSchema("grumma");
@@ -15,6 +16,7 @@ export const grammarPoints = grumma.table("grammar_point", {
 	order: integer(),
 	structure: text(),
 	title: text().notNull().unique(),
+	torfl: varchar({ length: 2 }).default("A1").notNull(),
 });
 
 export const exercises = grumma.table("exercise", {

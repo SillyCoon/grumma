@@ -1,6 +1,7 @@
-import { GrammarPoint } from "./types/GrammarPoint";
 import type { GrammarPointDto } from "./types/dto";
-import { fetchJson } from "./utils";
+import { Example } from "./types/Example";
+import type { GrammarPoint } from "./types/GrammarPoint";
+import { extractGrammar, fetchJson } from "./utils";
 
 /**
  * TODO:
@@ -14,7 +15,7 @@ export const fetchGrammarPointFromApi = async (
 	const dto = await fetchJson<GrammarPointDto | undefined>(
 		`${import.meta.env.PUBLIC_API}grammar/${id}`,
 	);
-	return dto && GrammarPoint(dto);
+	return dto && GrammarPointFromRealtime(dto);
 };
 
 export const fetchGrammarFromApi = async (): Promise<GrammarPoint[]> => {
@@ -23,10 +24,33 @@ export const fetchGrammarFromApi = async (): Promise<GrammarPoint[]> => {
 	);
 
 	return grammarDto
-		.map(GrammarPoint)
+		.map(GrammarPointFromRealtime)
 		.toSorted(
 			(a, b) =>
 				(a.order ?? Number.MAX_SAFE_INTEGER) -
 				(b.order ?? Number.MAX_SAFE_INTEGER),
 		);
+};
+
+export const GrammarPointFromRealtime = (g: GrammarPointDto): GrammarPoint => {
+	return {
+		id: `${g.id.number}`,
+		title: g.title,
+		structure: g.structure,
+		order: g.order,
+		examples: g.exercises.map((e) => ({
+			ru: Example(e.ru),
+			en: Example(e.en),
+		})),
+		exercises: g.exercises.map((e, i) => ({
+			grammarPointId: `${g.id.number}`,
+			ru: e.ru,
+			en: e.en,
+			ruGrammar: extractGrammar(e.ru) ?? "",
+			enGrammar: extractGrammar(e.en) ?? "",
+			draft: e.helper ?? "",
+			order: i,
+		})),
+		torfl: g.torfl,
+	};
 };

@@ -2,7 +2,6 @@
 import node from "@astrojs/node";
 import solid from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
-import spotlightjs from "@spotlightjs/astro";
 import { defineConfig, envField } from "astro/config";
 
 // https://astro.build/config
@@ -20,11 +19,10 @@ export default defineConfig({
 		}
 	},
 	integrations: [
-		solid({ devtools: true }),
+		solid({ devtools: import.meta.env.DEV }),
 		tailwind({
 			applyBaseStyles: false,
 		}),
-		spotlightjs(),
 	],
 	output: "server",
 	adapter: node({

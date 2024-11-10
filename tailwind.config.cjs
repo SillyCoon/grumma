@@ -72,6 +72,10 @@ module.exports = {
 						secondary: "hsl(var(--text-secondary))",
 					},
 				},
+				foregrounds: {
+					primary: "hsl(var(--text-primary))",
+					secondary: "hsl(var(--text-secondary))",
+				},
 			},
 			borderRadius: {
 				xl: "calc(var(--radius) + 4px)",

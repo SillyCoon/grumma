@@ -10,7 +10,11 @@ export const fetchGrammarPoint = async (id: string) => {
 	return gp ? { ...gp, explanation } : undefined;
 };
 
-export const fetchGrammar = () => {
+/**
+ *
+ * @returns All grammar WITHOUT explanations
+ */
+export const fetchGrammarList = () => {
 	return import.meta.env.PUBLIC_REAL_TIME_CONTENT_UPDATE
 		? fetchGrammarFromApi()
 		: fetchGrammarFromDb();

@@ -1,14 +1,11 @@
 ---
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import Layout from "../../../layouts/Layout.astro";
-import { fetchExplanation } from "../../../services/grammar";
 import { fetchGrammarPoint } from "@grammar-sdk";
 
 const { id } = Astro.params;
 
 const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
-const explanation = id ? await fetchExplanation(id) : undefined;
-
 // const drills: Drill[] = await (await fetchDrills(Astro)).json();
 // const drill = drills.find((r) => r.grammarPointId === id);
 ---
@@ -17,11 +14,7 @@ const explanation = id ? await fetchExplanation(id) : undefined;
   {
     grammarPoint && (
       <>
-        <GrammarPoint
-          client:visible
-          {...grammarPoint}
-          explanation={explanation}
-        />
+        <GrammarPoint client:visible {...grammarPoint} />
         <section class="flex flex-col justify-between items-center mt-5">
           <a
             class="bg-primary  text-white px-6 py-3 rounded-full shadow-md text-center"

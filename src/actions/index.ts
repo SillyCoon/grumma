@@ -3,6 +3,8 @@ import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro:schema";
 import { createSupabaseServerInstance } from "libs/supabase";
 import { fetchGrammarPointFromDb } from "~/grammar-sdk/db";
+import { addAttempt } from "~/server/feature/space-repetition";
+import type { Stage } from "~/server/feature/space-repetition/types/Stage";
 
 export const server = {
 	login: defineAction({
@@ -59,6 +61,25 @@ export const server = {
 		}),
 		handler: async (input, _context) => {
 			return fetchGrammarPointFromDb(input.grammarPointId);
+		},
+	}),
+	saveAttempt: defineAction({
+		accept: "json",
+		input: z.object({
+			grammarPointId: z.string(),
+			stage: z.number(),
+			answer: z.string(),
+			isCorrect: z.boolean(),
+			answeredAt: z.coerce.date(),
+			reviewSessionId: z.string(),
+		}),
+		handler: async (input, context) => {
+			const user = context.locals.user;
+			if (!user) {
+				console.log("User is not logged in, can't save attempt");
+			}
+			user &&
+				(await addAttempt({ ...input, stage: input.stage as Stage }, user));
 		},
 	}),
 };

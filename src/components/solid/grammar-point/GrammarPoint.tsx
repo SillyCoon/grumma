@@ -1,4 +1,4 @@
-import type { GrammarPointType } from "@services/grammar";
+import type { GrammarPoint as GrammarPointType } from "@grammar-sdk";
 import { Card } from "@ui/Card";
 import { Example } from "../example/Example";
 import { ForwardButton } from "../generic/ForwardButton";

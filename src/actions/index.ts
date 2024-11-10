@@ -1,8 +1,8 @@
+import { fetchGrammarPoint } from "@grammar-sdk";
 import { ActionError, defineAction } from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro:schema";
 import { createSupabaseServerInstance } from "libs/supabase";
-import { fetchGrammarPointFromDb } from "~/grammar-sdk/db";
 import { addAttempt } from "~/server/feature/space-repetition";
 import type { Stage } from "~/server/feature/space-repetition/types/Stage";
 
@@ -60,7 +60,7 @@ export const server = {
 			grammarPointId: z.string(),
 		}),
 		handler: async (input, _context) => {
-			return fetchGrammarPointFromDb(input.grammarPointId);
+			return fetchGrammarPoint(input.grammarPointId);
 		},
 	}),
 	saveAttempt: defineAction({

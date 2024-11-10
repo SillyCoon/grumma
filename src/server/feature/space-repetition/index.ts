@@ -1,5 +1,5 @@
 import type { User } from "../../../models/user";
-import { fetchGrammar } from "@grammar-sdk";
+import { fetchGrammarList } from "@grammar-sdk";
 import { NaiveAlgorithm } from "./NaiveAlgorithm";
 import { SpaceRepetition } from "./SpaceRepetition";
 import { getAttempts, saveAttempt } from "./SpaceRepetitionRepository";
@@ -19,7 +19,7 @@ export const getLessons = async (
 	amount: number,
 	user: User,
 ): Promise<Lesson[]> => {
-	const grammarPoints = await fetchGrammar();
+	const grammarPoints = await fetchGrammarList();
 	const attempts = await getAttempts(db, user);
 
 	const spaceRepetition = SpaceRepetition(attempts);
@@ -35,7 +35,7 @@ export const addAttempt = async (
 
 export const getNextRound = async (user: User): Promise<Lesson[]> => {
 	const attempts = await getAttempts(db, user);
-	const grammarPoints = await fetchGrammar();
+	const grammarPoints = await fetchGrammarList();
 
 	const spaceRepetition = SpaceRepetition(attempts);
 	const nextRound = spaceRepetition.nextRound(

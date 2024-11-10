@@ -12,4 +12,5 @@ export interface GrammarPoint {
 	order?: number;
 	exercises: Exercise[];
 	torfl: string;
+	explanation?: string;
 }

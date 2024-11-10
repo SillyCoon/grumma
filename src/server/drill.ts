@@ -1,15 +1,12 @@
+import type { GrammarPoint } from "@grammar-sdk";
 import { Drill } from "../models/drill";
 import type { User } from "../models/user";
-import type { GrammarPointType } from "../services/grammar";
 import { firestore } from "./firestore";
 
 const getDrillDocs = async (user: User) =>
 	await firestore.collection("review").where("userId", "==", user.id).get();
 
-export const addToDrill = async (
-	user: User,
-	grammarPoint: GrammarPointType,
-) => {
+export const addToDrill = async (user: User, grammarPoint: GrammarPoint) => {
 	await firestore.collection("review").add({
 		userId: user.id,
 		...Drill(grammarPoint.id, 0),

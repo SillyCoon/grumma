@@ -1,5 +1,6 @@
 import {
 	createServerClient,
+	createBrowserClient,
 	parseCookieHeader,
 	type CookieOptionsWithName,
 } from "@supabase/ssr";
@@ -42,4 +43,11 @@ export function createSupabaseServerInstance(
 	);
 
 	return supabase;
+}
+
+export function createSupabaseClientInstance() {
+	return createBrowserClient(
+		import.meta.env.SUPABASE_URL,
+		import.meta.env.SUPABASE_KEY,
+	);
 }

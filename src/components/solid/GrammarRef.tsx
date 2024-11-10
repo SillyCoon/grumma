@@ -5,7 +5,6 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-	CardContent,
 } from "@components/ui/card";
 
 interface GrammarRefProps {

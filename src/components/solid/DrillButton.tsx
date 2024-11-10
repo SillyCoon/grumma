@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
 import { Toaster } from "solid-toast";
 import type { Drill } from "../../models/drill";
-import type { GrammarPointType } from "../../services/grammar";
 import { fetchWithToast } from "./utils";
+import type { GrammarPoint } from "@grammar-sdk";
 
 export const DrillButton = (props: {
-	grammarPoint: Omit<GrammarPointType, "exercises">;
+	grammarPoint: Omit<GrammarPoint, "exercises">;
 	drill?: Drill;
 }) => {
 	const [submitted, setSubmitted] = createSignal(false);

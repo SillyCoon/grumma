@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
 import { addToDrill, getDrill } from "../../../server/drill";
-import type { GrammarPointType } from "../../../services/grammar";
+import type { GrammarPoint } from "@grammar-sdk";
 
 export const POST: APIRoute = async ({ locals: { user }, request }) => {
-	const gp = (await request.json()) as GrammarPointType;
+	const gp = (await request.json()) as GrammarPoint;
 	user && (await addToDrill(user, gp));
 
 	return new Response(null, {

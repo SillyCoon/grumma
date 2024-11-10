@@ -11,7 +11,7 @@
 	"formatter": { "enabled": true, "indentStyle": "tab" },
 
 	"files": {
-		"ignore": [".vscode", ".git", "node_modules", "dist", "*.astro"]
+		"ignore": [".vscode", ".git", "node_modules", "dist", "*.astro", "drizzle"]
 	},
 	"linter": {
 		"enabled": true,

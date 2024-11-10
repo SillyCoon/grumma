@@ -1,6 +1,6 @@
-/**@type {import("tailwindcss").Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-	darkMode: ["class", '[data-kb-theme="dark"]'],
+	darkMode: ["variant", [".dark &", '[data-kb-theme="dark"] &']],
 	content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
 	daisyui: {
 		themes: ["emerald"],
@@ -64,6 +64,14 @@ module.exports = {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
 				},
+				backgrounds: {
+					darker: "hsl(var(--background-darker))",
+					lighter: "hsl(var(--background-lighter))",
+					foreground: {
+						primary: "hsl(var(--text-primary))",
+						secondary: "hsl(var(--text-secondary))",
+					},
+				},
 			},
 			borderRadius: {
 				xl: "calc(var(--radius) + 4px)",
@@ -88,12 +96,17 @@ module.exports = {
 					from: { opacity: 1, transform: "scale(1)" },
 					to: { opacity: 0, transform: "scale(0.96)" },
 				},
+				"caret-blink": {
+					"0%,70%,100%": { opacity: "1" },
+					"20%,50%": { opacity: "0" },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
 				"accordion-up": "accordion-up 0.2s ease-out",
 				"content-show": "content-show 0.2s ease-out",
 				"content-hide": "content-hide 0.2s ease-out",
+				"caret-blink": "caret-blink 1.25s ease-out infinite",
 			},
 		},
 	},

@@ -8,5 +8,5 @@ const lesson = (await (await getLessons(Astro)).json())[0] as Lesson;
 ---
 
 <Layout title="Lessons">
-  {lesson && <Exercises client:only exercises={[lesson.exercise]} />}
+  {lesson && <Exercises client:only="solid-js" exercises={[lesson.exercise]} />}
 </Layout>

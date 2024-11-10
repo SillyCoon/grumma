@@ -1,6 +1,6 @@
 import { For } from "solid-js";
-import { GrammarRef } from "./GrammarRef";
 import type { GrammarPoint } from "@grammar-sdk";
+import { GrammarBlock } from "./GrammarBlock";
 
 interface GrammarProps {
 	grammar: GrammarPoint[];
@@ -8,12 +8,20 @@ interface GrammarProps {
 }
 
 export const Grammar = (props: GrammarProps) => {
-	const reviewMap = new Map(props.inReview?.map((v) => [v, true]));
+	const groupedGrammar = Object.groupBy(props.grammar, (v) => v.torfl);
 	return (
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
-			<For each={props.grammar}>
-				{(gp) => <GrammarRef {...gp} inReview={reviewMap.get(gp.id)} />}
+		<section class="grid gap-5">
+			<For each={Object.entries(groupedGrammar)}>
+				{([torfl, grammar]) =>
+					grammar?.length && (
+						<GrammarBlock
+							torfl={torfl}
+							grammar={grammar ?? []}
+							inReview={props.inReview}
+						/>
+					)
+				}
 			</For>
-		</div>
+		</section>
 	);
 };

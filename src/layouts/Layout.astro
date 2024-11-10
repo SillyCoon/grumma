@@ -4,6 +4,7 @@ import LoadingIndicator from "astro-loading-indicator/component";
 import "../styles/global.css";
 
 import Header from "../components/Header.astro";
+import { Toaster } from "solid-toast";
 interface Props {
   title: string;
 }
@@ -28,5 +29,6 @@ const { title } = Astro.props;
     <main class="container mx-auto py-8">
       <slot />
     </main>
+    <Toaster position="bottom-right" client:only="solid-js" />
   </body>
 </html>

@@ -44,23 +44,5 @@ export const GrammarRef = (props: GrammarRefProps) => {
 				</CardFooter>
 			</Card>
 		</a>
-
-		// <a
-		// 	href={`/grammar/${props.id}`}
-		// 	class="card bg-darker-background shadow-md rounded-lg overflow-hidden transform transition-transform hover:shadow-lg cursor-pointer"
-		// >
-		// 	<div class="flex p-5 h-full overflow-hidden">
-		// 		<div class="flex flex-col justify-between flex-grow">
-		// 			<section>
-		// 				<p class="text-primary-text whitespace-nowrap overflow-ellipsis overflow-hidden">
-		// 					{mainTitle}
-		// 				</p>
-		// 				<p class="text-primary-text">{detailedTitle}</p>
-		// 			</section>
-		// 			<span class="text-secondary-text">{enTitle}</span>
-		// 		</div>
-
-		// 	</div>
-		// </a>
 	);
 };

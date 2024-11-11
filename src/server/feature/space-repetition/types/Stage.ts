@@ -1,7 +1,7 @@
-export type Stage = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type Stage = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export const minStage: Stage = 1;
-export const maxStage: Stage = 12;
+export const maxStage: Stage = 11;
 
 const isStage = (value: number): value is Stage =>
 	value >= minStage && value <= maxStage;

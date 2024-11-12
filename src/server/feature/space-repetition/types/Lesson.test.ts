@@ -4,14 +4,14 @@ import { test, expect } from "vitest";
 import { Lesson } from "./Lesson";
 
 test("Lesson", () => {
-	const gp: GrammarPoint = mockGrammarPoint();
-	const { exercises, ...noEx } = gp;
+  const gp: GrammarPoint = mockGrammarPoint();
+  const { exercises, ...noEx } = gp;
 
-	const result = Lesson(gp);
+  const result = Lesson(gp);
 
-	expect(result?.exercise.order).toBe(0);
-	expect(result).toEqual({
-		...noEx,
-		exercise: gp.exercises.at(0),
-	});
+  expect(result?.exercise.order).toBe(0);
+  expect(result).toEqual({
+    ...noEx,
+    exercise: gp.exercises.at(0),
+  });
 });

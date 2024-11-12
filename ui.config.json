@@ -1,13 +1,13 @@
 {
-	"$schema": "https://solid-ui.com/schema.json",
-	"tsx": true,
-	"tailwind": {
-		"css": "src/styles/global.css",
-		"config": "tailwind.config.cjs",
-		"prefix": ""
-	},
-	"aliases": {
-		"components": "~/components/ui",
-		"utils": "~/lib/utils"
-	}
+  "$schema": "https://solid-ui.com/schema.json",
+  "tsx": true,
+  "tailwind": {
+    "css": "src/styles/global.css",
+    "config": "tailwind.config.cjs",
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "~/components/ui",
+    "utils": "~/lib/utils"
+  }
 }

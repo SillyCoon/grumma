@@ -11,56 +11,56 @@ import { db } from "libs/db";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
-	stageDowngradeMultiplier: 2,
-	stageMinutes: StageSettings,
+  stageDowngradeMultiplier: 2,
+  stageMinutes: StageSettings,
 };
 
 export const getLessons = async (
-	amount: number,
-	user: User,
+  amount: number,
+  user: User,
 ): Promise<Lesson[]> => {
-	const grammarPoints = await fetchGrammarList();
-	const attempts = await getAttempts(db, user);
+  const grammarPoints = await fetchGrammarList();
+  const attempts = await getAttempts(db, user);
 
-	const spaceRepetition = SpaceRepetition(attempts);
-	return spaceRepetition.nextLessons(amount, grammarPoints);
+  const spaceRepetition = SpaceRepetition(attempts);
+  return spaceRepetition.nextLessons(amount, grammarPoints);
 };
 
 export const addAttempt = async (
-	attempt: Attempt,
-	user: User,
+  attempt: Attempt,
+  user: User,
 ): Promise<void> => {
-	await saveAttempt(db, attempt, user);
+  await saveAttempt(db, attempt, user);
 };
 
 export const getNextRound = async (user: User): Promise<Lesson[]> => {
-	const attempts = await getAttempts(db, user);
-	const grammarPoints = await fetchGrammarList();
+  const attempts = await getAttempts(db, user);
+  const grammarPoints = await fetchGrammarList();
 
-	const spaceRepetition = SpaceRepetition(attempts);
-	const nextRound = spaceRepetition.nextRound(
-		algorithm,
-		settings,
-		grammarPoints,
-	);
+  const spaceRepetition = SpaceRepetition(attempts);
+  const nextRound = spaceRepetition.nextRound(
+    algorithm,
+    settings,
+    grammarPoints,
+  );
 
-	return nextRound;
+  return nextRound;
 };
 
 export const countNextRound = async (user: User): Promise<number> => {
-	return (await getNextRound(user)).length;
+  return (await getNextRound(user)).length;
 };
 
 export const getSchedule = async (user: User): Promise<Schedule> => {
-	const attempts = await getAttempts(db, user);
-	const spaceRepetition = SpaceRepetition(attempts);
-	return spaceRepetition.getSchedule(algorithm, settings);
+  const attempts = await getAttempts(db, user);
+  const spaceRepetition = SpaceRepetition(attempts);
+  return spaceRepetition.getSchedule(algorithm, settings);
 };
 
 export const listGrammarPointsInReview = async (
-	user: User,
+  user: User,
 ): Promise<string[]> => {
-	const attempts = await getAttempts(db, user);
-	const spaceRepetition = SpaceRepetition(attempts);
-	return spaceRepetition.repeatingGrammarPoints();
+  const attempts = await getAttempts(db, user);
+  const spaceRepetition = SpaceRepetition(attempts);
+  return spaceRepetition.repeatingGrammarPoints();
 };

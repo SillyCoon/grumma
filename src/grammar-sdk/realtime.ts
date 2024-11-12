@@ -10,47 +10,47 @@ import { extractGrammar, fetchJson } from "./utils";
  * I will delegate Firestore to the backend anyway
  */
 export const fetchGrammarPointFromApi = async (
-	id: string,
+  id: string,
 ): Promise<GrammarPoint | undefined> => {
-	const dto = await fetchJson<GrammarPointDto | undefined>(
-		`${import.meta.env.PUBLIC_API}grammar/${id}`,
-	);
-	return dto && GrammarPointFromRealtime(dto);
+  const dto = await fetchJson<GrammarPointDto | undefined>(
+    `${import.meta.env.PUBLIC_API}grammar/${id}`,
+  );
+  return dto && GrammarPointFromRealtime(dto);
 };
 
 export const fetchGrammarFromApi = async (): Promise<GrammarPoint[]> => {
-	const grammarDto: GrammarPointDto[] = await fetchJson(
-		`${import.meta.env.PUBLIC_API}/grammar`,
-	);
+  const grammarDto: GrammarPointDto[] = await fetchJson(
+    `${import.meta.env.PUBLIC_API}/grammar`,
+  );
 
-	return grammarDto
-		.map(GrammarPointFromRealtime)
-		.toSorted(
-			(a, b) =>
-				(a.order ?? Number.MAX_SAFE_INTEGER) -
-				(b.order ?? Number.MAX_SAFE_INTEGER),
-		);
+  return grammarDto
+    .map(GrammarPointFromRealtime)
+    .toSorted(
+      (a, b) =>
+        (a.order ?? Number.MAX_SAFE_INTEGER) -
+        (b.order ?? Number.MAX_SAFE_INTEGER),
+    );
 };
 
 export const GrammarPointFromRealtime = (g: GrammarPointDto): GrammarPoint => {
-	return {
-		id: `${g.id.number}`,
-		title: g.title,
-		structure: g.structure,
-		order: g.order,
-		examples: g.exercises.map((e) => ({
-			ru: Example(e.ru),
-			en: Example(e.en),
-		})),
-		exercises: g.exercises.map((e, i) => ({
-			grammarPointId: `${g.id.number}`,
-			ru: e.ru,
-			en: e.en,
-			ruGrammar: extractGrammar(e.ru) ?? "",
-			enGrammar: extractGrammar(e.en) ?? "",
-			draft: e.helper ?? "",
-			order: i,
-		})),
-		torfl: g.torfl,
-	};
+  return {
+    id: `${g.id.number}`,
+    title: g.title,
+    structure: g.structure,
+    order: g.order,
+    examples: g.exercises.map((e) => ({
+      ru: Example(e.ru),
+      en: Example(e.en),
+    })),
+    exercises: g.exercises.map((e, i) => ({
+      grammarPointId: `${g.id.number}`,
+      ru: e.ru,
+      en: e.en,
+      ruGrammar: extractGrammar(e.ru) ?? "",
+      enGrammar: extractGrammar(e.en) ?? "",
+      draft: e.helper ?? "",
+      order: i,
+    })),
+    torfl: g.torfl,
+  };
 };

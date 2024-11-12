@@ -7,65 +7,65 @@ import { and, eq } from "drizzle-orm";
 import { spaceRepetitions } from "libs/db/schema";
 
 export const getAttempts = async (
-	db: DbClient,
-	user: User,
+  db: DbClient,
+  user: User,
 ): Promise<Attempt[]> => {
-	const tries = await db.query.spaceRepetitions.findMany({
-		where: eq(spaceRepetitions.userId, user.id),
-	});
-	return tries.map((t) => ({
-		...t,
-		grammarPointId: `${t.grammarPointId}`,
-		stage: t.stage as Stage,
-		answer: t.answer ?? "",
-	}));
+  const tries = await db.query.spaceRepetitions.findMany({
+    where: eq(spaceRepetitions.userId, user.id),
+  });
+  return tries.map((t) => ({
+    ...t,
+    grammarPointId: `${t.grammarPointId}`,
+    stage: t.stage as Stage,
+    answer: t.answer ?? "",
+  }));
 };
 
 export const saveAttempt = async (
-	db: DbClient,
-	attempt: Attempt,
-	user: User,
+  db: DbClient,
+  attempt: Attempt,
+  user: User,
 ): Promise<void> => {
-	await db.insert(spaceRepetitions).values({
-		...attempt,
-		grammarPointId: +attempt.grammarPointId,
-		userId: user.id,
-	});
+  await db.insert(spaceRepetitions).values({
+    ...attempt,
+    grammarPointId: +attempt.grammarPointId,
+    userId: user.id,
+  });
 };
 
 export const removeFromRepetitions = async (
-	db: DbClient,
-	user: User,
-	grammarPointId: string,
+  db: DbClient,
+  user: User,
+  grammarPointId: string,
 ) => {
-	await db
-		.delete(spaceRepetitions)
-		.where(
-			and(
-				eq(spaceRepetitions.userId, user.id),
-				eq(spaceRepetitions.grammarPointId, +grammarPointId),
-			),
-		);
+  await db
+    .delete(spaceRepetitions)
+    .where(
+      and(
+        eq(spaceRepetitions.userId, user.id),
+        eq(spaceRepetitions.grammarPointId, +grammarPointId),
+      ),
+    );
 };
 
 const ManualAttempt = (grammarPointId: string, answeredAt: Date): Attempt => ({
-	grammarPointId,
-	stage: 0 as Stage,
-	answer: "added manually",
-	isCorrect: true,
-	answeredAt,
-	reviewSessionId: uuid(),
+  grammarPointId,
+  stage: 0 as Stage,
+  answer: "added manually",
+  isCorrect: true,
+  answeredAt,
+  reviewSessionId: uuid(),
 });
 
 export const addToRepetitions = async (
-	db: DbClient,
-	user: User,
-	grammarPointId: string,
-	when: Date,
+  db: DbClient,
+  user: User,
+  grammarPointId: string,
+  when: Date,
 ) => {
-	await db.insert(spaceRepetitions).values({
-		userId: user.id,
-		...ManualAttempt(grammarPointId, when),
-		grammarPointId: +grammarPointId,
-	});
+  await db.insert(spaceRepetitions).values({
+    userId: user.id,
+    ...ManualAttempt(grammarPointId, when),
+    grammarPointId: +grammarPointId,
+  });
 };

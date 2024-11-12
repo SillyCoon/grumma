@@ -10,8 +10,8 @@
 		--muted: var(--background-lighter);
 		--muted-foreground: var(--text-secondary);
 
-		--popover: 0 0% 100%;
-		--popover-foreground: 240 10% 3.9%;
+		--popover: var(--background-lighter);
+		--popover-foreground: var(--text-primary);
 
 		--border: 240 5.9% 90%;
 		--input: 240 5.9% 90%;

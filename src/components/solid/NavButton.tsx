@@ -27,9 +27,11 @@ export const NavButton = (props: {
 					)}
 				</button>
 			</TooltipTrigger>
-			<TooltipContent>
-				<div>Please login to use space repetition feature</div>
-			</TooltipContent>
+			{props.disabled && (
+				<TooltipContent>
+					<div>Please login to use space repetition feature</div>
+				</TooltipContent>
+			)}
 		</Tooltip>
 	);
 };

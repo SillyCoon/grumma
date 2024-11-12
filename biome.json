@@ -1,25 +1,25 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": {
-		"enabled": false,
-		"clientKind": "git",
-		"useIgnoreFile": false
-	},
-	"organizeImports": {
-		"enabled": false
-	},
-	"formatter": { "enabled": true, "indentStyle": "tab" },
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "formatter": { "enabled": true, "indentStyle": "space" },
 
-	"files": {
-		"ignore": [".vscode", ".git", "node_modules", "dist", "*.astro", "drizzle"]
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"complexity": {
-				"noForEach": "off"
-			}
-		}
-	}
+  "files": {
+    "ignore": [".vscode", ".git", "node_modules", "dist", "*.astro", "drizzle"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noForEach": "off"
+      }
+    }
+  }
 }

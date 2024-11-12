@@ -12,4 +12,4 @@ export const db = drizzle(client, { schema });
 export type DbClient = typeof db;
 
 export const makeDb = (connectionString: string) =>
-	drizzle(postgres(connectionString, { prepare: false }), { schema });
+  drizzle(postgres(connectionString, { prepare: false }), { schema });

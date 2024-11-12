@@ -1,27 +1,27 @@
 {
-	"extends": "astro/tsconfigs/strict",
-	"compilerOptions": {
-		"plugins": [
-			{
-				"name": "ts-gleam"
-			},
-			{
-				"name": "@astrojs/ts-plugin"
-			}
-		],
-		"jsx": "preserve",
-		"jsxImportSource": "solid-js",
-		"baseUrl": ".",
-		"paths": {
-			"@ui/*": ["src/components/solid/ui/*"],
-			"@components/*": ["src/components/*"],
-			"@api/*": ["src/pages/api/*"],
-			"@services/*": ["src/services/*"],
-			"@layouts/*": ["src/layouts/*"],
-			"@grammar-sdk": ["src/grammar-sdk/index.ts"],
-			"~/*": ["./src/*"]
-		},
-		"typeRoots": ["node_modules/@types", "src/types"]
-	},
-	"exclude": ["node_modules", "dist"]
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "ts-gleam"
+      },
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "baseUrl": ".",
+    "paths": {
+      "@ui/*": ["src/components/solid/ui/*"],
+      "@components/*": ["src/components/*"],
+      "@api/*": ["src/pages/api/*"],
+      "@services/*": ["src/services/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@grammar-sdk": ["src/grammar-sdk/index.ts"],
+      "~/*": ["./src/*"]
+    },
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "exclude": ["node_modules", "dist"]
 }

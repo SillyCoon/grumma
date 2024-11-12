@@ -1,7 +1,14 @@
 import { defineMiddleware } from "astro:middleware";
 import { createSupabaseServerInstance } from "libs/supabase";
 
-const PATHS_TO_IGNORE = ["signin", "register", "auth", "login", "logout"];
+const PATHS_TO_IGNORE = [
+	"signin",
+	"register",
+	"auth",
+	"login",
+	"logout",
+	"grammar",
+];
 
 export const onRequest = defineMiddleware(
 	async ({ locals, cookies, url, request, redirect }, next) => {

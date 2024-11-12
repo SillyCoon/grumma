@@ -1,0 +1,30 @@
+---
+import { cn } from "~/lib/utils";
+import { Badge } from "./ui/badge";
+
+export type Props = {
+  title: string;
+  description: string;
+  href: string;
+  color: string;
+  count: number;
+};
+
+const { title, description, href, color, count } = Astro.props;
+---
+
+<a
+  class={cn(
+    "rounded-md bg-primary text-secondary-content cursor-pointer",
+    color,
+  )}
+  href={href}
+>
+  <div class="p-5">
+    <div class="flex flex-row justify-between">
+      <h2 class="text-5xl">{title}</h2>
+      <Badge variant="light">{count}</Badge>
+    </div>
+    <p>{description}</p>
+  </div>
+</a>

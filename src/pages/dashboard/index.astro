@@ -4,43 +4,125 @@ import Layout from "@layouts/Layout.astro";
 
 import { GET as fetchSchedule } from "@api/sr/schedule";
 import type { Schedule } from "src/server/feature/space-repetition/types/Schedule";
+import DashboardCell from "@components/DashboardCell.astro";
+import { BarList } from "@components/ui/progress-bar-list";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@components/ui/card";
+import { date } from "astro:schema";
+import { Range } from "immutable";
+
 const schedule: Schedule = await (await fetchSchedule(Astro)).json();
 const { user } = Astro.locals;
+
+const data = [
+  {
+    id: "1",
+    name: "A1",
+    value: 30,
+    overall: 62,
+  },
+  {
+    id: "2",
+    name: "A2",
+    value: 20,
+    overall: 55,
+  },
+];
+
+function getNextWeekAbbreviations(): string[] {
+  // Create an array of the full names of the days of the week
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  const todayIndex = new Date().getDay();
+
+  return [
+    "Today",
+    ...Range(1, 7)
+      .map((v) => {
+        const currentDayIndex = (todayIndex + v) % 7; // Loop around the week
+        return daysOfWeek[currentDayIndex].substring(0, 3);
+      })
+      .toArray(),
+  ];
+}
+
+const dataDay = getNextWeekAbbreviations().map((v, i) => ({
+  value: 5,
+  name: v,
+  id: `${i}`,
+  overall: 10,
+}));
 ---
 
 <Layout title="Dashboard">
-  <section class="mx-32 gap-5 flex flex-col">
-    <div class="prose">
-      <h2>Welcome, <span class="text-secondary">{user?.email}</span>!</h2>
-    </div>
-    <div class="flex gap-5">
-      <a
-        class="flex-grow card bg-secondary text-secondary-content cursor-pointer"
-        href="/sr/lesson"
-      >
-        <div class="card-body items-center text-center">
-          <h2 class="card-title">Learn</h2>
-        </div>
-      </a>
-      <a
-        class="flex-grow card bg-primary text-primary-content cursor-pointer"
-        href="/sr/review"
-      >
-        <div class="card-body items-center text-center">
-          <h2 class="card-title">Reviews</h2>
-        </div>
-      </a>
-    </div>
+  <section
+    class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-3 md:grid-cols-2 md:gap-y-10 gap-5 lg:mx-10 md:mx-5 sm:mx-0"
+  >
+    <DashboardCell
+      title="Learn"
+      description="Get the new lesson"
+      color="bg-primary"
+      count={1}
+      href="/sr/lesson"
+    />
+    <DashboardCell
+      title="Reviews"
+      description="Review the lessons you've learned"
+      color="bg-secondary"
+      count={1}
+      href="/sr/review"
+    />
 
-    <div class="card w-96 shadow-md text-secondary">
-      <div class="card-body">
-        <h2 class="card-title">Reviews Schedule</h2>
-        <Dashboard
-          schedule={schedule}
-          date={new Date()}
-          client:only="solid-js"
-        />
-      </div>
-    </div>
+    <Card class="col-span-1">
+      <CardHeader>
+        <CardTitle>Streak</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p>Keep it up, {user?.email}</p>
+        <p>
+          You have studied for <span class="text-secondary">#</span> days in a row!
+        </p>
+      </CardContent>
+    </Card>
+
+    <Card class="col-span-1 xl:col-span-2">
+      <CardHeader>
+        <CardTitle>TORFL test level grammar coverage</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p
+          class="mt-4 flex items-center justify-between text-foregrounds-secondary"
+        >
+          <span>Level</span>
+          <span>Studied</span>
+        </p>
+        <BarList data={data} class="mt-2" />
+      </CardContent>
+    </Card>
+
+    <Card class="col-span-1 row-span-2">
+      <CardHeader>
+        <CardTitle>Review forecast</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p>
+          Soon in your review queue will appear grammar points ready for review:
+        </p>
+        <BarList data={dataDay} class="mt-2" />
+      </CardContent>
+    </Card>
   </section>
 </Layout>

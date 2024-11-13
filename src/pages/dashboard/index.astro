@@ -1,38 +1,24 @@
 ---
-import { Dashboard } from "@components/solid/dashboard/Dashboard";
 import Layout from "@layouts/Layout.astro";
 
-import { GET as fetchSchedule } from "@api/sr/schedule";
-import type { Schedule } from "src/server/feature/space-repetition/types/Schedule";
 import DashboardCell from "@components/DashboardCell.astro";
+import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { BarList } from "@components/ui/progress-bar-list";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@components/ui/card";
-import { date } from "astro:schema";
+import { actions } from "astro:actions";
 import { Range } from "immutable";
 
-const schedule: Schedule = await (await fetchSchedule(Astro)).json();
+const { data: dashboard } = await Astro.callAction(actions.dashboard, {});
+
+// const schedule: Schedule = await (await fetchSchedule(Astro)).json();
 const { user } = Astro.locals;
 
-const data = [
-  {
-    id: "1",
-    name: "A1",
-    value: 30,
-    overall: 62,
-  },
-  {
-    id: "2",
-    name: "A2",
-    value: 20,
-    overall: 55,
-  },
-];
+const torfl =
+  dashboard?.inReviewByTorflCount.map((v) => ({
+    id: v.torfl,
+    name: v.torfl,
+    total: v.total,
+    value: v.count,
+  })) ?? [];
 
 function getNextWeekAbbreviations(): string[] {
   // Create an array of the full names of the days of the week
@@ -63,7 +49,7 @@ const dataDay = getNextWeekAbbreviations().map((v, i) => ({
   value: 5,
   name: v,
   id: `${i}`,
-  overall: 10,
+  total: 10,
 }));
 ---
 
@@ -82,7 +68,7 @@ const dataDay = getNextWeekAbbreviations().map((v, i) => ({
       title="Reviews"
       description="Review the lessons you've learned"
       color="bg-secondary"
-      count={1}
+      count={dashboard?.reviewsCount ?? 0}
       href="/sr/review"
     />
 
@@ -93,7 +79,9 @@ const dataDay = getNextWeekAbbreviations().map((v, i) => ({
       <CardContent>
         <p>Keep it up, {user?.email}</p>
         <p>
-          You have studied for <span class="text-secondary">#</span> days in a row!
+          You have studied for <span class="text-secondary"
+            >{dashboard?.streak}</span
+          > days in a row!
         </p>
       </CardContent>
     </Card>
@@ -109,7 +97,7 @@ const dataDay = getNextWeekAbbreviations().map((v, i) => ({
           <span>Level</span>
           <span>Studied</span>
         </p>
-        <BarList data={data} class="mt-2" />
+        <BarList data={torfl} class="mt-2" />
       </CardContent>
     </Card>
 

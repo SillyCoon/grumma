@@ -5,7 +5,8 @@ import DashboardCell from "@components/DashboardCell.astro";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { BarList } from "@components/ui/progress-bar-list";
 import { actions } from "astro:actions";
-import { Range } from "immutable";
+import { Range, Map as IMap, Seq, List } from "immutable";
+import { diffDays } from "@formkit/tempo";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {});
 
@@ -45,17 +46,40 @@ function getNextWeekAbbreviations(): string[] {
   ];
 }
 
-const dataDay = getNextWeekAbbreviations().map((v, i) => ({
-  value: 5,
-  name: v,
-  id: `${i}`,
-  total: 10,
-}));
+const schedule = dashboard?.schedule ?? [];
+
+const countByDaysOfTheWeek: number[] = [];
+
+const today = new Date();
+
+Seq(schedule)
+  .sortBy((v) => v.availableAt)
+  .forEach((v) => {
+    const diffWithToday = diffDays(v.availableAt, today);
+    const adjustedDiff = diffWithToday > 0 ? diffWithToday : 0;
+    if (diffWithToday > 6) return;
+    for (let i = adjustedDiff; i <= 6; i++) {
+      countByDaysOfTheWeek[i] = (countByDaysOfTheWeek[i] ?? 0) + 1;
+    }
+  });
+
+const weekSchedule = Seq(getNextWeekAbbreviations()).zip(
+  List(countByDaysOfTheWeek),
+);
+
+const dataDay = weekSchedule
+  .map(([v, i]) => ({
+    value: i,
+    name: v,
+    id: v,
+    total: 10,
+  }))
+  .toArray();
 ---
 
-<Layout title="Dashboard">
+<Layout title="Dashboard" transition:persist>
   <section
-    class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-3 md:grid-cols-2 md:gap-y-10 gap-5 lg:mx-10 md:mx-5 sm:mx-0"
+    class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-3 md:grid-cols-2 md:gap-y-10 gap-5"
   >
     <DashboardCell
       title="Learn"
@@ -109,7 +133,8 @@ const dataDay = getNextWeekAbbreviations().map((v, i) => ({
         <p>
           Soon in your review queue will appear grammar points ready for review:
         </p>
-        <BarList data={dataDay} class="mt-2" />
+        <!-- TODO: I'm not 100% sure that timezone is correctly recalculated, so it's better to leave it client:only in the end -->
+        <BarList client:load data={dataDay} class="mt-2" />
       </CardContent>
     </Card>
   </section>

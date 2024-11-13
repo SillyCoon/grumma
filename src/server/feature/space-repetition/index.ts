@@ -8,6 +8,8 @@ import type { Attempt } from "./types/Attempt";
 import type { Lesson } from "./types/Lesson";
 import type { Schedule } from "./types/Schedule";
 import { db } from "libs/db";
+import { Seq, Map as IMap } from "immutable";
+import { diffDays } from "@formkit/tempo";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -49,6 +51,43 @@ export const getNextRound = async (user: User): Promise<Lesson[]> => {
 
 export const countNextRound = async (user: User): Promise<number> => {
   return (await getNextRound(user)).length;
+};
+
+export const countStreak = async (user: User): Promise<number> => {
+  const attempts = await getAttempts(db, user);
+  return (
+    Seq(attempts)
+      .sort((a, b) => +b.answeredAt - +a.answeredAt)
+      .takeWhile((a, k, iter) => {
+        const prev = iter.get(k - 1);
+        if (!prev) return true;
+        return diffDays(a.answeredAt, prev.answeredAt) <= 1;
+      }).size ?? 0
+  );
+};
+
+export const getInReviewByTorfl = async (user: User) => {
+  const schedule = await getSchedule(user);
+  const grammar = await fetchGrammarList();
+
+  const grammarPointsById = IMap(grammar.map((v) => [v.id, v]));
+
+  const totalTorfl = Seq(grammar)
+    .map((v) => v.torfl)
+    .countBy((v) => v);
+
+  const inReviewByTorfl = Seq(schedule)
+    .map((s) => grammarPointsById.get(s.grammarPointId))
+    .countBy((v) => v?.torfl)
+    .toArray();
+
+  return inReviewByTorfl
+    .filter((val): val is [string, number] => !!val[0])
+    .map(([torfl, count]) => ({
+      torfl,
+      count,
+      total: totalTorfl.get(torfl, 0),
+    }));
 };
 
 export const getSchedule = async (user: User): Promise<Schedule> => {

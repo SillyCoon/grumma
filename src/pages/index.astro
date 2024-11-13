@@ -3,7 +3,7 @@ import WelcomeScreen from "../components/WelcomeScreen.astro";
 import Layout from "../layouts/Layout.astro";
 import { actions } from "astro:actions";
 
-if (Astro.locals.user) return Astro.redirect("/grammar");
+if (Astro.locals.user) return Astro.redirect("/dashboard");
 
 const result = Astro.getActionResult(actions.login);
 ---

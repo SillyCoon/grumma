@@ -7,7 +7,13 @@ import {
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro:schema";
 import { createSupabaseServerInstance } from "libs/supabase";
-import { addAttempt, countNextRound } from "~/server/feature/space-repetition";
+import {
+  addAttempt,
+  countNextRound,
+  countStreak as getStreak,
+  getInReviewByTorfl,
+  getSchedule,
+} from "~/server/feature/space-repetition";
 import type { Stage } from "~/server/feature/space-repetition/types/Stage";
 
 const extractUser = (context: ActionAPIContext) => {
@@ -97,14 +103,13 @@ export const server = {
   dashboard: defineAction({
     accept: "json",
     handler: async (_input, context) => {
-      const nextRound = await countNextRound(extractUser(context));
+      const user = extractUser(context);
+
       return {
-        streak: 5,
-        inReviewByTorflCount: [
-          { torfl: "A1", count: 5, total: 10 },
-          { torfl: "A2", count: 10, total: 20 },
-        ],
-        reviewsCount: nextRound,
+        streak: await getStreak(user),
+        inReviewByTorflCount: await getInReviewByTorfl(user),
+        reviewsCount: await countNextRound(user),
+        schedule: await getSchedule(user),
       };
     },
   }),

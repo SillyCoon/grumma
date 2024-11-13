@@ -16,7 +16,7 @@ export const NavButton = (props: {
         <button
           onClick={() => console.log("click")}
           disabled={props.disabled}
-          class="disabled:cursor-help disabled:opacity-50 gap-1 text-primary-foreground text-xl font-bold px-4 py-2 hover:shadow-md hover:bg-secondary/20"
+          class=" inline-flex items-center disabled:cursor-help disabled:opacity-50 gap-1 text-primary-foreground text-xl font-bold px-4 py-2 hover:shadow-md hover:bg-secondary/20"
           type="button"
         >
           <span>{props.text}</span>

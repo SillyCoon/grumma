@@ -4,9 +4,10 @@ import Layout from "@layouts/Layout.astro";
 import DashboardCell from "@components/DashboardCell.astro";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { BarList } from "@components/ui/progress-bar-list";
-import { actions } from "astro:actions";
-import { Range, Map as IMap, Seq, List } from "immutable";
+import { Skeleton } from "@components/ui/skeleton";
 import { diffDays } from "@formkit/tempo";
+import { actions } from "astro:actions";
+import { List, Range, Seq } from "immutable";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {});
 
@@ -64,7 +65,7 @@ Seq(schedule)
   });
 
 const weekSchedule = Seq(getNextWeekAbbreviations()).zip(
-  List(countByDaysOfTheWeek),
+  List(countByDaysOfTheWeek)
 );
 
 const dataDay = weekSchedule
@@ -133,8 +134,11 @@ const dataDay = weekSchedule
         <p>
           Soon in your review queue will appear grammar points ready for review:
         </p>
-        <!-- TODO: I'm not 100% sure that timezone is correctly recalculated, so it's better to leave it client:only in the end -->
-        <BarList client:load data={dataDay} class="mt-2" />
+        <BarList client:only="solid-js" data={dataDay} class="mt-2">
+          <div slot="fallback">
+            <Skeleton height={260} radius={10} />
+          </div>
+        </BarList>
       </CardContent>
     </Card>
   </section>

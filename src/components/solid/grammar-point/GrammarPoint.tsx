@@ -1,9 +1,9 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import type { GrammarPoint as GrammarPointType } from "@grammar-sdk";
+import { For } from "solid-js";
 import { Example } from "../example/Example";
 import { ForwardButton } from "../generic/ForwardButton";
 import { Title } from "./Title";
-import { For } from "solid-js";
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 
 type Props = Omit<GrammarPointType, "exercises"> & {
   explanation?: string;

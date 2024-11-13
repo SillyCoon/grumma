@@ -1,10 +1,25 @@
 import { fetchGrammarPoint } from "@grammar-sdk";
-import { ActionError, defineAction } from "astro:actions";
+import {
+  ActionError,
+  defineAction,
+  type ActionAPIContext,
+} from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro:schema";
 import { createSupabaseServerInstance } from "libs/supabase";
-import { addAttempt } from "~/server/feature/space-repetition";
+import { addAttempt, countNextRound } from "~/server/feature/space-repetition";
 import type { Stage } from "~/server/feature/space-repetition/types/Stage";
+
+const extractUser = (context: ActionAPIContext) => {
+  const user = context.locals.user;
+  if (!user) {
+    throw new ActionError({
+      code: "UNAUTHORIZED",
+      message: "User is not logged in",
+    });
+  }
+  return user;
+};
 
 export const server = {
   login: defineAction({
@@ -74,12 +89,23 @@ export const server = {
       reviewSessionId: z.string(),
     }),
     handler: async (input, context) => {
-      const user = context.locals.user;
-      if (!user) {
-        console.log("User is not logged in, can't save attempt");
-      }
+      const user = extractUser(context);
       user &&
         (await addAttempt({ ...input, stage: input.stage as Stage }, user));
+    },
+  }),
+  dashboard: defineAction({
+    accept: "json",
+    handler: async (_input, context) => {
+      const nextRound = await countNextRound(extractUser(context));
+      return {
+        streak: 5,
+        inReviewByTorflCount: [
+          { torfl: "A1", count: 5, total: 10 },
+          { torfl: "A2", count: 10, total: 20 },
+        ],
+        reviewsCount: nextRound,
+      };
     },
   }),
 };

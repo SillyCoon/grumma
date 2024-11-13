@@ -16,5 +16,5 @@ export const GET: APIRoute = async ({ cookies, request, url, redirect }) => {
   if (error) {
     return new Response(error.message, { status: 500 });
   }
-  return redirect("/grammar");
+  return redirect("/dashboard");
 };

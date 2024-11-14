@@ -7,7 +7,7 @@ export const Task = (props: {
   answer?: string;
   draft?: string;
 }) => (
-  <div class="text-3xl font-semibold text-center text-primary">
+  <div class="text-center font-semibold text-3xl text-primary">
     <For each={parseToExercise(props.text)}>
       {(part) =>
         part.type === "text" ? (

@@ -6,5 +6,8 @@
     "grumma",
     "supabase",
     "torfl"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit"
+  }
 }

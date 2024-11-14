@@ -101,7 +101,7 @@ const BarList = <T, BarType extends "relative" | "progress">(
               <div class="grow">
                 <div
                   class={cn(
-                    "flex h-8 items-center rounded-md bg-secondary text-primary-foreground px-2",
+                    "flex h-8 items-center rounded-md bg-secondary px-2 text-primary-foreground",
                   )}
                   style={{
                     width: `${widths()[idx()]}%`,

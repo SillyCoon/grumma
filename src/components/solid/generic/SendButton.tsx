@@ -7,7 +7,7 @@ export const SendButton: ParentComponent<{
   return (
     <IoSend
       size={24}
-      class="text-secondary hover:text-secondary-800 cursor-pointer"
+      class="cursor-pointer text-secondary hover:text-secondary-800"
       onClick={props.onClick}
     />
   );

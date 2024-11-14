@@ -11,7 +11,7 @@ export const BackButton = ({
     <a href={to} class={className}>
       <IoArrowBackOutline
         size={40}
-        class="text-primary hover:text-blue-800 cursor-pointer"
+        class="cursor-pointer text-primary hover:text-blue-800"
       />
     </a>
   );

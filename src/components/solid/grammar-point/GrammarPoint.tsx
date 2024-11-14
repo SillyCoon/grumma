@@ -13,7 +13,7 @@ type Props = Omit<GrammarPointType, "exercises"> & {
 export const GrammarPoint = (props: Props) => {
   return (
     <section class="grid gap-5">
-      <div class="flex justify-between items-center">
+      <div class="flex items-center justify-between">
         <Title className="flex-auto" title={props.title} />
         {props.next && <ForwardButton href={props.next} />}
       </div>
@@ -24,7 +24,7 @@ export const GrammarPoint = (props: Props) => {
         </CardHeader>
         <CardContent>
           <section
-            class="whitespace-pre-line prose [&_b]:text-secondary"
+            class="prose whitespace-pre-line [&_b]:text-secondary"
             innerHTML={props.structure}
           />
         </CardContent>
@@ -47,7 +47,7 @@ export const GrammarPoint = (props: Props) => {
         <CardContent>
           {props.explanation && (
             <section
-              class="prose prose-slate [&_strong]:text-secondary  max-w-none "
+              class="prose prose-slate max-w-none [&_strong]:text-secondary "
               innerHTML={props.explanation}
             />
           )}

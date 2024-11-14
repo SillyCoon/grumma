@@ -23,10 +23,10 @@ export const GrammarRef = (props: GrammarRefProps) => {
 
   return (
     <a href={`/grammar/${props.id}`}>
-      <Card class="hover:shadow-md active:shadow-sm hover:opacity-75 active:opacity-100 transition-all min-h-full">
+      <Card class="min-h-full transition-all hover:opacity-75 hover:shadow-md active:opacity-100 active:shadow-sm">
         <CardHeader>
           <div class="flex items-center justify-between gap-1">
-            <CardTitle class="whitespace-nowrap text-ellipsis overflow-x-hidden">
+            <CardTitle class="overflow-x-hidden text-ellipsis whitespace-nowrap">
               {mainTitle}
             </CardTitle>
             {props.inReview && (

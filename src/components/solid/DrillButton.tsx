@@ -42,7 +42,7 @@ export const DrillButton = (props: {
         type="button"
         disabled={!disabled()}
         onClick={handleRemoveFromDrill}
-        class="flex-1 bg-red-600 enabled:hover:bg-red-700 text-white px-6 py-3 rounded-full shadow-md text-center disabled:opacity-50 disabled:cursor-not-allowed"
+        class="flex-1 rounded-full bg-red-600 px-6 py-3 text-center text-white shadow-md enabled:hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {"Remove from drill"}
       </button>
@@ -50,7 +50,7 @@ export const DrillButton = (props: {
         type="button"
         disabled={disabled()}
         onClick={handleAddToDrill}
-        class="flex-1 bg-blue-500 enabled:hover:bg-blue-600 text-white px-6 py-3 rounded-full shadow-md text-center disabled:opacity-50 disabled:cursor-not-allowed"
+        class="flex-1 rounded-full bg-blue-500 px-6 py-3 text-center text-white shadow-md enabled:hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {props.drill ? "Already in drill" : "Drill"}
       </button>

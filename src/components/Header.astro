@@ -1,9 +1,9 @@
 ---
-import HeaderNav from "./HeaderNav.astro";
-
 import { actions } from "astro:actions";
 import { GET as getReiewCount } from "src/pages/api/sr/review/count";
 import Logo from "./Logo.astro";
+import { HamburgerButton } from "./solid/HamburgerButton";
+import { NavButton } from "./solid/NavButton";
 
 const user = Astro.locals.user;
 const reviewCount =
@@ -11,19 +11,20 @@ const reviewCount =
 ---
 
 <header class="bg-primary p-4 sticky top-0 z-50">
-  <div class="container mx-auto flex justify-between items-center">
+  <div class="lg:container mx-auto flex justify-between items-center">
+    <HamburgerButton client:load />
     <a class="text-3xl font-bold text-white" href="/"><Logo /></a>
-    <div class="flex justify-between gap-5">
-      <HeaderNav disabled={!user} text="Dashboard" link="/dashboard" />
-      <HeaderNav disabled={!user} text="Learn" link="/sr/lesson" />
-      <HeaderNav
+    <div class="justify-between gap-5 hidden lg:flex">
+      <NavButton disabled={!user} text="Dashboard" link="/dashboard" />
+      <NavButton disabled={!user} text="Learn" link="/sr/lesson" />
+      <NavButton
         disabled={!user}
         text="Review"
         link="/sr/review"
         badgeContent={reviewCount ?? ""}
       />
-      <HeaderNav text="Grammar" link="/grammar/" />
-      <HeaderNav text="Help" link="/help" />
+      <NavButton text="Grammar" link="/grammar/" />
+      <NavButton text="Help" link="/help" />
       <!-- <HeaderNav text="Drill" link="/drill/" /> -->
       {
         user && (

@@ -5,11 +5,13 @@ import "../styles/global.css";
 
 import Header from "../components/Header.astro";
 import { Toaster } from "solid-toast";
+import { Sidebar } from "@components/solid/Sidebar/Sidebar";
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+const loggedIn = !!Astro.locals.user;
 ---
 
 <!doctype html>
@@ -25,8 +27,10 @@ const { title } = Astro.props;
   </head>
   <body>
     <Header transition:persist />
-    <LoadingIndicator color="#7e22ce" />
+    <LoadingIndicator color="#8A5D33" />
     <main class="container mx-auto py-8">
+      <Sidebar loggedIn={loggedIn} client:load />
+
       <slot />
     </main>
     <Toaster position="bottom-right" client:only="solid-js" />

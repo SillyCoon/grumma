@@ -4,30 +4,47 @@ import { Dynamic } from "solid-js/web";
 
 import { cn } from "~/lib/utils";
 
-type Bar<T> = T & {
+type Bar<
+  T,
+  BarType extends "relative" | "progress",
+  Total = BarType extends "relative"
+    ? { total?: undefined }
+    : { total: number },
+> = T & {
   value: number;
-  total: number;
   id: string;
   name: JSX.Element;
   icon?: (props: ComponentProps<"svg">) => JSX.Element;
   href?: string;
   target?: string;
-};
+} & Total;
 
 type SortOrder = "ascending" | "descending" | "none";
 
-type ValueFormatter = (value: number, overall: number, id: string) => string;
+type ValueFormatter = (
+  value: number,
+  total: number | undefined,
+  id: string,
+) => string;
 
-const defaultValueFormatter: ValueFormatter = (value: number, total: number) =>
-  `${value}/${total}`;
+const defaultValueFormatter: ValueFormatter = (
+  value: number,
+  total?: number,
+) => (total ? `${value}/${total}` : `${value}`);
 
-type BarListProps<T> = ComponentProps<"div"> & {
-  data: Bar<T>[];
+type BarListProps<
+  T,
+  BarType extends "relative" | "progress",
+> = ComponentProps<"div"> & {
+  data: Bar<T, BarType>[];
   valueFormatter?: ValueFormatter;
   sortOrder?: SortOrder;
+  width: BarType;
 };
 
-const BarList = <T,>(rawProps: BarListProps<T>) => {
+const BarList = <T, BarType extends "relative" | "progress">(
+  rawProps: BarListProps<T, BarType>,
+) => {
   const props = mergeProps(
     {
       valueFormatter: defaultValueFormatter,
@@ -40,6 +57,7 @@ const BarList = <T,>(rawProps: BarListProps<T>) => {
     "data",
     "valueFormatter",
     "sortOrder",
+    "width",
   ]);
 
   const sortedData = () => {
@@ -51,11 +69,24 @@ const BarList = <T,>(rawProps: BarListProps<T>) => {
     );
   };
 
-  const widths = () => {
+  const relativeWidths = () => {
+    const maxValue = Math.max(...sortedData().map((item) => item.value), 0);
+
     return sortedData().map((item) =>
-      item.value === 0 ? 0 : Math.max((item.value / item.total) * 100, 2),
+      item.value === 0 ? 0 : Math.max((item.value / maxValue) * 100, 2),
     );
   };
+
+  const progressWidths = () => {
+    return sortedData().map((item) =>
+      item.value === 0
+        ? 0
+        : Math.max((item.value / (item.total ?? 0)) * 100, 2),
+    );
+  };
+
+  const widths = () =>
+    local.width === "relative" ? relativeWidths() : progressWidths();
 
   return (
     <div

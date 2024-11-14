@@ -7,10 +7,10 @@ export const AnswerResult = (props: {
   return (
     <Switch fallback={null}>
       <Match when={props.isCorrect === true}>
-        <p class="mt-2 text-green-500 text-sm text-center">Correct!</p>
+        <p class="mt-2 text-center text-green-500 text-sm">Correct!</p>
       </Match>
       <Match when={props.isCorrect === false}>
-        <p class="mt-2 text-red-500 text-sm text-center">{`Incorrect :( Correct is ${props.correctAnswer}`}</p>
+        <p class="mt-2 text-center text-red-500 text-sm">{`Incorrect :( Correct is ${props.correctAnswer}`}</p>
       </Match>
     </Switch>
   );

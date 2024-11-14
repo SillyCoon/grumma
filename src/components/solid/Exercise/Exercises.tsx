@@ -48,7 +48,7 @@ export const Exercises = (props: { exercises: ExerciseType[] }) => {
     <Switch
       fallback={
         <>
-          <p class="text-center text-3xl font-bold text-secondary mt-8">
+          <p class="mt-8 text-center font-bold text-3xl text-secondary">
             That's all folks!
           </p>
           <p>

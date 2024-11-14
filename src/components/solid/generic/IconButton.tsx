@@ -9,7 +9,7 @@ export const IconButton = (props: {
     <button type="button" onClick={props.onClick} disabled={props.disabled}>
       <props.Icon
         size={40}
-        class="text-primary hover:text-primary/60 cursor-pointer"
+        class="cursor-pointer text-primary hover:text-primary/60"
       />
     </button>
   );

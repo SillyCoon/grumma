@@ -13,7 +13,7 @@ export const Button = (props: {
   return (
     <button
       type="button"
-      class={`bg-white border border-secondary text-secondary font-semibold py-2 px-4 rounded-full transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-secondary  hover:border-secondary/50 hover:text-white focus:outline-none ${props.class}`}
+      class={`rounded-full border border-secondary bg-white px-4 py-2 font-semibold text-secondary transition duration-300 hover:border-secondary/50 hover:bg-secondary hover:text-white focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${props.class}`}
       onClick={props.onClick}
       disabled={props.disabled}
     >

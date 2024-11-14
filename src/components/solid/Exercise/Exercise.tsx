@@ -60,9 +60,9 @@ export const Exercise = (props: ExerciseProps) => {
 
   return (
     <>
-      <div class="flex items-center justify-center h-screen">
+      <div class="flex h-screen items-center justify-center">
         <div
-          class={`bg-white shadow-lg rounded-lg p-6 max-w-xl w-full ${
+          class={`w-full max-w-xl rounded-lg bg-white p-6 shadow-lg ${
             isCorrect() === true
               ? "border border-green-200 shadow-green-200"
               : isCorrect() === false && "border border-red-200 shadow-red-200"
@@ -83,7 +83,7 @@ export const Exercise = (props: ExerciseProps) => {
               onInput={(str) => {
                 setAnswer(normalizeAnswer(str));
               }}
-              class="p-2 grow border border-primary rounded focus"
+              class="focus grow rounded border border-primary p-2"
               placeholder="Type here..."
             />
             <span class="flex-none p-2">

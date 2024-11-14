@@ -8,7 +8,7 @@ export const Sidebar = (props: { loggedIn?: boolean }) => {
 
   return (
     <div
-      class={`fixed top-[72px] left-0 flex h-full w-64 flex-col border-r bg-white shadow-md transition-all ${sidebarOpen() ? "-translate-x-64" : "translate-x-0"} lg:hidden`}
+      class={`fixed top-[72px] left-0 flex h-full w-64 flex-col border-r bg-white shadow-md transition-all ${sidebarOpen() ? "translate-x-0" : "-translate-x-64"} lg:hidden`}
     >
       <div class="flex-grow overflow-y-auto overflow-x-hidden">
         <ul class="flex flex-col space-y-1 py-4">

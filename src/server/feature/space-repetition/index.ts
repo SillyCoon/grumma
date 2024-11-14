@@ -74,20 +74,18 @@ export const getInReviewByTorfl = async (user: User) => {
 
   const totalTorfl = Seq(grammar)
     .map((v) => v.torfl)
-    .countBy((v) => v);
+    .countBy((v) => v)
+    .toArray();
 
   const inReviewByTorfl = Seq(schedule)
     .map((s) => grammarPointsById.get(s.grammarPointId))
-    .countBy((v) => v?.torfl)
-    .toArray();
+    .countBy((v) => v?.torfl);
 
-  return inReviewByTorfl
-    .filter((val): val is [string, number] => !!val[0])
-    .map(([torfl, count]) => ({
-      torfl,
-      count,
-      total: totalTorfl.get(torfl, 0),
-    }));
+  return totalTorfl.map(([torfl, total]) => ({
+    torfl,
+    count: inReviewByTorfl.get(torfl, 0),
+    total,
+  }));
 };
 
 export const getSchedule = async (user: User): Promise<Schedule> => {

@@ -16,7 +16,7 @@ spec:
               containerPort: 8080
           env:
             - name: PUBLIC_URL
-              value: https://grumma-oss-55861693007.asia-northeast1.run.app
+              value: https://grumma.org
             - name: PUBLIC_API
               value: https://scala-notion-h2mjeyfyja-an.a.run.app
             - name: DATABASE_URL

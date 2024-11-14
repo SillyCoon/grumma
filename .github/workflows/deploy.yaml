@@ -10,7 +10,7 @@ env:
   SERVICE: grumma-oss
   REGION: asia-northeast1
   REGISTRY: asia-northeast1-docker.pkg.dev/gramma-400100/grumma
-  PUBLIC_URL: https://grumma-oss-55861693007.asia-northeast1.run.app
+  PUBLIC_URL: https://grumma.org
   DATABASE_URL: ${{secrets.DATABASE_URL}}
 
 jobs:

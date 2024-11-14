@@ -2,12 +2,11 @@
 import Layout from "@layouts/Layout.astro";
 
 import DashboardCell from "@components/DashboardCell.astro";
+import { WeekSchedule } from "@components/solid/dashboard/WeekSchedule";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { BarList } from "@components/ui/progress-bar-list";
 import { Skeleton } from "@components/ui/skeleton";
-import { diffDays } from "@formkit/tempo";
 import { actions } from "astro:actions";
-import { List, Range, Seq } from "immutable";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {});
 
@@ -21,61 +20,6 @@ const torfl =
     total: v.total,
     value: v.count,
   })) ?? [];
-
-function getNextWeekAbbreviations(): string[] {
-  // Create an array of the full names of the days of the week
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  const todayIndex = new Date().getDay();
-
-  return [
-    "Today",
-    ...Range(1, 7)
-      .map((v) => {
-        const currentDayIndex = (todayIndex + v) % 7; // Loop around the week
-        return daysOfWeek[currentDayIndex].substring(0, 3);
-      })
-      .toArray(),
-  ];
-}
-
-const schedule = dashboard?.schedule ?? [];
-
-const countByDaysOfTheWeek: number[] = [];
-
-const today = new Date();
-
-Seq(schedule)
-  .sortBy((v) => v.availableAt)
-  .forEach((v) => {
-    const diffWithToday = diffDays(v.availableAt, today);
-    const adjustedDiff = diffWithToday > 0 ? diffWithToday : 0;
-    if (diffWithToday > 6) return;
-    for (let i = adjustedDiff; i <= 6; i++) {
-      countByDaysOfTheWeek[i] = (countByDaysOfTheWeek[i] ?? 0) + 1;
-    }
-  });
-
-const weekSchedule = Seq(getNextWeekAbbreviations()).zip(
-  List(countByDaysOfTheWeek)
-);
-
-const dataDay = weekSchedule
-  .map(([v, i]) => ({
-    value: i,
-    name: v,
-    id: v,
-    total: 10,
-  }))
-  .toArray();
 ---
 
 <Layout title="Dashboard" transition:persist>
@@ -134,11 +78,14 @@ const dataDay = weekSchedule
         <p>
           Soon in your review queue will appear grammar points ready for review:
         </p>
-        <BarList client:only="solid-js" data={dataDay} class="mt-2">
+        <WeekSchedule
+          schedule={dashboard?.schedule ?? []}
+          client:only="solid-js"
+        >
           <div slot="fallback">
             <Skeleton height={260} radius={10} />
           </div>
-        </BarList>
+        </WeekSchedule>
       </CardContent>
     </Card>
   </section>

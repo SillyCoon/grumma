@@ -1,5 +1,5 @@
 import type { Schedule } from "~/server/feature/space-repetition/types/Schedule";
-import { Range, Map as IMap, Seq, List } from "immutable";
+import { Range, Seq, List } from "immutable";
 import { diffDays } from "@formkit/tempo";
 
 function getNextWeekAbbreviations(): string[] {

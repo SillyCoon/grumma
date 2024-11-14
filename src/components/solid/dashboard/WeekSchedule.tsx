@@ -9,9 +9,10 @@ export const WeekSchedule = (props: { schedule: Schedule }) => {
       value: i,
       name: v,
       id: v,
-      total: 10,
     }))
     .toArray();
 
-  return <BarList data={chart} class="mt-2" />;
+  return (
+    <BarList width="relative" sortOrder="none" data={chart} class="mt-2" />
+  );
 };

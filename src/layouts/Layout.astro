@@ -28,9 +28,9 @@ const loggedIn = !!Astro.locals.user;
   <body>
     <Header transition:persist />
     <LoadingIndicator color="#8A5D33" />
-    <main class="container mx-auto py-8">
-      <Sidebar loggedIn={loggedIn} client:idle />
+    <Sidebar loggedIn={loggedIn} client:idle />
 
+    <main class="container mx-auto py-8">
       <slot />
     </main>
     <Toaster position="bottom-right" client:only="solid-js" />

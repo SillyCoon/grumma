@@ -7,6 +7,7 @@ export const IconButton = (props: {
   variant?: "primary" | "secondary";
   disabled?: boolean;
   children?: JSX.Element;
+  class?: string;
 }) => {
   const c = children(() => props.children);
   return (
@@ -15,6 +16,7 @@ export const IconButton = (props: {
         class={cn(
           "h-[40px] w-[40px] cursor-pointer hover:text-primary/60",
           `fill-${props.variant}`,
+          props.class,
         )}
       >
         {c()}

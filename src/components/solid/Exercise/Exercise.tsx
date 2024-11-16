@@ -1,4 +1,3 @@
-import { Button } from "../generic/Button";
 import { SendButton } from "../generic/SendButton";
 import { AnswerResult } from "./AnswerResult";
 import { Description } from "./Description";
@@ -11,6 +10,7 @@ import { normalizeAnswer, parseToExercise } from "./utils";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { TransliterateInput } from "./TransliterateInput";
 import { actions } from "astro:actions";
+import { Button } from "@components/ui/button";
 
 export interface ExerciseProps {
   exercise: ExerciseType;
@@ -60,21 +60,15 @@ export const Exercise = (props: ExerciseProps) => {
 
   return (
     <>
-      <div class="flex h-screen items-center justify-center">
-        <div
-          class={`w-full max-w-xl rounded-lg bg-white p-6 shadow-lg ${
-            isCorrect() === true
-              ? "border border-green-200 shadow-green-200"
-              : isCorrect() === false && "border border-red-200 shadow-red-200"
-          }`}
-        >
+      <div class="flex h-[calc(100vh-76px-4rem)] justify-center md:items-center">
+        <div class="w-full">
           <Task
             text={props.exercise.ru}
             answer={answer()}
             draft={props.exercise.draft}
           />
           <Description text={props.exercise.en} />
-          <div class="mt-4 flex w-full items-center">
+          <div class="mx-auto mt-4 flex max-w-[31.25rem] items-center">
             <TransliterateInput
               ref={input}
               autofocus
@@ -83,19 +77,17 @@ export const Exercise = (props: ExerciseProps) => {
               onInput={(str) => {
                 setAnswer(normalizeAnswer(str));
               }}
-              class="focus grow rounded border border-primary p-2"
-              placeholder="Type here..."
+              class="focus h-[40px] grow rounded border border-secondary p-2 focus:outline-primary"
             />
-            <span class="flex-none p-2">
-              <SendButton onClick={handleSubmit} />
-            </span>
+            <SendButton class="-ml-10" onClick={handleSubmit} />
           </div>
-          <div class="mt-5 flex justify-end">
+          <div class="mt-5 flex justify-center">
             <Button
               onClick={() => setShowGrammarPoint(true)}
-              text={"Show grammar point"}
               disabled={notAnswered()}
-            />
+            >
+              Show grammar point
+            </Button>
           </div>
 
           <AnswerResult

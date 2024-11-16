@@ -1,5 +1,6 @@
 import { createEffect, splitProps, type JSX } from "solid-js";
 import { transliterate } from "src/utils";
+import { cn } from "~/lib/utils";
 
 export const TransliterateInput = (
   props: Omit<
@@ -23,6 +24,7 @@ export const TransliterateInput = (
     <input
       ref={ref}
       {...p}
+      class={cn(p.class, "text-center")}
       type="text"
       onInput={(e) => {
         onInput(transliterate(e.target.value));

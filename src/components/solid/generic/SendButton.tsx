@@ -3,10 +3,11 @@ import { IconButton } from "./IconButton";
 import { Send } from "@components/icons/Send";
 
 export const SendButton: ParentComponent<{
+  class?: string;
   onClick: () => void;
 }> = (props) => {
   return (
-    <IconButton onClick={props.onClick} variant="secondary">
+    <IconButton class={props.class} onClick={props.onClick} variant="secondary">
       <Send />
     </IconButton>
   );

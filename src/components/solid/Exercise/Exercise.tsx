@@ -68,19 +68,24 @@ export const Exercise = (props: ExerciseProps) => {
             draft={props.exercise.draft}
           />
           <Description text={props.exercise.en} />
-          <div class="mx-auto mt-4 flex max-w-[31.25rem] items-center">
+          <form
+            class="mx-auto mt-4 flex max-w-[31.25rem] items-center "
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <TransliterateInput
               ref={input}
               autofocus
               clear={!answer()}
-              onkeydown={(e) => e.code === "Enter" && handleSubmit()}
               onInput={(str) => {
                 setAnswer(normalizeAnswer(str));
               }}
               class="focus h-[40px] grow rounded border border-secondary p-2 focus:outline-primary"
             />
-            <SendButton class="-ml-10" onClick={handleSubmit} />
-          </div>
+            <SendButton class="-ml-10" type="submit" />
+          </form>
           <div class="mt-5 flex justify-center">
             <Button
               onClick={() => setShowGrammarPoint(true)}

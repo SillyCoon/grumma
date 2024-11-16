@@ -8,10 +8,15 @@ export const IconButton = (props: {
   disabled?: boolean;
   children?: JSX.Element;
   class?: string;
+  type?: "button" | "submit" | "reset";
 }) => {
   const c = children(() => props.children);
   return (
-    <button type="button" onClick={props.onClick} disabled={props.disabled}>
+    <button
+      type={props.type ?? "button"}
+      onClick={props.onClick}
+      disabled={props.disabled}
+    >
       <div
         class={cn(
           "h-[40px] w-[40px] cursor-pointer hover:text-primary/60",

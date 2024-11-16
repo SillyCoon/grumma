@@ -3,11 +3,16 @@ import { Grammar } from "../../components/solid/Grammar";
 import Layout from "../../layouts/Layout.astro";
 import { fetchGrammarList } from "@grammar-sdk";
 import { GET as fetchGpInReview } from "@api/sr/review/list";
+import { FabButton } from "@components/ui/fab";
+import { Add } from "@components/icons/Add";
 
 const grammar = await fetchGrammarList();
 const inReview = (await (await fetchGpInReview(Astro)).json()) as string[];
 ---
 
 <Layout title="Grammar" transition:persist>
-  <Grammar grammar={grammar} inReview={inReview} />
+  <Grammar client:load grammar={grammar} inReview={inReview} />
+  <FabButton onClick={() => window.scrollTo(0, 0)}>
+    <Add />
+  </FabButton>
 </Layout>

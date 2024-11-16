@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@components/ui/card";
+import { Checkbox } from "@components/ui/checkbox";
 
 interface GrammarRefProps {
   id: string;
@@ -22,26 +23,29 @@ export const GrammarRef = (props: GrammarRefProps) => {
   ];
 
   return (
-    <a href={`/grammar/${props.id}`}>
-      <Card class="min-h-full transition-all hover:opacity-75 hover:shadow-md active:opacity-100 active:shadow-sm">
-        <CardHeader>
-          <div class="flex items-center justify-between gap-1">
-            <CardTitle class="overflow-x-hidden text-ellipsis whitespace-nowrap">
-              {mainTitle}
-            </CardTitle>
-            {props.inReview && (
-              <Badge variant="success" class="min-w-[77px]">
-                In review
-              </Badge>
-            )}
-          </div>
+    <div>
+      <Checkbox id="1"></Checkbox>
+      <a href={`/grammar/${props.id}`}>
+        <Card class="min-h-full transition-all hover:opacity-75 hover:shadow-md active:opacity-100 active:shadow-sm">
+          <CardHeader>
+            <div class="flex items-center justify-between gap-1">
+              <CardTitle class="overflow-x-hidden text-ellipsis whitespace-nowrap">
+                {mainTitle}
+              </CardTitle>
+              {props.inReview && (
+                <Badge variant="success" class="min-w-[77px]">
+                  In review
+                </Badge>
+              )}
+            </div>
 
-          <CardDescription>{detailedTitle}</CardDescription>
-        </CardHeader>
-        <CardFooter class="mt-auto">
-          <p>{enTitle}</p>
-        </CardFooter>
-      </Card>
-    </a>
+            <CardDescription>{detailedTitle}</CardDescription>
+          </CardHeader>
+          <CardFooter class="mt-auto">
+            <p>{enTitle}</p>
+          </CardFooter>
+        </Card>
+      </a>
+    </div>
   );
 };

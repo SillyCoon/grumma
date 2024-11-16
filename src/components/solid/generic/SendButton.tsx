@@ -1,14 +1,13 @@
-import { IoSend } from "solid-icons/io";
 import type { ParentComponent } from "solid-js";
+import { IconButton } from "./IconButton";
+import { Send } from "@components/icons/Send";
 
 export const SendButton: ParentComponent<{
   onClick: () => void;
 }> = (props) => {
   return (
-    <IoSend
-      size={24}
-      class="cursor-pointer text-secondary hover:text-secondary-800"
-      onClick={props.onClick}
-    />
+    <IconButton onClick={props.onClick} variant="secondary">
+      <Send />
+    </IconButton>
   );
 };

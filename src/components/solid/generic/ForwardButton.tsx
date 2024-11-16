@@ -1,8 +1,10 @@
-import { IoArrowForwardOutline } from "solid-icons/io";
+import { ArrowForward } from "@components/icons/ArrowForward";
 import { IconButton } from "./IconButton";
 
 export const ForwardButton = (props: { href: string }) => (
   <a href={props.href}>
-    <IconButton Icon={IoArrowForwardOutline} />
+    <IconButton>
+      <ArrowForward />
+    </IconButton>
   </a>
 );

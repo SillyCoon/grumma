@@ -12,7 +12,7 @@ const review = (await (await getReview(Astro)).json()) as Lesson[];
     transition:animate="fade"
     transition:persist="exercises"
     transition:persist-props
-    client:only
+    client:only="solid-js"
     exercises={review.map((r) => r.exercise)}
   />
 </Layout>

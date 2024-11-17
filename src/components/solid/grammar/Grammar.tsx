@@ -1,9 +1,9 @@
-import { For } from "solid-js";
+import { For, Match, Switch } from "solid-js";
 import type { GrammarPoint } from "@grammar-sdk";
 import { FabButton } from "@components/ui/fab";
-import { AddIcon } from "@components/icons/Add";
 import { OppositeMode } from "./types";
 import { GrammarBlock } from "./GrammarBlock";
+import { CloseIcon, AddIcon } from "@components/icons";
 
 interface GrammarProps {
   grammar: GrammarPoint[];
@@ -15,6 +15,11 @@ export const Grammar = (props: GrammarProps) => {
   const groupedGrammar = Object.groupBy(props.grammar, (v) => v.torfl);
   return (
     <section class="grid">
+      {props.mode === "cram" && (
+        <h2 class="mt-8 text-3xl text-secondary">
+          Select grammar points to practice:
+        </h2>
+      )}
       <For each={Object.entries(groupedGrammar)}>
         {([torfl, grammar]) =>
           grammar?.length && (
@@ -28,7 +33,14 @@ export const Grammar = (props: GrammarProps) => {
         }
       </For>
       <FabButton href={`/grammar?mode=${OppositeMode[props.mode]}`}>
-        <AddIcon />
+        <Switch>
+          <Match when={props.mode === "nav"}>
+            <AddIcon />
+          </Match>
+          <Match when={props.mode === "cram"}>
+            <CloseIcon />
+          </Match>
+        </Switch>
       </FabButton>
     </section>
   );

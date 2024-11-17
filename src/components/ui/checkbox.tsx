@@ -36,6 +36,7 @@ const Checkbox = <T extends ValidComponent = "div">(
                 stroke-linejoin="round"
                 class="size-4"
               >
+                <title>Check</title>
                 <path d="M5 12l5 5l10 -10" />
               </svg>
             </Match>
@@ -50,6 +51,7 @@ const Checkbox = <T extends ValidComponent = "div">(
                 stroke-linejoin="round"
                 class="size-4"
               >
+                <title>Indeterminate</title>
                 <path d="M5 12l14 0" />
               </svg>
             </Match>

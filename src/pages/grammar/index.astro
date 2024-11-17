@@ -1,18 +1,15 @@
 ---
-import { Grammar } from "../../components/solid/Grammar";
+import { Grammar } from "../../components/solid/grammar/Grammar";
 import Layout from "../../layouts/Layout.astro";
 import { fetchGrammarList } from "@grammar-sdk";
 import { GET as fetchGpInReview } from "@api/sr/review/list";
-import { FabButton } from "@components/ui/fab";
-import { Add } from "@components/icons/Add";
 
 const grammar = await fetchGrammarList();
 const inReview = (await (await fetchGpInReview(Astro)).json()) as string[];
+const maybeMode = Astro.url.searchParams.get("mode");
+const mode = maybeMode === "cram" ? "cram" : "nav";
 ---
 
-<Layout title="Grammar" transition:persist>
-  <Grammar client:load grammar={grammar} inReview={inReview} />
-  <FabButton onClick={() => window.scrollTo(0, 0)}>
-    <Add />
-  </FabButton>
+<Layout title="Grammar" topPadding={false} transition:persist>
+  <Grammar client:load grammar={grammar} inReview={inReview} mode={mode} />
 </Layout>

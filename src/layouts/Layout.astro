@@ -8,10 +8,12 @@ import { Toaster } from "solid-toast";
 import { Sidebar } from "@components/solid/Sidebar/Sidebar";
 interface Props {
   title: string;
+  topPadding?: boolean;
 }
 
 const { title } = Astro.props;
 const loggedIn = !!Astro.locals.user;
+const topPadding = Astro.props.topPadding ?? true;
 ---
 
 <!doctype html>
@@ -30,7 +32,7 @@ const loggedIn = !!Astro.locals.user;
     <LoadingIndicator color="#8A5D33" />
     <Sidebar loggedIn={loggedIn} client:idle />
 
-    <main class="container mx-auto py-8">
+    <main class={`container mx-auto ${topPadding && "pt-8"} pb-8`}>
       <slot />
     </main>
     <Toaster position="bottom-right" client:only="solid-js" />

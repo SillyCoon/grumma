@@ -1,7 +1,7 @@
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { db } from "libs/db";
 import { grammarPoints } from "libs/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { GrammarPointDb } from "./types/dto";
 import { Example } from "./types/Example";
 import { extractGrammar } from "./utils";
@@ -17,6 +17,19 @@ export const fetchGrammarPointFromDb = async (
   });
 
   return grammarDto && GrammarPointFromDB(grammarDto);
+};
+
+export const fetchGrammarPointsFromDb = async (
+  ids: number[],
+): Promise<GrammarPoint[]> => {
+  const grammarDto = await db.query.grammarPoints.findMany({
+    where: inArray(grammarPoints.id, ids),
+    with: {
+      exercises: true,
+    },
+  });
+
+  return grammarDto.map(GrammarPointFromDB);
 };
 
 export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {

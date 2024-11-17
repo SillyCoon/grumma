@@ -1,5 +1,9 @@
 import { createSupabaseClientInstance } from "libs/supabase";
-import { fetchGrammarFromDb, fetchGrammarPointFromDb } from "./db";
+import {
+  fetchGrammarFromDb,
+  fetchGrammarPointFromDb,
+  fetchGrammarPointsFromDb,
+} from "./db";
 import { fetchGrammarFromApi, fetchGrammarPointFromApi } from "./realtime";
 
 export const fetchGrammarPoint = async (id: string) => {
@@ -8,6 +12,16 @@ export const fetchGrammarPoint = async (id: string) => {
     : await fetchGrammarPointFromDb(id);
   const explanation = await fetchExplanation(id);
   return gp ? { ...gp, explanation } : undefined;
+};
+
+export const fetchGrammarPoints = async (ids: string[]) => {
+  const gp = await fetchGrammarPointsFromDb(ids.map((id) => +id));
+  return Promise.all(
+    gp.map(async (g) => {
+      const explanation = await fetchExplanation(g.id);
+      return { ...g, explanation };
+    }),
+  );
 };
 
 /**

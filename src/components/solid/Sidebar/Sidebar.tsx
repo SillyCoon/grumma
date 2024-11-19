@@ -1,5 +1,5 @@
 import { createEffect, Show } from "solid-js";
-import { NavButton } from "../NavButton";
+import { Nav } from "../Nav";
 import { setSidebarOpen, sidebarOpen } from "./store";
 
 export const Sidebar = (props: { loggedIn?: boolean }) => {
@@ -27,39 +27,7 @@ export const Sidebar = (props: { loggedIn?: boolean }) => {
       >
         <div class="flex-grow overflow-y-auto overflow-x-hidden">
           <ul class="flex flex-col space-y-1 py-4">
-            <NavButton
-              onClick={close}
-              link="/"
-              disabled={!props.loggedIn}
-              text="Dashboard"
-            />
-
-            <NavButton
-              onClick={close}
-              link="/sr/lesson"
-              disabled={!props.loggedIn}
-              text="Learn"
-            />
-            <NavButton
-              onClick={close}
-              link="/sr/review"
-              disabled={!props.loggedIn}
-              text="Review"
-            />
-            <NavButton
-              onClick={close}
-              link="/grammar"
-              disabled={false}
-              text="Grammar"
-            />
-            <NavButton
-              onClick={close}
-              link="/help"
-              disabled={false}
-              text="Help"
-            />
-            {/** TODO: IMPLEMENT */}
-            {/* <NavButton disabled={false} text="Logout" /> */}
+            <Nav onClick={close} loggedIn={props.loggedIn} />
           </ul>
         </div>
       </div>

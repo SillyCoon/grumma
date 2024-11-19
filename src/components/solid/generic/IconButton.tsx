@@ -1,6 +1,16 @@
-import { children } from "solid-js";
+import { cva } from "class-variance-authority";
 import type { JSX } from "solid-js";
+import { children } from "solid-js";
 import { cn } from "~/lib/utils";
+
+const variants = cva("h-[40px] w-[40px] cursor-pointer hover:text-primary/60", {
+  variants: {
+    variant: {
+      primary: "fill-primary",
+      secondary: "fill-secondary",
+    },
+  },
+});
 
 export const IconButton = (props: {
   onClick?: () => void;
@@ -17,13 +27,7 @@ export const IconButton = (props: {
       onClick={props.onClick}
       disabled={props.disabled}
     >
-      <div
-        class={cn(
-          "h-[40px] w-[40px] cursor-pointer hover:text-primary/60",
-          `fill-${props.variant}`,
-          props.class,
-        )}
-      >
+      <div class={cn(variants({ variant: props.variant }), props.class)}>
         {c()}
       </div>
     </button>

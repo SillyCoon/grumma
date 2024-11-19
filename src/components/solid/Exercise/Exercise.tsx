@@ -1,16 +1,16 @@
+import { Show, createEffect, createResource, createSignal } from "solid-js";
 import { SendButton } from "../generic/SendButton";
 import { AnswerResult } from "./AnswerResult";
 import { Description } from "./Description";
 import { Task } from "./Task";
-import { Show, createEffect, createResource, createSignal } from "solid-js";
 
 import type { Exercise as ExerciseType } from "@grammar-sdk";
 
-import { normalizeAnswer, parseToExercise } from "./utils";
+import { Button } from "@components/ui/button";
+import { actions } from "astro:actions";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { TransliterateInput } from "./TransliterateInput";
-import { actions } from "astro:actions";
-import { Button } from "@components/ui/button";
+import { normalizeAnswer, parseToExercise } from "./utils";
 
 export interface ExerciseProps {
   exercise: ExerciseType;

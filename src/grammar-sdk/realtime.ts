@@ -3,12 +3,6 @@ import { Example } from "./types/Example";
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { extractGrammar, fetchJson } from "./utils";
 
-/**
- * TODO:
- * due to limitations of the firestore (available only in node.js)
- * I can't use new method in the Exercise component
- * I will delegate Firestore to the backend anyway
- */
 export const fetchGrammarPointFromApi = async (
   id: string,
 ): Promise<GrammarPoint | undefined> => {

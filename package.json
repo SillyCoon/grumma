@@ -22,7 +22,6 @@
     "@astrojs/ts-plugin": "^1.10.4",
     "@digitallinguistics/transliterate": "^0.4.1",
     "@formkit/tempo": "^0.1.2",
-    "@google-cloud/firestore": "^7.10.0",
     "@kobalte/core": "^0.13.7",
     "@solid-primitives/refs": "^1.0.8",
     "@supabase/ssr": "^0.5.2",

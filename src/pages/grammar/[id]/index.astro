@@ -1,13 +1,11 @@
 ---
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
-import Layout from "../../../layouts/Layout.astro";
 import { fetchGrammarPoint } from "@grammar-sdk";
+import Layout from "../../../layouts/Layout.astro";
 
 const { id } = Astro.params;
 
 const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
-// const drills: Drill[] = await (await fetchDrills(Astro)).json();
-// const drill = drills.find((r) => r.grammarPointId === id);
 ---
 
 <Layout title="Grammar">
@@ -22,16 +20,6 @@ const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
           >
             Practice
           </a>
-          <div class="mt-5">
-            {/*
-              TODO: add later
-              <DrillButton
-              client:idle
-              grammarPoint={grammarPoint}
-              drill={drill}
-            />
-            */}
-          </div>
         </section>
       </>
     )

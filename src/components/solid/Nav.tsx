@@ -29,6 +29,11 @@ export const Nav = (props: {
         onClick={props.onClick}
       />
       <NavButton text="Grammar" link="/grammar/" onClick={props.onClick} />
+      <NavButton
+        text="Cram"
+        link="/grammar?mode=cram"
+        onClick={props.onClick}
+      />
       <NavButton text="Help" link="/help" onClick={props.onClick} />
       <form
         method="post"

@@ -1,10 +1,7 @@
-import { createSignal, For, Match, Switch } from "solid-js";
-import type { GrammarPoint } from "@grammar-sdk";
-import { FabButton } from "@components/ui/fab";
-import { OppositeMode } from "./types";
-import { GrammarBlock } from "./GrammarBlock";
-import { CloseIcon, AddIcon } from "@components/icons";
 import { Button } from "@components/ui/button";
+import type { GrammarPoint } from "@grammar-sdk";
+import { createSignal, For } from "solid-js";
+import { GrammarBlock } from "./GrammarBlock";
 
 interface GrammarProps {
   grammar: GrammarPoint[];
@@ -45,16 +42,6 @@ export const Grammar = (props: GrammarProps) => {
           )
         }
       </For>
-      <FabButton href={`/grammar?mode=${OppositeMode[props.mode]}`}>
-        <Switch>
-          <Match when={props.mode === "nav"}>
-            <AddIcon />
-          </Match>
-          <Match when={props.mode === "cram"}>
-            <CloseIcon />
-          </Match>
-        </Switch>
-      </FabButton>
     </section>
   );
 };

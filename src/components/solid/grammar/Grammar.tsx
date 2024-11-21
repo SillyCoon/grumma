@@ -16,12 +16,12 @@ export const Grammar = (props: GrammarProps) => {
   return (
     <section class="grid">
       {props.mode === "cram" && (
-        <div class="sticky top-[calc(76px)] z-10 mb-2 flex items-center justify-between bg-white pt-8">
+        <div class="sticky top-[calc(76px)] z-10 mb-2 flex flex-wrap items-center justify-between gap-3 bg-white pt-8">
           <h1 class="text-3xl text-secondary">
             Select grammar points to practice:
           </h1>
 
-          <div class="flex items-center gap-2">
+          <div class="flex w-full items-center justify-between gap-2 md:w-max">
             <span>Selected: {cram().length}</span>
             <a href={`grammar/${cram().join("-")}/practice`}>
               <Button>Start</Button>

@@ -16,6 +16,9 @@ export const grammarPoints = grumma.table("grammar_point", {
   order: integer(),
   structure: text(),
   title: text().notNull().unique(),
+  shortTitle: text().unique(),
+  detailedTitle: text().unique(),
+  englishTitle: text().unique(),
   torfl: varchar({ length: 2 }).default("A1").notNull(),
 });
 

@@ -3,7 +3,9 @@ import type { Exercise } from "./Exercise";
 
 export interface GrammarPoint {
   id: string;
-  title: string;
+  shortTitle: string;
+  detailedTitle: string;
+  englishTitle: string;
   structure: string;
   examples: {
     ru: Example;

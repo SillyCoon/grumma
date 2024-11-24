@@ -1,4 +1,4 @@
-export interface ExerciseDto {
+interface ExerciseDto {
   en: string;
   ru: string;
   helper: string | null;

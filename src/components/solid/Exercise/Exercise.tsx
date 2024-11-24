@@ -12,7 +12,7 @@ import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { TransliterateInput } from "./TransliterateInput";
 import { normalizeAnswer, parseToExercise } from "./utils";
 
-export interface ExerciseProps {
+interface ExerciseProps {
   exercise: ExerciseType;
   handleNext: (
     completed: ExerciseType,

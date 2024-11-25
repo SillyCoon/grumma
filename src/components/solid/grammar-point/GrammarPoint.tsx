@@ -14,7 +14,12 @@ export const GrammarPoint = (props: Props) => {
   return (
     <section class="grid gap-5">
       <div class="flex items-center justify-between">
-        <Title className="flex-auto" title={props.title} />
+        <Title
+          className="flex-auto"
+          shortTitle={props.shortTitle}
+          detailedTitle={props.detailedTitle}
+          englishTitle={props.englishTitle}
+        />
         {props.next && <ForwardButton href={props.next} />}
       </div>
 

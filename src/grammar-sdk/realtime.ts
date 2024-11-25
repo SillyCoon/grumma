@@ -29,7 +29,9 @@ export const fetchGrammarFromApi = async (): Promise<GrammarPoint[]> => {
 export const GrammarPointFromRealtime = (g: GrammarPointDto): GrammarPoint => {
   return {
     id: `${g.id.number}`,
-    title: g.title,
+    shortTitle: g.shortTitle ?? "",
+    detailedTitle: g.detailedTitle ?? "",
+    englishTitle: g.englishTitle ?? "",
     structure: g.structure,
     order: g.order,
     examples: g.exercises.map((e) => ({

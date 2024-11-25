@@ -4,7 +4,9 @@ import { Range } from "immutable";
 
 export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
   id: faker.string.uuid(),
-  title: `${faker.lorem.sentence()}/${faker.lorem.sentence()}/${faker.lorem.sentence()}`,
+  shortTitle: `${faker.lorem.sentence()}`,
+  detailedTitle: `${faker.lorem.sentence()}`,
+  englishTitle: `${faker.lorem.sentence()}`,
   order: faker.number.int({ min: 1, max: 100 }),
   structure: faker.string.sample(),
   examples: [{ ru: mockExample(), en: mockExample() }],

@@ -1,12 +1,12 @@
 import {
-  createServerClient,
   createBrowserClient,
+  createServerClient,
   parseCookieHeader,
   type CookieOptionsWithName,
 } from "@supabase/ssr";
 import type { AstroCookies, AstroGlobal } from "astro";
 
-export const cookieOptions: CookieOptionsWithName = {
+const cookieOptions: CookieOptionsWithName = {
   path: "/",
   secure: true,
   httpOnly: true,

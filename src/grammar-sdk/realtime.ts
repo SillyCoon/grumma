@@ -26,7 +26,7 @@ export const fetchGrammarFromApi = async (): Promise<GrammarPoint[]> => {
     );
 };
 
-export const GrammarPointFromRealtime = (g: GrammarPointDto): GrammarPoint => {
+const GrammarPointFromRealtime = (g: GrammarPointDto): GrammarPoint => {
   return {
     id: `${g.id.number}`,
     shortTitle: g.shortTitle ?? "",

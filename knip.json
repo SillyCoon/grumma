@@ -1,0 +1,17 @@
+{
+  "ignore": [
+    "src/__mocks__/**/*",
+    "src/components/ui/**/*",
+    "src/components/icons/**/*",
+    "src/actions/index.ts",
+    "src/middleware.ts"
+  ],
+  "ignoreDependencies": [
+    "@solid-primitives/*",
+    "classnames",
+    "resend",
+    "husky",
+    "@storybook/*",
+    "vite-gleam"
+  ]
+}

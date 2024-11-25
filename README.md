@@ -1,5 +1,7 @@
 # Grumma web app
-NOTE: migration from private repository is in progress.
+
+Code of web app for learning Russian language.
+It's now hardcoded to our own grammar dataset + Supabase auth, but if there will be potential it's possible to make it more agile.
 
 ## Env variables
 

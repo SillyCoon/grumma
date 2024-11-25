@@ -113,15 +113,13 @@ const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
     { grammarPointId: props.grammarPointId },
     actions.grammarPoint,
   );
-  let ref: HTMLDivElement;
+  let ref!: HTMLDivElement;
 
   createEffect(() => {
     if (gp()) {
-      ref.scrollIntoView({ behavior: "smooth" });
+      ref?.scrollIntoView({ behavior: "smooth" });
     }
   });
-
-  // TODO: support explanations
 
   return (
     <Show when={gp()}>

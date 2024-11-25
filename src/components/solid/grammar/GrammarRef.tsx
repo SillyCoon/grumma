@@ -8,7 +8,7 @@ import {
 } from "@components/ui/card";
 import { Checkbox } from "@components/ui/checkbox";
 import type { JSX } from "solid-js";
-import { children, createSignal, Match, Switch } from "solid-js";
+import { children, createEffect, createSignal, Match, Switch } from "solid-js";
 import { Mode } from "./types";
 
 interface GrammarRefProps {
@@ -41,6 +41,10 @@ const Wrapper = (props: {
 export const GrammarRef = (props: GrammarRefProps) => {
   const [selected, setSelected] = createSignal(false);
 
+  createEffect(() => {
+    console.log(selected());
+  });
+
   return (
     <div>
       <Wrapper mode={props.mode ?? Mode.nav} id={props.id}>
@@ -57,7 +61,7 @@ export const GrammarRef = (props: GrammarRefProps) => {
                 <div class="flex items-center justify-between gap-1">
                   <div class="flex items-center gap-2 overflow-x-hidden">
                     {props.mode === Mode.cram && (
-                      <Checkbox checked={selected()} onChange={setSelected} />
+                      <Checkbox checked={selected()} />
                     )}
                     <CardTitle class="overflow-x-hidden text-ellipsis whitespace-nowrap">
                       {props.shortTitle}

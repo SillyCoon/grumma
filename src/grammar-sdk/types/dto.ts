@@ -9,7 +9,9 @@ export interface GrammarPointDto {
     number: number;
     prefix?: string;
   };
-  title: string;
+  shortTitle: string | null;
+  detailedTitle: string | null;
+  englishTitle: string | null;
   structure: string;
   order?: number;
   exercises: ExerciseDto[];
@@ -18,7 +20,9 @@ export interface GrammarPointDto {
 
 export interface GrammarPointDb {
   id: number;
-  title: string;
+  shortTitle: string | null;
+  detailedTitle: string | null;
+  englishTitle: string | null;
   structure: string | null;
   order: number | null;
   exercises: ExerciseDto[];

@@ -7,14 +7,16 @@ import {
   CardTitle,
 } from "@components/ui/card";
 import { Checkbox } from "@components/ui/checkbox";
-import { children, createSignal, Match, Switch } from "solid-js";
 import type { JSX } from "solid-js";
+import { children, createSignal, Match, Switch } from "solid-js";
 import { Mode } from "./types";
 
 interface GrammarRefProps {
   id: string;
   order?: number;
-  title: string;
+  shortTitle: string;
+  detailedTitle: string;
+  englishTitle: string;
   inReview?: boolean;
   mode?: Mode;
   onClick?: () => void;
@@ -39,12 +41,6 @@ const Wrapper = (props: {
 export const GrammarRef = (props: GrammarRefProps) => {
   const [selected, setSelected] = createSignal(false);
 
-  const [mainTitle, detailedTitle, enTitle] = props.title.split("/") as [
-    string,
-    string,
-    string,
-  ];
-
   return (
     <div>
       <Wrapper mode={props.mode ?? Mode.nav} id={props.id}>
@@ -64,7 +60,7 @@ export const GrammarRef = (props: GrammarRefProps) => {
                       <Checkbox checked={selected()} onChange={setSelected} />
                     )}
                     <CardTitle class="overflow-x-hidden text-ellipsis whitespace-nowrap">
-                      {mainTitle}
+                      {props.shortTitle}
                     </CardTitle>
                   </div>
 
@@ -75,12 +71,12 @@ export const GrammarRef = (props: GrammarRefProps) => {
                   )}
                 </div>
 
-                <CardDescription>{detailedTitle}</CardDescription>
+                <CardDescription>{props.detailedTitle}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardFooter class="mt-auto">
-            <p>{enTitle}</p>
+            <p>{props.englishTitle}</p>
           </CardFooter>
         </Card>
       </Wrapper>

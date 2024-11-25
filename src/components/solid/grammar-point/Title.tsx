@@ -1,18 +1,21 @@
 type Props = {
-  title: string;
+  shortTitle: string;
+  detailedTitle: string;
+  englishTitle: string;
   className: string;
 };
 
 export const Title = (props: Props) => {
-  const split = () => props.title.split("/");
-
   return (
     <section class={`grid gap-2 ${props.className}`}>
       <h1 class="text-center font-bold text-3xl text-primary">
-        {split()[0]?.trim()}
+        {props.shortTitle}
       </h1>
       <h1 class="text-center font-bold text-3xl text-secondary">
-        {split()[1]?.trim()}
+        {props.detailedTitle}
+      </h1>
+      <h1 class="text-center font-bold text-2xl text-secondary">
+        {props.englishTitle}
       </h1>
     </section>
   );

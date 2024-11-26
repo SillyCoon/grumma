@@ -5,7 +5,7 @@ import { actions } from "astro:actions";
 
 if (Astro.locals.user) return Astro.redirect("/dashboard");
 
-const result = Astro.getActionResult(actions.login);
+const result = Astro.getActionResult(actions.loginWithGoogle);
 ---
 
 <Layout title="gRUmma">

@@ -1,6 +1,6 @@
 ---
 import { actions } from "astro:actions";
-import { Button } from "./ui/button";
+import { SignInWithGoogle } from "./ui/google-button";
 ---
 
 <section class="bg-light-blue-100 py-16">
@@ -18,10 +18,8 @@ import { Button } from "./ui/button";
     <section
       class="mb-8 mt-8 text-center inline-flex gap-5 items-center justify-center"
     >
-      <form class="text-4xl" action={actions.login} method="POST">
-        <Button type="submit" value="google" name="provider">
-          Login with Google
-        </Button>
+      <form class="text-4xl" action={actions.loginWithGoogle} method="POST">
+        <SignInWithGoogle type="submit" value="google" name="provider" />
       </form>
     </section>
     <section

@@ -28,7 +28,61 @@ const extractUser = (context: ActionAPIContext) => {
 };
 
 export const server = {
-  login: defineAction({
+  signup: defineAction({
+    accept: "form",
+    input: z.object({
+      email: z.string().email(),
+      password: z.string(),
+    }),
+    handler: async (input, context) => {
+      const supabase = createSupabaseServerInstance({
+        headers: context.request.headers,
+        cookies: context.cookies,
+      });
+
+      const { data, error } = await supabase.auth.signUp({
+        email: input.email,
+        password: input.password,
+      });
+
+      if (error) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Failed to sign up",
+        });
+      }
+
+      return data;
+    },
+  }),
+  signin: defineAction({
+    accept: "form",
+    input: z.object({
+      email: z.string().email(),
+      password: z.string(),
+    }),
+    handler: async (input, context) => {
+      const supabase = createSupabaseServerInstance({
+        headers: context.request.headers,
+        cookies: context.cookies,
+      });
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: input.email,
+        password: input.password,
+      });
+
+      if (error) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Failed to sign in",
+        });
+      }
+
+      return data;
+    },
+  }),
+  loginWithGoogle: defineAction({
     accept: "form",
     input: z.object({
       provider: z.string(),

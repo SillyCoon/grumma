@@ -1,0 +1,15 @@
+---
+import { LoginForm as LoginForm } from "@components/solid/LoginForm";
+import Layout from "@layouts/Layout.astro";
+import { actions } from "astro:actions";
+
+if (Astro.locals.user) return Astro.redirect("/dashboard");
+const resultSignUp = Astro.getActionResult(actions.signup);
+const resultSignIn = Astro.getActionResult(actions.signin);
+---
+
+<Layout title="Login">
+  <div class="grid gap-6 mx-auto my-auto w-fit py-16">
+    <LoginForm result={resultSignUp || resultSignIn} client:load />
+  </div>
+</Layout>

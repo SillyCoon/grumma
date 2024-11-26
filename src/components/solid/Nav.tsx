@@ -37,7 +37,7 @@ export const Nav = (props: {
       <NavButton text="Help" link="/help" onClick={props.onClick} />
       <form
         method="post"
-        action={props.loggedIn ? actions.logout : actions.login}
+        action={props.loggedIn ? actions.logout : actions.loginWithGoogle}
       >
         <button
           onClick={props.onClick}

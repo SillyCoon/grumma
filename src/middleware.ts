@@ -19,7 +19,7 @@ export const onRequest = defineMiddleware(
     });
 
     const { data } = await supabase.auth.getUser();
-    locals.user = data.user;
+    Object.assign(locals, { user: data.user });
 
     if (
       PATHS_TO_IGNORE.some((path) => pathHas(url, path) || isWelcomePage(url))

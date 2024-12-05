@@ -1,6 +1,7 @@
 ---
-import LoadingIndicator from "astro-loading-indicator/component";
-import { ViewTransitions } from "astro:transitions";
+// TODO: enable after component deps update to Astro 5
+// import LoadingIndicator from "astro-loading-indicator/component";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 import { Sidebar } from "@components/solid/Sidebar/Sidebar";
@@ -30,11 +31,11 @@ const topPadding = Astro.props.topPadding ?? true;
     <meta name="apple-mobile-web-app-title" content="gRUmma" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>{title}</title>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <Header transition:persist />
-    <LoadingIndicator color="#8A5D33" />
+    <!-- <LoadingIndicator color="#8A5D33" /> -->
     <Sidebar loggedIn={loggedIn} client:idle />
 
     <main class={`container mx-auto ${topPadding && "pt-8"} pb-8`}>

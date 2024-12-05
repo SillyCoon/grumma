@@ -73,6 +73,6 @@
     "vite": "^6.0.3",
     "vite-gleam": "^0.4.3",
     "vite-tsconfig-paths": "^5.1.2",
-    "vitest": "^2.1.5"
+    "vitest": "^2.1.8"
   }
 }

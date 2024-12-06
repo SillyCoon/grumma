@@ -58,9 +58,11 @@ export const GrammarPoint = (props: Props) => {
           )}
         </CardContent>
       </Card>
-      <FabButton href="/sr/lesson/start">
-        <Play title="Start Lesson" />
-      </FabButton>
+      {props.next && (
+        <FabButton href="/sr/lesson/start">
+          <Play title="Start Lesson" />
+        </FabButton>
+      )}
     </section>
   );
 };

@@ -1,9 +1,8 @@
-import { Play } from "@components/icons/Play";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { FabButton } from "@components/ui/fab";
 import type { GrammarPoint as GrammarPointType } from "@grammar-sdk";
 import { For } from "solid-js";
 import { Example } from "../example/Example";
+import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";
 
 type Props = Omit<GrammarPointType, "exercises"> & {
@@ -58,11 +57,7 @@ export const GrammarPoint = (props: Props) => {
           )}
         </CardContent>
       </Card>
-      {props.next && (
-        <FabButton href="/sr/lesson/start">
-          <Play title="Start Lesson" />
-        </FabButton>
-      )}
+      {props.next && <StartLesson />}
     </section>
   );
 };

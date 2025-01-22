@@ -1,12 +1,12 @@
 ---
-// TODO: enable after component deps update to Astro 5
-// import LoadingIndicator from "astro-loading-indicator/component";
+import LoadingIndicator from "astro-loading-indicator/component";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 import { Sidebar } from "@components/solid/Sidebar/Sidebar";
 import { Toaster } from "solid-toast";
 import Header from "../components/Header.astro";
+
 interface Props {
   title: string;
   topPadding?: boolean;
@@ -43,7 +43,7 @@ const topPadding = Astro.props.topPadding ?? true;
   </head>
   <body>
     <Header transition:persist />
-    <!-- <LoadingIndicator color="#8A5D33" /> -->
+    <LoadingIndicator color="#8A5D33" />
     <Sidebar loggedIn={loggedIn} client:idle />
 
     <main class={`container mx-auto ${topPadding && "pt-8"} pb-8`}>

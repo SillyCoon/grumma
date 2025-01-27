@@ -10,7 +10,7 @@ import { Button } from "@components/ui/button";
 import { actions } from "astro:actions";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { TransliterateInput } from "./TransliterateInput";
-import { normalizeAnswer, parseToExercise } from "./utils";
+import { compareAnswer, normalizeAnswer, parseToExercise } from "./utils";
 
 interface ExerciseProps {
   exercise: ExerciseType;
@@ -46,7 +46,8 @@ export const Exercise = (props: ExerciseProps) => {
     }
   };
 
-  const checkAnswer = () => setIsCorrect(correctAnswer() === answer());
+  const checkAnswer = () =>
+    setIsCorrect(compareAnswer(correctAnswer(), answer()));
   const handleNext = () => {
     props.handleNext(props.exercise, {
       answer: answer(),

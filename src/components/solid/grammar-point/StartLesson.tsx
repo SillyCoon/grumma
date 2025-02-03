@@ -1,4 +1,4 @@
-import { Play } from "@components/icons/Play";
+import { Play } from "ui/icons";
 
 export const StartLesson = () => {
   return (

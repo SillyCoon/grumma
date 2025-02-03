@@ -1,4 +1,4 @@
-import { Send } from "@components/icons/Send";
+import { Send } from "ui/icons";
 import type { ParentComponent } from "solid-js";
 import { IconButton } from "ui/icon-button";
 

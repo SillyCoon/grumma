@@ -18,7 +18,7 @@
   },
   "workspaces": ["packages/*"],
   "dependencies": {
-    "@astrojs/node": "9.0.1",
+    "@astrojs/node": "9.0.2",
     "@astrojs/solid-js": "5.0.4",
     "@astrojs/tailwind": "5.1.5",
     "@astrojs/ts-plugin": "^1.10.4",
@@ -28,7 +28,7 @@
     "@solid-primitives/refs": "^1.1.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
-    "astro": "5.1.8",
+    "astro": "5.2.3",
     "astro-loading-indicator": "^0.7.0",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",

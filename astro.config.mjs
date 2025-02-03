@@ -1,7 +1,7 @@
 // @ts-check
 import node from "@astrojs/node";
 import solid from "@astrojs/solid-js";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 
 // https://astro.build/config
@@ -16,12 +16,10 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [
-    solid({ devtools: import.meta.env.DEV }),
-    tailwind({
-      applyBaseStyles: false,
-    }),
-  ],
+  integrations: [solid({ devtools: import.meta.env.DEV })],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   output: "server",
   adapter: node({
     mode: "standalone",

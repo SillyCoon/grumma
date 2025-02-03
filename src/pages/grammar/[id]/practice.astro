@@ -2,7 +2,7 @@
 import { simpleShuffle } from "~/utils";
 import { Exercises } from "../../../components/solid/Exercise/Exercises";
 import Layout from "../../../layouts/Layout.astro";
-import { fetchGrammarPoints } from "@grammar-sdk";
+import { fetchGrammarPoints } from "grammar-sdk";
 
 const ids = Astro.params.id?.split("-") ?? [];
 

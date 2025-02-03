@@ -4,7 +4,7 @@ import { AnswerResult } from "./AnswerResult";
 import { Description } from "./Description";
 import { Task } from "./Task";
 
-import type { Exercise as ExerciseType } from "@grammar-sdk";
+import type { Exercise as ExerciseType } from "grammar-sdk";
 
 import { actions } from "astro:actions";
 import { Button } from "ui/button";

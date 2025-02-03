@@ -1,6 +1,6 @@
 import { For, type Setter } from "solid-js";
 import { GrammarRef } from "./GrammarRef";
-import type { GrammarPoint } from "@grammar-sdk";
+import type { GrammarPoint } from "grammar-sdk";
 import { cva } from "class-variance-authority";
 import type { Mode } from "./types";
 

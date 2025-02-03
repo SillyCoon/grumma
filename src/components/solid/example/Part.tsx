@@ -1,4 +1,4 @@
-import type { Example } from "@grammar-sdk";
+import type { Example } from "grammar-sdk";
 
 type Props = { part: Example };
 

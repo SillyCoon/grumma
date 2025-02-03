@@ -1,4 +1,4 @@
-import type { GrammarPoint } from "@grammar-sdk";
+import type { GrammarPoint } from "grammar-sdk";
 import { Seq } from "immutable";
 
 export type Lesson = Omit<GrammarPoint, "exercises"> & {

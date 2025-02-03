@@ -44,6 +44,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "ui": "workspace:*",
+    "grammar-sdk": "workspace:*",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

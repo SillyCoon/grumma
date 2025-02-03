@@ -1,4 +1,4 @@
-import { createSupabaseClientInstance } from "libs/supabase";
+import { createSupabaseClientInstance } from "../../../libs/supabase";
 import {
   fetchGrammarFromDb,
   fetchGrammarPointFromDb,

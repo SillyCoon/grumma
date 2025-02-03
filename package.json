@@ -18,13 +18,13 @@
   },
   "workspaces": ["packages/*"],
   "dependencies": {
-    "ui": "workspace:*",
     "@astrojs/node": "9.0.1",
     "@astrojs/solid-js": "5.0.4",
     "@astrojs/tailwind": "5.1.5",
     "@astrojs/ts-plugin": "^1.10.4",
     "@digitallinguistics/transliterate": "^0.4.1",
     "@formkit/tempo": "^0.1.2",
+    "@kobalte/core": "^0.13.7",
     "@solid-primitives/refs": "^1.0.8",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.0",
@@ -43,6 +43,7 @@
     "solid-toast": "^0.5.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "ui": "workspace:*",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

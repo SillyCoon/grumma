@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import type { GrammarPoint as GrammarPointType } from "@grammar-sdk";
 import { For } from "solid-js";
+import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import { Example } from "../example/Example";
 import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";

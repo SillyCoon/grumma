@@ -6,8 +6,8 @@ import { Task } from "./Task";
 
 import type { Exercise as ExerciseType } from "@grammar-sdk";
 
-import { Button } from "@components/ui/button";
 import { actions } from "astro:actions";
+import { Button } from "ui/button";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { TransliterateInput } from "./TransliterateInput";
 import { compareAnswer, normalizeAnswer, parseToExercise } from "./utils";

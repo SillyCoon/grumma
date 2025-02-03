@@ -1,14 +1,14 @@
-import { Badge } from "@components/ui/badge";
+import type { JSX } from "solid-js";
+import { children, createEffect, createSignal, Match, Switch } from "solid-js";
+import { Badge } from "ui/badge";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@components/ui/card";
-import { Checkbox } from "@components/ui/checkbox";
-import type { JSX } from "solid-js";
-import { children, createEffect, createSignal, Match, Switch } from "solid-js";
+} from "ui/card";
+import { Checkbox } from "ui/checkbox";
 import { Mode } from "./types";
 
 interface GrammarRefProps {

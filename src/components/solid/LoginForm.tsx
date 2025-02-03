@@ -1,23 +1,19 @@
-import { Alert, AlertDescription, AlertTitle } from "@components/ui/alert";
-import { Button } from "@components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@components/ui/card";
-import { SignInWithGoogle } from "@components/ui/google-button";
-import { TabsList, TabsTrigger, TabsContent, Tabs } from "@components/ui/tabs";
-import {
-  TextField,
-  TextFieldInput,
-  TextFieldLabel,
-} from "@components/ui/text-field";
 import type { Session, User } from "@supabase/supabase-js";
 import { actions, type SafeResult } from "astro:actions";
 import { Show } from "solid-js";
+import { Alert, AlertDescription, AlertTitle } from "ui/alert";
+import { Button } from "ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { SignInWithGoogle } from "ui/google-button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "ui/tabs";
+import { TextField, TextFieldInput, TextFieldLabel } from "ui/text-field";
 
 type Result =
   | SafeResult<

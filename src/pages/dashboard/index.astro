@@ -3,10 +3,10 @@ import Layout from "@layouts/Layout.astro";
 
 import DashboardCell from "@components/DashboardCell.astro";
 import { WeekSchedule } from "@components/solid/dashboard/WeekSchedule";
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import { BarList } from "@components/ui/progress-bar-list";
-import { Skeleton } from "@components/ui/skeleton";
 import { actions } from "astro:actions";
+import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
+import { BarList } from "ui/progress-bar-list";
+import { Skeleton } from "ui/skeleton";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {});
 

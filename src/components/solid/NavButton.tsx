@@ -1,4 +1,4 @@
-import { Badge } from "@components/ui/badge";
+import { Badge } from "ui/badge";
 import { setSidebarOpen } from "./Sidebar/store";
 
 export const NavButton = (props: {

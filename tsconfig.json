@@ -3,9 +3,6 @@
   "compilerOptions": {
     "plugins": [
       {
-        "name": "ts-gleam"
-      },
-      {
         "name": "@astrojs/ts-plugin"
       }
     ],

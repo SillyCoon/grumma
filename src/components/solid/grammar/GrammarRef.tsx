@@ -53,7 +53,7 @@ export const GrammarRef = (props: GrammarRefProps) => {
             props.onClick?.();
             if (props.mode === Mode.cram) setSelected((s) => !s);
           }}
-          class={`min-h-full cursor-pointer transition-all hover:opacity-75 hover:shadow-md active:opacity-100 active:shadow-sm ${props.mode === Mode.cram && "bg-white"}`}
+          class={`min-h-full cursor-pointer transition-all hover:opacity-75 hover:shadow-md active:opacity-100 active:shadow-xs ${props.mode === Mode.cram && "bg-white"}`}
         >
           <CardHeader>
             <div>

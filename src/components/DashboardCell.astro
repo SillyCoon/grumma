@@ -1,7 +1,6 @@
 ---
+import { Badge } from "ui/badge";
 import { cn } from "~/lib/utils";
-import { Badge } from "./ui/badge";
-
 export type Props = {
   title: string;
   description: string;
@@ -16,7 +15,7 @@ const { title, description, href, color, count } = Astro.props;
 <a
   class={cn(
     "rounded-md bg-primary text-secondary-content cursor-pointer",
-    color
+    color,
   )}
   href={href}
 >

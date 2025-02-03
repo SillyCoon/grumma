@@ -1,0 +1,9 @@
+{
+  "name": "ui",
+  "description": "UI components",
+  "version": "1.0.0",
+  "dependencies": {
+    "solid-js": "^1.9.4",
+    "@kobalte/core": "^0.13.7"
+  }
+}

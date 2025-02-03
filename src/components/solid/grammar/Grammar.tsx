@@ -1,6 +1,6 @@
-import { Button } from "@components/ui/button";
 import type { GrammarPoint } from "@grammar-sdk";
 import { createSignal, For } from "solid-js";
+import { Button } from "ui/button";
 import { GrammarBlock } from "./GrammarBlock";
 
 interface GrammarProps {

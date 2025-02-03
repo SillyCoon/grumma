@@ -11,7 +11,6 @@
     "classnames",
     "resend",
     "husky",
-    "@storybook/*",
-    "vite-gleam"
+    "@storybook/*"
   ]
 }

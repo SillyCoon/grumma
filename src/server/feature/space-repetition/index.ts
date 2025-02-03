@@ -1,5 +1,5 @@
 import type { User } from "../../../models/user";
-import { fetchGrammarList } from "@grammar-sdk";
+import { fetchGrammarList } from "grammar-sdk";
 import { NaiveAlgorithm } from "./NaiveAlgorithm";
 import { SpaceRepetition } from "./SpaceRepetition";
 import { getAttempts, saveAttempt } from "./SpaceRepetitionRepository";

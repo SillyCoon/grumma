@@ -1,4 +1,4 @@
-import { fetchGrammarPoint } from "@grammar-sdk";
+import { fetchGrammarPoint } from "grammar-sdk";
 import {
   ActionError,
   defineAction,

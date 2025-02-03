@@ -1,4 +1,4 @@
-import type { GrammarPoint as GrammarPointType } from "@grammar-sdk";
+import type { GrammarPoint as GrammarPointType } from "grammar-sdk";
 import { For } from "solid-js";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import { Example } from "../example/Example";

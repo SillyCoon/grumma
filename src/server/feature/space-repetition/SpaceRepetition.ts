@@ -3,7 +3,7 @@ import type { Attempt } from "./types/Attempt";
 import { Lesson } from "./types/Lesson";
 import type { Stage } from "./types/Stage";
 import type { Schedule } from "./types/Schedule";
-import type { GrammarPoint } from "@grammar-sdk";
+import type { GrammarPoint } from "grammar-sdk";
 
 export interface Settings {
   stageMinutes: Record<Stage, number>;

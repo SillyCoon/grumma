@@ -1,6 +1,6 @@
-@import './google-button.css' layer(base);
+@import "./google-button.css" layer(base);
 
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @config '../../tailwind.config.cjs';
 

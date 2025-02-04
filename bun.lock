@@ -29,6 +29,7 @@
         "solid-sonner": "^0.2.8",
         "solid-toast": "^0.5.0",
         "solid-utils": "workspace:*",
+        "space-repetition": "workspace:*",
         "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7",
         "ui": "workspace:*",
@@ -77,6 +78,15 @@
       "dependencies": {
         "solid-js": "^1.9.4",
       },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5.0.0",
+      },
+    },
+    "packages/space-repetition": {
+      "name": "space-repetition",
       "devDependencies": {
         "@types/bun": "latest",
       },
@@ -1541,6 +1551,8 @@
     "source-map-js": ["source-map-js@1.2.1", "", {}, "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="],
 
     "source-map-support": ["source-map-support@0.5.21", "", { "dependencies": { "buffer-from": "^1.0.0", "source-map": "^0.6.0" } }, "sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w=="],
+
+    "space-repetition": ["space-repetition@workspace:packages/space-repetition"],
 
     "space-separated-tokens": ["space-separated-tokens@2.0.2", "", {}, "sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q=="],
 

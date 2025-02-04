@@ -11,16 +11,16 @@ import {
   getAttempts,
   removeFromRepetitions,
   saveAttempt,
-} from "../../feature/space-repetition/SpaceRepetitionRepository";
-import type { Attempt } from "../../feature/space-repetition/types/Attempt";
+} from "../../src/SpaceRepetitionRepository";
+import type { Attempt } from "../../src/types/Attempt";
 import { v4 as uuid } from "uuid";
-import { grammarPoints, spaceRepetitions } from "libs/db/schema";
+import { grammarPoints, spaceRepetitions } from "../../../../libs/db/schema";
 import {
   PostgreSqlContainer,
   type StartedPostgreSqlContainer,
 } from "@testcontainers/postgresql";
 import { execSync } from "node:child_process";
-import { makeDb } from "libs/db";
+import { makeDb } from "../../../../libs/db";
 
 const mockAttempt = (grammarPointId: string): Attempt => {
   return {

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getSchedule } from "../../../server/feature/space-repetition";
+import { getSchedule } from "space-repetition";
 
 export const GET: APIRoute = async ({ locals: { user } }) => {
   const schedule = user && (await getSchedule(user));

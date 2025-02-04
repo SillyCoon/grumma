@@ -1,0 +1,14 @@
+{
+  "name": "solid-utils",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "solid-js": "^1.9.4"
+  }
+}

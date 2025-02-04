@@ -2,6 +2,8 @@ import type { GrammarPoint } from "grammar-sdk";
 import { createSignal, For } from "solid-js";
 import { Button } from "ui/button";
 import { GrammarBlock } from "./GrammarBlock";
+import { TextField, TextFieldInput } from "ui/text-field";
+import { useDebounce } from "solid-utils";
 
 interface GrammarProps {
   grammar: GrammarPoint[];
@@ -11,6 +13,20 @@ interface GrammarProps {
 
 export const Grammar = (props: GrammarProps) => {
   const [cram, setCram] = createSignal<string[]>([]);
+  const [filter, setFilter] = createSignal<string>("");
+  const debouncedFilter = useDebounce(
+    (v: string) => setFilter(v.toLowerCase()),
+    300,
+  );
+
+  const filteredGrammar = () =>
+    props.grammar.filter((gp) => {
+      return (
+        gp.shortTitle.toLowerCase().includes(filter()) ||
+        gp.detailedTitle.toLowerCase().includes(filter()) ||
+        gp.englishTitle.toLowerCase().includes(filter())
+      );
+    });
 
   const groupedGrammar = Object.groupBy(props.grammar, (v) => v.torfl);
   return (
@@ -29,12 +45,15 @@ export const Grammar = (props: GrammarProps) => {
           </div>
         </div>
       )}
+      <TextField class="mt-10 mb-2" onChange={debouncedFilter}>
+        <TextFieldInput name="search" type="search" placeholder="Search" />
+      </TextField>
       <For each={Object.entries(groupedGrammar)}>
         {([torfl, grammar]) =>
           grammar?.length && (
             <GrammarBlock
               torfl={torfl}
-              grammar={grammar ?? []}
+              grammar={filteredGrammar()}
               inReview={props.inReview}
               mode={props.mode}
               setCram={setCram}

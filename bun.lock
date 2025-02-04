@@ -21,12 +21,14 @@
         "clsx": "^2.1.1",
         "dotenv": "^16.4.7",
         "drizzle-orm": "^0.38.4",
+        "grammar-sdk": "workspace:*",
         "immutable": "^5.0.3",
         "postgres": "^3.4.5",
         "resend": "^4.1.1",
         "solid-js": "^1.9.4",
         "solid-sonner": "^0.2.8",
         "solid-toast": "^0.5.0",
+        "solid-utils": "workspace:*",
         "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7",
         "ui": "workspace:*",
@@ -63,6 +65,18 @@
     },
     "packages/grammar-sdk": {
       "name": "grammar-sdk",
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5.0.0",
+      },
+    },
+    "packages/solid-utils": {
+      "name": "solid-utils",
+      "dependencies": {
+        "solid-js": "^1.9.4",
+      },
       "devDependencies": {
         "@types/bun": "latest",
       },
@@ -1519,6 +1533,8 @@
     "solid-sonner": ["solid-sonner@0.2.8", "", { "peerDependencies": { "solid-js": "^1.6.0" } }, "sha512-EQ2EIznvHHpAmkYh2CTu0AdCgmPJRJWLGFRWygE8j+vMEfvIV2wotHU5qgWzqzVTG1SODGsay2Lwq6ENWx/rPA=="],
 
     "solid-toast": ["solid-toast@0.5.0", "", { "peerDependencies": { "solid-js": "^1.5.4" } }, "sha512-t770JakjyS2P9b8Qa1zMLOD51KYKWXbTAyJePVUoYex5c5FH5S/HtUBUbZAWFcqRCKmAE8KhyIiCvDZA8bOnxQ=="],
+
+    "solid-utils": ["solid-utils@workspace:packages/solid-utils"],
 
     "source-map": ["source-map@0.6.1", "", {}, "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="],
 

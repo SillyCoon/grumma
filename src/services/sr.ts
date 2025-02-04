@@ -1,6 +1,6 @@
 import { actions } from "astro:actions";
 import toast from "solid-toast";
-import type { Attempt } from "src/server/feature/space-repetition/types/Attempt";
+import type { Attempt } from "space-repetition";
 
 export const saveAttempt = async (attempt: Attempt) => {
   const result = await actions.saveAttempt(attempt);

@@ -13,8 +13,8 @@ import {
   countStreak as getStreak,
   getInReviewByTorfl,
   getSchedule,
-} from "~/server/feature/space-repetition";
-import type { Stage } from "~/server/feature/space-repetition/types/Stage";
+} from "space-repetition";
+import type { Stage } from "space-repetition";
 
 const extractUser = (context: ActionAPIContext) => {
   const user = context.locals.user;

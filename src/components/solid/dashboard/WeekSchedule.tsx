@@ -1,5 +1,5 @@
 import { BarList } from "ui/progress-bar-list";
-import type { Schedule } from "~/server/feature/space-repetition/types/Schedule";
+import type { Schedule } from "space-repetition";
 import { calculateWeekSchedule } from "./logic/schedule";
 
 export const WeekSchedule = (props: { schedule: Schedule }) => {

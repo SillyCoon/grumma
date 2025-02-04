@@ -1,6 +1,6 @@
 import { saveAttempt } from "@services/sr";
 import { Match, Switch, createSignal } from "solid-js";
-import type { Stage } from "src/server/feature/space-repetition/types/Stage";
+import type { Stage } from "space-repetition";
 import { v4 as uuidv4 } from "uuid";
 import type { Exercise as ExerciseType } from "grammar-sdk";
 import { simpleShuffle } from "../../../utils";

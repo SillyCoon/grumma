@@ -1,10 +1,10 @@
-import type { User } from "../../../models/user";
+import type { User } from "../../../src/models/user";
 import type { Attempt } from "./types/Attempt";
 import { v4 as uuid } from "uuid";
 import type { Stage } from "./types/Stage";
-import type { DbClient } from "libs/db";
+import type { DbClient } from "../../../libs/db";
 import { and, eq } from "drizzle-orm";
-import { spaceRepetitions } from "libs/db/schema";
+import { spaceRepetitions } from "../../../libs/db/schema";
 
 export const getAttempts = async (
   db: DbClient,

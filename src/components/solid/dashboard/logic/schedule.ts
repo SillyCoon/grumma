@@ -1,4 +1,4 @@
-import type { Schedule } from "~/server/feature/space-repetition/types/Schedule";
+import type { Schedule } from "space-repetition";
 import { Range, Seq, List } from "immutable";
 import { diffDays } from "@formkit/tempo";
 

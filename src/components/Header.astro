@@ -14,7 +14,7 @@ const reviewCount =
     <HamburgerButton client:load />
     <a class="text-3xl font-bold text-white" href="/"><Logo /></a>
     <div class="justify-between gap-5 hidden lg:flex">
-      <Nav loggedIn={!!user} reviewCount={reviewCount} />
+      <Nav client:load loggedIn={!!user} reviewCount={reviewCount} />
     </div>
   </div>
 </header>

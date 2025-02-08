@@ -6,6 +6,8 @@ import { actions } from "astro:actions";
 if (Astro.locals.user) return Astro.redirect("/dashboard");
 const resultSignUp = Astro.getActionResult(actions.signup);
 const resultSignIn = Astro.getActionResult(actions.signin);
+
+if (resultSignIn && !resultSignIn.error) return Astro.redirect("/dashboard");
 ---
 
 <Layout title="Login">

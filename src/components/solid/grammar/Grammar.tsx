@@ -4,6 +4,7 @@ import { Button } from "ui/button";
 import { GrammarBlock } from "./GrammarBlock";
 import { TextField, TextFieldInput } from "ui/text-field";
 import { useDebounce } from "solid-utils";
+import { Search } from "packages/ui/icons";
 
 interface GrammarProps {
   grammar: GrammarPoint[];
@@ -45,8 +46,17 @@ export const Grammar = (props: GrammarProps) => {
           </div>
         </div>
       )}
-      <TextField class="mt-10 mb-2" onChange={debouncedFilter}>
-        <TextFieldInput name="search" type="search" placeholder="Search" />
+      <TextField
+        class="relative mt-10 mb-2 flex flex-col gap-1"
+        onChange={debouncedFilter}
+      >
+        <Search class="absolute top-2.5 left-2 size-5 fill-secondary focus:outline-primary" />
+        <TextFieldInput
+          class="pl-8"
+          name="search"
+          type="search"
+          placeholder="Search"
+        />
       </TextField>
       <For each={Object.entries(groupedGrammar)}>
         {([torfl, grammar]) =>

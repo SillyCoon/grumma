@@ -1,13 +1,18 @@
 ---
 import { LoginForm as LoginForm } from "@components/solid/LoginForm";
 import Layout from "@layouts/Layout.astro";
+import type { ErrorInferenceObject } from "astro/actions/runtime/utils.js";
+import type { SafeResult } from "astro:actions";
 import { actions } from "astro:actions";
 
-if (Astro.locals.user) return Astro.redirect("/dashboard");
+const hasOkResult = <E extends ErrorInferenceObject, D>(
+  result?: SafeResult<E, D>,
+) => result && !result.error;
+
 const resultSignUp = Astro.getActionResult(actions.signup);
 const resultSignIn = Astro.getActionResult(actions.signin);
-
-if (resultSignIn && !resultSignIn.error) return Astro.redirect("/dashboard");
+if (Astro.locals.user || hasOkResult(resultSignUp) || hasOkResult(resultSignIn))
+  return Astro.redirect("/dashboard");
 ---
 
 <Layout title="Login">

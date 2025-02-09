@@ -1,5 +1,6 @@
 ---
 import { actions } from "astro:actions";
+import { Button } from "ui/button";
 import { SignInWithGoogle } from "ui/google-button";
 ---
 
@@ -21,6 +22,7 @@ import { SignInWithGoogle } from "ui/google-button";
       <form class="text-4xl" action={actions.loginWithGoogle} method="POST">
         <SignInWithGoogle type="submit" value="google" name="provider" />
       </form>
+      <Button variant="ghost"><a href="/login">Sign In</a></Button>
     </section>
     <section
       class="text-xl text-foregrounds-secondary mb-8 grid gap-5 max-w-6xl text-center"

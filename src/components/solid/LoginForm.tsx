@@ -30,18 +30,29 @@ type Result =
 
 export const LoginForm = (props: {
   result: Result;
+  errorMessage?: string;
 }) => {
   return (
-    <Tabs defaultValue="account" class="w-[400px]">
+    <Tabs defaultValue="account" class="w-[500px]">
       <TabsList class="grid w-full grid-cols-2">
         <TabsTrigger value="account">Sign In</TabsTrigger>
         <TabsTrigger value="password">Sign Up</TabsTrigger>
       </TabsList>
       <TabsContent value="account">
-        <Form type="signin" action={actions.signin} result={props.result} />
+        <Form
+          type="signin"
+          action={actions.signin}
+          result={props.result}
+          errorMessage={props.errorMessage}
+        />
       </TabsContent>
       <TabsContent value="password">
-        <Form type="signup" action={actions.signup} result={props.result} />
+        <Form
+          type="signup"
+          action={actions.signup}
+          result={props.result}
+          errorMessage={props.errorMessage}
+        />
       </TabsContent>
     </Tabs>
   );
@@ -51,6 +62,7 @@ const Form = (props: {
   action: string;
   result: Result;
   type: "signin" | "signup";
+  errorMessage?: string;
 }) => {
   return (
     <Card variant="outlined">
@@ -80,9 +92,7 @@ const Form = (props: {
           <Show when={props.result?.error}>
             <Alert variant="destructive">
               <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                Something went wrong, please try again!
-              </AlertDescription>
+              <AlertDescription>{props.errorMessage}</AlertDescription>
             </Alert>
           </Show>
           <Button type="submit" form="password">

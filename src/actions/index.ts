@@ -27,6 +27,15 @@ const extractUser = (context: ActionAPIContext) => {
   return user;
 };
 
+export const SignupErrors = new Map([
+  ["weak_password", "Password is too weak, please use 8 symbols or more"],
+  ["user_already_exists", "User with this email already exists"],
+  ["default", "Something went wrong, please try again"],
+  ["user_not_found", "Invalid email or password"],
+  ["invalid_credentials", "Invalid email or password"],
+  ["email_address_invalid", "Invalid email address format"],
+]);
+
 export const server = {
   signup: defineAction({
     accept: "form",
@@ -46,9 +55,13 @@ export const server = {
       });
 
       if (error) {
+        const message =
+          (error.code && SignupErrors.get(error.code)) ??
+          SignupErrors.get("default");
+
         throw new ActionError({
           code: "FORBIDDEN",
-          message: "Failed to sign up",
+          message,
         });
       }
 
@@ -73,12 +86,15 @@ export const server = {
       });
 
       if (error) {
+        const message =
+          (error.code && SignupErrors.get(error.code)) ??
+          SignupErrors.get("default");
+
         throw new ActionError({
           code: "FORBIDDEN",
-          message: "Failed to sign in",
+          message,
         });
       }
-
       return data;
     },
   }),

@@ -1,13 +1,9 @@
 ---
 import { LoginForm as LoginForm } from "@components/solid/LoginForm";
 import Layout from "@layouts/Layout.astro";
-import type { ErrorInferenceObject } from "astro/actions/runtime/utils.js";
-import type { SafeResult } from "astro:actions";
 import { actions } from "astro:actions";
 
-const hasOkResult = <E extends ErrorInferenceObject, D>(
-  result?: SafeResult<E, D>,
-) => result && !result.error;
+const hasOkResult = (result?: any) => result && !result.error;
 
 const resultSignUp = Astro.getActionResult(actions.signup);
 const resultSignIn = Astro.getActionResult(actions.signin);
@@ -17,6 +13,12 @@ if (Astro.locals.user || hasOkResult(resultSignUp) || hasOkResult(resultSignIn))
 
 <Layout title="Login">
   <div class="grid gap-6 mx-auto my-auto w-fit py-16">
-    <LoginForm result={resultSignUp || resultSignIn} client:load />
+    <LoginForm
+      client:load
+      result={resultSignUp || resultSignIn}
+      errorMessage={resultSignUp?.error?.message ??
+        resultSignIn?.error?.message}
+      transition:persist
+    />
   </div>
 </Layout>

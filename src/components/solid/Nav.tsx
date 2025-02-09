@@ -36,27 +36,32 @@ export const Nav = (props: {
         onClick={props.onClick}
       />
       <NavButton text="Help" link="/help" onClick={props.onClick} />
-      <form
-        method="post"
-        action={!props.loggedIn ? actions.loginWithGoogle : ""}
-        onSubmit={async (e) => {
-          if (props.loggedIn) {
-            e.preventDefault();
-            await actions.logout(new FormData());
-            navigate("/");
-          }
-        }}
-      >
-        <button
-          onClick={props.onClick}
-          value="google"
-          name="provider"
-          type="submit"
-          class={NavButtonClass}
-        >
-          {props.loggedIn ? "Logout" : "Login"}
-        </button>
-      </form>
+      {props.loggedIn ? (
+        <LogoutButton onClick={props.onClick} />
+      ) : (
+        <LoginButton onClick={props.onClick} />
+      )}
     </>
+  );
+};
+
+const LoginButton = (props: { onClick?: () => void }) => {
+  return <NavButton text="Login" link="/login" onClick={props.onClick} />;
+};
+
+const LogoutButton = (props: { onClick?: () => void }) => {
+  return (
+    <form
+      method="post"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        await actions.logout(new FormData());
+        navigate("/");
+      }}
+    >
+      <button onClick={props.onClick} type="submit" class={NavButtonClass}>
+        Logout
+      </button>
+    </form>
   );
 };

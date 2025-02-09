@@ -14,8 +14,7 @@
       "@api/*": ["src/pages/api/*"],
       "@services/*": ["src/services/*"],
       "@layouts/*": ["src/layouts/*"],
-      "~/*": ["./src/*"],
-      "packages/*": ["./packages/*"]
+      "~/*": ["./src/*"]
     },
     "typeRoots": ["node_modules/@types", "src/types"]
   },

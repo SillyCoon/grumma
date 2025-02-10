@@ -7,8 +7,6 @@
         "@astrojs/node": "9.0.2",
         "@astrojs/solid-js": "5.0.4",
         "@astrojs/ts-plugin": "^1.10.4",
-        "@digitallinguistics/transliterate": "^0.4.1",
-        "@formkit/tempo": "^0.1.2",
         "@kobalte/core": "^0.13.8",
         "@solid-primitives/refs": "^1.1.0",
         "@supabase/ssr": "^0.5.2",
@@ -18,7 +16,6 @@
         "astro-loading-indicator": "^0.7.0",
         "class-variance-authority": "^0.7.1",
         "classnames": "^2.5.1",
-        "clsx": "^2.1.1",
         "dotenv": "^16.4.7",
         "drizzle-orm": "^0.38.4",
         "grammar-sdk": "workspace:*",
@@ -30,9 +27,9 @@
         "solid-toast": "^0.5.0",
         "solid-utils": "workspace:*",
         "space-repetition": "workspace:*",
-        "tailwind-merge": "^2.6.0",
         "tailwindcss-animate": "^1.0.7",
         "ui": "workspace:*",
+        "utils": "workspace:*",
         "uuid": "^11.0.5",
       },
       "devDependencies": {
@@ -99,7 +96,23 @@
       "version": "1.0.0",
       "dependencies": {
         "@kobalte/core": "^0.13.7",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
         "solid-js": "^1.9.4",
+        "tailwind-merge": "^2.6.0",
+      },
+    },
+    "packages/utils": {
+      "name": "utils",
+      "dependencies": {
+        "@digitallinguistics/transliterate": "^0.4.1",
+        "@formkit/tempo": "^0.1.2",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5.0.0",
       },
     },
   },
@@ -1704,6 +1717,8 @@
 
     "util-deprecate": ["util-deprecate@1.0.2", "", {}, "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="],
 
+    "utils": ["utils@workspace:packages/utils"],
+
     "uuid": ["uuid@11.0.5", "", { "bin": { "uuid": "dist/esm/bin/uuid" } }, "sha512-508e6IcKLrhxKdBbcA2b4KQZlLVp2+J5UwQ6F7Drckkc5N9ZJwFa4TgWtsww9UG8fGHbm6gbV19TdM5pQ4GaIA=="],
 
     "validate-html-nesting": ["validate-html-nesting@1.2.2", "", {}, "sha512-hGdgQozCsQJMyfK5urgFcWEqsSSrK63Awe0t/IMR0bZ0QMtnuaiHzThW81guu3qx9abLi99NEuiaN6P9gVYsNg=="],
@@ -2001,8 +2016,6 @@
     "string-width-cjs/strip-ansi": ["strip-ansi@6.0.1", "", { "dependencies": { "ansi-regex": "^5.0.1" } }, "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A=="],
 
     "strip-ansi-cjs/ansi-regex": ["ansi-regex@5.0.1", "", {}, "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="],
-
-    "ui/@kobalte/core": ["@kobalte/core@0.13.7", "", { "dependencies": { "@floating-ui/dom": "^1.5.1", "@internationalized/date": "^3.4.0", "@internationalized/number": "^3.2.1", "@kobalte/utils": "^0.9.1", "@solid-primitives/props": "^3.1.8", "@solid-primitives/resize-observer": "^2.0.26", "solid-presence": "^0.1.8", "solid-prevent-scroll": "^0.1.4" }, "peerDependencies": { "solid-js": "^1.8.15" } }, "sha512-COhjWk1KnCkl3qMJDvdrOsvpTlJ9gMLdemkAn5SWfbPn/lxJYabejnNOk+b/ILGg7apzQycgbuo48qb8ppqsAg=="],
 
     "unenv/pathe": ["pathe@1.1.2", "", {}, "sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ=="],
 

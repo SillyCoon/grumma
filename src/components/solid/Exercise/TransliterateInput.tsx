@@ -1,6 +1,6 @@
 import { createEffect, splitProps, type JSX } from "solid-js";
-import { transliterate } from "src/utils";
-import { cn } from "~/lib/utils";
+import { cn } from "ui/utils";
+import { transliterate } from "utils/translit";
 
 export const TransliterateInput = (
   props: Omit<

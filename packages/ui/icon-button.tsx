@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 import type { JSX } from "solid-js";
 import { children } from "solid-js";
-import { cn } from "~/lib/utils";
+import { cn } from "ui/utils";
 
 const variants = cva(
   "block h-[40px] w-[40px] cursor-pointer hover:text-primary/60",

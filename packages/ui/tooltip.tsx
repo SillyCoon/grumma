@@ -4,7 +4,7 @@ import { splitProps, type Component } from "solid-js";
 import type { PolymorphicProps } from "@kobalte/core/polymorphic";
 import * as TooltipPrimitive from "@kobalte/core/tooltip";
 
-import { cn } from "~/lib/utils";
+import { cn } from "ui/utils";
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
@@ -32,4 +32,4 @@ const TooltipContent = <T extends ValidComponent = "div">(
   );
 };
 
-export { Tooltip, TooltipTrigger, TooltipContent };
+export { Tooltip, TooltipContent, TooltipTrigger };

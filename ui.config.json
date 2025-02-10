@@ -8,6 +8,6 @@
   },
   "aliases": {
     "components": "packages/ui",
-    "utils": "~/lib/utils"
+    "utils": "packages/ui/utils"
   }
 }

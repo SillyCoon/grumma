@@ -1,8 +1,8 @@
 ---
-import { simpleShuffle } from "~/utils";
+import { fetchGrammarPoints } from "grammar-sdk";
+import { simpleShuffle } from "utils/array";
 import { Exercises } from "../../../components/solid/Exercise/Exercises";
 import Layout from "../../../layouts/Layout.astro";
-import { fetchGrammarPoints } from "grammar-sdk";
 
 const ids = Astro.params.id?.split("-") ?? [];
 

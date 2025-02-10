@@ -1,0 +1,14 @@
+{
+  "name": "utils",
+  "type": "module",
+  "dependencies": {
+    "@formkit/tempo": "^0.1.2",
+    "@digitallinguistics/transliterate": "^0.4.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

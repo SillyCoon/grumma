@@ -1,9 +1,9 @@
 import { saveAttempt } from "@services/sr";
+import type { Exercise as ExerciseType } from "grammar-sdk";
 import { Match, Switch, createSignal } from "solid-js";
 import type { Stage } from "space-repetition";
+import { simpleShuffle } from "utils/array";
 import { v4 as uuidv4 } from "uuid";
-import type { Exercise as ExerciseType } from "grammar-sdk";
-import { simpleShuffle } from "../../../utils";
 import { Exercise } from "./Exercise";
 
 export const Exercises = (props: { exercises: ExerciseType[] }) => {

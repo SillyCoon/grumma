@@ -1,7 +1,7 @@
 import type { Component, ComponentProps } from "solid-js";
 import { splitProps } from "solid-js";
 
-import { cn } from "~/lib/utils";
+import { cn } from "ui/utils";
 
 const Card: Component<
   ComponentProps<"div"> & { variant?: "filled" | "outlined" }
@@ -60,9 +60,9 @@ const CardFooter: Component<ComponentProps<"div">> = (props) => {
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 };

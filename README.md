@@ -1,3 +1,5 @@
+[![Deploy](https://github.com/SillyCoon/grumma/actions/workflows/deploy.yaml/badge.svg)](https://github.com/SillyCoon/grumma/actions/workflows/deploy.yaml)
+
 # Grumma web app
 
 Code of web app for learning Russian language.

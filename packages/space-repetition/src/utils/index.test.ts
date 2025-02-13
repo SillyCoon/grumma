@@ -49,9 +49,7 @@ describe("utils", () => {
       const including = new Date("2021-10-10");
       const intervalBefore = generatePeriodDays(addDay(including, -10), 10);
 
-      const result = countConsecutiveDaysBefore(including, [
-        ...intervalBefore,
-      ]);
+      const result = countConsecutiveDaysBefore(including, [...intervalBefore]);
       expect(result).toEqual(10);
     });
 

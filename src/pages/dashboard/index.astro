@@ -8,7 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import { BarList } from "ui/progress-bar-list";
 import { Skeleton } from "ui/skeleton";
 
-const { data: dashboard } = await Astro.callAction(actions.dashboard, {});
+const { data: dashboard } = await Astro.callAction(actions.dashboard, {
+  today: new Date(),
+});
 
 // const schedule: Schedule = await (await fetchSchedule(Astro)).json();
 const { user } = Astro.locals;

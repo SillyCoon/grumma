@@ -10,7 +10,7 @@ import { createSupabaseServerInstance } from "libs/supabase";
 import {
   addAttempt,
   countNextRound,
-  countStreak as getStreak,
+  countStreak,
   getInReviewByTorfl,
   getSchedule,
 } from "space-repetition";
@@ -172,11 +172,14 @@ export const server = {
   }),
   dashboard: defineAction({
     accept: "json",
-    handler: async (_input, context) => {
+    input: z.object({
+      today: z.coerce.date(),
+    }),
+    handler: async ({ today }, context) => {
       const user = extractUser(context);
 
       return {
-        streak: await getStreak(user),
+        streak: await countStreak(today, user),
         inReviewByTorflCount: await getInReviewByTorfl(user),
         reviewsCount: await countNextRound(user),
         schedule: await getSchedule(user),

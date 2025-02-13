@@ -10,6 +10,7 @@ import type { Schedule } from "./src/types/Schedule";
 import { db } from "../../libs/db";
 import { Seq, Map as IMap } from "immutable";
 import { diffDays } from "@formkit/tempo";
+import { countConsecutiveDaysBefore } from "./src/utils";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -53,16 +54,11 @@ export const countNextRound = async (user: User): Promise<number> => {
   return (await getNextRound(user)).length;
 };
 
-export const countStreak = async (user: User): Promise<number> => {
+export const countStreak = async (today: Date, user: User): Promise<number> => {
   const attempts = await getAttempts(db, user);
-  return (
-    Seq(attempts)
-      .sort((a, b) => +b.answeredAt - +a.answeredAt)
-      .takeWhile((a, k, iter) => {
-        const prev = iter.get(k - 1);
-        if (!prev) return true;
-        return diffDays(a.answeredAt, prev.answeredAt) <= 1;
-      }).size ?? 0
+  return countConsecutiveDaysBefore(
+    today,
+    attempts.map((v) => v.answeredAt),
   );
 };
 

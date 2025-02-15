@@ -5,9 +5,6 @@ module.exports = {
     "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
     "./packages/**/*.tsx",
   ],
-  daisyui: {
-    themes: ["emerald"],
-  },
   theme: {
     container: {
       center: true,

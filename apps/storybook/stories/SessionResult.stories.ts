@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 
 import { mockAttempt } from "space-repetition/__mocks__";
-import { SessionResult } from "~/components/solid/Exercise/SessionResult";
+import { SessionResult } from "../../../src/components/solid/Exercise/SessionResult";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/solid/writing-stories/introduction
 const meta = {

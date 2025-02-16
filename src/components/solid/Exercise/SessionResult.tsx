@@ -1,6 +1,6 @@
-import type { Example as ExampleType, GrammarPoint } from "grammar-sdk";
+import { Example as ExampleType, type GrammarPoint } from "grammar-sdk";
 import type { SessionResult as SessionResultType } from "space-repetition";
-import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
+import { Card, CardContent, CardHeader } from "ui/card";
 import { For } from "solid-js";
 import { Example } from "../example/Example";
 
@@ -12,7 +12,13 @@ export const SessionResult = (props: {
     props.sessionResult.attempts.map((attempt) => {
       const gp = props.grammar.find((gp) => gp.id === attempt.grammarPointId);
       const example = gp?.examples.find((e) => e.order === attempt.stage);
-      return { ...example, isCorrect: attempt.isCorrect };
+      return {
+        ...example,
+        ru: example?.ru
+          ? ExampleType.replaceAnswer(example.ru, attempt.answer)
+          : undefined,
+        isCorrect: attempt.isCorrect,
+      };
     }) as { ru: ExampleType; en: ExampleType; isCorrect: boolean }[];
 
   return (

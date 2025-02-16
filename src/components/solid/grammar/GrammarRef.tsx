@@ -41,10 +41,6 @@ const Wrapper = (props: {
 export const GrammarRef = (props: GrammarRefProps) => {
   const [selected, setSelected] = createSignal(false);
 
-  createEffect(() => {
-    console.log(selected());
-  });
-
   return (
     <div>
       <Wrapper mode={props.mode ?? Mode.nav} id={props.id}>

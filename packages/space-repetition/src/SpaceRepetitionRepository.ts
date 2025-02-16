@@ -5,6 +5,7 @@ import type { Stage } from "./types/Stage";
 import type { DbClient } from "../../../libs/db";
 import { and, eq } from "drizzle-orm";
 import { spaceRepetitions } from "../../../libs/db/schema";
+import { Session } from "./types/Session";
 
 export const getAttempts = async (
   db: DbClient,
@@ -19,6 +20,15 @@ export const getAttempts = async (
     stage: t.stage as Stage,
     answer: t.answer ?? "",
   }));
+};
+
+export const getSession = async (
+  db: DbClient,
+  user: User,
+  sessionId: string,
+): Promise<Session> => {
+  const attempts = await getAttempts(db, user);
+  return Session(attempts.filter((a) => a.reviewSessionId === sessionId));
 };
 
 export const saveAttempt = async (

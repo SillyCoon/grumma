@@ -13,6 +13,7 @@ import {
   countStreak,
   getInReviewByTorfl,
   getSchedule,
+  getSessionResult,
 } from "space-repetition";
 import type { Stage } from "space-repetition";
 
@@ -184,6 +185,16 @@ export const server = {
         reviewsCount: await countNextRound(user),
         schedule: await getSchedule(user),
       };
+    },
+  }),
+  sessionResult: defineAction({
+    accept: "json",
+    input: z.object({
+      sessionId: z.string(),
+    }),
+    handler: async ({ sessionId }, context) => {
+      const user = extractUser(context);
+      return await getSessionResult(user, sessionId);
     },
   }),
 };

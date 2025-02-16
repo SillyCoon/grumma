@@ -10,6 +10,7 @@ export interface GrammarPoint {
   examples: {
     ru: Example;
     en: Example;
+    order: number;
   }[];
   order?: number;
   exercises: Exercise[];

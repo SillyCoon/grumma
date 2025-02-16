@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import { children, createEffect, createSignal, Match, Switch } from "solid-js";
+import { children, createSignal, Match, Switch } from "solid-js";
 import { Badge } from "ui/badge";
 import {
   Card,
@@ -40,10 +40,6 @@ const Wrapper = (props: {
 
 export const GrammarRef = (props: GrammarRefProps) => {
   const [selected, setSelected] = createSignal(false);
-
-  createEffect(() => {
-    console.log(selected());
-  });
 
   return (
     <div>

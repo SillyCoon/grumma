@@ -4,15 +4,22 @@ import { Button } from "ui/button";
 import { Card, CardContent } from "ui/card";
 import { Part } from "./Part";
 
-type Props = { ru: ExampleSentence; en: ExampleSentence };
+type Props = {
+  ru: ExampleSentence;
+  en: ExampleSentence;
+  alwaysShow?: boolean;
+  variant?: "neutral" | "correct" | "wrong";
+};
 
 export const Example = (props: Props) => {
-  const [showTranslation, setShowTranslation] = createSignal(false);
+  const [showTranslation, setShowTranslation] = createSignal(
+    props.alwaysShow ?? false,
+  );
 
   return (
     <Card variant="outlined">
       <CardContent class="flex flex-col pt-6">
-        <Part part={props.ru} />
+        <Part part={props.ru} variant={props.variant} />
         <Show
           when={showTranslation()}
           fallback={
@@ -21,7 +28,7 @@ export const Example = (props: Props) => {
             </Button>
           }
         >
-          <Part part={props.en} />
+          <Part part={props.en} variant={props.variant} />
         </Show>
       </CardContent>
     </Card>

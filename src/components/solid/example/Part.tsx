@@ -1,12 +1,26 @@
+import { cva } from "class-variance-authority";
 import type { Example } from "grammar-sdk";
 
-type Props = { part: Example };
+type Props = { part: Example; variant?: "neutral" | "correct" | "wrong" };
+
+const variants = cva("", {
+  variants: {
+    variant: {
+      neutral: "text-secondary",
+      correct: "text-success",
+      wrong: "text-error",
+    },
+  },
+  defaultVariants: {
+    variant: "neutral",
+  },
+});
 
 export const Part = (props: Props) => {
   return (
     <p class="text-center text-xl">
       {props.part[0]}
-      <span class=" text-secondary ">{props.part[1]}</span>
+      <span class={variants({ variant: props.variant })}>{props.part[1]}</span>
       {props.part[2]}
     </p>
   );

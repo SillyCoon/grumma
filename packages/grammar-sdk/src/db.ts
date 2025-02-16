@@ -55,9 +55,10 @@ const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
     englishTitle: g.englishTitle ?? "",
     structure: g.structure ?? "",
     order: g.order ?? undefined,
-    examples: g.exercises.map((e) => ({
+    examples: g.exercises.map((e, i) => ({
       ru: Example(e.ru),
       en: Example(e.en),
+      order: i,
     })),
     exercises: g.exercises.map((e, i) => ({
       grammarPointId: `${g.id}`,

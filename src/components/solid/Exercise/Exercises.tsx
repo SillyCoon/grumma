@@ -1,10 +1,12 @@
 import { saveAttempt } from "@services/sr";
 import type { Exercise as ExerciseType } from "grammar-sdk";
-import { Match, Switch, createSignal } from "solid-js";
+import { Match, Switch, createEffect, createSignal } from "solid-js";
 import type { Stage } from "space-repetition";
 import { simpleShuffle } from "utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { Exercise } from "./Exercise";
+import { navigate } from "astro:transitions/client";
+import { Spinner } from "ui/Spinner";
 
 export const Exercises = (props: { exercises: ExerciseType[] }) => {
   const sessionId = uuidv4();
@@ -13,15 +15,15 @@ export const Exercises = (props: { exercises: ExerciseType[] }) => {
     simpleShuffle(props.exercises),
   );
 
-  const [wrong, setWrong] = createSignal<Set<ExerciseType>>(new Set());
-
   const exercise = () => exercisesLeft().at(0);
+
+  const isSr = window.location.pathname.includes("sr");
 
   const handleNext = (
     completed: ExerciseType,
     result: { answer: string; correct: boolean },
   ) => {
-    if (window.location.pathname.includes("sr")) {
+    if (isSr) {
       const e = exercise();
       if (e) {
         saveAttempt({
@@ -39,25 +41,19 @@ export const Exercises = (props: { exercises: ExerciseType[] }) => {
     if (result.correct) {
       setExercisesLeft((left) => left.filter((l) => l !== completed));
     } else {
-      setWrong((wrong) => wrong.add(completed));
-      setExercisesLeft((left) => simpleShuffle(left));
+      setExercisesLeft(simpleShuffle);
     }
   };
 
+  createEffect(() => {
+    if (!exercise()) {
+      if (isSr) navigate(`/sr/review/${sessionId}/result`);
+      else navigate("/dashboard");
+    }
+  });
+
   return (
-    <Switch
-      fallback={
-        <>
-          <p class="mt-8 text-center font-bold text-3xl text-secondary">
-            That's all folks!
-          </p>
-          <p>
-            Result: {props.exercises.length - wrong().size} /{" "}
-            {props.exercises.length}
-          </p>
-        </>
-      }
-    >
+    <Switch fallback={<Spinner />}>
       <Match when={exercise()}>
         <Exercise
           exercise={exercise() as ExerciseType}

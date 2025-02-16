@@ -72,8 +72,8 @@
     --warning: 48 96% 89%;
     --warning-foreground: 25 95% 53%;
 
-    --error: 0 93% 94%;
-    --error-foreground: 0 84% 60%;
+    --error: 0 75% 50%;
+    --error-foreground: 0 0% 100%;
 
     --ring: 240 5.9% 10%;
 

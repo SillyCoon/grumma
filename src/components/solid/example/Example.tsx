@@ -3,7 +3,6 @@ import { Show, createSignal } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent } from "ui/card";
 import { Part } from "./Part";
-import { cva } from "class-variance-authority";
 
 type Props = {
   ru: ExampleSentence;

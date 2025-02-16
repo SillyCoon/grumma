@@ -2,7 +2,6 @@ import { describe, test, expect } from "vitest";
 import { countConsecutiveDaysBefore } from ".";
 import { addDay, addMinute } from "@formkit/tempo";
 import { Range } from "immutable";
-import { textSpanIntersectsWithPosition } from "typescript";
 
 const generatePeriodDays = (start: Date, days: number) => {
   const range = Range(1, days + 1).map((d) => addDay(start, d));

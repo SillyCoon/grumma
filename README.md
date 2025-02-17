@@ -8,4 +8,4 @@ It's now hardcoded to our own grammar dataset + Supabase auth, but if there will
 ## Env variables
 
 Vite substitutes `import.meta.env...` env variables at build time.
-Meanwhile you can use `process.env...` to access env variables passed in runtime. 
+Meanwhile you can use `process.env...` to access env variables passed in runtime.

@@ -16,6 +16,7 @@ export const Session = (attempts: Attempt[]): Session => {
   };
 };
 export type SessionResult = {
+  sessionId: string;
   attempts: Attempt[];
   correct: number;
   total: number;

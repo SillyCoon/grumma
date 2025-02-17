@@ -12,11 +12,12 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "biome check .",
-    "knip": "knip"
+    "knip": "knip",
+    "upgrade-astro": "bunx @astrojs/upgrade"
   },
   "workspaces": ["packages/*"],
   "dependencies": {
-    "@astrojs/node": "9.0.2",
+    "@astrojs/node": "9.1.0",
     "@astrojs/solid-js": "5.0.4",
     "@astrojs/ts-plugin": "^1.10.4",
     "@kobalte/core": "^0.13.8",
@@ -24,7 +25,7 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "@tailwindcss/vite": "^4.0.3",
-    "astro": "5.2.5",
+    "astro": "5.3.0",
     "astro-loading-indicator": "^0.7.0",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
@@ -37,11 +38,11 @@
     "solid-js": "^1.9.4",
     "solid-sonner": "^0.2.8",
     "solid-toast": "^0.5.0",
-    "utils": "workspace:*",
     "solid-utils": "workspace:*",
     "space-repetition": "workspace:*",
     "tailwindcss-animate": "^1.0.7",
     "ui": "workspace:*",
+    "utils": "workspace:*",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

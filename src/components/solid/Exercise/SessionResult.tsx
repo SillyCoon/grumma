@@ -35,9 +35,8 @@ export const SessionResult = (props: {
     <div>
       <h1 class="mb-5 text-center text-3xl">Молодец!</h1>
 
-      <div class="grid grid-flow-row-dense grid-cols-1 gap-5 md:grid-cols-4">
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-4">
         <Accuracy
-          class="col-span-1 row-span-1"
           total={props.sessionResult.total}
           correct={props.sessionResult.correct}
         />
@@ -65,7 +64,7 @@ const Accuracy = (props: {
   correct: number;
 }) => {
   return (
-    <Card class={`${props.class} max-h-40 `} variant="outlined">
+    <Card class="max-h-40" variant="outlined">
       <CardHeader>
         <div class="text-center text-3xl">
           {Math.floor((props.correct / props.total) * 100)}%

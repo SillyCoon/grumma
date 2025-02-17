@@ -18,7 +18,11 @@ export const GrammarPoint = (props: Props) => {
     <section class="grid gap-5">
       <div class="flex items-center justify-between">
         <Show when={props.backTo}>
-          <IconButton href={props.backTo} variant="primary">
+          <IconButton
+            href={props.backTo}
+            class="hidden md:block"
+            variant="primary"
+          >
             <ArrowBack title="Back" />
           </IconButton>
         </Show>
@@ -29,6 +33,11 @@ export const GrammarPoint = (props: Props) => {
           detailedTitle={props.detailedTitle}
           englishTitle={props.englishTitle}
         />
+      </div>
+      <div class="md:hidden">
+        <IconButton href={props.backTo} variant="primary">
+          <ArrowBack title="Back" />
+        </IconButton>
       </div>
 
       <Card variant="outlined">

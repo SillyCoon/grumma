@@ -35,11 +35,11 @@ export const Example = (props: Props) => {
         </Show>
         <Show when={props.grammarHref}>
           <IconButton
-            class="absolute top-1/3 right-10"
+            class="absolute top-1/3 right-0 md:right-10 "
             href={props.grammarHref}
             variant="primary"
           >
-            <ArrowForward title="To Grammar Point" />
+            <ArrowForward class="size-7 md:size-10" title="To Grammar Point" />
           </IconButton>
         </Show>
       </CardContent>

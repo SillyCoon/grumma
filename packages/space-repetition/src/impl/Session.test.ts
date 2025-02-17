@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import Session from "./Session";
+import { describe, expect, it } from "vitest";
 import { mockAttempt, mockSession } from "../../__mocks__";
+import Session from "./Session";
 
 describe("Session.calculateResult", () => {
   it("should return correct results when all attempts are correct", () => {
@@ -17,6 +17,7 @@ describe("Session.calculateResult", () => {
     const result = Session.calculateResult(session);
 
     expect(result).toEqual({
+      sessionId: session.sessionId,
       attempts: [...attempts11, ...attempts21],
       correct: 2,
       total: 2,
@@ -61,6 +62,7 @@ describe("Session.calculateResult", () => {
     const result = Session.calculateResult(session);
 
     expect(result).toEqual({
+      sessionId: session.sessionId,
       attempts: [attempt11, attempt21],
       correct: 1,
       total: 2,
@@ -88,6 +90,7 @@ describe("Session.calculateResult", () => {
     const result = Session.calculateResult(session);
 
     expect(result).toEqual({
+      sessionId: session.sessionId,
       attempts: [attempt11, attempt21],
       correct: 0,
       total: 2,
@@ -104,6 +107,7 @@ describe("Session.calculateResult", () => {
     const result = Session.calculateResult(session);
 
     expect(result).toEqual({
+      sessionId: session.sessionId,
       attempts: session.attempts,
       correct: 2,
       total: 3,

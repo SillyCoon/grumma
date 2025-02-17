@@ -4,6 +4,7 @@ import { fetchGrammarPoint } from "grammar-sdk";
 import Layout from "../../../layouts/Layout.astro";
 
 const { id } = Astro.params;
+const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
 
 const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
 ---
@@ -12,7 +13,7 @@ const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
   {
     grammarPoint && (
       <>
-        <GrammarPoint client:visible {...grammarPoint} />
+        <GrammarPoint backTo={backTo} client:visible {...grammarPoint} />
         <section class="flex flex-col justify-between items-center mt-5">
           <a
             class="bg-primary  text-white px-6 py-3 rounded-full shadow-md text-center"

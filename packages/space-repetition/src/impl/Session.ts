@@ -1,11 +1,11 @@
 import { Seq } from "immutable";
-import type { Session, SessionResult } from "../types/Session";
 import type { Attempt } from "../types/Attempt";
+import type { Session, SessionResult } from "../types/Session";
 import type { Stage } from "../types/Stage";
 
 type Key = `${string}-${Stage}`;
 
-const calculateResult = ({ attempts }: Session): SessionResult => {
+const calculateResult = ({ attempts, sessionId }: Session): SessionResult => {
   const attemptsByGpStage = Seq(attempts).groupBy(
     (a) => `${a.grammarPointId}-${a.stage}` as Key,
   );
@@ -26,6 +26,7 @@ const calculateResult = ({ attempts }: Session): SessionResult => {
   );
 
   return {
+    sessionId: sessionId,
     attempts: meaningfulAttempts,
     correct: meaningfulAttempts.filter((v) => v.isCorrect).length,
     total: meaningfulAttempts.length,

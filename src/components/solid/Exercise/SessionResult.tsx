@@ -1,7 +1,7 @@
 import { Example as ExampleType, type GrammarPoint } from "grammar-sdk";
+import { For } from "solid-js";
 import type { SessionResult as SessionResultType } from "space-repetition";
 import { Card, CardContent, CardHeader } from "ui/card";
-import { For } from "solid-js";
 import { Example } from "../example/Example";
 
 export const SessionResult = (props: {
@@ -18,8 +18,18 @@ export const SessionResult = (props: {
           ? ExampleType.replaceAnswer(example.ru, attempt.answer)
           : undefined,
         isCorrect: attempt.isCorrect,
+        grammarPointId: attempt.grammarPointId,
       };
-    }) as { ru: ExampleType; en: ExampleType; isCorrect: boolean }[];
+    }) as {
+      ru: ExampleType;
+      en: ExampleType;
+      isCorrect: boolean;
+      grammarPointId: string;
+    }[];
+
+  const backTo = () => `/sr/review/${props.sessionResult.sessionId}/result`;
+
+  const grammarHref = (gpId: string) => `/grammar/${gpId}?backTo=${backTo()}`;
 
   return (
     <div>
@@ -39,6 +49,7 @@ export const SessionResult = (props: {
                 ru={answer.ru}
                 en={answer.en}
                 alwaysShow
+                grammarHref={grammarHref(answer.grammarPointId)}
               />
             )}
           </For>

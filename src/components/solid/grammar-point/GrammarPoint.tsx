@@ -1,6 +1,8 @@
 import type { GrammarPoint as GrammarPointType } from "grammar-sdk";
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
+import { IconButton } from "ui/icon-button";
+import { ArrowBack } from "ui/icons";
 import { Example } from "../example/Example";
 import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";
@@ -8,12 +10,19 @@ import { Title } from "./Title";
 type Props = Omit<GrammarPointType, "exercises"> & {
   explanation?: string;
   next?: string;
+  backTo?: string;
 };
 
 export const GrammarPoint = (props: Props) => {
   return (
     <section class="grid gap-5">
       <div class="flex items-center justify-between">
+        <Show when={props.backTo}>
+          <IconButton href={props.backTo} variant="primary">
+            <ArrowBack title="Back" />
+          </IconButton>
+        </Show>
+
         <Title
           className="flex-auto"
           shortTitle={props.shortTitle}

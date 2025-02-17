@@ -1,13 +1,16 @@
 import type { Example as ExampleSentence } from "grammar-sdk";
+import { ArrowForward } from "packages/ui/icons";
 import { Show, createSignal } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent } from "ui/card";
+import { IconButton } from "ui/icon-button";
 import { Part } from "./Part";
 
 type Props = {
   ru: ExampleSentence;
   en: ExampleSentence;
   alwaysShow?: boolean;
+  grammarHref?: string;
   variant?: "neutral" | "correct" | "wrong";
 };
 
@@ -18,7 +21,7 @@ export const Example = (props: Props) => {
 
   return (
     <Card variant="outlined">
-      <CardContent class="flex flex-col pt-6">
+      <CardContent class="relative flex flex-col pt-6">
         <Part part={props.ru} variant={props.variant} />
         <Show
           when={showTranslation()}
@@ -29,6 +32,15 @@ export const Example = (props: Props) => {
           }
         >
           <Part part={props.en} variant={props.variant} />
+        </Show>
+        <Show when={props.grammarHref}>
+          <IconButton
+            class="absolute top-1/3 right-10"
+            href={props.grammarHref}
+            variant="primary"
+          >
+            <ArrowForward title="To Grammar Point" />
+          </IconButton>
         </Show>
       </CardContent>
     </Card>

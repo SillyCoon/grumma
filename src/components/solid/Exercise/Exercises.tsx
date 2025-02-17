@@ -1,12 +1,12 @@
 import { saveAttempt } from "@services/sr";
+import { navigate } from "astro:transitions/client";
 import type { Exercise as ExerciseType } from "grammar-sdk";
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 import type { Stage } from "space-repetition";
+import { Spinner } from "ui/Spinner";
 import { simpleShuffle } from "utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { Exercise } from "./Exercise";
-import { navigate } from "astro:transitions/client";
-import { Spinner } from "ui/Spinner";
 
 export const Exercises = (props: { exercises: ExerciseType[] }) => {
   const sessionId = uuidv4();
@@ -38,11 +38,11 @@ export const Exercises = (props: { exercises: ExerciseType[] }) => {
       }
     }
 
-    if (result.correct) {
-      setExercisesLeft((left) => left.filter((l) => l !== completed));
-    } else {
-      setExercisesLeft(simpleShuffle);
-    }
+    setExercisesLeft((left) =>
+      result.correct
+        ? left.filter((l) => l !== completed)
+        : simpleShuffle(left),
+    );
   };
 
   createEffect(() => {

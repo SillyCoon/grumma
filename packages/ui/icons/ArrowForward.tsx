@@ -1,4 +1,4 @@
-export const ArrowForward = (props: { title: string }) => {
+export const ArrowForward = (props: { title?: string }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
       <title>{props.title ?? "Forward"}</title>

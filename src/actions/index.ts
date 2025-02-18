@@ -1,4 +1,3 @@
-import { fetchGrammarPoint } from "grammar-sdk";
 import {
   ActionError,
   defineAction,
@@ -6,7 +5,11 @@ import {
 } from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro:schema";
+import { fetchGrammarPoint } from "grammar-sdk";
+import { db } from "libs/db";
 import { createSupabaseServerInstance } from "libs/supabase";
+import { saveFeedback } from "packages/feedback";
+import type { Stage } from "space-repetition";
 import {
   addAttempt,
   countNextRound,
@@ -15,7 +18,6 @@ import {
   getSchedule,
   getSessionResult,
 } from "space-repetition";
-import type { Stage } from "space-repetition";
 
 const extractUser = (context: ActionAPIContext) => {
   const user = context.locals.user;
@@ -195,6 +197,27 @@ export const server = {
     handler: async ({ sessionId }, context) => {
       const user = extractUser(context);
       return await getSessionResult(user, sessionId);
+    },
+  }),
+  saveFeedback: defineAction({
+    accept: "json",
+    input: z.object({
+      email: z.string().email().optional(),
+      grammar: z
+        .object({
+          grammarPointId: z.number().int(),
+          exerciseOrder: z.number().int(),
+        })
+        .optional(),
+      message: z.string(),
+    }),
+    handler: async (feedback, context) => {
+      const user = extractUser(context);
+      await saveFeedback(db, {
+        ...feedback,
+        userId: user.id,
+        createdAt: new Date(),
+      });
     },
   }),
 };

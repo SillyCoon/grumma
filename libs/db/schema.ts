@@ -56,3 +56,13 @@ export const spaceRepetitions = grumma.table("space_repetition", {
   stage: integer().notNull(),
   userId: text().notNull(),
 });
+
+export const feedback = grumma.table("feedback", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: text(),
+  grammarPointId: integer().references(() => grammarPoints.id),
+  exerciseOrder: integer(),
+  message: text().notNull(),
+  email: text(),
+  createdAt: timestamp().notNull(),
+});

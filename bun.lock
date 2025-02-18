@@ -18,6 +18,7 @@
         "classnames": "^2.5.1",
         "dotenv": "^16.4.7",
         "drizzle-orm": "^0.38.4",
+        "feedback": "workspace:*",
         "grammar-sdk": "workspace:*",
         "immutable": "^5.0.3",
         "postgres": "^3.4.5",
@@ -48,6 +49,15 @@
         "typescript": "^5.7.3",
         "vite": "^6.0.11",
         "vitest": "^3.0.4",
+      },
+    },
+    "packages/feedback": {
+      "name": "feedback",
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5.0.0",
       },
     },
     "packages/grammar-sdk": {
@@ -865,6 +875,8 @@
     "fast-uri": ["fast-uri@3.0.3", "", {}, "sha512-aLrHthzCjH5He4Z2H9YZ+v6Ujb9ocRuW6ZzkJQOrTxleEijANq4v1TsaPaVG1PZcuurEzrLcWRyYBYXD5cEiaw=="],
 
     "fastq": ["fastq@1.17.1", "", { "dependencies": { "reusify": "^1.0.4" } }, "sha512-sRVD3lWVIXWg6By68ZN7vho9a1pQcN/WBFaAAsDDFzlJjvoGx0P8z7V1t72grFJfJhu3YPZBuu25f7Kaw2jN1w=="],
+
+    "feedback": ["feedback@workspace:packages/feedback"],
 
     "fill-range": ["fill-range@7.1.1", "", { "dependencies": { "to-regex-range": "^5.0.1" } }, "sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg=="],
 

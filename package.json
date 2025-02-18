@@ -43,6 +43,7 @@
     "tailwindcss-animate": "^1.0.7",
     "ui": "workspace:*",
     "utils": "workspace:*",
+    "feedback": "workspace:*",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

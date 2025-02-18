@@ -9,6 +9,7 @@ import type { Exercise as ExerciseType } from "grammar-sdk";
 import { actions } from "astro:actions";
 import { Button } from "ui/button";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
+import { Feedback } from "./Feedback";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
 import { compareAnswer, normalizeAnswer, parseToExercise } from "./utils";
@@ -97,6 +98,7 @@ export const Exercise = (props: ExerciseProps) => {
               Grammar
             </Button>
             <TransliterationRules />
+            <Feedback exercise={props.exercise} />
           </div>
 
           <AnswerResult

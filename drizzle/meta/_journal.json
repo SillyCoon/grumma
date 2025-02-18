@@ -15,6 +15,13 @@
       "when": 1732333708052,
       "tag": "0001_add-more-titles",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1739882629108,
+      "tag": "0002_lush_siren",
+      "breakpoints": true
     }
   ]
 }

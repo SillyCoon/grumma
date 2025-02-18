@@ -4,7 +4,7 @@ export const transliterate = (input: string) => {
   return transliterateLib(input, substitutions);
 };
 
-const substitutions = {
+export const substitutions = {
   a: "а",
   b: "б",
   v: "в",

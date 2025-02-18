@@ -10,6 +10,7 @@ import { actions } from "astro:actions";
 import { Button } from "ui/button";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { TransliterateInput } from "./TransliterateInput";
+import { TransliterationRules } from "./TransliterationRules";
 import { compareAnswer, normalizeAnswer, parseToExercise } from "./utils";
 
 interface ExerciseProps {
@@ -89,11 +90,13 @@ export const Exercise = (props: ExerciseProps) => {
           </form>
           <div class="mt-5 flex justify-center">
             <Button
+              variant="ghost"
               onClick={() => setShowGrammarPoint(true)}
               disabled={notAnswered()}
             >
-              Show grammar point
+              Grammar
             </Button>
+            <TransliterationRules />
           </div>
 
           <AnswerResult

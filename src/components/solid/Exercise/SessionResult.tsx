@@ -40,7 +40,7 @@ export const SessionResult = (props: {
           total={props.sessionResult.total}
           correct={props.sessionResult.correct}
         />
-        <div class="col-span-3 flex flex-col gap-3">
+        <div class="flex flex-col gap-3 md:col-span-3">
           <For each={answers()}>
             {(answer) => (
               <Example

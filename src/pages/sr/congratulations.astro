@@ -1,0 +1,11 @@
+---
+import CongratulationsScreen from "@components/solid/CongratulationsScreen";
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="Congratulations" topPadding={false} fluid>
+  <CongratulationsScreen
+    class="flex h-[calc(100vh-76px-4rem)] bg-gradient-to-b from-primary to-brown-500"
+    client:only
+  />
+</Layout>

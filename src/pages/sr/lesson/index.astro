@@ -2,12 +2,16 @@
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import Layout from "../../../layouts/Layout.astro";
 
+import { navigate } from "astro:transitions/client";
+import { fetchExplanation } from "grammar-sdk";
 import type { Lesson } from "space-repetition";
 import { GET as getLessons } from "../../api/sr/lesson";
-import { fetchExplanation } from "grammar-sdk";
 
 const lesson = (await (await getLessons(Astro)).json())[0] as Lesson;
 const explanation = lesson ? await fetchExplanation(lesson.id) : undefined;
+if (!lesson) {
+  navigate("/sr/congratulations");
+}
 ---
 
 <Layout title="Lessons">

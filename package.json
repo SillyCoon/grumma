@@ -25,12 +25,15 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "@tailwindcss/vite": "^4.0.3",
+    "@types/canvas-confetti": "^1.9.0",
     "astro": "5.3.0",
     "astro-loading-indicator": "^0.7.0",
+    "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.4",
+    "feedback": "workspace:*",
     "grammar-sdk": "workspace:*",
     "immutable": "^5.0.3",
     "postgres": "^3.4.5",
@@ -43,7 +46,6 @@
     "tailwindcss-animate": "^1.0.7",
     "ui": "workspace:*",
     "utils": "workspace:*",
-    "feedback": "workspace:*",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

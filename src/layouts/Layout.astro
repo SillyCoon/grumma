@@ -10,9 +10,10 @@ import Header from "../components/Header.astro";
 interface Props {
   title: string;
   topPadding?: boolean;
+  fluid?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, fluid } = Astro.props;
 const loggedIn = !!Astro.locals.user;
 const topPadding = Astro.props.topPadding ?? true;
 ---
@@ -46,7 +47,9 @@ const topPadding = Astro.props.topPadding ?? true;
     <LoadingIndicator color="#8A5D33" />
     <Sidebar loggedIn={loggedIn} client:idle />
 
-    <main class={`container mx-auto ${topPadding && "pt-8"} pb-8`}>
+    <main
+      class={`${!fluid && "container"} mx-auto ${topPadding && "pt-8"} pb-8`}
+    >
       <slot />
     </main>
     <Toaster position="bottom-right" client:only="solid-js" />

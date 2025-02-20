@@ -34,11 +34,13 @@ export const GrammarPoint = (props: Props) => {
           englishTitle={props.englishTitle}
         />
       </div>
-      <div class="md:hidden">
-        <IconButton href={props.backTo} variant="primary">
-          <ArrowBack title="Back" />
-        </IconButton>
-      </div>
+      <Show when={props.backTo}>
+        <div class="md:hidden">
+          <IconButton href={props.backTo} variant="primary">
+            <ArrowBack title="Back" />
+          </IconButton>
+        </div>
+      </Show>
 
       <Card variant="outlined">
         <CardHeader>

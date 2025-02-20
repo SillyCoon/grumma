@@ -51,7 +51,7 @@ const topPadding = Astro.props.topPadding ?? true;
     <Sidebar loggedIn={loggedIn} client:idle />
 
     <main
-      class={`flex flex-auto flex-col min-h-[calc(100vh-76px)] relative ${!fluid && "container"} pb-15 mx-auto ${topPadding && "pt-8"}`}
+      class={`flex flex-auto flex-col min-h-[calc(100dvh-76px)] relative ${!fluid && "container"} pb-15 mx-auto ${topPadding && "pt-8"}`}
     >
       <slot />
 

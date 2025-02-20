@@ -33,10 +33,10 @@ export const LoginForm = (props: {
   errorMessage?: string;
 }) => {
   return (
-    <Tabs defaultValue="account" class="w-[500px]">
+    <Tabs defaultValue="account" class="max-w-[500px]">
       <TabsList class="grid w-full grid-cols-2">
-        <TabsTrigger value="account">Sign In</TabsTrigger>
-        <TabsTrigger value="password">Sign Up</TabsTrigger>
+        <TabsTrigger value="account">Login</TabsTrigger>
+        <TabsTrigger value="password">Create account</TabsTrigger>
       </TabsList>
       <TabsContent value="account">
         <Form
@@ -67,7 +67,9 @@ const Form = (props: {
   return (
     <Card variant="outlined">
       <CardHeader>
-        <CardTitle>Account</CardTitle>
+        <CardTitle>
+          {props.type === "signin" ? "Login" : "Create account"}
+        </CardTitle>
         <CardDescription>
           If you want to use a space repetition feature, please sign in or
           create an account:
@@ -96,7 +98,7 @@ const Form = (props: {
             </Alert>
           </Show>
           <Button type="submit" form="password">
-            {props.type === "signin" ? "Sign In" : "Sign Up"}
+            {props.type === "signin" ? "Login" : "Create account"}
           </Button>
         </form>
       </CardContent>

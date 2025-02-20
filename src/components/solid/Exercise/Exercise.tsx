@@ -7,8 +7,9 @@ import { Task } from "./Task";
 import type { Exercise as ExerciseType } from "grammar-sdk";
 
 import { actions } from "astro:actions";
-import { Sheet, SheetContent, SheetTrigger } from "packages/ui/sheet";
 import { Button } from "ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "ui/sheet";
+import { Spinner } from "ui/Spinner";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { Feedback } from "./Feedback";
 import { TransliterateInput } from "./TransliterateInput";
@@ -126,7 +127,7 @@ const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
   let ref!: HTMLDivElement;
 
   return (
-    <Show when={gp()}>
+    <Show when={gp()} fallback={<Spinner />}>
       {(g) => (
         <div ref={ref}>
           {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}

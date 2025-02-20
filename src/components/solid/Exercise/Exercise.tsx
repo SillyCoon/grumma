@@ -1,4 +1,4 @@
-import { Show, createEffect, createResource, createSignal } from "solid-js";
+import { Show, createResource, createSignal } from "solid-js";
 import { SendButton } from "../generic/SendButton";
 import { AnswerResult } from "./AnswerResult";
 import { Description } from "./Description";
@@ -7,6 +7,7 @@ import { Task } from "./Task";
 import type { Exercise as ExerciseType } from "grammar-sdk";
 
 import { actions } from "astro:actions";
+import { Sheet, SheetContent, SheetTrigger } from "packages/ui/sheet";
 import { Button } from "ui/button";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { Feedback } from "./Feedback";
@@ -63,7 +64,7 @@ export const Exercise = (props: ExerciseProps) => {
 
   return (
     <>
-      <div class="flex h-[calc(100vh-76px-4rem)] justify-center md:items-center">
+      <div class="flex shrink-0 grow justify-center md:items-center">
         <div class="w-full">
           <Task
             text={props.exercise.ru}
@@ -90,13 +91,19 @@ export const Exercise = (props: ExerciseProps) => {
             <SendButton class="-ml-10" type="submit" />
           </form>
           <div class="mt-5 flex justify-center">
-            <Button
-              variant="ghost"
-              onClick={() => setShowGrammarPoint(true)}
-              disabled={notAnswered()}
-            >
-              Grammar
-            </Button>
+            <Sheet>
+              <SheetTrigger>
+                <Button variant="ghost" disabled={notAnswered()}>
+                  Grammar
+                </Button>
+              </SheetTrigger>
+              <SheetContent class="h-screen" position={"bottom"}>
+                <LoadingGrammarPoint
+                  grammarPointId={props.exercise.grammarPointId}
+                />
+              </SheetContent>
+            </Sheet>
+
             <TransliterationRules />
             <Feedback exercise={props.exercise} />
           </div>
@@ -107,9 +114,6 @@ export const Exercise = (props: ExerciseProps) => {
           />
         </div>
       </div>
-      <Show when={showGrammarPoint()}>
-        <LoadingGrammarPoint grammarPointId={props.exercise.grammarPointId} />
-      </Show>
     </>
   );
 };
@@ -120,12 +124,6 @@ const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
     actions.grammarPoint,
   );
   let ref!: HTMLDivElement;
-
-  createEffect(() => {
-    if (gp()) {
-      ref?.scrollIntoView({ behavior: "smooth" });
-    }
-  });
 
   return (
     <Show when={gp()}>

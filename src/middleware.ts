@@ -22,7 +22,10 @@ export const onRequest = defineMiddleware(
     Object.assign(locals, { user: data.user });
 
     if (
-      PATHS_TO_IGNORE.some((path) => pathHas(url, path) || isWelcomePage(url))
+      PATHS_TO_IGNORE.some(
+        (path) =>
+          pathHas(url, path) || isWelcomePage(url) || pathHas(url, "image"),
+      )
     ) {
       return next();
     }

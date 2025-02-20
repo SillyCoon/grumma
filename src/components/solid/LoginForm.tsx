@@ -33,7 +33,7 @@ export const LoginForm = (props: {
   errorMessage?: string;
 }) => {
   return (
-    <Tabs defaultValue="account" class="w-[500px]">
+    <Tabs defaultValue="account" class="max-w-[500px]">
       <TabsList class="grid w-full grid-cols-2">
         <TabsTrigger value="account">Sign In</TabsTrigger>
         <TabsTrigger value="password">Sign Up</TabsTrigger>

@@ -103,8 +103,18 @@ const Form = (props: {
 
       <CardFooter class="flex flex-col items-center gap-2">
         <p>or</p>
-        <form class="text-4xl" action={actions.loginWithGoogle} method="post">
-          <SignInWithGoogle type="submit" value="google" name="provider" />
+        <form
+          id="google"
+          class="text-4xl"
+          action={actions.loginWithGoogle}
+          method="post"
+        >
+          <SignInWithGoogle
+            type="submit"
+            value="google"
+            name="provider"
+            form="google"
+          />
         </form>
       </CardFooter>
     </Card>

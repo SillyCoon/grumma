@@ -55,3 +55,15 @@ const topPadding = Astro.props.topPadding ?? true;
     <Toaster position="bottom-right" client:only="solid-js" />
   </body>
 </html>
+<!-- HACK: to do a client side redirect caused by Transitions   -->
+<script>
+  class Navigator extends HTMLElement {
+    connectedCallback() {
+      // Read the message from the data attribute.
+      const message = this.dataset.navigate;
+      if (message) window.location.href = message;
+    }
+  }
+
+  customElements.define("grumma-navigator", Navigator);
+</script>

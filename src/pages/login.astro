@@ -1,5 +1,5 @@
 ---
-import { LoginForm as LoginForm } from "@components/solid/LoginForm";
+import { LoginForm } from "@components/solid/LoginForm";
 import Layout from "@layouts/Layout.astro";
 import { actions } from "astro:actions";
 
@@ -9,10 +9,13 @@ const resultSignUp = Astro.getActionResult(actions.signup);
 const resultSignIn = Astro.getActionResult(actions.signin);
 if (Astro.locals.user || hasOkResult(resultSignUp) || hasOkResult(resultSignIn))
   return Astro.redirect("/dashboard");
+
+const result = Astro.getActionResult(actions.loginWithGoogle);
 ---
 
 <Layout title="Login">
   <div class="grid gap-6 mx-auto my-auto w-fit py-16">
+    <grumma-navigator data-navigate={result?.data?.url}> </grumma-navigator>
     <LoginForm
       client:load
       result={resultSignUp || resultSignIn}

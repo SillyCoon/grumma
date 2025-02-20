@@ -14,7 +14,7 @@ const result = Astro.getActionResult(actions.loginWithGoogle);
 ---
 
 <Layout title="Login">
-  <div class="grid gap-6 mx-auto my-auto w-fit py-16">
+  <div class="grid gap-6 mx-auto w-fit">
     <grumma-navigator data-navigate={result?.data?.url}> </grumma-navigator>
     <LoginForm
       client:load

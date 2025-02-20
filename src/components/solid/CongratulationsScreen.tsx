@@ -17,7 +17,7 @@ export default function CongratulationsScreen(props: { class?: string }) {
 
   return (
     <div
-      class={`relative flex-col items-center justify-center text-center ${props.class}`}
+      class={`relative flex-col items-center justify-center px-5 text-center ${props.class}`}
     >
       {showConfetti() && <div id="confetti-container" />}
 

@@ -6,6 +6,9 @@ import "../styles/global.css";
 import { Sidebar } from "@components/solid/Sidebar/Sidebar";
 import { Toaster } from "solid-toast";
 import Header from "../components/Header.astro";
+import { Image } from "astro:assets";
+import github from "public/github-mark.svg";
+import coffee from "public/coffee.svg";
 
 interface Props {
   title: string;
@@ -48,22 +51,33 @@ const topPadding = Astro.props.topPadding ?? true;
     <Sidebar loggedIn={loggedIn} client:idle />
 
     <main
-      class={`${!fluid && "container"} mx-auto ${topPadding && "pt-8"} pb-8`}
+      class={`flex flex-auto flex-col min-h-[calc(100vh-76px)] relative ${!fluid && "container"} pb-15 mx-auto ${topPadding && "pt-8"}`}
     >
       <slot />
+
+      <footer
+        class="absolute h-10 left-0 flex flex-row bottom-0 w-full items-center justify-center gap-5 bg-white text-secondary-foreground text-center"
+      >
+        <a href="https://github.com/SillyCoon/grumma">
+          <Image height={30} width={30} src={github} alt="GitHub logo" />
+        </a>
+        <a href="https://buymeacoffee.com/grumma">
+          <Image height={30} src={coffee} alt="By me a coffee logo" />
+        </a>
+        <Toaster position="bottom-right" client:only="solid-js" />
+      </footer>
     </main>
-    <Toaster position="bottom-right" client:only="solid-js" />
+    <!-- HACK: to do a client side redirect caused by Transitions   -->
+    <script>
+      class Navigator extends HTMLElement {
+        connectedCallback() {
+          // Read the message from the data attribute.
+          const message = this.dataset.navigate;
+          if (message) window.location.href = message;
+        }
+      }
+
+      customElements.define("grumma-navigator", Navigator);
+    </script>
   </body>
 </html>
-<!-- HACK: to do a client side redirect caused by Transitions   -->
-<script>
-  class Navigator extends HTMLElement {
-    connectedCallback() {
-      // Read the message from the data attribute.
-      const message = this.dataset.navigate;
-      if (message) window.location.href = message;
-    }
-  }
-
-  customElements.define("grumma-navigator", Navigator);
-</script>

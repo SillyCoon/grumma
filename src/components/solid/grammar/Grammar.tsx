@@ -1,10 +1,10 @@
 import type { GrammarPoint } from "grammar-sdk";
-import { createSignal, For } from "solid-js";
-import { Button } from "ui/button";
-import { GrammarBlock } from "./GrammarBlock";
-import { TextField, TextFieldInput } from "ui/text-field";
-import { useDebounce } from "solid-utils";
 import { Search } from "packages/ui/icons";
+import { createSignal, For } from "solid-js";
+import { useDebounce } from "solid-utils";
+import { Button } from "ui/button";
+import { TextField, TextFieldInput } from "ui/text-field";
+import { GrammarBlock } from "./GrammarBlock";
 
 interface GrammarProps {
   grammar: GrammarPoint[];

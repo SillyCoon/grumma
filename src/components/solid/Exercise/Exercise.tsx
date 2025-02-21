@@ -7,8 +7,10 @@ import { Task } from "./Task";
 import type { Exercise as ExerciseType } from "grammar-sdk";
 
 import { actions } from "astro:actions";
+import { FabButton } from "packages/ui/fab";
+import { CloseIcon } from "packages/ui/icons";
 import { Button } from "ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "ui/sheet";
 import { Spinner } from "ui/Spinner";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { Feedback } from "./Feedback";
@@ -102,6 +104,11 @@ export const Exercise = (props: ExerciseProps) => {
                 <LoadingGrammarPoint
                   grammarPointId={props.exercise.grammarPointId}
                 />
+                <SheetClose>
+                  <FabButton>
+                    <CloseIcon />
+                  </FabButton>
+                </SheetClose>
               </SheetContent>
             </Sheet>
 

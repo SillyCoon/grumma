@@ -98,7 +98,7 @@ export const Exercise = (props: ExerciseProps) => {
                   Grammar
                 </Button>
               </SheetTrigger>
-              <SheetContent class="h-screen" position={"bottom"}>
+              <SheetContent class="h-dvh" position="bottom">
                 <LoadingGrammarPoint
                   grammarPointId={props.exercise.grammarPointId}
                 />

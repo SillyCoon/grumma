@@ -1,6 +1,5 @@
 import { Show, createResource, createSignal } from "solid-js";
 import { SendButton } from "../generic/SendButton";
-import { AnswerResult } from "./AnswerResult";
 import { Description } from "./Description";
 import { Task } from "./Task";
 
@@ -13,6 +12,7 @@ import { Button } from "ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "ui/sheet";
 import { Spinner } from "ui/Spinner";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
+import { AnswerResult } from "./AnswerResult";
 import { Feedback } from "./Feedback";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
@@ -89,7 +89,7 @@ export const Exercise = (props: ExerciseProps) => {
               onInput={(str) => {
                 setAnswer(normalizeAnswer(str));
               }}
-              class="focus h-[40px] grow rounded border border-secondary p-2 focus:outline-primary"
+              class="focus h-[50px] grow rounded-xl border border-secondary/30 p-2 text-lg focus:outline-primary"
             />
             <SendButton class="-ml-10" type="submit" />
           </form>

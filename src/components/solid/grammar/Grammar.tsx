@@ -29,6 +29,8 @@ export const Grammar = (props: GrammarProps) => {
       );
     });
 
+  const cramDisabled = () => !cram().length;
+
   const groupedGrammar = Object.groupBy(props.grammar, (v) => v.torfl);
   return (
     <section class="grid">
@@ -40,8 +42,14 @@ export const Grammar = (props: GrammarProps) => {
 
           <div class="flex w-full items-center justify-between gap-2 md:w-max">
             <span>Selected: {cram().length}</span>
-            <a href={`grammar/${cram().join("-")}/practice`}>
-              <Button>Start</Button>
+            <a
+              href={
+                cramDisabled()
+                  ? undefined
+                  : `grammar/${cram().join("-")}/practice`
+              }
+            >
+              <Button disabled={cramDisabled()}>Start</Button>
             </a>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { Example as ExampleSentence } from "grammar-sdk";
+import type { Example as ExampleSentence } from "grammar-sdk/example";
 import { ArrowForward } from "packages/ui/icons";
 import { Show, createSignal } from "solid-js";
 import { Button } from "ui/button";

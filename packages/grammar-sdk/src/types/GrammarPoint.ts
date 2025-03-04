@@ -1,4 +1,4 @@
-import type { Example } from "./Example";
+import type { Example } from "../example";
 import type { Exercise } from "./Exercise";
 
 export interface GrammarPoint {

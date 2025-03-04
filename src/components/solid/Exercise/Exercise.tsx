@@ -34,8 +34,6 @@ export const Exercise = (props: ExerciseProps) => {
     undefined,
   );
 
-  const [showGrammarPoint, setShowGrammarPoint] = createSignal(false);
-
   const notAnswered = () => isCorrect() === undefined;
 
   const correctAnswer = () =>
@@ -61,7 +59,6 @@ export const Exercise = (props: ExerciseProps) => {
     });
     setAnswer("");
     setIsCorrect(undefined);
-    setShowGrammarPoint(false);
     input.focus();
   };
 

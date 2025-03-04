@@ -1,6 +1,9 @@
-import type { User } from "../../src/models/user";
 import { fetchGrammarList } from "grammar-sdk";
+import { Map as IMap, Seq } from "immutable";
+import { db } from "../../libs/db";
+import type { User } from "../../src/models/user";
 import { NaiveAlgorithm } from "./src/NaiveAlgorithm";
+import { Session } from "./src/session";
 import { SpaceRepetition } from "./src/SpaceRepetition";
 import {
   getAttempts,
@@ -11,10 +14,7 @@ import { StageSettings } from "./src/StageSettings";
 import type { Attempt } from "./src/types/Attempt";
 import type { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
-import { db } from "../../libs/db";
-import { Seq, Map as IMap } from "immutable";
 import { countConsecutiveDaysBefore } from "./src/utils";
-import Session from "./src/impl/Session";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -107,8 +107,7 @@ export const getSessionResult = async (user: User, sessionId: string) => {
   return Session.calculateResult(session);
 };
 
-export type { Stage } from "./src/types/Stage";
-export type { Schedule } from "./src/types/Schedule";
-export type { Lesson } from "./src/types/Lesson";
 export type { Attempt } from "./src/types/Attempt";
-export type { SessionResult } from "./src/types/Session";
+export type { Lesson } from "./src/types/Lesson";
+export type { Schedule } from "./src/types/Schedule";
+export type { Stage } from "./src/types/Stage";

@@ -52,7 +52,10 @@ export const Exercises = (props: {
 
   createEffect(() => {
     if (!exercise()) {
-      navigate(`/sr/review/${sessionId}/result`);
+      const resultPage = isSr()
+        ? `/sr/review/${sessionId}/result`
+        : "/grammar/practice/result";
+      navigate(resultPage);
     }
   });
 

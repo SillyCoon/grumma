@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import type { Example } from "grammar-sdk";
+import type { Example } from "grammar-sdk/example";
 
 type Props = { part: Example; variant?: "neutral" | "correct" | "wrong" };
 

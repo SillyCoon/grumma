@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./example": "./src/example/index.ts"
+    "./example": "./src/example/index.ts",
+    "./mocks": "./__mocks__/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"

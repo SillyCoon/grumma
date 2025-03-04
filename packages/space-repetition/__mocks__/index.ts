@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { Attempt, Stage } from "..";
-import type { Session } from "../src/types/Session";
+import type { Session } from "../src/session";
 
 export const mockAttempt = (gp?: Partial<Attempt>): Attempt => ({
   grammarPointId: faker.string.alphanumeric(),

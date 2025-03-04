@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
-import type { Example, Exercise, GrammarPoint } from "grammar-sdk";
+import type { Exercise, GrammarPoint } from "grammar-sdk";
 import { Range } from "immutable";
+import type { Example } from "../src/example";
 
 export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
   id: faker.string.uuid(),

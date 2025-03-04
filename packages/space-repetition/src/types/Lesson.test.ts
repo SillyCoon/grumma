@@ -1,7 +1,7 @@
 import type { GrammarPoint } from "grammar-sdk";
-import { test, expect } from "vitest";
+import { mockGrammarPoint } from "grammar-sdk/mocks";
+import { expect, test } from "vitest";
 import { Lesson } from "./Lesson";
-import { mockGrammarPoint } from "grammar-sdk/__mocks__";
 
 test("Lesson", () => {
   const gp: GrammarPoint = mockGrammarPoint();

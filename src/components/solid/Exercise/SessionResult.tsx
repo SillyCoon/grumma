@@ -1,6 +1,5 @@
-import { Example as ExampleType, type GrammarPoint } from "grammar-sdk";
-import { For } from "solid-js";
-import type { SessionResult as SessionResultType } from "space-repetition";
+import { Example as ExampleImpl } from "grammar-sdk/example";
+import type { SessionResult as SessionResultType } from "space-repetition/session";
 import { Card, CardContent, CardHeader } from "ui/card";
 import { Example } from "../example/Example";
 

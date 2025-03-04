@@ -2,6 +2,10 @@
   "name": "space-repetition",
   "module": "index.ts",
   "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./session": "./src/session/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

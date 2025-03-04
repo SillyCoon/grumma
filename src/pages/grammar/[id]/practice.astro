@@ -12,6 +12,7 @@ const exercises = simpleShuffle(grammarPoints.flatMap((g) => g.exercises));
 
 <Layout title="Practice">
   <Exercises
+    type="practice"
     transition:animate="fade"
     client:only="solid-js"
     transition:persist="exercises"

@@ -1,0 +1,15 @@
+---
+import { SessionResult } from "@components/solid/Exercise/SessionResult";
+import Layout from "@layouts/Layout.astro";
+import { fetchGrammarList } from "grammar-sdk";
+
+const grammar = await fetchGrammarList();
+---
+
+<Layout title="Practice results">
+  <SessionResult
+    client:only="solid-js"
+    sessionResult={undefined}
+    grammar={grammar}
+  />
+</Layout>

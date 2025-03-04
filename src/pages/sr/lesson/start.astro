@@ -1,12 +1,20 @@
 ---
 import { Exercises } from "@components/solid/Exercise/Exercises";
-import Layout from "../../../layouts/Layout.astro";
 import type { Lesson } from "space-repetition";
+import Layout from "../../../layouts/Layout.astro";
 import { GET as getLessons } from "../../api/sr/lesson";
 
 const lesson = (await (await getLessons(Astro)).json())[0] as Lesson;
 ---
 
 <Layout title="Lessons">
-  {lesson && <Exercises client:only="solid-js" exercises={[lesson.exercise]} />}
+  {
+    lesson && (
+      <Exercises
+        client:only="solid-js"
+        exercises={[lesson.exercise]}
+        type="sr"
+      />
+    )
+  }
 </Layout>

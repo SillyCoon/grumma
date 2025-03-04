@@ -9,6 +9,7 @@ const review = (await (await getReview(Astro)).json()) as Lesson[];
 
 <Layout title="Review">
   <Exercises
+    type="sr"
     transition:animate="fade"
     transition:persist="exercises"
     transition:persist-props

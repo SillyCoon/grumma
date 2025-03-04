@@ -1,8 +1,8 @@
 import { eq, inArray } from "drizzle-orm";
 import { db } from "../../../libs/db";
 import { grammarPoints } from "../../../libs/db/schema";
+import { Example } from "./example";
 import type { GrammarPointDb } from "./types/dto";
-import { Example } from "./types/Example";
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { extractGrammar } from "./utils";
 

@@ -1,5 +1,5 @@
+import { Example } from "./example";
 import type { GrammarPointDto } from "./types/dto";
-import { Example } from "./types/Example";
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { extractGrammar, fetchJson } from "./utils";
 

@@ -2,6 +2,10 @@
   "name": "grammar-sdk",
   "module": "index.ts",
   "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./example": "./src/example/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

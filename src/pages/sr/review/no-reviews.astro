@@ -1,0 +1,22 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Button } from "ui/button";
+---
+
+<Layout title="Congratulations" topPadding={false} fluid>
+  <section class="flex flex-auto flex-col items-center justify-center">
+    <div
+      class="flex gap-4 flex-auto flex-col items-center justify-center max-w-1/2 text-center"
+    >
+      <h1 class="font-bold text-4xl text-secondary drop-shadow-lg">
+        Well done!
+      </h1>
+      <p class="text-lg text-secondary drop-shadow-lg">
+        You've finished all your reviews for now. While you wait for the next
+        ones to become available, why not learn new grammar points or use the
+        cram function to reinforce what you already know?
+      </p>
+      <Button variant="link"> <a href="/dashboard">To Dashboard</a></Button>
+    </div>
+  </section>
+</Layout>

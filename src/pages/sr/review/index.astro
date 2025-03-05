@@ -5,6 +5,7 @@ import type { Lesson } from "space-repetition";
 import { GET as getReview } from "../../api/sr/review";
 
 const review = (await (await getReview(Astro)).json()) as Lesson[];
+if (!review.length) return Astro.redirect("/sr/review/no-reviews");
 ---
 
 <Layout title="Review">

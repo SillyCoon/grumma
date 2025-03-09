@@ -7,9 +7,10 @@ import {
 import { fetchGrammarFromApi, fetchGrammarPointFromApi } from "./realtime";
 
 export const fetchGrammarPoint = async (id: string) => {
-  const gp = process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE
-    ? await fetchGrammarPointFromApi(id)
-    : await fetchGrammarPointFromDb(id);
+  const gp =
+    process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE === "true"
+      ? await fetchGrammarPointFromApi(id)
+      : await fetchGrammarPointFromDb(id);
   const explanation = await fetchExplanation(id);
   return gp ? { ...gp, explanation } : undefined;
 };
@@ -29,7 +30,7 @@ export const fetchGrammarPoints = async (ids: string[]) => {
  * @returns All grammar WITHOUT explanations
  */
 export const fetchGrammarList = () => {
-  return process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE
+  return process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE === "true"
     ? fetchGrammarFromApi()
     : fetchGrammarFromDb();
 };

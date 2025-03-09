@@ -7,14 +7,14 @@ export const fetchGrammarPointFromApi = async (
   id: string,
 ): Promise<GrammarPoint | undefined> => {
   const dto = await fetchJson<GrammarPointDto | undefined>(
-    `${import.meta.env.PUBLIC_API}grammar/${id}`,
+    `${process.env.PUBLIC_API}grammar/${id}`,
   );
   return dto && GrammarPointFromRealtime(dto);
 };
 
 export const fetchGrammarFromApi = async (): Promise<GrammarPoint[]> => {
   const grammarDto: GrammarPointDto[] = await fetchJson(
-    `${import.meta.env.PUBLIC_API}/grammar`,
+    `${process.env.PUBLIC_API}/grammar`,
   );
 
   return grammarDto

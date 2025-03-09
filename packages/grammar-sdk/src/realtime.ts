@@ -6,6 +6,7 @@ import { extractGrammar, fetchJson } from "./utils";
 export const fetchGrammarPointFromApi = async (
   id: string,
 ): Promise<GrammarPoint | undefined> => {
+  console.log("fetchGrammarPointFromApi", process.env.PUBLIC_API, id);
   const dto = await fetchJson<GrammarPointDto | undefined>(
     `${process.env.PUBLIC_API}grammar/${id}`,
   );

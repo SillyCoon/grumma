@@ -12,7 +12,7 @@ env:
   REGISTRY: asia-northeast1-docker.pkg.dev/gramma-400100/grumma
   PUBLIC_URL: https://grumma.org
   DATABASE_URL: ${{secrets.DATABASE_URL}}
-  PUBLIC_REAL_TIME_CONTENT_UPDATE: '"false"'
+  PUBLIC_REAL_TIME_CONTENT_UPDATE: false
 
 jobs:
   publish:

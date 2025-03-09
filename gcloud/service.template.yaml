@@ -16,7 +16,7 @@ spec:
               containerPort: 8080
           env:
             - name: PUBLIC_REAL_TIME_CONTENT_UPDATE
-              value: ${PUBLIC_REAL_TIME_CONTENT_UPDATE}
+              value: "${PUBLIC_REAL_TIME_CONTENT_UPDATE}"
             - name: PUBLIC_URL
               value: https://grumma.org
             - name: PUBLIC_API

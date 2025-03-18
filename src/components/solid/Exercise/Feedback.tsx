@@ -1,5 +1,6 @@
 import { actions } from "astro:actions";
 import type { Exercise } from "grammar-sdk";
+import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { Button } from "ui/button";
 import { Checkbox } from "ui/checkbox";
@@ -19,7 +20,11 @@ import {
   TextFieldTextArea,
 } from "ui/text-field";
 
-export const Feedback = (props: { exercise: Exercise }) => {
+export const Feedback = (props: {
+  children?: JSXElement;
+  exercise?: Exercise;
+  position?: "top" | "bottom" | "left" | "right";
+}) => {
   const [open, setOpen] = createSignal(false);
 
   // TODO: refactor
@@ -32,12 +37,13 @@ export const Feedback = (props: { exercise: Exercise }) => {
         email: data.get("email")?.length
           ? (data.get("email") as string)
           : undefined,
-        grammar: isAboutGrammarPoint
-          ? {
-              grammarPointId: +props.exercise.grammarPointId,
-              exerciseOrder: props.exercise.order,
-            }
-          : undefined,
+        grammar:
+          isAboutGrammarPoint && props.exercise
+            ? {
+                grammarPointId: +props.exercise.grammarPointId,
+                exerciseOrder: props.exercise.order,
+              }
+            : undefined,
       };
       setOpen(false);
       await actions.saveFeedback(request);
@@ -49,9 +55,9 @@ export const Feedback = (props: { exercise: Exercise }) => {
   return (
     <Sheet open={open()} onOpenChange={setOpen} modal={false}>
       <SheetTrigger>
-        <Button variant="ghost">Found error?</Button>
+        {props.children ?? <Button variant="ghost">Found error?</Button>}
       </SheetTrigger>
-      <SheetContent position="right">
+      <SheetContent position={props.position ?? "right"}>
         <SheetHeader>
           <SheetTitle>Thank you for your feedback! </SheetTitle>
         </SheetHeader>
@@ -74,14 +80,18 @@ export const Feedback = (props: { exercise: Exercise }) => {
               <TextFieldLabel>Contact email (optional):</TextFieldLabel>
               <TextFieldInput name="email" type="email" />
             </TextField>
-            <div class="flex items-center gap-2">
-              <Checkbox
-                id="isAboutGrammarPoint"
-                name="isAboutGrammarPoint"
-                defaultChecked
-              />
-              <Label for="isAboutGrammarPoint">About this grammar point?</Label>
-            </div>
+            {props.exercise && (
+              <div class="flex items-center gap-2">
+                <Checkbox
+                  id="isAboutGrammarPoint"
+                  name="isAboutGrammarPoint"
+                  defaultChecked
+                />
+                <Label for="isAboutGrammarPoint">
+                  About this grammar point?
+                </Label>
+              </div>
+            )}
           </div>
           <SheetFooter>
             <Button type="submit" form="feedback">

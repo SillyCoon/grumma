@@ -1,0 +1,11 @@
+---
+import { FeedbackForm } from "@components/solid/Exercise/FeedbackForm";
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="Contact us">
+  <section class="mx-auto">
+    <h1 class="text-3xl text-primary">Thanks for getting in touch!</h1>
+    <FeedbackForm navigateOnSave="/dashboard" client:load />
+  </section>
+</Layout>

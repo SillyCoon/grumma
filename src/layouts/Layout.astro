@@ -9,6 +9,9 @@ import Header from "../components/Header.astro";
 import { Image } from "astro:assets";
 import github from "public/github-mark.svg";
 import coffee from "public/coffee.svg";
+import { Feedback } from "@components/solid/Exercise/Feedback";
+import { ContactSupport } from "packages/ui/icons/ContactSupport";
+import { IconButton } from "packages/ui/icon-button";
 
 interface Props {
   title: string;
@@ -64,6 +67,15 @@ const topPadding = Astro.props.topPadding ?? true;
         <a href="https://buymeacoffee.com/grumma">
           <Image height={30} src={coffee} alt="By me a coffee logo" />
         </a>
+        {
+          loggedIn && (
+            <Feedback position="bottom" client:only>
+              <IconButton>
+                <ContactSupport />
+              </IconButton>
+            </Feedback>
+          )
+        }
         <Toaster position="bottom-right" client:only="solid-js" />
       </footer>
     </main>

@@ -67,9 +67,15 @@ const topPadding = Astro.props.topPadding ?? true;
         <a href="https://buymeacoffee.com/grumma">
           <Image height={30} src={coffee} alt="By me a coffee logo" />
         </a>
-        <Feedback position="bottom" client:only
-          ><IconButton><ContactSupport /></IconButton></Feedback
-        >
+        {
+          loggedIn && (
+            <Feedback position="bottom" client:only>
+              <IconButton>
+                <ContactSupport />
+              </IconButton>
+            </Feedback>
+          )
+        }
         <Toaster position="bottom-right" client:only="solid-js" />
       </footer>
     </main>

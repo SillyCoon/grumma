@@ -53,6 +53,7 @@ const NavigationMenuTrigger = <T extends ValidComponent = "button">(
       class={cn(
         "group/trigger focus:outline-none",
         NavButtonClass,
+        "flex items-center justify-between",
         local.class,
       )}
       {...others}
@@ -155,6 +156,8 @@ const NavigationMenuLink = <T extends ValidComponent = "a">(
       class={cn(
         "block select-none space-y-1 text-nowrap rounded-md p-3 leading-none no-underline outline-none transition-colors",
         NavButtonClass,
+        "text-primary-foreground",
+        "flex items-center justify-between",
         local.class,
       )}
       {...others}

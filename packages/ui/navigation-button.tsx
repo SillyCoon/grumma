@@ -29,4 +29,4 @@ export const NavigationButton = (props: {
 };
 
 export const NavButtonClass =
-  "inline-flex w-full disabled:pointer-events-none cursor-pointer gap-1 px-2 py-2 font-bold text-foregrounds-primary text-xl disabled:cursor-help disabled:opacity-50 lg:items-center lg:text-primary-foreground lg:hover:bg-secondary/20 lg:hover:shadow-md";
+  "inline-flex w-full disabled:pointer-events-none cursor-pointer gap-1 px-2 py-2 font-bold text-foregrounds-primary text-xl disabled:cursor-help disabled:opacity-50 lg:items-center lg:text-primary-foreground lg:hover:bg-secondary/20 lg:hover:shadow-md active:shadow-sm active:bg-secondary/10";

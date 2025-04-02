@@ -9,6 +9,10 @@ import Header from "../components/Header.astro";
 import { Image } from "astro:assets";
 import github from "public/github-mark.svg";
 import coffee from "public/coffee.svg";
+import { Feedback } from "@components/solid/Exercise/Feedback";
+import { ContactSupport } from "ui/icons/ContactSupport";
+import { IconButton } from "ui/icon-button";
+import { Anchor } from "ui/anchor";
 
 interface Props {
   title: string;
@@ -58,12 +62,21 @@ const topPadding = Astro.props.topPadding ?? true;
       <footer
         class="absolute h-10 left-0 flex flex-row bottom-0 w-full items-center justify-center gap-5 bg-white text-secondary-foreground text-center"
       >
-        <a href="https://github.com/SillyCoon/grumma">
+        <Anchor href="https://github.com/SillyCoon/grumma">
           <Image height={30} width={30} src={github} alt="GitHub logo" />
-        </a>
-        <a href="https://buymeacoffee.com/grumma">
+        </Anchor>
+        <Anchor href="https://buymeacoffee.com/grumma">
           <Image height={30} src={coffee} alt="By me a coffee logo" />
-        </a>
+        </Anchor>
+        {
+          loggedIn && (
+            <Feedback position="bottom" client:only>
+              <IconButton>
+                <ContactSupport />
+              </IconButton>
+            </Feedback>
+          )
+        }
         <Toaster position="bottom-right" client:only="solid-js" />
       </footer>
     </main>

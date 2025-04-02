@@ -1,6 +1,7 @@
 ---
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import { fetchGrammarPoint } from "grammar-sdk";
+import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { GET as fetchGpInReview } from "@api/sr/review/list";
 
@@ -26,12 +27,12 @@ const inReview = id
           {...grammarPoint}
         />
         <section class="flex flex-col justify-between items-center mt-5">
-          <a
+          <Anchor
             class="bg-primary  text-white px-6 py-3 rounded-full shadow-md text-center"
             href={`/grammar/${id}/practice`}
           >
             Practice
-          </a>
+          </Anchor>
         </section>
       </>
     )

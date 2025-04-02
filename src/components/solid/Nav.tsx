@@ -1,6 +1,8 @@
 import { actions } from "astro:actions";
-import { NavButton, NavButtonClass } from "./NavButton";
 import { navigate } from "astro:transitions/client";
+import { NavButtonClass } from "ui/navigation-button";
+import { HelpNav } from "./HelpNav";
+import { NavButton } from "./NavButton";
 
 export const Nav = (props: {
   loggedIn?: boolean;
@@ -35,7 +37,8 @@ export const Nav = (props: {
         link="/grammar?mode=cram"
         onClick={props.onClick}
       />
-      <NavButton text="Help" link="/help" onClick={props.onClick} />
+      <HelpNav onClick={props.onClick} loggedIn={props.loggedIn} />
+
       {props.loggedIn ? (
         <LogoutButton onClick={props.onClick} />
       ) : (

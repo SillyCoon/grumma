@@ -58,7 +58,10 @@ export const removeFromRepetitions = async (
     );
 };
 
-const ManualAttempt = (grammarPointId: string, answeredAt: Date): Attempt => ({
+export const ManualAttempt = (
+  grammarPointId: string,
+  answeredAt: Date,
+): Attempt => ({
   grammarPointId,
   stage: 0 as Stage,
   answer: "added manually",
@@ -66,6 +69,8 @@ const ManualAttempt = (grammarPointId: string, answeredAt: Date): Attempt => ({
   answeredAt,
   reviewSessionId: uuid(),
 });
+export const isManualAttempt = (attempt: Attempt): boolean =>
+  attempt.answer === "added manually";
 
 export const addToRepetitions = async (
   db: DbClient,

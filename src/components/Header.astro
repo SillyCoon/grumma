@@ -1,5 +1,6 @@
 ---
 import { GET as getReviewCount } from "src/pages/api/sr/review/count";
+import { Anchor } from "ui/anchor";
 import Logo from "./Logo.astro";
 import { HamburgerButton } from "./solid/HamburgerButton";
 import { Nav } from "./solid/Nav";
@@ -12,7 +13,7 @@ const reviewCount =
 <header class="bg-primary p-4 sticky top-0 z-50 min-h-[76px]">
   <div class="lg:container mx-auto flex justify-between items-center">
     <HamburgerButton client:load />
-    <a class="text-3xl font-bold text-white" href="/"><Logo /></a>
+    <Anchor class="text-3xl font-bold text-white" href="/"><Logo /></Anchor>
     <div class="justify-between gap-5 hidden lg:flex">
       <Nav client:load loggedIn={!!user} reviewCount={reviewCount} />
     </div>

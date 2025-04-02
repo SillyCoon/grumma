@@ -1,4 +1,5 @@
 import { Badge } from "ui/badge";
+import { Anchor } from "./anchor";
 
 export const NavigationButton = (props: {
   link: string;
@@ -9,7 +10,7 @@ export const NavigationButton = (props: {
   onKeyUp?: (e: KeyboardEvent) => void;
 }) => {
   return (
-    <a href={props.link} onKeyUp={props.onKeyUp}>
+    <Anchor href={props.link} onKeyUp={props.onKeyUp}>
       <button
         tabIndex={-1}
         onClick={props.onClick}
@@ -24,7 +25,7 @@ export const NavigationButton = (props: {
           </Badge>
         )}
       </button>
-    </a>
+    </Anchor>
   );
 };
 

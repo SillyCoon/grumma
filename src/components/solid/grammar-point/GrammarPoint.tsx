@@ -6,11 +6,14 @@ import { ArrowBack } from "ui/icons";
 import { Example } from "../example/Example";
 import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";
+import { Badge } from "ui/badge";
+import { AddToReviewButton } from "./AddToReviewButton";
 
 type Props = Omit<GrammarPointType, "exercises"> & {
   explanation?: string;
   next?: string;
   backTo?: string;
+  inReview?: boolean;
 };
 
 export const GrammarPoint = (props: Props) => {
@@ -28,7 +31,7 @@ export const GrammarPoint = (props: Props) => {
         </Show>
 
         <Title
-          className="flex-auto"
+          className="flex-1"
           shortTitle={props.shortTitle}
           detailedTitle={props.detailedTitle}
           englishTitle={props.englishTitle}
@@ -42,6 +45,16 @@ export const GrammarPoint = (props: Props) => {
         </div>
       </Show>
 
+      <div class="flex justify-end">
+        <Show when={props.inReview !== undefined}>
+          {props.inReview ? (
+            <Badge variant="success">In review</Badge>
+          ) : (
+            <AddToReviewButton id={props.id} disabled={props.inReview} />
+          )}
+        </Show>
+      </div>
+
       <Card variant="outlined">
         <CardHeader>
           <CardTitle>Structure</CardTitle>
@@ -53,6 +66,7 @@ export const GrammarPoint = (props: Props) => {
           />
         </CardContent>
       </Card>
+
       <Card variant="outlined">
         <CardHeader>
           <CardTitle>Examples</CardTitle>

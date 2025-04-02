@@ -5,6 +5,7 @@ import type { Stage } from "./types/Stage";
 import { addMinute } from "@formkit/tempo";
 import { NaiveAlgorithm } from "./NaiveAlgorithm";
 import { StageSettings } from "./StageSettings";
+import { ManualAttempt } from "./SpaceRepetitionRepository";
 
 const nextMultiplier = 2;
 
@@ -99,6 +100,33 @@ describe("Naive", () => {
         grammarPointId: "7",
         stage: 1,
         availableAt: addMinute(nextTime(thirdSessionDate, 2), StageSettings[1]),
+      },
+    ]);
+  });
+
+  test("Manual attempts are handled correctly", () => {
+    const date = new Date("2020-10-10T10:00");
+    const manualAttempt = ManualAttempt("1", date);
+    const regularAttempt = makeGpSession("2", 1, "2", date, 1)[0];
+
+    const schedule = NaiveAlgorithm.getSchedule(
+      [manualAttempt, regularAttempt],
+      {
+        stageDowngradeMultiplier: 2,
+        stageMinutes: StageSettings,
+      },
+    );
+
+    expect(schedule).toEqual([
+      {
+        grammarPointId: "1",
+        stage: 0, // Manual attempts stay at stage 0
+        availableAt: addMinute(date, StageSettings[0]),
+      },
+      {
+        grammarPointId: "2",
+        stage: 2, // Regular attempts progress normally
+        availableAt: addMinute(nextTime(date, 2), StageSettings[2]),
       },
     ]);
   });

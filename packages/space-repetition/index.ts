@@ -6,6 +6,7 @@ import { NaiveAlgorithm } from "./src/NaiveAlgorithm";
 import { Session } from "./src/session";
 import { SpaceRepetition } from "./src/SpaceRepetition";
 import {
+  addToRepetitions,
   getAttempts,
   getSession,
   saveAttempt,
@@ -111,3 +112,5 @@ export type { Attempt } from "./src/types/Attempt";
 export type { Lesson } from "./src/types/Lesson";
 export type { Schedule } from "./src/types/Schedule";
 export type { Stage } from "./src/types/Stage";
+
+export { addToRepetitions };

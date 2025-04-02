@@ -4,6 +4,7 @@ import type { RepetitionAlgorithm, Settings } from "./SpaceRepetition";
 import type { Attempt } from "./types/Attempt";
 import { GrammarPointSession } from "./types/GrammarPointSession";
 import { calculateNextStage } from "./types/Stage";
+import { isManualAttempt } from "./SpaceRepetitionRepository";
 
 // TODO: Tests are definitely needed
 export const NaiveAlgorithm: RepetitionAlgorithm = {
@@ -30,11 +31,13 @@ export const NaiveAlgorithm: RepetitionAlgorithm = {
 
     return latestAttempts
       .map((a) => {
-        const stage = calculateNextStage(
-          a.stage,
-          settings.stageDowngradeMultiplier,
-          a.isCorrect,
-        );
+        const stage = isManualAttempt(a)
+          ? 0
+          : calculateNextStage(
+              a.stage,
+              settings.stageDowngradeMultiplier,
+              a.isCorrect,
+            );
 
         return {
           grammarPointId: a.grammarPointId,

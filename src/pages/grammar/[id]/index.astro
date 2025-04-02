@@ -2,18 +2,29 @@
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import { fetchGrammarPoint } from "grammar-sdk";
 import Layout from "../../../layouts/Layout.astro";
+import { GET as fetchGpInReview } from "@api/sr/review/list";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
 
 const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
+const inReview = id
+  ? ((
+      (await (await fetchGpInReview(Astro)).json()) ?? ([] as string[])
+    )?.includes?.(id) ?? false)
+  : false;
 ---
 
 <Layout title="Grammar">
   {
     grammarPoint && (
       <>
-        <GrammarPoint backTo={backTo} client:visible {...grammarPoint} />
+        <GrammarPoint
+          backTo={backTo}
+          client:visible
+          inReview={inReview}
+          {...grammarPoint}
+        />
         <section class="flex flex-col justify-between items-center mt-5">
           <a
             class="bg-primary  text-white px-6 py-3 rounded-full shadow-md text-center"

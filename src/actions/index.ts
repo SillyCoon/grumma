@@ -12,6 +12,7 @@ import { saveFeedback } from "packages/feedback";
 import type { Stage } from "space-repetition";
 import {
   addAttempt,
+  addToRepetitions,
   countNextRound,
   countStreak,
   getInReviewByTorfl,
@@ -218,6 +219,17 @@ export const server = {
         userId: user.id,
         createdAt: new Date(),
       });
+    },
+  }),
+  addToReview: defineAction({
+    accept: "json",
+    input: z.object({
+      grammarPointId: z.string(),
+    }),
+    handler: async ({ grammarPointId }, context) => {
+      const user = extractUser(context);
+      await addToRepetitions(db, user, grammarPointId, new Date());
+      return { success: true };
     },
   }),
 };

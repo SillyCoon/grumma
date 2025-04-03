@@ -4,6 +4,8 @@ import { fetchGrammarPoint } from "grammar-sdk";
 import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { GET as fetchGpInReview } from "@api/sr/review/list";
+import { AddToReviewButton } from "@components/solid/grammar-point/AddToReviewButton";
+import { Button } from "packages/ui/button";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
@@ -26,13 +28,15 @@ const inReview = id
           inReview={inReview}
           {...grammarPoint}
         />
-        <section class="flex flex-col justify-between items-center mt-5">
-          <Anchor
-            class="bg-primary  text-white px-6 py-3 rounded-full shadow-md text-center"
-            href={`/grammar/${id}/practice`}
-          >
-            Practice
+        <section class="flex flex-row gap-5 justify-center items-center mt-5">
+          <Anchor href={`/grammar/${id}/practice`}>
+            <Button>Practice once</Button>
           </Anchor>
+          <AddToReviewButton
+            client:load
+            id={grammarPoint.id}
+            inReview={inReview}
+          />
         </section>
       </>
     )

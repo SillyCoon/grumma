@@ -1,12 +1,11 @@
 import { Show, createSignal } from "solid-js";
-import { Badge } from "ui/badge";
 import { Button } from "ui/button";
 import { toast } from "solid-sonner";
 import { actions } from "astro:actions";
 
 type Props = {
   id: string;
-  disabled?: boolean;
+  inReview?: boolean;
 };
 
 export const AddToReviewButton = (props: Props) => {
@@ -14,10 +13,11 @@ export const AddToReviewButton = (props: Props) => {
   const [isSuccess, setIsSuccess] = createSignal(false);
 
   const handleAddToReview = async () => {
-    if (props.disabled) return;
+    if (props.inReview) return;
 
     setIsAdding(true);
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       await actions.addToReview({ grammarPointId: props.id });
       setIsSuccess(true);
     } catch (error) {
@@ -31,17 +31,21 @@ export const AddToReviewButton = (props: Props) => {
     <Show
       when={!isSuccess()}
       fallback={
-        <Badge variant="success" class="min-w-[77px]">
+        <Button variant="secondary" disabled>
           In review
-        </Badge>
+        </Button>
       }
     >
       <Button
-        variant="outline"
+        variant="secondary"
         onClick={handleAddToReview}
-        disabled={isAdding()}
+        disabled={isAdding() || props.inReview}
       >
-        {isAdding() ? "Adding..." : "Add to review"}
+        {isAdding()
+          ? "Adding..."
+          : props.inReview
+            ? "In review"
+            : "Add to Review (Spaced Repetition)"}
       </Button>
     </Show>
   );

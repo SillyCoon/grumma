@@ -46,12 +46,8 @@ export const GrammarPoint = (props: Props) => {
       </Show>
 
       <div class="flex justify-end">
-        <Show when={props.inReview !== undefined}>
-          {props.inReview ? (
-            <Badge variant="success">In review</Badge>
-          ) : (
-            <AddToReviewButton id={props.id} disabled={props.inReview} />
-          )}
+        <Show when={props.inReview}>
+          <Badge variant="success">In review</Badge>
         </Show>
       </div>
 

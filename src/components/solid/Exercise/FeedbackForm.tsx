@@ -25,7 +25,7 @@ export const FeedbackForm = (props: {
     try {
       const request = {
         message: data.get("message") as string,
-        email: data.get("email")?.length
+        email: (data.get("email") as string)?.length
           ? (data.get("email") as string)
           : undefined,
         grammar:

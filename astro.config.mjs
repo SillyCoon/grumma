@@ -6,7 +6,6 @@ import { defineConfig, envField } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://sillycoon.github.io",
   env: {
     schema: {
       PUBLIC_URL: envField.string({
@@ -16,7 +15,7 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [solid({ devtools: import.meta.env.DEV })],
+  integrations: [solid()],
   vite: {
     plugins: [tailwindcss()],
   },

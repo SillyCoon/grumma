@@ -1,4 +1,10 @@
 import {
+  PostgreSqlContainer,
+  type StartedPostgreSqlContainer,
+} from "@testcontainers/postgresql";
+import { execSync } from "node:child_process";
+import { v4 as uuid } from "uuid";
+import {
   afterAll,
   beforeAll,
   beforeEach,
@@ -6,6 +12,8 @@ import {
   expect,
   test,
 } from "vitest";
+import { makeDb } from "../../../../libs/db";
+import { grammarPoints, spaceRepetitions } from "../../../../libs/db/schema";
 import {
   addToRepetitions,
   getAttempts,
@@ -13,14 +21,6 @@ import {
   saveAttempt,
 } from "../../src/SpaceRepetitionRepository";
 import type { Attempt } from "../../src/types/Attempt";
-import { v4 as uuid } from "uuid";
-import { grammarPoints, spaceRepetitions } from "../../../../libs/db/schema";
-import {
-  PostgreSqlContainer,
-  type StartedPostgreSqlContainer,
-} from "@testcontainers/postgresql";
-import { execSync } from "node:child_process";
-import { makeDb } from "../../../../libs/db";
 
 const mockAttempt = (grammarPointId: string): Attempt => {
   return {
@@ -52,10 +52,22 @@ describe("SpaceRepetitionRepository", () => {
       {
         id: 1,
         title: "hello",
+        order: 1,
+        structure: "hello",
+        shortTitle: "hello",
+        detailedTitle: "hello",
+        englishTitle: "hello",
+        torfl: "A1",
       },
       {
         id: 2,
         title: "goodbye",
+        order: 2,
+        structure: "goodbye",
+        shortTitle: "goodbye",
+        detailedTitle: "goodbye",
+        englishTitle: "goodbye",
+        torfl: "A1",
       },
     ]);
   }, 30000);

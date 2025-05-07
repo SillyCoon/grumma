@@ -1,4 +1,3 @@
-import { actions } from "astro:actions";
 import type { Exercise } from "grammar-sdk";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
@@ -21,28 +20,28 @@ export const Feedback = (props: {
 
   // TODO: refactor
   // add sonner
-  const save = async (data: FormData) => {
-    const isAboutGrammarPoint = data.get("isAboutGrammarPoint") === "on";
-    try {
-      const request = {
-        message: data.get("message") as string,
-        email: data.get("email")?.length
-          ? (data.get("email") as string)
-          : undefined,
-        grammar:
-          isAboutGrammarPoint && props.exercise
-            ? {
-                grammarPointId: +props.exercise.grammarPointId,
-                exerciseOrder: props.exercise.order,
-              }
-            : undefined,
-      };
-      setOpen(false);
-      await actions.saveFeedback(request);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  // const save = async (data: FormData) => {
+  //   const isAboutGrammarPoint = data.get("isAboutGrammarPoint") === "on";
+  //   try {
+  //     const request = {
+  //       message: data.get("message") as string,
+  //       email: data.get("email")?.length
+  //         ? (data.get("email") as string)
+  //         : undefined,
+  //       grammar:
+  //         isAboutGrammarPoint && props.exercise
+  //           ? {
+  //               grammarPointId: +props.exercise.grammarPointId,
+  //               exerciseOrder: props.exercise.order,
+  //             }
+  //           : undefined,
+  //     };
+  //     setOpen(false);
+  //     await actions.saveFeedback(request);
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   return (
     <Sheet open={open()} onOpenChange={setOpen} modal={false}>

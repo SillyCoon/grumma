@@ -1,7 +1,8 @@
 import { eq, inArray } from "drizzle-orm";
 import { db } from "../../../libs/db";
-import { grammarPoints } from "../../../libs/db/schema";
+import { comingSoon, exercises, grammarPoints } from "../../../libs/db/schema";
 import { Example } from "./example";
+import type { ComingSoonDb } from "./types/ComingSoon";
 import type { GrammarPointDb } from "./types/dto";
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { extractGrammar } from "./utils";
@@ -31,7 +32,6 @@ export const fetchGrammarPointsFromDb = async (
 
   return grammarDto.map(GrammarPointFromDB);
 };
-
 export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
   const grammarDto = await db.query.grammarPoints.findMany({
     with: {
@@ -49,12 +49,8 @@ export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
 };
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
   return {
+    ...g,
     id: `${g.id}`,
-    shortTitle: g.shortTitle ?? "",
-    detailedTitle: g.detailedTitle ?? "",
-    englishTitle: g.englishTitle ?? "",
-    structure: g.structure ?? "",
-    order: g.order ?? undefined,
     examples: g.exercises.map((e, i) => ({
       ru: Example(e.ru),
       en: Example(e.en),
@@ -67,8 +63,66 @@ const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
       ruGrammar: extractGrammar(e.ru) ?? "",
       enGrammar: extractGrammar(e.en) ?? "",
       draft: e.helper ?? "",
+      order: e.order,
+    })),
+  };
+};
+
+export const fetchComingSoonFromDb = async (): Promise<GrammarPoint[]> => {
+  const comingSoonDto = await db.query.comingSoon.findMany();
+  const exs = await db.query.exercises.findMany({
+    where: inArray(
+      exercises.grammarPointId,
+      comingSoonDto.map((c) => c.id),
+    ),
+  });
+
+  const exercisesByGrammarPointId = Object.groupBy(
+    exs,
+    (e) => e.grammarPointId,
+  );
+
+  return comingSoonDto.map((c) => {
+    return ComingSoonFromDB({
+      ...c,
+      exercises: exercisesByGrammarPointId[c.id] ?? [],
+    });
+  });
+};
+
+export const fetchComingSoonGrammarPointFromDb = async (
+  id: number,
+): Promise<GrammarPoint | undefined> => {
+  const comingSoonDto = await db.query.comingSoon.findFirst({
+    where: eq(comingSoon.id, id),
+    with: {
+      exercises: true,
+    },
+  });
+  return comingSoonDto && ComingSoonFromDB(comingSoonDto);
+};
+
+const ComingSoonFromDB = (c: ComingSoonDb): GrammarPoint => {
+  return {
+    ...c,
+    id: `${c.id}`,
+    detailedTitle: c.detailedTitle ?? "",
+    englishTitle: c.englishTitle ?? "",
+    structure: c.structure ?? "",
+    torfl: "Coming soon",
+    examples: c.exercises.map((e, i) => ({
+      ru: Example(e.ru),
+      en: Example(e.en),
       order: i,
     })),
-    torfl: g.torfl,
+    exercises: c.exercises.map((e, i) => ({
+      grammarPointId: `${c.id}`,
+      ru: e.ru,
+      en: e.en,
+      ruGrammar: extractGrammar(e.ru) ?? "",
+      enGrammar: extractGrammar(e.en) ?? "",
+      draft: e.helper ?? "",
+      order: e.order,
+    })),
   };
 };

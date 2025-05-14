@@ -1,21 +1,29 @@
 ---
-import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
-import { fetchGrammarPoint } from "grammar-sdk";
-import { Anchor } from "ui/anchor";
-import Layout from "../../../layouts/Layout.astro";
 import { GET as fetchGpInReview } from "@api/sr/review/list";
 import { AddToReviewButton } from "@components/solid/grammar-point/AddToReviewButton";
+import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
+import {
+  fetchComingSoonGrammarPoint,
+  fetchGrammarPoint,
+  isComingSoon,
+} from "grammar-sdk";
 import { Button } from "packages/ui/button";
+import { Anchor } from "ui/anchor";
+import Layout from "../../../layouts/Layout.astro";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
 
-const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
+const grammarPoint = id
+  ? ((await fetchGrammarPoint(id)) ?? (await fetchComingSoonGrammarPoint(id)))
+  : undefined;
 const inReview = id
   ? ((
       (await (await fetchGpInReview(Astro)).json()) ?? ([] as string[])
     )?.includes?.(id) ?? false)
   : false;
+const comingSoon = grammarPoint && isComingSoon(grammarPoint);
+const user = Astro.locals.user;
 ---
 
 <Layout title="Grammar">
@@ -32,11 +40,13 @@ const inReview = id
           <Anchor href={`/grammar/${id}/practice`}>
             <Button>Practice once</Button>
           </Anchor>
-          <AddToReviewButton
-            client:load
-            id={grammarPoint.id}
-            inReview={inReview}
-          />
+          {!comingSoon && user && (
+            <AddToReviewButton
+              client:load
+              id={grammarPoint.id}
+              inReview={inReview}
+            />
+          )}
         </section>
       </>
     )

@@ -15,8 +15,8 @@ interface GrammarRefProps {
   id: string;
   order?: number;
   shortTitle: string;
-  detailedTitle: string;
-  englishTitle: string;
+  detailedTitle?: string;
+  englishTitle?: string;
   inReview?: boolean;
   mode?: Mode;
   onClick?: () => void;
@@ -71,12 +71,12 @@ export const GrammarRef = (props: GrammarRefProps) => {
                   )}
                 </div>
 
-                <CardDescription>{props.detailedTitle}</CardDescription>
+                <CardDescription>{props.detailedTitle ?? ""}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardFooter class="mt-auto">
-            <p>{props.englishTitle}</p>
+            <p>{props.englishTitle ?? ""}</p>
           </CardFooter>
         </Card>
       </Wrapper>

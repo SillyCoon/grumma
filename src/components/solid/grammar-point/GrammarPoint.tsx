@@ -32,8 +32,8 @@ export const GrammarPoint = (props: Props) => {
         <Title
           className="flex-1"
           shortTitle={props.shortTitle}
-          detailedTitle={props.detailedTitle}
-          englishTitle={props.englishTitle}
+          detailedTitle={props.detailedTitle ?? ""}
+          englishTitle={props.englishTitle ?? ""}
         />
       </div>
       <Show when={props.backTo}>
@@ -57,7 +57,9 @@ export const GrammarPoint = (props: Props) => {
         <CardContent>
           <section
             class="prose whitespace-pre-line [&_b]:text-secondary"
-            innerHTML={props.structure}
+            innerHTML={
+              props.structure?.length ? props.structure : "Coming soon!"
+            }
           />
         </CardContent>
       </Card>
@@ -78,12 +80,10 @@ export const GrammarPoint = (props: Props) => {
           <CardTitle>Explanation</CardTitle>
         </CardHeader>
         <CardContent>
-          {props.explanation && (
-            <section
-              class="prose prose-slate max-w-none [&_strong]:text-secondary "
-              innerHTML={props.explanation}
-            />
-          )}
+          <section
+            class="prose prose-slate max-w-none [&_strong]:text-secondary "
+            innerHTML={props.explanation ?? "Coming soon!"}
+          />
         </CardContent>
       </Card>
       {props.next && <StartLesson />}

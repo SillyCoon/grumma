@@ -11,26 +11,16 @@ import {
 
 export const grumma = pgSchema("grumma");
 
-export const comingSoon = grumma.table("coming_soon", {
+export const grammarPoints = grumma.table("grammar_point", {
   id: integer("id").primaryKey(),
-  order: integer().notNull(),
   shortTitle: text().notNull().unique(),
+  order: integer().notNull(),
+  title: text().notNull().unique(),
 
   structure: text(),
   detailedTitle: text().unique(),
   englishTitle: text().unique(),
   torfl: varchar({ length: 2 }),
-});
-
-export const grammarPoints = grumma.table("grammar_point", {
-  id: integer("id").primaryKey(),
-  order: integer().notNull(),
-  structure: text().notNull(),
-  title: text().notNull().unique(),
-  shortTitle: text().notNull().unique(),
-  detailedTitle: text().notNull().unique(),
-  englishTitle: text().notNull().unique(),
-  torfl: varchar({ length: 2 }).default("A1").notNull(),
 });
 
 export const exercises = grumma.table("exercise", {

@@ -34,7 +34,7 @@ const GrammarPointFromRealtime = (g: GrammarPointDto): GrammarPoint => {
     detailedTitle: g.detailedTitle ?? "",
     englishTitle: g.englishTitle ?? "",
     structure: g.structure,
-    order: g.order,
+    order: g.order ?? 0,
     examples: g.exercises.map((e, i) => ({
       ru: Example(e.ru),
       en: Example(e.en),

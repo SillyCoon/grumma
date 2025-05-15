@@ -1,8 +1,8 @@
 ---
+import { GET as fetchGpInReview } from "@api/sr/review/list";
+import { fetchGrammarList } from "grammar-sdk";
 import { Grammar } from "../../components/solid/grammar/Grammar";
 import Layout from "../../layouts/Layout.astro";
-import { fetchGrammarList } from "grammar-sdk";
-import { GET as fetchGpInReview } from "@api/sr/review/list";
 
 const grammar = await fetchGrammarList();
 const inReview = (await (await fetchGpInReview(Astro)).json()) as string[];

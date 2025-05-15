@@ -24,8 +24,8 @@ export const Grammar = (props: GrammarProps) => {
     props.grammar.filter((gp) => {
       return (
         gp.shortTitle.toLowerCase().includes(filter()) ||
-        gp.detailedTitle.toLowerCase().includes(filter()) ||
-        gp.englishTitle.toLowerCase().includes(filter())
+        gp.detailedTitle?.toLowerCase?.()?.includes?.(filter()) ||
+        gp.englishTitle?.toLowerCase?.()?.includes?.(filter())
       );
     });
 

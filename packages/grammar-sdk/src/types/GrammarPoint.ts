@@ -4,16 +4,18 @@ import type { Exercise } from "./Exercise";
 export interface GrammarPoint {
   id: string;
   shortTitle: string;
-  detailedTitle: string;
-  englishTitle: string;
-  structure: string;
+  order: number;
+  torfl: string;
+
   examples: {
     ru: Example;
     en: Example;
     order: number;
   }[];
-  order?: number;
   exercises: Exercise[];
-  torfl: string;
+
+  detailedTitle?: string;
+  englishTitle?: string;
+  structure?: string;
   explanation?: string;
 }

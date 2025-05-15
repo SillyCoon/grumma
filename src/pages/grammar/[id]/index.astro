@@ -16,6 +16,7 @@ const inReview = id
       (await (await fetchGpInReview(Astro)).json()) ?? ([] as string[])
     )?.includes?.(id) ?? false)
   : false;
+const user = Astro.locals.user;
 ---
 
 <Layout title="Grammar">
@@ -32,11 +33,13 @@ const inReview = id
           <Anchor href={`/grammar/${id}/practice`}>
             <Button>Practice once</Button>
           </Anchor>
-          <ReviewToggleButton
-            client:load
-            id={grammarPoint.id}
-            inReview={inReview}
-          />
+          {user && (
+            <ReviewToggleButton
+              client:load
+              id={grammarPoint.id}
+              inReview={inReview}
+            />
+          )}
         </section>
       </>
     )

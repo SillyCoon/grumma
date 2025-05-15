@@ -31,7 +31,6 @@ export const fetchGrammarPointsFromDb = async (
 
   return grammarDto.map(GrammarPointFromDB);
 };
-
 export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
   const grammarDto = await db.query.grammarPoints.findMany({
     with: {
@@ -49,26 +48,25 @@ export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
 };
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
   return {
+    ...g,
     id: `${g.id}`,
-    shortTitle: g.shortTitle ?? "",
-    detailedTitle: g.detailedTitle ?? "",
-    englishTitle: g.englishTitle ?? "",
-    structure: g.structure ?? "",
-    order: g.order ?? undefined,
-    examples: g.exercises.map((e, i) => ({
+    torfl: g.torfl ?? "Coming soon",
+    detailedTitle: g.detailedTitle ?? undefined,
+    englishTitle: g.englishTitle ?? undefined,
+    structure: g.structure ?? undefined,
+    examples: g.exercises.map((e) => ({
       ru: Example(e.ru),
       en: Example(e.en),
-      order: i,
+      order: e.order,
     })),
-    exercises: g.exercises.map((e, i) => ({
+    exercises: g.exercises.map((e) => ({
       grammarPointId: `${g.id}`,
       ru: e.ru,
       en: e.en,
       ruGrammar: extractGrammar(e.ru) ?? "",
       enGrammar: extractGrammar(e.en) ?? "",
       draft: e.helper ?? "",
-      order: i,
+      order: e.order,
     })),
-    torfl: g.torfl,
   };
 };

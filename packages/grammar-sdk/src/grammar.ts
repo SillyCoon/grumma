@@ -5,8 +5,11 @@ import {
   fetchGrammarPointsFromDb,
 } from "./db";
 import { fetchGrammarFromApi, fetchGrammarPointFromApi } from "./realtime";
+import type { GrammarPoint } from "./types/GrammarPoint";
 
-export const fetchGrammarPoint = async (id: string) => {
+export const fetchGrammarPoint = async (
+  id: string,
+): Promise<GrammarPoint | undefined> => {
   const gp =
     process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE === "true"
       ? await fetchGrammarPointFromApi(id)
@@ -15,7 +18,9 @@ export const fetchGrammarPoint = async (id: string) => {
   return gp ? { ...gp, explanation } : undefined;
 };
 
-export const fetchGrammarPoints = async (ids: string[]) => {
+export const fetchGrammarPoints = async (
+  ids: string[],
+): Promise<GrammarPoint[]> => {
   const gp = await fetchGrammarPointsFromDb(ids.map((id) => +id));
   return Promise.all(
     gp.map(async (g) => {
@@ -29,7 +34,7 @@ export const fetchGrammarPoints = async (ids: string[]) => {
  *
  * @returns All grammar WITHOUT explanations
  */
-export const fetchGrammarList = () => {
+export const fetchGrammarList = async (): Promise<GrammarPoint[]> => {
   return process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE === "true"
     ? fetchGrammarFromApi()
     : fetchGrammarFromDb();
@@ -42,5 +47,9 @@ export const fetchExplanation = async (grammarPointId: string | number) => {
     .from("explanations")
     .getPublicUrl(`SON-${grammarPointId}.html`).data.publicUrl;
 
-  return (await fetch(url)).text();
+  const response = await fetch(url);
+  if (response.ok) {
+    return await response.text();
+  }
+  return undefined;
 };

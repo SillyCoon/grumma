@@ -4,7 +4,7 @@ import { fetchGrammarPoint } from "grammar-sdk";
 import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { GET as fetchGpInReview } from "@api/sr/review/list";
-import { AddToReviewButton } from "@components/solid/grammar-point/AddToReviewButton";
+import { ReviewToggleButton } from "@components/solid/grammar-point/ReviewToggleButton";
 import { Button } from "packages/ui/button";
 
 const { id } = Astro.params;
@@ -32,7 +32,7 @@ const inReview = id
           <Anchor href={`/grammar/${id}/practice`}>
             <Button>Practice once</Button>
           </Anchor>
-          <AddToReviewButton
+          <ReviewToggleButton
             client:load
             id={grammarPoint.id}
             inReview={inReview}

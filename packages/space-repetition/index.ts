@@ -9,6 +9,7 @@ import {
   addToRepetitions,
   getAttempts,
   getSession,
+  removeFromRepetitions,
   saveAttempt,
 } from "./src/SpaceRepetitionRepository";
 import { StageSettings } from "./src/StageSettings";
@@ -113,4 +114,4 @@ export type { Lesson } from "./src/types/Lesson";
 export type { Schedule } from "./src/types/Schedule";
 export type { Stage } from "./src/types/Stage";
 
-export { addToRepetitions };
+export { addToRepetitions, removeFromRepetitions };

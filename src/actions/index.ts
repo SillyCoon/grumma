@@ -18,6 +18,7 @@ import {
   getInReviewByTorfl,
   getSchedule,
   getSessionResult,
+  removeFromRepetitions,
 } from "space-repetition";
 
 const extractUser = (context: ActionAPIContext) => {
@@ -229,6 +230,17 @@ export const server = {
     handler: async ({ grammarPointId }, context) => {
       const user = extractUser(context);
       await addToRepetitions(db, user, grammarPointId, new Date());
+      return { success: true };
+    },
+  }),
+  removeFromReview: defineAction({
+    accept: "json",
+    input: z.object({
+      grammarPointId: z.string(),
+    }),
+    handler: async ({ grammarPointId }, context) => {
+      const user = extractUser(context);
+      await removeFromRepetitions(db, user, grammarPointId);
       return { success: true };
     },
   }),

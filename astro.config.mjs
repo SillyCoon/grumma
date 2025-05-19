@@ -4,8 +4,10 @@ import solid from "@astrojs/solid-js";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 
-// https://astro.build/config
+import sitemap from "@astrojs/sitemap";
+
 export default defineConfig({
+  site: "https://grumma.org",
   env: {
     schema: {
       PUBLIC_URL: envField.string({
@@ -15,7 +17,19 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [solid()],
+  integrations: [
+    solid(),
+    sitemap({
+      changefreq: "weekly",
+      priority: 0.7,
+      serialize: (item) => {
+        if (item.url.includes("/auth/") || item.url.includes("/admin/")) {
+          return undefined;
+        }
+        return item;
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

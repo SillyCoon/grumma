@@ -18,6 +18,7 @@
   "workspaces": ["packages/*"],
   "dependencies": {
     "@astrojs/node": "9.2.1",
+    "@astrojs/sitemap": "^3.4.0",
     "@astrojs/solid-js": "5.0.10",
     "@astrojs/ts-plugin": "^1.10.4",
     "@kobalte/core": "^0.13.9",

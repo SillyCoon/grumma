@@ -16,27 +16,52 @@ import { Anchor } from "ui/anchor";
 
 interface Props {
   title: string;
+  description?: string;
+  image?: string;
   topPadding?: boolean;
   fluid?: boolean;
 }
 
-const { title, fluid } = Astro.props;
+const {
+  title,
+  description = "gRUmma - Your Russian learning platform",
+  fluid,
+} = Astro.props;
 const loggedIn = !!Astro.locals.user;
 const topPadding = Astro.props.topPadding ?? true;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
 <html lang="en" data-theme="emerald">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Additional Meta Tags -->
+    <meta
+      name="keywords"
+      content="learning platform, no-AI, AI, online learning, interactive learning"
+    />
+    <meta name="author" content="gRUmma" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -46,7 +71,9 @@ const topPadding = Astro.props.topPadding ?? true;
 
     <meta name="apple-mobile-web-app-title" content="gRUmma" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>{title}</title>
+
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <ClientRouter />
   </head>
   <body>

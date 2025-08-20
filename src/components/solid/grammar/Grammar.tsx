@@ -31,9 +31,8 @@ export const Grammar = (props: GrammarProps) => {
 
   const cramDisabled = () => !cram().length;
 
-  const groupedGrammar = Object.entries(
-    Object.groupBy(filteredGrammar(), (v) => v.torfl),
-  );
+  const groupedGrammar = () =>
+    Object.entries(Object.groupBy(filteredGrammar(), (v) => v.torfl));
 
   return (
     <section class="grid">
@@ -69,7 +68,7 @@ export const Grammar = (props: GrammarProps) => {
           placeholder="Search"
         />
       </TextField>
-      <For each={groupedGrammar}>
+      <For each={groupedGrammar()}>
         {([torfl, grammar]) =>
           grammar?.length && (
             <GrammarBlock

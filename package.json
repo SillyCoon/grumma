@@ -15,9 +15,7 @@
     "knip": "knip",
     "upgrade-astro": "bunx @astrojs/upgrade"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "dependencies": {
     "@astrojs/node": "^9.5.0",
     "@astrojs/sitemap": "^3.6.0",

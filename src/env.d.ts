@@ -11,6 +11,7 @@ interface ImportMetaEnv {
   readonly SUPABASE_ANON_KEY: string;
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: <auto generated>
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

@@ -63,63 +63,61 @@ export const Exercise = (props: ExerciseProps) => {
   };
 
   return (
-    <>
-      <div class="flex shrink-0 grow justify-center md:items-center">
-        <div class="w-full">
-          <Task
-            text={props.exercise.ru}
-            answer={answer()}
-            draft={props.exercise.draft}
-          />
-          <Description text={props.exercise.en} />
-          <form
-            class="mx-auto mt-4 flex max-w-[31.25rem] items-center "
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit();
+    <div class="flex shrink-0 grow justify-center md:items-center">
+      <div class="w-full">
+        <Task
+          text={props.exercise.ru}
+          answer={answer()}
+          draft={props.exercise.draft}
+        />
+        <Description text={props.exercise.en} />
+        <form
+          class="mx-auto mt-4 flex max-w-[31.25rem] items-center "
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <TransliterateInput
+            ref={input}
+            autofocus
+            clear={!answer()}
+            onInput={(str) => {
+              setAnswer(normalizeAnswer(str));
             }}
-          >
-            <TransliterateInput
-              ref={input}
-              autofocus
-              clear={!answer()}
-              onInput={(str) => {
-                setAnswer(normalizeAnswer(str));
-              }}
-              class="focus h-[50px] grow rounded-xl border border-secondary/30 p-2 text-lg focus:outline-primary"
-            />
-            <SendButton class="-ml-10" type="submit" />
-          </form>
-          <div class="mt-5 flex justify-center">
-            <Sheet>
-              <SheetTrigger>
-                <Button variant="ghost" disabled={notAnswered()}>
-                  Grammar
-                </Button>
-              </SheetTrigger>
-              <SheetContent class="h-dvh" position="bottom">
-                <LoadingGrammarPoint
-                  grammarPointId={props.exercise.grammarPointId}
-                />
-                <SheetClose>
-                  <FabButton>
-                    <CloseIcon />
-                  </FabButton>
-                </SheetClose>
-              </SheetContent>
-            </Sheet>
-
-            <TransliterationRules />
-            <Feedback exercise={props.exercise} />
-          </div>
-
-          <AnswerResult
-            isCorrect={isCorrect()}
-            correctAnswer={correctAnswer() ?? ""}
+            class="focus h-[50px] grow rounded-xl border border-secondary/30 p-2 text-lg focus:outline-primary"
           />
+          <SendButton class="-ml-10" type="submit" />
+        </form>
+        <div class="mt-5 flex justify-center">
+          <Sheet>
+            <SheetTrigger>
+              <Button variant="ghost" disabled={notAnswered()}>
+                Grammar
+              </Button>
+            </SheetTrigger>
+            <SheetContent class="h-dvh" position="bottom">
+              <LoadingGrammarPoint
+                grammarPointId={props.exercise.grammarPointId}
+              />
+              <SheetClose>
+                <FabButton>
+                  <CloseIcon />
+                </FabButton>
+              </SheetClose>
+            </SheetContent>
+          </Sheet>
+
+          <TransliterationRules />
+          <Feedback exercise={props.exercise} />
         </div>
+
+        <AnswerResult
+          isCorrect={isCorrect()}
+          correctAnswer={correctAnswer() ?? ""}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
@@ -132,12 +130,8 @@ const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
 
   return (
     <Show when={gp()} fallback={<Spinner />}>
-      {(g) => (
-        <div ref={ref}>
-          {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
-          {g() && <GrammarPoint {...g().data!} />}
-        </div>
-      )}
+      {/** biome-ignore lint/style/noNonNullAssertion: <expected> */}
+      {(g) => <div ref={ref}>{g() && <GrammarPoint {...g().data!} />}</div>}
     </Show>
   );
 };

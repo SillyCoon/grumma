@@ -28,10 +28,7 @@ type Result =
     >
   | undefined;
 
-export const LoginForm = (props: {
-  result: Result;
-  errorMessage?: string;
-}) => {
+export const LoginForm = (props: { result: Result; errorMessage?: string }) => {
   return (
     <Tabs defaultValue="account" class="max-w-[500px]">
       <TabsList class="grid w-full grid-cols-2">

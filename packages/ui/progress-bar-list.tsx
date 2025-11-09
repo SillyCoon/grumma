@@ -89,11 +89,7 @@ const BarList = <T, BarType extends "relative" | "progress">(
     local.width === "relative" ? relativeWidths() : progressWidths();
 
   return (
-    <div
-      class={cn("flex flex-col space-y-1.5", local.class)}
-      aria-sort={local.sortOrder}
-      {...others}
-    >
+    <div class={cn("flex flex-col space-y-1.5", local.class)} {...others}>
       <For each={sortedData()}>
         {(bar, idx) => {
           return (

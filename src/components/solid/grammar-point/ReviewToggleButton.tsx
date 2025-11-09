@@ -23,7 +23,7 @@ export const ReviewToggleButton = (props: Props) => {
         position: "bottom-right",
       });
       setInReview(true);
-    } catch (error) {
+    } catch {
       toast.error("Failed to add to review. Please try again later.", {
         duration: 4000,
         position: "bottom-right",
@@ -43,7 +43,7 @@ export const ReviewToggleButton = (props: Props) => {
         duration: 3000,
         position: "bottom-right",
       });
-    } catch (error) {
+    } catch {
       toast.error("Failed to remove from review. Please try again later.", {
         duration: 4000,
         position: "bottom-right",

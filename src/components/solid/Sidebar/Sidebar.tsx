@@ -34,6 +34,8 @@ export const Sidebar = (props: { loggedIn?: boolean }) => {
       <Show when={sidebarOpen()}>
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: <To global event handler> */}
         <div
+          role="button"
+          tabIndex={0}
           class="fixed top-0 left-0 z-10 h-screen w-screen backdrop-invert backdrop-opacity-25"
           onClick={close}
         />

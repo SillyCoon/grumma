@@ -22,11 +22,7 @@ interface GrammarRefProps {
   onClick?: () => void;
 }
 
-const Wrapper = (props: {
-  children: JSX.Element;
-  mode: Mode;
-  id: string;
-}) => {
+const Wrapper = (props: { children: JSX.Element; mode: Mode; id: string }) => {
   const c = children(() => props.children);
   return (
     <Switch fallback={c()}>

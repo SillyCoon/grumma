@@ -175,16 +175,22 @@ export const server = {
         (await addAttempt({ ...input, stage: input.stage as Stage }, user));
     },
   }),
-  dashboard: defineAction({
+  streak: defineAction({
     accept: "json",
     input: z.object({
       today: z.coerce.date(),
+      timezone: z.string(),
     }),
-    handler: async ({ today }, context) => {
+    handler: async ({ today, timezone }, context) => {
       const user = extractUser(context);
-
+      return countStreak(today, timezone, user);
+    },
+  }),
+  dashboard: defineAction({
+    accept: "json",
+    handler: async (_, context) => {
+      const user = extractUser(context);
       return {
-        streak: await countStreak(today, user),
         inReviewByTorflCount: await getInReviewByTorfl(user),
         reviewsCount: await countNextRound(user),
         schedule: await getSchedule(user),

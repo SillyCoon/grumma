@@ -16,7 +16,7 @@ import { StageSettings } from "./src/StageSettings";
 import type { Attempt } from "./src/types/Attempt";
 import type { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
-import { countConsecutiveDaysBefore } from "./src/utils";
+import { countStreak as countStreakUtils } from "./src/utils";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -60,10 +60,15 @@ export const countNextRound = async (user: User): Promise<number> => {
   return (await getNextRound(user)).length;
 };
 
-export const countStreak = async (today: Date, user: User): Promise<number> => {
+export const countStreak = async (
+  today: Date,
+  timezone: string,
+  user: User,
+): Promise<number> => {
   const attempts = await getAttempts(db, user);
-  return countConsecutiveDaysBefore(
+  return countStreakUtils(
     today,
+    timezone,
     attempts.map((v) => v.answeredAt),
   );
 };

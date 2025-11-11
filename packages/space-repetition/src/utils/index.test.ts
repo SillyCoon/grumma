@@ -10,6 +10,12 @@ const generatePeriodDays = (start: Date, days: number) => {
 
 describe("utils", () => {
   describe("countStreak", () => {
+    test("returns 0 if there are no dates", () => {
+      const today = new Date("2025-02-13T12:00:00+09:00");
+      const result = countStreak(today, "Asia/Tokyo", []);
+      expect(result).toEqual(0);
+    });
+
     test("1 if the only date is today", () => {
       const today = new Date("2025-02-13T12:00:00+09:00");
       const anotherToday = new Date("2025-02-13T13:00:00+09:00");
@@ -18,7 +24,7 @@ describe("utils", () => {
       expect(result).toEqual(1);
     });
 
-    test("1 if the only date is yesterday 00:00:00 local time and today is 23:59:59 local time", () => {
+    test("1 if the only date is yesterday 00:00:00 local time. Today is 23:59:59 local time", () => {
       const almostTomorrow = new Date("2025-02-13T23:59:59+09:00");
       const almostDayBeforeYesterday = new Date("2025-02-12T00:00:00+09:00");
       const result = countStreak(almostTomorrow, "Asia/Tokyo", [

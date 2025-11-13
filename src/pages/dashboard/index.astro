@@ -7,6 +7,7 @@ import { actions } from "astro:actions";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import { BarList } from "ui/progress-bar-list";
 import { Skeleton } from "ui/skeleton";
+import { Streak } from "@components/solid/dashboard/Streak";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {
   today: new Date(),
@@ -51,7 +52,7 @@ const torfl =
         <p>Keep it up, {user?.email}</p>
         <p>
           You have studied for <span class="text-secondary"
-            >{dashboard?.streak}</span
+            ><Streak client:only="solid-js" /></span
           > days in a row!
         </p>
       </CardContent>

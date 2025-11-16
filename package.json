@@ -13,7 +13,8 @@
     "astro": "astro",
     "check": "biome check .",
     "knip": "knip",
-    "upgrade-astro": "bunx @astrojs/upgrade"
+    "upgrade-astro": "bunx @astrojs/upgrade",
+    "migrate": "drizzle-kit migrate"
   },
   "workspaces": [
     "packages/*"
@@ -62,6 +63,7 @@
     "drizzle-kit": "^0.28.1",
     "husky": "^9.1.7",
     "knip": "^5.66.2",
+    "supabase": "^2.58.5",
     "tailwindcss": "^4.1.15",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",

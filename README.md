@@ -36,7 +36,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
    bunx supabase start
    ```
 
-   This will start services and output connection URLs.
+   This will start services and output connection URLs. It will also populate DB and storage with the seed data.
 
 3. **Create `.env` file**
 
@@ -50,13 +50,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 
    The `SUPABASE_URL` and `SUPABASE_KEY` are needed for Supabase client authentication and are provided by the `supabase start` command.
 
-4. **Run database migrations**
-
-   ```bash
-   bun run migrate
-   ```
-
-5. **Start the development server**
+4. **Start the development server**
 
    ```bash
    bun run dev
@@ -81,3 +75,4 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 - Local environment variables can be set in `.env`
 - Supabase authentication is configured in `supabase/config.toml` for local development
 - Database schema and migrations are managed with Drizzle ORM in `drizzle/` and `libs/db/`
+- Mock seed data is defined in `supabase/seed.sql` and storage files in `supabase/storage/

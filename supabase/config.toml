@@ -45,7 +45,7 @@ enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory. For example:
 # sql_paths = ['./seeds/*.sql', '../project-src/seeds/*-load-testing.sql']
-sql_paths = ['./seed.sql']
+sql_paths = ['../drizzle/*.sql', './seed.sql' ]
 
 [realtime]
 enabled = true
@@ -81,12 +81,11 @@ file_size_limit = "50MiB"
 [storage.image_transformation]
 enabled = true
 
-# Uncomment to configure local storage buckets
-# [storage.buckets.images]
-# public = false
-# file_size_limit = "50MiB"
-# allowed_mime_types = ["image/png", "image/jpeg"]
-# objects_path = "./images"
+[storage.buckets.explanations]
+public = true
+file_size_limit = "50MiB"
+allowed_mime_types = ["text/html; charset=utf-8"]
+objects_path = "./storage/explanations"
 
 [auth]
 enabled = true

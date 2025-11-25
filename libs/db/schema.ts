@@ -11,6 +11,14 @@ import {
 
 export const grumma = pgSchema("grumma");
 
+const createdAtUpdatedAt = {
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+};
+
 export const grammarPoints = grumma.table("grammar_point", {
   id: integer("id").primaryKey(),
   shortTitle: text().notNull().unique(),
@@ -21,6 +29,7 @@ export const grammarPoints = grumma.table("grammar_point", {
   detailedTitle: text().unique(),
   englishTitle: text().unique(),
   torfl: varchar({ length: 2 }),
+  ...createdAtUpdatedAt,
 });
 
 export const exercises = grumma.table("exercise", {
@@ -32,6 +41,7 @@ export const exercises = grumma.table("exercise", {
   ru: text().notNull(),
   en: text().notNull(),
   helper: text(),
+  ...createdAtUpdatedAt,
 });
 
 export const grammarPointRelations = relations(grammarPoints, ({ many }) => ({

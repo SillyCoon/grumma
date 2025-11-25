@@ -14,7 +14,8 @@
     "check": "biome check .",
     "knip": "knip",
     "upgrade-astro": "bunx @astrojs/upgrade",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "seed": "bun libs/db/seed.ts"
   },
   "workspaces": [
     "packages/*"

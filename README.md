@@ -67,7 +67,8 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 - `bun run check` - Run formatting and linting with Biome
 - `bun run test` - Run unit tests with Vitest
 - `bun run test:integration` - Run integration tests
-- `bun run migrate` - Run database migrations
+- `bun run migrate` - Run database migrations and seed with mock data
+- `bun run seed` - Seed the database with mock data (run separately if needed)
 
 ### Additional notes
 
@@ -75,4 +76,4 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 - Local environment variables can be set in `.env`
 - Supabase authentication is configured in `supabase/config.toml` for local development
 - Database schema and migrations are managed with Drizzle ORM in `drizzle/` and `libs/db/`
-- Mock seed data is defined in `supabase/seed.sql` and storage files in `supabase/storage/
+- Mock seed data is defined in `libs/db/seed.ts` using Drizzle ORM (10 grammar points, 40 exercises) and storage files in `supabase/storage/explanations/`

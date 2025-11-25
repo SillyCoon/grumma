@@ -41,11 +41,12 @@ max_client_conn = 100
 
 [db.seed]
 # If enabled, seeds the database after migrations during a db reset.
-enabled = true
+# Disabled: seeding is now handled by Drizzle ORM via `bun run seed`
+enabled = false
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory. For example:
 # sql_paths = ['./seeds/*.sql', '../project-src/seeds/*-load-testing.sql']
-sql_paths = ['../drizzle/*.sql', './seed.sql' ]
+# sql_paths = ['../drizzle/*.sql', './seed.sql' ]
 
 [realtime]
 enabled = true

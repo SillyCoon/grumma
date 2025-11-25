@@ -77,4 +77,3 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 - Supabase authentication is configured in `supabase/config.toml` for local development
 - Database schema and migrations are managed with Drizzle ORM in `drizzle/` and `libs/db/`
 - Mock seed data is defined in `libs/db/seed.ts` using Drizzle ORM (10 grammar points, 40 exercises) and storage files in `supabase/storage/explanations/`
-- The seed script runs automatically after migrations when you execute `bun run migrate`

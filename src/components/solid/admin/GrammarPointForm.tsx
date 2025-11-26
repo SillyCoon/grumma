@@ -8,6 +8,7 @@ import {
   TextFieldLabel,
   TextFieldDescription,
 } from "ui/text-field";
+import { StructureDisplay } from "../grammar-point/StructureDisplay";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -190,24 +191,34 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             </TextField>
           </div>
 
-          {/* Structure Field */}
-          <div>
-            <label for="structure" class="mb-2 block font-medium text-sm">
-              Structure
-            </label>
-            <textarea
-              id="structure"
-              value={formData().structure}
-              onInput={(e) =>
-                handleInputChange("structure", e.currentTarget.value)
-              }
-              placeholder="e.g., Кто? Что?"
-              class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows="3"
-            />
-            <p class="mt-1 text-slate-500 text-xs">
-              Grammar structure question (supports HTML and line breaks)
-            </p>
+          {/* Structure Field with Live Preview */}
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label for="structure" class="mb-2 block font-medium text-sm">
+                Structure
+              </label>
+              <textarea
+                id="structure"
+                value={formData().structure}
+                onInput={(e) =>
+                  handleInputChange("structure", e.currentTarget.value)
+                }
+                placeholder="e.g., Кто? Что?"
+                class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="4"
+              />
+              <p class="mt-1 text-slate-500 text-xs">
+                Grammar structure question (supports HTML and line breaks)
+              </p>
+            </div>
+
+            {/* Live Preview */}
+            <div>
+              <p class="mb-2 block font-medium text-slate-700 text-sm">
+                Preview
+              </p>
+              <StructureDisplay structure={formData().structure} />
+            </div>
           </div>
 
           {/* Optional Fields */}

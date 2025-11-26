@@ -21,6 +21,15 @@ export const onRequest = defineMiddleware(
     const { data } = await supabase.auth.getUser();
     Object.assign(locals, { user: data.user });
 
+    // Admin routes require authentication
+    if (pathHas(url, "admin")) {
+      if (!data.user) {
+        return redirect("/");
+      }
+      // TODO: Add admin role check here
+      return next();
+    }
+
     if (
       PATHS_TO_IGNORE.some(
         (path) =>

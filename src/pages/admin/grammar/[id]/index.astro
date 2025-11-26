@@ -1,0 +1,125 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import { GrammarPointForm } from "../../../../components/solid/admin/GrammarPointForm";
+import { db } from "libs/db";
+import { grammarPoints } from "libs/db/schema";
+import { eq } from "drizzle-orm";
+
+const { id } = Astro.params;
+
+if (!id || isNaN(Number(id))) {
+  return Astro.redirect("/admin/grammar");
+}
+
+const grammarPoint = await db.query.grammarPoints.findFirst({
+  where: eq(grammarPoints.id, Number(id)),
+  with: {
+    exercises: {
+      orderBy: (ex, { asc }) => asc(ex.order),
+    },
+  },
+});
+
+if (!grammarPoint) {
+  return Astro.redirect("/admin/grammar");
+}
+---
+
+<AdminLayout title={`Edit: ${grammarPoint.shortTitle}`}>
+  <div class="space-y-8">
+    <div>
+      <a
+        href="/admin/grammar"
+        class="text-blue-600 hover:underline text-sm mb-4 inline-block"
+      >
+        ← Back to Grammar Points
+      </a>
+      <h1 class="text-4xl font-bold mt-4">Edit Grammar Point</h1>
+      <p class="text-slate-600 mt-2">ID: {grammarPoint.id}</p>
+    </div>
+
+    <!-- Edit Form -->
+    <GrammarPointForm
+      client:load
+      initialData={{
+        id: grammarPoint.id,
+        shortTitle: grammarPoint.shortTitle,
+        title: grammarPoint.title,
+        order: grammarPoint.order,
+        structure: grammarPoint.structure ?? undefined,
+        detailedTitle: grammarPoint.detailedTitle ?? undefined,
+        englishTitle: grammarPoint.englishTitle ?? undefined,
+        torfl: grammarPoint.torfl ?? undefined,
+      }}
+      onSuccess={() => {
+        // In a real app, we'd refresh or redirect
+      }}
+    />
+
+    <!-- Exercises Section -->
+    <div class="space-y-4">
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">
+          Exercises ({grammarPoint.exercises.length})
+        </h2>
+        <p class="text-slate-600 mb-4">
+          Exercises are currently managed separately. To add/edit exercises, use
+          the dedicated exercise management interface (coming soon).
+        </p>
+      </div>
+
+      {
+        grammarPoint.exercises.length > 0 ? (
+          <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b bg-slate-50">
+                  <th class="px-6 py-3 text-left font-semibold text-slate-900">
+                    Order
+                  </th>
+                  <th class="px-6 py-3 text-left font-semibold text-slate-900">
+                    Russian
+                  </th>
+                  <th class="px-6 py-3 text-left font-semibold text-slate-900">
+                    English
+                  </th>
+                  <th class="px-6 py-3 text-left font-semibold text-slate-900">
+                    Helper
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {grammarPoint.exercises.map((ex) => (
+                  <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="px-6 py-3 text-slate-900 font-medium">
+                      {ex.order}
+                    </td>
+                    <td
+                      class="px-6 py-3 text-slate-700 max-w-md truncate"
+                      title={ex.ru}
+                    >
+                      {ex.ru}
+                    </td>
+                    <td
+                      class="px-6 py-3 text-slate-700 max-w-md truncate"
+                      title={ex.en}
+                    >
+                      {ex.en}
+                    </td>
+                    <td class="px-6 py-3 text-slate-500 text-xs">
+                      {ex.helper ? "✓" : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 text-center text-slate-500">
+            <p>No exercises yet</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</AdminLayout>

@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 import { createSupabaseServerInstance } from "libs/supabase";
+import { isUserAdmin } from "libs/auth/admin";
 
 const PATHS_TO_IGNORE = [
   "signin",
@@ -32,6 +33,12 @@ export const onRequest = defineMiddleware(
 
     if (!data.user) {
       return redirect("/");
+    }
+
+    if (pathHas(url, "admin")) {
+      if (!isUserAdmin(data.user)) {
+        return redirect("/");
+      }
     }
 
     return next();

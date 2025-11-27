@@ -1,0 +1,47 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Dashboard">
+  <div class="space-y-6">
+    <h1 class="text-4xl font-bold">Admin Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-6 rounded-lg border border-slate-200">
+        <h2 class="text-sm font-medium text-slate-600">Grammar Points</h2>
+        <p class="text-3xl font-bold mt-2">0</p>
+        <a
+          href="/admin/grammar"
+          class="text-blue-600 hover:underline text-sm mt-2 block"
+        >
+          Manage Grammar Points →
+        </a>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg border border-slate-200">
+        <h2 class="text-sm font-medium text-slate-600">Total Exercises</h2>
+        <p class="text-3xl font-bold mt-2">0</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg border border-slate-200">
+        <h2 class="text-sm font-medium text-slate-600">Draft Grammar Points</h2>
+        <p class="text-3xl font-bold mt-2">0</p>
+      </div>
+    </div>
+
+    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+      <h2 class="font-semibold text-blue-900 mb-2">Getting Started</h2>
+      <ul class="text-sm text-blue-900 space-y-1">
+        <li>
+          • <a href="/admin/grammar" class="underline"
+            >Create a new grammar point</a>
+        </li>
+        <li>
+          • Edit existing grammar points to add structure, examples, and
+          translations
+        </li>
+        <li>• TODO: Import/export grammar points in bulk</li>
+      </ul>
+    </div>
+  </div>
+</AdminLayout>

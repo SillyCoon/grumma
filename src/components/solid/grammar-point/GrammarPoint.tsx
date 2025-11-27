@@ -7,6 +7,7 @@ import { ArrowBack } from "ui/icons";
 import { Example } from "../example/Example";
 import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";
+import { StructureDisplay } from "./StructureDisplay";
 
 type Props = Omit<GrammarPointType, "exercises"> & {
   explanation?: string;
@@ -55,12 +56,7 @@ export const GrammarPoint = (props: Props) => {
           <CardTitle>Structure</CardTitle>
         </CardHeader>
         <CardContent>
-          <section
-            class="prose whitespace-pre-line [&_b]:text-secondary"
-            innerHTML={
-              props.structure?.length ? props.structure : "Coming soon!"
-            }
-          />
+          <StructureDisplay structure={props.structure} />
         </CardContent>
       </Card>
 

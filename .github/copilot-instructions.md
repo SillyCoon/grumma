@@ -12,6 +12,7 @@ High-level architecture
 
 Auth & middleware
 - Authentication is Supabase-based. See `src/middleware.ts`: it creates a server Supabase instance via `libs/supabase` and assigns `locals.user`. It redirects unauthenticated requests to `/` except the short whitelist in `PATHS_TO_IGNORE` (e.g. `signin`, `register`, `auth`, `login`, `logout`, `grammar`, `help`). Use that file as canonical example for request-level auth logic.
+- Admin authorization: `libs/auth/admin.ts` exports email-based admin checks. Use `isUserAdmin(email)` to check if a user email is in the admin list (configured via `ADMIN_EMAILS` env var as comma-separated emails). Admin routes are automatically protected in middleware; add admin checks to server actions as needed.
 
 Build / test / developer workflows (commands you can run)
 - Dev server: `npm run dev` (alias `astro dev`).
@@ -22,6 +23,7 @@ Build / test / developer workflows (commands you can run)
 
 Conventions & patterns to follow
 - Monorepo linking: when editing packages, keep `package.json` workspace versions as `workspace:*` patterns. Use imports like `import { ... } from 'ui'` where `ui` is the workspace package.
+- Database access: Read-only access to grammar data (user-facing) should go through `grammar-sdk` (e.g., `fetchGrammarPoint`, `fetchGrammarPoints`, `fetchGrammarList`). Administrative/modification access uses direct `libs/db` queries through server actions only. Never access `libs/db` directly from `.astro` files—use server actions instead.
 - Environment variables: README notes that Vite substitutes `import.meta.env...` at build time; `process.env...` may be used for runtime access. Prefer `import.meta.env` for build-time constants and verify runtime use when running server code.
 - DB migrations: `drizzle/` contains SQL migrations and `libs/db` contains schema helpers. Use these to understand table shapes before changing queries.
 - Tests: vitest is configured; integration tests may require a database/testcontainers (see `@testcontainers/postgresql` in devDeps). Check `vitest.config.ts` for exact patterns if you need to run or modify test suites.

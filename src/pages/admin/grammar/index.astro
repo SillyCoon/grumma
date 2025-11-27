@@ -1,11 +1,16 @@
 ---
+import { actions } from "astro:actions";
 import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { GrammarPointForm } from "../../../components/solid/admin/GrammarPointForm";
-import { db } from "libs/db";
 
-const grammarPoints = await db.query.grammarPoints.findMany({
-  orderBy: (gp, { asc }) => asc(gp.order),
-});
+const { data: grammarPointsList } = await Astro.callAction(
+  actions.getAllGrammarPoints,
+  undefined,
+);
+
+if (!grammarPointsList) {
+  throw new Error("Failed to load grammar points");
+}
 ---
 
 <AdminLayout title="Grammar Points">
@@ -27,7 +32,7 @@ const grammarPoints = await db.query.grammarPoints.findMany({
     <!-- Grammar Points List -->
     <div>
       <h2 class="text-2xl font-semibold mb-4">
-        Existing Grammar Points ({grammarPoints.length})
+        Existing Grammar Points ({grammarPointsList.length})
       </h2>
       <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
         <table class="w-full text-sm">
@@ -55,7 +60,7 @@ const grammarPoints = await db.query.grammarPoints.findMany({
           </thead>
           <tbody>
             {
-              grammarPoints.map((gp) => (
+              grammarPointsList.map((gp) => (
                 <tr class="border-b hover:bg-slate-50 transition">
                   <td class="px-6 py-3 text-slate-900 font-medium">
                     {gp.order}
@@ -95,7 +100,7 @@ const grammarPoints = await db.query.grammarPoints.findMany({
         </table>
 
         {
-          grammarPoints.length === 0 && (
+          grammarPointsList.length === 0 && (
             <div class="px-6 py-12 text-center text-slate-500">
               <p>No grammar points yet. Create one using the form above!</p>
             </div>

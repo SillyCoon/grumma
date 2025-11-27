@@ -23,6 +23,7 @@ Build / test / developer workflows (commands you can run)
 
 Conventions & patterns to follow
 - Monorepo linking: when editing packages, keep `package.json` workspace versions as `workspace:*` patterns. Use imports like `import { ... } from 'ui'` where `ui` is the workspace package.
+- Database access: Read-only access to grammar data (user-facing) should go through `grammar-sdk` (e.g., `fetchGrammarPoint`, `fetchGrammarPoints`, `fetchGrammarList`). Administrative/modification access uses direct `libs/db` queries through server actions only. Never access `libs/db` directly from `.astro` files—use server actions instead.
 - Environment variables: README notes that Vite substitutes `import.meta.env...` at build time; `process.env...` may be used for runtime access. Prefer `import.meta.env` for build-time constants and verify runtime use when running server code.
 - DB migrations: `drizzle/` contains SQL migrations and `libs/db` contains schema helpers. Use these to understand table shapes before changing queries.
 - Tests: vitest is configured; integration tests may require a database/testcontainers (see `@testcontainers/postgresql` in devDeps). Check `vitest.config.ts` for exact patterns if you need to run or modify test suites.

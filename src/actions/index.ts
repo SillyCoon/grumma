@@ -346,4 +346,67 @@ export const server = {
       }
     },
   }),
+  getAllGrammarPoints: defineAction({
+    accept: "json",
+    handler: async (_, context) => {
+      const user = extractUser(context);
+      if (!isUserAdmin(user)) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Admin access required",
+        });
+      }
+
+      try {
+        return await db.query.grammarPoints.findMany({
+          orderBy: (gp, { asc }) => asc(gp.order),
+        });
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: `Failed to fetch grammar points: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    },
+  }),
+  getGrammarPointById: defineAction({
+    accept: "json",
+    input: z.object({
+      id: z.number().int().positive(),
+    }),
+    handler: async ({ id }, context) => {
+      const user = extractUser(context);
+      if (!isUserAdmin(user)) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Admin access required",
+        });
+      }
+
+      try {
+        const result = await db.query.grammarPoints.findFirst({
+          where: eq(grammarPoints.id, id),
+          with: {
+            exercises: {
+              orderBy: (ex, { asc }) => asc(ex.order),
+            },
+          },
+        });
+
+        if (!result) {
+          throw new ActionError({
+            code: "NOT_FOUND",
+            message: "Grammar point not found",
+          });
+        }
+
+        return result;
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: `Failed to fetch grammar point: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    },
+  }),
 };

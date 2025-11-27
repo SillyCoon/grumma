@@ -12,6 +12,7 @@ High-level architecture
 
 Auth & middleware
 - Authentication is Supabase-based. See `src/middleware.ts`: it creates a server Supabase instance via `libs/supabase` and assigns `locals.user`. It redirects unauthenticated requests to `/` except the short whitelist in `PATHS_TO_IGNORE` (e.g. `signin`, `register`, `auth`, `login`, `logout`, `grammar`, `help`). Use that file as canonical example for request-level auth logic.
+- Admin authorization: `libs/auth/admin.ts` exports email-based admin checks. Use `isUserAdmin(email)` to check if a user email is in the admin list (configured via `ADMIN_EMAILS` env var as comma-separated emails). Admin routes are automatically protected in middleware; add admin checks to server actions as needed.
 
 Build / test / developer workflows (commands you can run)
 - Dev server: `npm run dev` (alias `astro dev`).

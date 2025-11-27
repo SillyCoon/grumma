@@ -10,6 +10,7 @@ import { fetchGrammarPoint } from "grammar-sdk";
 import { db } from "libs/db";
 import { grammarPoints } from "libs/db/schema";
 import { createSupabaseServerInstance } from "libs/supabase";
+import { isUserAdmin } from "libs/auth/admin";
 import { saveFeedback } from "packages/feedback";
 import type { Stage } from "space-repetition";
 import {
@@ -265,11 +266,10 @@ export const server = {
     }),
     handler: async (input, context) => {
       const user = extractUser(context);
-      // TODO: Add admin role check
-      if (!user) {
+      if (!isUserAdmin(user)) {
         throw new ActionError({
-          code: "UNAUTHORIZED",
-          message: "Not authorized to create grammar points",
+          code: "FORBIDDEN",
+          message: "Admin access required to create grammar points",
         });
       }
 
@@ -314,11 +314,10 @@ export const server = {
     }),
     handler: async (input, context) => {
       const user = extractUser(context);
-      // TODO: Add admin role check
-      if (!user) {
+      if (!isUserAdmin(user)) {
         throw new ActionError({
-          code: "UNAUTHORIZED",
-          message: "Not authorized to update grammar points",
+          code: "FORBIDDEN",
+          message: "Admin access required to update grammar points",
         });
       }
 

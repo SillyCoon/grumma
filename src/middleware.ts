@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 import { createSupabaseServerInstance } from "libs/supabase";
+import { isUserAdmin } from "libs/auth/admin";
 
 const PATHS_TO_IGNORE = [
   "signin",
@@ -21,15 +22,6 @@ export const onRequest = defineMiddleware(
     const { data } = await supabase.auth.getUser();
     Object.assign(locals, { user: data.user });
 
-    // Admin routes require authentication
-    if (pathHas(url, "admin")) {
-      if (!data.user) {
-        return redirect("/");
-      }
-      // TODO: Add admin role check here
-      return next();
-    }
-
     if (
       PATHS_TO_IGNORE.some(
         (path) =>
@@ -41,6 +33,12 @@ export const onRequest = defineMiddleware(
 
     if (!data.user) {
       return redirect("/");
+    }
+
+    if (pathHas(url, "admin")) {
+      if (!isUserAdmin(data.user)) {
+        return redirect("/");
+      }
     }
 
     return next();

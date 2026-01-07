@@ -36,7 +36,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
    bunx supabase start
    ```
 
-   This will start services and output connection URLs. It will also populate DB and storage with the seed data.
+   This will start services and output connection URLs.
 
 3. **Create `.env` file**
 
@@ -50,7 +50,14 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 
    The `SUPABASE_URL` and `SUPABASE_KEY` are needed for Supabase client authentication and are provided by the `supabase start` command.
 
-4. **Start the development server**
+4. **Apply migration and seed the database**
+
+   ```bash
+   bun migrate
+   bun seed
+   ```
+
+6. **Start the development server**
 
    ```bash
    bun run dev

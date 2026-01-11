@@ -14,3 +14,8 @@ export const normalizeAnswer = (str: string) => str.trim();
 
 export const compareAnswer = (original: string, answer: string) =>
   original.trim().toLowerCase() === answer.trim().toLowerCase();
+
+export const validAnswer = (answer: string) => {
+  const reg = /[^a-zA-Zа-яА-ЯёЁ\s]/;
+  return !reg.test(answer);
+};

@@ -16,6 +16,6 @@ export const compareAnswer = (original: string, answer: string) =>
   original.trim().toLowerCase() === answer.trim().toLowerCase();
 
 export const validAnswer = (answer: string) => {
-  const reg = /[^a-zA-Zа-яА-ЯёЁ\s]/;
+  const reg = /[^а-яё\s]/i;
   return !reg.test(answer);
 };

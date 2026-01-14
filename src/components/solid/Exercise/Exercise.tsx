@@ -33,7 +33,7 @@ export const Exercise = (props: ExerciseProps) => {
   const [isCorrect, setIsCorrect] = createSignal<boolean | undefined>(
     undefined,
   );
-  const [isGrammarOpen, setIsGrammarOpen] = createSignal(false);
+  const [isGrammarOpen, setIsGrammarOpen] = createSignal<boolean>(false);
 
   const notAnswered = () => isCorrect() === undefined;
 

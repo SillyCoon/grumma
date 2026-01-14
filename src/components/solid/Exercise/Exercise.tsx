@@ -33,6 +33,7 @@ export const Exercise = (props: ExerciseProps) => {
   const [isCorrect, setIsCorrect] = createSignal<boolean | undefined>(
     undefined,
   );
+  const [isGrammarOpen, setIsGrammarOpen] = createSignal(false);
 
   const notAnswered = () => isCorrect() === undefined;
 
@@ -90,7 +91,12 @@ export const Exercise = (props: ExerciseProps) => {
           <SendButton class="-ml-10" type="submit" />
         </form>
         <div class="mt-5 flex justify-center">
-          <Sheet>
+          <Sheet
+          open={isGrammarOpen()}
+          onOpenChange={(nextOpen) => {
+            if (notAnswered() && nextOpen) return;
+            setIsGrammarOpen(nextOpen);
+          }}>
             <SheetTrigger>
               <Button variant="ghost" disabled={notAnswered()}>
                 Grammar

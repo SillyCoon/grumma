@@ -16,7 +16,12 @@ import { AnswerResult } from "./AnswerResult";
 import { Feedback } from "./Feedback";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
-import { compareAnswer, normalizeAnswer, parseToExercise } from "./utils";
+import {
+  compareAnswer,
+  normalizeAnswer,
+  parseToExercise,
+  validAnswer,
+} from "./utils";
 
 interface ExerciseProps {
   exercise: ExerciseType;
@@ -33,6 +38,7 @@ export const Exercise = (props: ExerciseProps) => {
   const [isCorrect, setIsCorrect] = createSignal<boolean | undefined>(
     undefined,
   );
+  const [validationError, setValidationError] = createSignal<string>("");
 
   const notAnswered = () => isCorrect() === undefined;
 
@@ -43,6 +49,10 @@ export const Exercise = (props: ExerciseProps) => {
     );
 
   const handleSubmit = () => {
+    if (!validAnswer(answer())) {
+      setValidationError("Answer contains not allowed symbols!");
+      return;
+    }
     if (notAnswered()) {
       checkAnswer();
     } else {
@@ -84,11 +94,17 @@ export const Exercise = (props: ExerciseProps) => {
             clear={!answer()}
             onInput={(str) => {
               setAnswer(normalizeAnswer(str));
+              setValidationError("");
             }}
             class="focus h-[50px] grow rounded-xl border border-secondary/30 p-2 text-lg focus:outline-primary"
           />
           <SendButton class="-ml-10" type="submit" />
         </form>
+        <Show when={validationError()}>
+          <div class="mt-2 text-center text-red-500 text-sm">
+            {validationError()}
+          </div>
+        </Show>
         <div class="mt-5 flex justify-center">
           <Sheet>
             <SheetTrigger disabled={notAnswered()}>

@@ -107,7 +107,7 @@ export const Exercise = (props: ExerciseProps) => {
         </Show>
         <div class="mt-5 flex justify-center">
           <Sheet>
-            <SheetTrigger>
+            <SheetTrigger disabled={notAnswered()}>
               <Button variant="ghost" disabled={notAnswered()}>
                 Grammar
               </Button>

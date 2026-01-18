@@ -11,6 +11,8 @@ const { data: grammarPointsList } = await Astro.callAction(
 if (!grammarPointsList) {
   throw new Error("Failed to load grammar points");
 }
+
+const createResult = Astro.getActionResult(actions.createGrammarPoint);
 ---
 
 <AdminLayout title="Grammar Points">
@@ -23,13 +25,17 @@ if (!grammarPointsList) {
       </p>
     </div>
 
-    <!-- Create New Grammar Point Form -->
     <div>
       <h2 class="text-2xl font-semibold mb-4">Create New Grammar Point</h2>
-      <GrammarPointForm client:load />
+      <form action={actions.createGrammarPoint} method="post">
+        <GrammarPointForm
+          success={!!createResult?.data}
+          error={createResult?.error?.message}
+          client:load
+        />
+      </form>
     </div>
 
-    <!-- Grammar Points List -->
     <div>
       <h2 class="text-2xl font-semibold mb-4">
         Existing Grammar Points ({grammarPointsList.length})

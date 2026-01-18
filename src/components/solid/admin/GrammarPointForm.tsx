@@ -1,4 +1,3 @@
-import { actions } from "astro:actions";
 import { createSignal, Show } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
@@ -6,101 +5,36 @@ import {
   TextField,
   TextFieldInput,
   TextFieldLabel,
-  TextFieldDescription,
+  TextFieldTextArea,
 } from "ui/text-field";
 import { StructureDisplay } from "../grammar-point/StructureDisplay";
+import {
+  Select,
+  SelectContainer,
+  SelectLabel,
+  SelectOption,
+} from "packages/ui/select";
 
 interface GrammarPointFormProps {
   initialData?: {
     id: number;
     shortTitle: string;
-    title: string;
-    order: number;
-    structure?: string;
     detailedTitle?: string;
     englishTitle?: string;
+    order: number;
+    structure?: string;
     torfl?: string;
   };
+  success?: boolean;
+  error?: string;
+  isLoading?: boolean;
   onSuccess?: () => void;
 }
 
 export const GrammarPointForm = (props: GrammarPointFormProps) => {
-  const [formData, setFormData] = createSignal({
-    shortTitle: props.initialData?.shortTitle ?? "",
-    title: props.initialData?.title ?? "",
-    order: (props.initialData?.order ?? 1).toString(),
-    structure: props.initialData?.structure ?? "",
-    detailedTitle: props.initialData?.detailedTitle ?? "",
-    englishTitle: props.initialData?.englishTitle ?? "",
-    torfl: props.initialData?.torfl ?? "",
-  });
-
-  const [isLoading, setIsLoading] = createSignal(false);
-  const [error, setError] = createSignal<string | null>(null);
-  const [success, setSuccess] = createSignal(false);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-    setError(null);
-    setSuccess(false);
-  };
-
-  const handleSubmit = async (e: Event) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    setSuccess(false);
-
-    try {
-      const submitData = {
-        shortTitle: formData().shortTitle,
-        title: formData().title,
-        order: Number.parseInt(formData().order),
-        structure: formData().structure || undefined,
-        detailedTitle: formData().detailedTitle || undefined,
-        englishTitle: formData().englishTitle || undefined,
-        torfl: formData().torfl || undefined,
-      };
-
-      if (props.initialData) {
-        // Update
-        await actions.updateGrammarPoint({
-          id: props.initialData.id,
-          ...submitData,
-        });
-      } else {
-        // Create
-        await actions.createGrammarPoint(submitData);
-      }
-
-      setSuccess(true);
-      if (props.onSuccess) {
-        props.onSuccess();
-      }
-
-      // Reset form only for new grammar points
-      if (!props.initialData) {
-        setFormData({
-          shortTitle: "",
-          title: "",
-          order: "1",
-          structure: "",
-          detailedTitle: "",
-          englishTitle: "",
-          torfl: "",
-        });
-      }
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to save grammar point",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [structure, setStructure] = createSignal<string | undefined>(
+    props.initialData?.structure,
+  );
 
   return (
     <Card variant="outlined">
@@ -111,175 +45,129 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             : "Create New Grammar Point"}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} class="space-y-6">
-          <Show when={error()}>
-            <div class="rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
-              {error()}
-            </div>
-          </Show>
-
-          <Show when={success()}>
-            <div class="rounded border border-green-200 bg-green-50 p-3 text-green-800 text-sm">
-              Grammar point saved successfully!
-            </div>
-          </Show>
-
-          {/* Required Fields */}
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <TextField>
-              <TextFieldLabel>Short Title</TextFieldLabel>
-              <TextFieldInput
-                type="text"
-                name="shortTitle"
-                value={formData().shortTitle}
-                onInput={(e) =>
-                  handleInputChange("shortTitle", e.currentTarget.value)
-                }
-                required
-                placeholder="e.g., nominative"
-              />
-              <TextFieldDescription>
-                Used as identifier (no spaces)
-              </TextFieldDescription>
-            </TextField>
-
-            <TextField>
-              <TextFieldLabel>Full Title</TextFieldLabel>
-              <TextFieldInput
-                type="text"
-                name="title"
-                value={formData().title}
-                onInput={(e) =>
-                  handleInputChange("title", e.currentTarget.value)
-                }
-                required
-                placeholder="e.g., Nominative Case (Именительный падеж)"
-              />
-            </TextField>
+      <CardContent class="space-y-6">
+        <Show when={props.error}>
+          <div class="rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
+            {props.error}
           </div>
+        </Show>
 
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <TextField>
-              <TextFieldLabel>Order</TextFieldLabel>
-              <TextFieldInput
-                type="number"
-                name="order"
-                value={formData().order}
-                onInput={(e) =>
-                  handleInputChange("order", e.currentTarget.value)
-                }
-                required
-                min="1"
-              />
-            </TextField>
-
-            <TextField>
-              <TextFieldLabel>TORFL Level</TextFieldLabel>
-              <TextFieldInput
-                type="text"
-                name="torfl"
-                value={formData().torfl}
-                onInput={(e) =>
-                  handleInputChange("torfl", e.currentTarget.value)
-                }
-                placeholder="e.g., A1, A2, B1"
-              />
-              <TextFieldDescription>
-                Russian language proficiency level
-              </TextFieldDescription>
-            </TextField>
+        <Show when={props.success}>
+          <div class="rounded border border-green-200 bg-green-50 p-3 text-green-800 text-sm">
+            Grammar point saved successfully!
           </div>
+        </Show>
 
-          {/* Structure Field with Live Preview */}
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div>
-              <label for="structure" class="mb-2 block font-medium text-sm">
-                Structure
-              </label>
-              <textarea
-                id="structure"
-                value={formData().structure}
-                onInput={(e) =>
-                  handleInputChange("structure", e.currentTarget.value)
-                }
-                placeholder="e.g., Кто? Что?"
-                class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows="4"
-              />
-              <p class="mt-1 text-slate-500 text-xs">
-                Grammar structure question (supports HTML and line breaks)
-              </p>
-            </div>
+        <div class="grid grid-cols-1 gap-4 ">
+          <TextField>
+            <TextFieldLabel>Short Title</TextFieldLabel>
+            <TextFieldInput
+              type="text"
+              name="shortTitle"
+              value={props.initialData?.shortTitle}
+              required
+              placeholder="e.g., Кто ты? Кто я?"
+            />
+          </TextField>
 
-            {/* Live Preview */}
-            <div>
-              <p class="mb-2 block font-medium text-slate-700 text-sm">
-                Preview
-              </p>
-              <StructureDisplay structure={formData().structure} />
-            </div>
-          </div>
+          <TextField>
+            <TextFieldLabel>Detailed Title</TextFieldLabel>
+            <TextFieldInput
+              type="text"
+              name="detailedTitle"
+              value={props.initialData?.detailedTitle}
+              required
+              placeholder="e.g., Личные местоимения"
+            />
+          </TextField>
 
-          {/* Optional Fields */}
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <TextField>
-              <TextFieldLabel>Detailed Title (Russian)</TextFieldLabel>
-              <TextFieldInput
-                type="text"
-                name="detailedTitle"
-                value={formData().detailedTitle}
-                onInput={(e) =>
-                  handleInputChange("detailedTitle", e.currentTarget.value)
-                }
-                placeholder="e.g., The Case of the Subject"
-              />
-            </TextField>
+          <TextField>
+            <TextFieldLabel>English Title</TextFieldLabel>
+            <TextFieldInput
+              type="text"
+              name="englishTitle"
+              value={props.initialData?.englishTitle}
+              placeholder="e.g., Personal pronouns"
+              required
+            />
+          </TextField>
+        </div>
 
-            <TextField>
-              <TextFieldLabel>English Title</TextFieldLabel>
-              <TextFieldInput
-                type="text"
-                name="englishTitle"
-                value={formData().englishTitle}
-                onInput={(e) =>
-                  handleInputChange("englishTitle", e.currentTarget.value)
-                }
-                placeholder="e.g., Who? What?"
-              />
-            </TextField>
-          </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <TextField>
+            <TextFieldLabel>Order</TextFieldLabel>
+            <TextFieldInput
+              type="number"
+              name="order"
+              value={props.initialData?.order}
+              required
+              min="1"
+            />
+          </TextField>
 
-          {/* Form Actions */}
-          <div class="flex gap-3 pt-4">
-            <Button type="submit" disabled={isLoading()}>
-              {isLoading()
-                ? "Saving..."
-                : props.initialData
-                  ? "Update Grammar Point"
-                  : "Create Grammar Point"}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                if (!props.initialData) {
-                  setFormData({
-                    shortTitle: "",
-                    title: "",
-                    order: "1",
-                    structure: "",
-                    detailedTitle: "",
-                    englishTitle: "",
-                    torfl: "",
-                  });
-                }
-              }}
+          <SelectContainer>
+            <SelectLabel for="torfl" class="flex flex-col">
+              TORFL Level
+            </SelectLabel>
+            <Select
+              id="torfl"
+              name="torfl"
+              value={props.initialData?.torfl}
+              class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Reset
-            </Button>
+              <SelectOption value="A1">A1</SelectOption>
+              <SelectOption value="A2">A2</SelectOption>
+              <SelectOption value="B1">B1</SelectOption>
+              <SelectOption value="B2">B2</SelectOption>
+              <SelectOption value="C1">C1</SelectOption>
+              <SelectOption value="C2">C2</SelectOption>
+            </Select>
+          </SelectContainer>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div>
+            <TextField>
+              <TextFieldLabel
+                for="structure"
+                class="mb-2 block font-medium text-sm"
+              >
+                Structure{""}
+                <TextFieldTextArea
+                  id="structure"
+                  name="structure"
+                  value={props.initialData?.structure}
+                  onInput={(e) =>
+                    setStructure((e.target as HTMLTextAreaElement).value)
+                  }
+                  placeholder="e.g., Кто? Что?"
+                  class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows="4"
+                />
+              </TextFieldLabel>
+            </TextField>
+
+            <p class="mt-1 text-slate-500 text-xs">
+              Grammar structure question (supports HTML and line breaks)
+            </p>
           </div>
-        </form>
+
+          {/* Live Preview */}
+          <div>
+            <p class="mb-2 block font-medium text-slate-700 text-sm">Preview</p>
+            <StructureDisplay structure={structure()} />
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <Button type="submit" disabled={props.isLoading}>
+            {props.isLoading
+              ? "Saving..."
+              : props.initialData
+                ? "Update Grammar Point"
+                : "Create Grammar Point"}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

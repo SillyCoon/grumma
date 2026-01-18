@@ -254,14 +254,13 @@ export const server = {
     },
   }),
   createGrammarPoint: defineAction({
-    accept: "json",
+    accept: "form",
     input: z.object({
       shortTitle: z.string().min(1),
-      title: z.string().min(1),
+      detailedTitle: z.string().min(1),
+      englishTitle: z.string().optional(),
       order: z.number().int().positive(),
       structure: z.string().optional(),
-      detailedTitle: z.string().optional(),
-      englishTitle: z.string().optional(),
       torfl: z.string().optional(),
     }),
     handler: async (input, context) => {
@@ -278,7 +277,7 @@ export const server = {
           .select({ maxId: grammarPoints.id })
           .from(grammarPoints);
         const maxId = allPoints.reduce(
-          (max, curr) => (curr.maxId > max ? curr.maxId : max),
+          (max, curr) => Math.max(curr.maxId, max),
           0,
         );
         const newId = maxId + 1;
@@ -286,6 +285,7 @@ export const server = {
         const insertResult = await db
           .insert(grammarPoints)
           .values({
+            title: input.shortTitle,
             id: newId,
             ...input,
           })

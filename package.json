@@ -15,7 +15,9 @@
     "knip": "knip",
     "upgrade-astro": "bunx @astrojs/upgrade",
     "migrate": "drizzle-kit migrate",
-    "seed": "bun libs/db/seed.ts"
+    "generate-migration": "drizzle-kit generate",
+    "seed": "bun libs/db/seed.ts",
+    "studio": "drizzle-kit studio"
   },
   "workspaces": [
     "packages/*"

@@ -8,6 +8,12 @@ import {
   TextFieldTextArea,
 } from "ui/text-field";
 import { StructureDisplay } from "../grammar-point/StructureDisplay";
+import {
+  Select,
+  SelectContainer,
+  SelectLabel,
+  SelectOption,
+} from "packages/ui/select";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -99,17 +105,24 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             />
           </TextField>
 
-          <label for="torfl" class="flex flex-col">
-            TORFL Level{""}
-            <select id="torfl" name="torfl" value={props.initialData?.torfl}>
-              <option value="A1">A1</option>
-              <option value="A2">A2</option>
-              <option value="B1">B1</option>
-              <option value="B2">B2</option>
-              <option value="C1">C1</option>
-              <option value="C2">C2</option>
-            </select>
-          </label>
+          <SelectContainer>
+            <SelectLabel for="torfl" class="flex flex-col">
+              TORFL Level
+            </SelectLabel>
+            <Select
+              id="torfl"
+              name="torfl"
+              value={props.initialData?.torfl}
+              class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <SelectOption value="A1">A1</SelectOption>
+              <SelectOption value="A2">A2</SelectOption>
+              <SelectOption value="B1">B1</SelectOption>
+              <SelectOption value="B2">B2</SelectOption>
+              <SelectOption value="C1">C1</SelectOption>
+              <SelectOption value="C2">C2</SelectOption>
+            </Select>
+          </SelectContainer>
         </div>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">

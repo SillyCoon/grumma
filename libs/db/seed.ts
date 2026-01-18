@@ -410,6 +410,10 @@ const exercisesData: (typeof exercises.$inferInsert)[] = [
 const seed = async () => {
   try {
     console.log("🌱 Starting database seed...");
+    console.log("Cleaning existing data...");
+    await db.delete(exercises);
+    await db.delete(grammarPoints);
+    console.log("✅ Cleaned existing data.");
 
     // Insert grammar points
     console.log("Inserting grammar points...");

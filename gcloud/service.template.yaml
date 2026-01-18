@@ -36,6 +36,11 @@ spec:
                 secretKeyRef:
                   key: latest
                   name: SUPABASE_KEY
+            - name: ADMIN_EMAILS
+              valueFrom:
+                secretKeyRef:
+                  key: latest
+                  name: ADMIN_EMAILS
           resources:
             limits:
               cpu: 1000m

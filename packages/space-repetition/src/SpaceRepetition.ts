@@ -68,7 +68,7 @@ export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
       .map((r) => {
         const gp = grammar.find((gp) => gp.id === r.grammarPointId);
 
-        if (!gp) return;
+        if (!gp) return undefined;
         const { exercises, ...info } = gp;
 
         return {

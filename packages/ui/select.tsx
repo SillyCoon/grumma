@@ -27,7 +27,7 @@ export const SelectLabel = (
   props: JSX.LabelHTMLAttributes<HTMLLabelElement>,
 ) => {
   return (
-    // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
+    // biome-ignore lint/a11y/noLabelWithoutControl: <handled separately>
     <label
       {...props}
       class="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

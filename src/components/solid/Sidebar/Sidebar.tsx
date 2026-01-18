@@ -33,6 +33,7 @@ export const Sidebar = (props: { loggedIn?: boolean }) => {
       </div>
       <Show when={sidebarOpen()}>
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: <To global event handler> */}
+        {/** biome-ignore lint/a11y/useSemanticElements: <tmp> */}
         <div
           role="button"
           tabIndex={0}

@@ -16,7 +16,7 @@ const Skeleton = <T extends ValidComponent = "div">(
   return (
     <SkeletonPrimitive.Root
       class={cn(
-        "bg-primary/10 data-[animate='true']:animate-pulse ",
+        "bg-primary/10 data-[animate='true']:animate-pulse",
         local.class,
       )}
       {...others}

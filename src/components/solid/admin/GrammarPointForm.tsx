@@ -58,7 +58,7 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
           </div>
         </Show>
 
-        <div class="grid grid-cols-1 gap-4 ">
+        <div class="grid grid-cols-1 gap-4">
           <TextField>
             <TextFieldLabel>Short Title</TextFieldLabel>
             <TextFieldInput

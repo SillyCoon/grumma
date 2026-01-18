@@ -82,7 +82,7 @@ export const Exercise = (props: ExerciseProps) => {
         />
         <Description text={props.exercise.en} />
         <form
-          class="mx-auto mt-4 flex max-w-[31.25rem] items-center "
+          class="mx-auto mt-4 flex max-w-[31.25rem] items-center"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();

@@ -71,7 +71,7 @@ const NavigationMenuIcon = () => {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="group-data-[orientation=vertical]/menu:-rotate-90 relative top-px ml-1 size-3 transition duration-200 group-data-[orientation=vertical]/menu:group-data-[expanded]/trigger:rotate-90 group-data-[expanded]/trigger:rotate-180"
+        class="relative top-px ml-1 size-3 transition duration-200 group-data-[orientation=vertical]/menu:group-data-[expanded]/trigger:rotate-90 group-data-[expanded]/trigger:rotate-180 group-data-[orientation=vertical]/menu:-rotate-90"
       >
         <title>Expand</title>
         <path d="M6 9l6 6l6 -6" />

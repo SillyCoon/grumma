@@ -1,7 +1,12 @@
 import { createSignal, Show } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
-import { TextField, TextFieldInput, TextFieldLabel } from "ui/text-field";
+import {
+  TextField,
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldTextArea,
+} from "ui/text-field";
 import { StructureDisplay } from "../grammar-point/StructureDisplay";
 
 interface GrammarPointFormProps {
@@ -109,20 +114,25 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label for="structure" class="mb-2 block font-medium text-sm">
-              Structure{""}
-              <textarea
-                id="structure"
-                name="structure"
-                value={props.initialData?.structure}
-                onInput={(e) =>
-                  setStructure((e.target as HTMLTextAreaElement).value)
-                }
-                placeholder="e.g., Кто? Что?"
-                class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows="4"
-              />
-            </label>
+            <TextField>
+              <TextFieldLabel
+                for="structure"
+                class="mb-2 block font-medium text-sm"
+              >
+                Structure{""}
+                <TextFieldTextArea
+                  id="structure"
+                  name="structure"
+                  value={props.initialData?.structure}
+                  onInput={(e) =>
+                    setStructure((e.target as HTMLTextAreaElement).value)
+                  }
+                  placeholder="e.g., Кто? Что?"
+                  class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows="4"
+                />
+              </TextFieldLabel>
+            </TextField>
 
             <p class="mt-1 text-slate-500 text-xs">
               Grammar structure question (supports HTML and line breaks)

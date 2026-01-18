@@ -105,26 +105,8 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
               <option value="C2">C2</option>
             </select>
           </label>
-          {/* <Select
-            name="torfl"
-            id="torfl"
-            options={["A1", "A2", "B1", "B2", "C1", "C2"]}
-            value={props.initialData?.torfl}
-            itemComponent={(props) => (
-              <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
-            )}
-          >
-            <SelectLabel>TORFL Level</SelectLabel>
-            <SelectTrigger aria-label="TORFL">
-              <SelectValue<string>>
-                {(state) => state.selectedOption()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select> */}
         </div>
 
-        {/* Structure Field with Live Preview */}
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label for="structure" class="mb-2 block font-medium text-sm">

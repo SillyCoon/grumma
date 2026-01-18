@@ -77,7 +77,7 @@ export const GrammarPoint = (props: Props) => {
         </CardHeader>
         <CardContent>
           <section
-            class="prose prose-slate max-w-none [&_strong]:text-secondary "
+            class="prose prose-slate max-w-none [&_strong]:text-secondary"
             innerHTML={props.explanation ?? "Coming soon!"}
           />
         </CardContent>

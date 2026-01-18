@@ -67,3 +67,5 @@ export const feedback = grumma.table("feedback", {
   email: text(),
   createdAt: timestamp().notNull(),
 });
+
+export * from "./schema-tmp";

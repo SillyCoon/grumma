@@ -6,7 +6,7 @@ export default defineConfig({
   dbCredentials: {
     url: process.env.DATABASE_URL ?? "",
   },
-  schemaFilter: ["grumma"],
+  schemaFilter: ["grumma", "tmp"],
   tablesFilter: ["*"],
   verbose: true,
 });

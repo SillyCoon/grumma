@@ -1,0 +1,1 @@
+ALTER TABLE "tmp"."grammar_point" ADD COLUMN "hide" boolean DEFAULT true NOT NULL;

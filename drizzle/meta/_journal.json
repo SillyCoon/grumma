@@ -43,6 +43,13 @@
       "when": 1768698958444,
       "tag": "0005_typical_sway",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1768734949153,
+      "tag": "0006_sturdy_may_parker",
+      "breakpoints": true
     }
   ]
 }

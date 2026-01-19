@@ -1,4 +1,4 @@
-import { IconButton } from "ui/icon-button";
+import { IconButton } from "ui/dumb-icon-button";
 import { ArrowForward } from "ui/icons";
 
 export const ForwardButton = (props: { href: string; class?: string }) => (

@@ -3,7 +3,7 @@ import { ArrowForward } from "packages/ui/icons";
 import { Show, createSignal } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent } from "ui/card";
-import { IconButton } from "ui/icon-button";
+import { IconButton } from "ui/dumb-icon-button";
 import { Part } from "./Part";
 
 type Props = {

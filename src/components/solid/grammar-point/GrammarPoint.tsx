@@ -2,7 +2,7 @@ import type { GrammarPoint as GrammarPointType } from "grammar-sdk";
 import { For, Show } from "solid-js";
 import { Badge } from "ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
-import { IconButton } from "ui/icon-button";
+import { IconButton } from "ui/dumb-icon-button";
 import { ArrowBack } from "ui/icons";
 import { Example } from "../example/Example";
 import { StartLesson } from "./StartLesson";

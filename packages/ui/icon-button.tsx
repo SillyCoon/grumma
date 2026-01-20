@@ -8,7 +8,7 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "ui/utils";
 
-const niceIconButtonVariants = cva(
+const iconButtonVariants = cva(
   "inline-flex shrink-0 items-center justify-center whitespace-nowrap bg-transparent ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98] [&>svg]:pointer-events-none [&>svg]:shrink-0 [&>svg]:fill-current",
   {
     variants: {
@@ -40,18 +40,18 @@ const niceIconButtonVariants = cva(
   },
 );
 
-type NiceIconButtonProps<T extends ValidComponent = "button"> =
+type IconButtonProps<T extends ValidComponent = "button"> =
   ButtonPrimitive.ButtonRootProps<T> &
-    VariantProps<typeof niceIconButtonVariants> & {
+    VariantProps<typeof iconButtonVariants> & {
       class?: string;
       children?: JSX.Element;
       href?: string;
     };
 
-const NiceIconButton = <T extends ValidComponent = "button">(
-  props: PolymorphicProps<T, NiceIconButtonProps<T>>,
+const IconButton = <T extends ValidComponent = "button">(
+  props: PolymorphicProps<T, IconButtonProps<T>>,
 ) => {
-  const [local, others] = splitProps(props as NiceIconButtonProps, [
+  const [local, others] = splitProps(props as IconButtonProps, [
     "variant",
     "size",
     "shape",
@@ -68,7 +68,7 @@ const NiceIconButton = <T extends ValidComponent = "button">(
       as={resolvedAs()}
       href={local.href}
       class={cn(
-        niceIconButtonVariants({
+        iconButtonVariants({
           variant: local.variant,
           size: local.size,
           shape: local.shape,
@@ -79,5 +79,5 @@ const NiceIconButton = <T extends ValidComponent = "button">(
   );
 };
 
-export { NiceIconButton, niceIconButtonVariants };
-export type { NiceIconButtonProps };
+export { IconButton };
+export type { IconButtonProps };

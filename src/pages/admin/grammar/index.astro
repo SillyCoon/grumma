@@ -2,6 +2,7 @@
 import { actions } from "astro:actions";
 import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { GrammarPointForm } from "../../../components/solid/admin/GrammarPointForm";
+import { ExerciseBuilder } from "@components/solid/admin/ExercisesForm";
 
 const { data: grammarPointsList } = await Astro.callAction(
   actions.getAllGrammarPoints,
@@ -33,6 +34,7 @@ const createResult = Astro.getActionResult(actions.createGrammarPoint);
           error={createResult?.error?.message}
           client:load
         />
+        <ExerciseBuilder client:only="solid-js" />
       </form>
     </div>
 

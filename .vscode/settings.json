@@ -9,6 +9,5 @@
     "torfl"
   ],
   "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit"
   }
 }

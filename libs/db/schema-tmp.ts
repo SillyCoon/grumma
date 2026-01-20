@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   integer,
   pgSchema,
   text,
@@ -25,6 +26,7 @@ export const grammarPointsTmp = grumma.table("grammar_point", {
   order: integer().notNull().unique(),
   structure: text(),
   torfl: varchar({ length: 2 }),
+  hide: boolean().notNull().default(true),
   ...createdAtUpdatedAt,
 });
 

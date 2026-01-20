@@ -69,7 +69,7 @@
     --success: 145 60% 45%;
     --success-foreground: 0 0% 10%;
 
-    --warning: 48 96% 89%;
+    --warning: 35 91% 55%;
     --warning-foreground: 25 95% 53%;
 
     --error: 0 75% 50%;
@@ -120,8 +120,8 @@
     --success: 149 80% 90%;
     --success-foreground: 160 84% 39%;
 
-    --warning: 48 96% 89%;
-    --warning-foreground: 25 95% 53%;
+    --warning: 52 90% 70%;
+    --warning-foreground: 0 0% 98%;
 
     --error: 0 93% 94%;
     --error-foreground: 0 84% 60%;

@@ -2,7 +2,13 @@ import { actions } from "astro:actions";
 import { createSignal } from "solid-js";
 import toast from "solid-toast";
 import { Button } from "ui/button";
-import { Dialog, DialogClose } from "ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+} from "ui/dialog";
 
 type Props = {
   id: string;
@@ -77,15 +83,15 @@ export const ReviewToggleButton = (props: Props) => {
             : "Add to Review (Spaced Repetition)"}
       </Button>
 
-      <Dialog
-        open={showRemoveDialog()}
-        onOpenChange={setShowRemoveDialog}
-        title="Confirm Removal"
-        footer={
-          <>
-            <DialogClose>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+      <Dialog open={showRemoveDialog()} onOpenChange={setShowRemoveDialog}>
+        <DialogContent>
+          <DialogTitle>Confirm Removal</DialogTitle>
+          <DialogDescription>
+            Removing this grammar point from your review will delete all your
+            progress with it. You'll need to start over if you add it again
+            later.
+          </DialogDescription>
+          <DialogFooter>
             <Button
               variant="destructive"
               onClick={handleRemoveFromReview}
@@ -93,13 +99,8 @@ export const ReviewToggleButton = (props: Props) => {
             >
               Remove
             </Button>
-          </>
-        }
-      >
-        <p>
-          Removing this grammar point from your review will delete all your
-          progress with it. You'll need to start over if you add it again later.
-        </p>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </>
   );

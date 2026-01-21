@@ -31,6 +31,7 @@ export const GrammarPoint = (props: Props) => {
         </Show>
 
         <Title
+          // biome-ignore lint/suspicious/noReactSpecificProps: <like this in title>
           className="flex-1"
           shortTitle={props.shortTitle}
           detailedTitle={props.detailedTitle ?? ""}

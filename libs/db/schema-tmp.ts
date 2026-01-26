@@ -8,7 +8,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const grumma = pgSchema("tmp");
+export const grummaTmp = pgSchema("tmp");
 
 const createdAtUpdatedAt = {
   createdAt: timestamp().notNull().defaultNow(),
@@ -18,7 +18,7 @@ const createdAtUpdatedAt = {
     .$onUpdate(() => new Date()),
 };
 
-export const grammarPointsTmp = grumma.table("grammar_point", {
+export const grammarPointsTmp = grummaTmp.table("grammar_point", {
   id: integer("id").primaryKey(),
   shortTitle: text().notNull().unique(),
   detailedTitle: text().unique(),
@@ -30,15 +30,46 @@ export const grammarPointsTmp = grumma.table("grammar_point", {
   ...createdAtUpdatedAt,
 });
 
-export const exercisesTmp = grumma.table("exercise", {
+export const exercisesTmp = grummaTmp.table("exercise", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   grammarPointId: integer()
     .notNull()
     .references(() => grammarPointsTmp.id),
   order: integer().notNull().unique(),
-  ru: text().notNull(),
-  en: text().notNull(),
-  helper: text(),
+  ...createdAtUpdatedAt,
+});
+
+export const partTypeEnum = grummaTmp.enum("exercisePartType", [
+  "text",
+  "answer",
+]);
+
+export const exercisePartsTmp = grummaTmp.table("exercise_part", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  exerciseId: integer()
+    .notNull()
+    .references(() => exercisesTmp.id),
+  order: integer().notNull(),
+  type: partTypeEnum().notNull(),
+  text: text().notNull(),
+  description: text(),
+  ...createdAtUpdatedAt,
+});
+
+export const variantEnum = grummaTmp.enum("acceptableAnswerVariant", [
+  "correct",
+  "incorrect",
+  "try-again",
+]);
+
+export const acceptableAnswersTmp = grummaTmp.table("acceptable_answer", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  answerId: integer()
+    .notNull()
+    .references(() => exercisePartsTmp.id),
+  text: text().notNull(),
+  description: text(),
+  variant: variantEnum().notNull(),
   ...createdAtUpdatedAt,
 });
 
@@ -49,9 +80,34 @@ export const grammarPointRelationsTmp = relations(
   }),
 );
 
-export const exercisesRelationsTmp = relations(exercisesTmp, ({ one }) => ({
-  grammarPointId: one(grammarPointsTmp, {
-    fields: [exercisesTmp.grammarPointId],
-    references: [grammarPointsTmp.id],
+export const exercisesRelationsTmp = relations(
+  exercisesTmp,
+  ({ many, one }) => ({
+    grammarPoint: one(grammarPointsTmp, {
+      fields: [exercisesTmp.grammarPointId],
+      references: [grammarPointsTmp.id],
+    }),
+    parts: many(exercisePartsTmp),
   }),
-}));
+);
+
+export const exercisePartsRelationsTmp = relations(
+  exercisePartsTmp,
+  ({ many, one }) => ({
+    exercise: one(exercisesTmp, {
+      fields: [exercisePartsTmp.exerciseId],
+      references: [exercisesTmp.id],
+    }),
+    acceptableAnswers: many(acceptableAnswersTmp),
+  }),
+);
+
+export const acceptableAnswersRelationsTmp = relations(
+  acceptableAnswersTmp,
+  ({ one }) => ({
+    answer: one(exercisePartsTmp, {
+      fields: [acceptableAnswersTmp.answerId],
+      references: [exercisePartsTmp.id],
+    }),
+  }),
+);

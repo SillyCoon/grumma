@@ -2,9 +2,15 @@ import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:content";
 import { isUserAdmin } from "libs/auth/admin";
 import { extractUser } from "./utils";
-import { grammarPointsTmp } from "libs/db/schema-tmp";
+import {
+  grammarPointsTmp,
+  exercisePartsTmp,
+  acceptableAnswersTmp,
+  exercisesTmp,
+} from "libs/db/schema-tmp";
 import { db } from "libs/db";
 import { eq } from "drizzle-orm";
+import { exerciseSchema } from "~/features/exercise/domain";
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -158,6 +164,80 @@ export const gpManagement = {
         throw new ActionError({
           code: "BAD_REQUEST",
           message: `Failed to fetch grammar point: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    },
+  }),
+  createExercises: defineAction({
+    accept: "json",
+    input: z.object({
+      grammarPointId: z.number().int().positive(),
+      exercises: exerciseSchema.array().min(1),
+    }),
+    handler: async (input, context) => {
+      console.log("Creating exercises:", input);
+      const user = extractUser(context);
+      if (!isUserAdmin(user)) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Admin access required to create exercises",
+        });
+      }
+
+      try {
+        await db.transaction(async (tx) => {
+          for (const exercise of input.exercises) {
+            const insertedExercise = await tx
+              .insert(exercisesTmp)
+              .values({
+                grammarPointId: input.grammarPointId,
+                order: exercise.order,
+              })
+              .returning();
+
+            const insertedPart = await tx
+              .insert(exercisePartsTmp)
+              .values(
+                exercise.parts.map((part) => ({
+                  exerciseId: insertedExercise[0].id,
+                  order: part.index,
+                  type: part.type,
+                  text: part.text,
+                  description: "description" in part ? part.description : null,
+                })),
+              )
+              .returning();
+
+            const acceptableAnswersToInsert = insertedPart.flatMap(
+              (part, idx) => {
+                const originalPart = exercise.parts[idx];
+                if (
+                  originalPart.type === "answer" &&
+                  originalPart.acceptableAnswers
+                ) {
+                  return originalPart.acceptableAnswers.map((a) => ({
+                    answerId: part.id,
+                    text: a.text,
+                    description: a.description || null,
+                    variant: a.variant,
+                  }));
+                }
+                return [];
+              },
+            );
+
+            acceptableAnswersToInsert.length &&
+              (await tx
+                .insert(acceptableAnswersTmp)
+                .values(acceptableAnswersToInsert));
+          }
+        });
+
+        return input;
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: `Failed to create exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
         });
       }
     },

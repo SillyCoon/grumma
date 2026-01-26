@@ -9,6 +9,9 @@ import { cn } from "ui/utils";
 type CheckboxRootProps<T extends ValidComponent = "div"> =
   CheckboxPrimitive.CheckboxRootProps<T> & { class?: string | undefined };
 
+/**
+ * @deprecated please use HtmlCheckbox from "packages/ui/html-checkbox" instead
+ */
 const Checkbox = <T extends ValidComponent = "div">(
   props: PolymorphicProps<T, CheckboxRootProps<T>>,
 ) => {

@@ -1,99 +1,158 @@
-import { Dialog as KobalteDialog } from "@kobalte/core";
-import { type JSX, splitProps } from "solid-js";
-import { cn } from "ui/utils";
+import type { Component, ComponentProps, JSX, ValidComponent } from "solid-js";
+import { splitProps } from "solid-js";
 
-type DialogProps = {
-  title: string;
-  description?: string;
-  children?: JSX.Element;
-  trigger?: JSX.Element;
-  footer?: JSX.Element;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  class?: string;
+import * as DialogPrimitive from "@kobalte/core/dialog";
+import type { PolymorphicProps } from "@kobalte/core/polymorphic";
+import { cn } from "./utils";
+
+const Dialog = DialogPrimitive.Root;
+const DialogTrigger = DialogPrimitive.Trigger;
+
+const DialogPortal: Component<DialogPrimitive.DialogPortalProps> = (props) => {
+  const [, rest] = splitProps(props, ["children"]);
+  return (
+    <DialogPrimitive.Portal {...rest}>
+      <div class="fixed inset-0 z-50 flex items-start justify-center sm:items-center">
+        {props.children}
+      </div>
+    </DialogPrimitive.Portal>
+  );
 };
 
-export function Dialog(props: DialogProps) {
-  const [local, others] = splitProps(props, [
-    "title",
-    "description",
-    "children",
-    "trigger",
-    "footer",
-    "class",
-  ]);
+type DialogOverlayProps<T extends ValidComponent = "div"> =
+  DialogPrimitive.DialogOverlayProps<T> & { class?: string | undefined };
 
+const DialogOverlay = <T extends ValidComponent = "div">(
+  props: PolymorphicProps<T, DialogOverlayProps<T>>,
+) => {
+  const [, rest] = splitProps(props as DialogOverlayProps, ["class"]);
   return (
-    <KobalteDialog.Root {...others}>
-      {local.trigger && (
-        <KobalteDialog.Trigger>{local.trigger}</KobalteDialog.Trigger>
+    <DialogPrimitive.Overlay
+      class={cn(
+        "data-[closed]:fade-out-0 data-[expanded]:fade-in-0 fixed inset-0 z-50 bg-background/80 data-[closed]:animate-out data-[expanded]:animate-in",
+        props.class,
       )}
-      <KobalteDialog.Portal>
-        <KobalteDialog.Overlay class="data-[closed]:fade-out-0 data-[expanded]:fade-in-0 fixed inset-0 z-50 bg-black/50 data-[closed]:animate-out data-[expanded]:animate-in" />
-        <div class="fixed inset-0 z-50 flex items-center justify-center">
-          <KobalteDialog.Content
-            class={cn(
-              "data-[closed]:fade-out-0 data-[expanded]:fade-in-0 data-[closed]:zoom-out-95 data-[expanded]:zoom-in-95 data-[closed]:slide-out-to-bottom-[2%] data-[expanded]:slide-in-from-bottom-[2%] max-h-[85vh] w-[90vw] max-w-md rounded-lg bg-white p-6 shadow-lg data-[closed]:animate-out data-[expanded]:animate-in",
-              local.class,
-            )}
+      {...rest}
+    />
+  );
+};
+
+type DialogContentProps<T extends ValidComponent = "div"> =
+  DialogPrimitive.DialogContentProps<T> & {
+    class?: string | undefined;
+    children?: JSX.Element;
+  };
+
+const DialogContent = <T extends ValidComponent = "div">(
+  props: PolymorphicProps<T, DialogContentProps<T>>,
+) => {
+  const [, rest] = splitProps(props as DialogContentProps, [
+    "class",
+    "children",
+  ]);
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
+        class={cn(
+          "data-[closed]:fade-out-0 data-[expanded]:fade-in-0 data-[closed]:zoom-out-95 data-[expanded]:zoom-in-95 data-[closed]:slide-out-to-left-1/2 data-[closed]:slide-out-to-top-[48%] data-[expanded]:slide-in-from-left-1/2 data-[expanded]:slide-in-from-top-[48%] fixed top-1/2 left-1/2 z-50 grid max-h-screen w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto border bg-background p-6 shadow-lg duration-200 data-[closed]:animate-out data-[expanded]:animate-in sm:rounded-lg",
+          props.class,
+        )}
+        {...rest}
+      >
+        {props.children}
+        <DialogPrimitive.CloseButton class="absolute top-4 right-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[expanded]:bg-accent data-[expanded]:text-muted-foreground">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-4"
           >
-            <div class="mb-4 flex items-start justify-between">
-              <div>
-                <KobalteDialog.Title class="font-medium text-lg text-secondary">
-                  {local.title}
-                </KobalteDialog.Title>
-                {local.description && (
-                  <KobalteDialog.Description class="mt-1 text-gray-500 text-sm">
-                    {local.description}
-                  </KobalteDialog.Description>
-                )}
-              </div>
-              <KobalteDialog.CloseButton class="ml-4 inline-flex size-6 appearance-none items-center justify-center rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
-                <span class="sr-only">Close</span>
-                <svg
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <title>Close</title>
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </KobalteDialog.CloseButton>
-            </div>
+            <title>Close dialog</title>
+            <path d="M18 6l-12 12" />
+            <path d="M6 6l12 12" />
+          </svg>
 
-            <div class="mb-5">{local.children}</div>
-
-            {local.footer && (
-              <div class="flex justify-end gap-3">{local.footer}</div>
-            )}
-          </KobalteDialog.Content>
-        </div>
-      </KobalteDialog.Portal>
-    </KobalteDialog.Root>
+          <span class="sr-only">Close</span>
+        </DialogPrimitive.CloseButton>
+      </DialogPrimitive.Content>
+    </DialogPortal>
   );
-}
+};
 
-export function DialogTrigger(props: {
-  children: JSX.Element;
-  class?: string;
-}) {
+const DialogHeader: Component<ComponentProps<"div">> = (props) => {
+  const [, rest] = splitProps(props, ["class"]);
   return (
-    <KobalteDialog.Trigger class={props.class}>
-      {props.children}
-    </KobalteDialog.Trigger>
+    <div
+      class={cn(
+        "flex flex-col space-y-1.5 text-center sm:text-left",
+        props.class,
+      )}
+      {...rest}
+    />
   );
-}
+};
 
-export function DialogClose(props: { children?: JSX.Element; class?: string }) {
+const DialogFooter: Component<ComponentProps<"div">> = (props) => {
+  const [, rest] = splitProps(props, ["class"]);
   return (
-    <KobalteDialog.CloseButton class={cn("", props.class)}>
-      {props.children}
-    </KobalteDialog.CloseButton>
+    <div
+      class={cn(
+        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+        props.class,
+      )}
+      {...rest}
+    />
   );
-}
+};
+
+type DialogTitleProps<T extends ValidComponent = "h2"> =
+  DialogPrimitive.DialogTitleProps<T> & {
+    class?: string | undefined;
+  };
+
+const DialogTitle = <T extends ValidComponent = "h2">(
+  props: PolymorphicProps<T, DialogTitleProps<T>>,
+) => {
+  const [, rest] = splitProps(props as DialogTitleProps, ["class"]);
+  return (
+    <DialogPrimitive.Title
+      class={cn(
+        "font-semibold text-lg leading-none tracking-tight",
+        props.class,
+      )}
+      {...rest}
+    />
+  );
+};
+
+type DialogDescriptionProps<T extends ValidComponent = "p"> =
+  DialogPrimitive.DialogDescriptionProps<T> & {
+    class?: string | undefined;
+  };
+
+const DialogDescription = <T extends ValidComponent = "p">(
+  props: PolymorphicProps<T, DialogDescriptionProps<T>>,
+) => {
+  const [, rest] = splitProps(props as DialogDescriptionProps, ["class"]);
+  return (
+    <DialogPrimitive.Description
+      class={cn("text-muted-foreground text-sm", props.class)}
+      {...rest}
+    />
+  );
+};
+
+export {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+};

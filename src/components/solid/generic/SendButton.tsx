@@ -1,6 +1,6 @@
 import { Send } from "ui/icons";
 import type { ParentComponent } from "solid-js";
-import { IconButton } from "ui/icon-button";
+import { IconButton } from "ui/dumb-icon-button";
 
 export const SendButton: ParentComponent<{
   class?: string;

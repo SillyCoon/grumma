@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { children, createSignal, Show } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import {
@@ -14,6 +14,7 @@ import {
   SelectLabel,
   SelectOption,
 } from "packages/ui/select";
+import type { JSX } from "solid-js/jsx-runtime";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -29,9 +30,12 @@ interface GrammarPointFormProps {
   error?: string;
   isLoading?: boolean;
   onSuccess?: () => void;
+  children?: JSX.Element;
 }
 
 export const GrammarPointForm = (props: GrammarPointFormProps) => {
+  const resolved = children(() => props.children);
+
   const [structure, setStructure] = createSignal<string | undefined>(
     props.initialData?.structure,
   );
@@ -157,6 +161,7 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             <StructureDisplay structure={structure()} />
           </div>
         </div>
+        <div>{resolved()}</div>
 
         <div class="flex gap-3 pt-4">
           <Button type="submit" disabled={props.isLoading}>

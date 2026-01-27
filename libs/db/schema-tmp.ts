@@ -18,7 +18,7 @@ const createdAtUpdatedAt = {
     .$onUpdate(() => new Date()),
 };
 
-export const grammarPointsTmp = grummaTmp.table("grammar_point", {
+export const grammarPointsTmp = grummaTmp.table("grammar_point_tmp", {
   id: integer("id").primaryKey(),
   shortTitle: text().notNull().unique(),
   detailedTitle: text().unique(),
@@ -30,7 +30,7 @@ export const grammarPointsTmp = grummaTmp.table("grammar_point", {
   ...createdAtUpdatedAt,
 });
 
-export const exercisesTmp = grummaTmp.table("exercise", {
+export const exercisesTmp = grummaTmp.table("exercise_tmp", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   grammarPointId: integer()
     .notNull()

@@ -1,0 +1,1 @@
+ALTER TABLE "tmp"."grammar_point_tmp" ADD COLUMN "explanation" text;

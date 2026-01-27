@@ -9,7 +9,7 @@ import {
   exercisesTmp,
 } from "libs/db/schema-tmp";
 import { db } from "libs/db";
-import { eq } from "drizzle-orm";
+import { eq, max } from "drizzle-orm";
 import { exerciseSchema } from "~/features/exercise/domain";
 
 export const gpManagement = {
@@ -19,8 +19,8 @@ export const gpManagement = {
       shortTitle: z.string().min(1),
       detailedTitle: z.string().min(1),
       englishTitle: z.string().optional(),
-      order: z.number().int().positive(),
       structure: z.string().optional(),
+      explanation: z.string().optional(),
       torfl: z.string().optional(),
     }),
     handler: async (input, context) => {
@@ -33,24 +33,19 @@ export const gpManagement = {
       }
 
       try {
-        const allPoints = await db
-          .select({ maxId: grammarPointsTmp.id })
+        const [{ maxOrder }] = await db
+          .select({ maxOrder: max(grammarPointsTmp.order) })
           .from(grammarPointsTmp);
-        const maxId = allPoints.reduce(
-          (max, curr) => Math.max(curr.maxId, max),
-          0,
-        );
-        const newId = maxId + 1;
 
-        const insertResult = await db
+        const [insertResult] = await db
           .insert(grammarPointsTmp)
           .values({
-            id: newId,
+            order: (maxOrder ?? 0) + 1,
             ...input,
           })
           .returning();
 
-        return insertResult[0];
+        return insertResult;
       } catch (error) {
         throw new ActionError({
           code: "BAD_REQUEST",
@@ -60,12 +55,11 @@ export const gpManagement = {
     },
   }),
   updateGrammarPoint: defineAction({
-    accept: "json",
+    accept: "form",
     input: z.object({
       id: z.number().int().positive(),
       shortTitle: z.string().min(1).optional(),
       title: z.string().min(1).optional(),
-      order: z.number().int().positive().optional(),
       structure: z.string().optional(),
       detailedTitle: z.string().optional(),
       englishTitle: z.string().optional(),

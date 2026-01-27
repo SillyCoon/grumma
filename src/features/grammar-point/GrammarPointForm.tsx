@@ -7,7 +7,7 @@ import {
   TextFieldLabel,
   TextFieldTextArea,
 } from "ui/text-field";
-import { StructureDisplay } from "../grammar-point/StructureDisplay";
+import { StructureDisplay } from "../../components/solid/grammar-point/StructureDisplay";
 import {
   Select,
   SelectContainer,
@@ -15,6 +15,7 @@ import {
   SelectOption,
 } from "packages/ui/select";
 import type { JSX } from "solid-js/jsx-runtime";
+import { ExplanationDisplay } from "@components/solid/grammar-point/ExplanationDisplay";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -25,6 +26,7 @@ interface GrammarPointFormProps {
     order: number;
     structure?: string;
     torfl?: string;
+    explanation?: string;
   };
   success?: boolean;
   error?: string;
@@ -38,6 +40,10 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
 
   const [structure, setStructure] = createSignal<string | undefined>(
     props.initialData?.structure,
+  );
+
+  const [explanation, setExplanation] = createSignal<string | undefined>(
+    props.initialData?.explanation,
   );
 
   return (
@@ -63,6 +69,10 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         </Show>
 
         <div class="grid grid-cols-1 gap-4">
+          <input type="datetime-local" />
+          {props.initialData?.id && (
+            <input type="hidden" name="id" value={props.initialData.id} />
+          )}
           <TextField>
             <TextFieldLabel>Short Title</TextFieldLabel>
             <TextFieldInput
@@ -98,17 +108,6 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         </div>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <TextField>
-            <TextFieldLabel>Order</TextFieldLabel>
-            <TextFieldInput
-              type="number"
-              name="order"
-              value={props.initialData?.order}
-              required
-              min="1"
-            />
-          </TextField>
-
           <SelectContainer>
             <SelectLabel for="torfl" class="flex flex-col">
               TORFL Level
@@ -132,10 +131,7 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <TextField>
-              <TextFieldLabel
-                for="structure"
-                class="mb-2 block font-medium text-sm"
-              >
+              <TextFieldLabel for="structure">
                 Structure{""}
                 <TextFieldTextArea
                   id="structure"
@@ -145,21 +141,46 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
                     setStructure((e.target as HTMLTextAreaElement).value)
                   }
                   placeholder="e.g., Кто? Что?"
-                  class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows="4"
                 />
               </TextFieldLabel>
             </TextField>
 
             <p class="mt-1 text-slate-500 text-xs">
-              Grammar structure question (supports HTML and line breaks)
+              Supports HTML and line breaks
             </p>
           </div>
 
-          <div>
-            <p class="mb-2 block font-medium text-slate-700 text-sm">Preview</p>
+          <Preview>
             <StructureDisplay structure={structure()} />
+          </Preview>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div>
+            <TextField>
+              <TextFieldLabel for="explanation">
+                Explanation{""}
+                <TextFieldTextArea
+                  id="explanation"
+                  name="explanation"
+                  value={props.initialData?.explanation}
+                  onInput={(e) =>
+                    setExplanation((e.target as HTMLTextAreaElement).value)
+                  }
+                  placeholder="e.g. Представьте себе кролика..."
+                  rows="4"
+                />
+              </TextFieldLabel>
+            </TextField>
+
+            <p class="mt-1 text-slate-500 text-xs">
+              Supports HTML and line breaks
+            </p>
           </div>
+
+          <Preview>
+            <ExplanationDisplay text={explanation()} />
+          </Preview>
         </div>
         <div>{resolved()}</div>
 
@@ -174,5 +195,15 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         </div>
       </CardContent>
     </Card>
+  );
+};
+
+const Preview = (props: { children: JSX.Element }) => {
+  const resolved = children(() => props.children);
+  return (
+    <div>
+      <p class="mb-2 block font-medium text-slate-700 text-sm">Preview</p>
+      {resolved()}
+    </div>
   );
 };

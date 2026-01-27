@@ -64,6 +64,20 @@
       "when": 1769472960341,
       "tag": "0008_thick_pyro",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1769481200081,
+      "tag": "0009_known_plazm",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1769502388689,
+      "tag": "0010_dizzy_blazing_skull",
+      "breakpoints": true
     }
   ]
 }

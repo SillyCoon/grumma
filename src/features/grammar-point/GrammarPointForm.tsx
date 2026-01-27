@@ -7,7 +7,7 @@ import {
   TextFieldLabel,
   TextFieldTextArea,
 } from "ui/text-field";
-import { StructureDisplay } from "../grammar-point/StructureDisplay";
+import { StructureDisplay } from "../../components/solid/grammar-point/StructureDisplay";
 import {
   Select,
   SelectContainer,

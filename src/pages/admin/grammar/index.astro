@@ -1,7 +1,7 @@
 ---
 import { actions } from "astro:actions";
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { GrammarPointForm } from "../../../components/solid/admin/GrammarPointForm";
+import { GrammarPointForm } from "~/features/grammar-point/GrammarPointForm";
 
 const { data: grammarPointsList } = await Astro.callAction(
   actions.getAllGrammarPoints,

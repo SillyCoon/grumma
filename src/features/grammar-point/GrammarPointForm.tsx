@@ -69,7 +69,6 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         </Show>
 
         <div class="grid grid-cols-1 gap-4">
-          <input type="datetime-local" />
           {props.initialData?.id && (
             <input type="hidden" name="id" value={props.initialData.id} />
           )}

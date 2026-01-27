@@ -19,12 +19,13 @@ const createdAtUpdatedAt = {
 };
 
 export const grammarPointsTmp = grummaTmp.table("grammar_point_tmp", {
-  id: integer("id").primaryKey(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   shortTitle: text().notNull().unique(),
   detailedTitle: text().unique(),
   englishTitle: text().unique(),
   order: integer().notNull().unique(),
   structure: text(),
+  explanation: text(),
   torfl: varchar({ length: 2 }),
   hide: boolean().notNull().default(true),
   ...createdAtUpdatedAt,

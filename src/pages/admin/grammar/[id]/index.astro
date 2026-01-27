@@ -20,6 +20,8 @@ const { data: grammarPoint } = await Astro.callAction(
 if (!grammarPoint) {
   return Astro.redirect("/admin/grammar");
 }
+
+const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
 ---
 
 <AdminLayout title={`Edit: ${grammarPoint.shortTitle}`}>
@@ -35,19 +37,23 @@ if (!grammarPoint) {
       <p class="text-slate-600 mt-2">ID: {grammarPoint.id}</p>
     </div>
 
-    <!-- Edit Form -->
-    <GrammarPointForm
-      client:load
-      initialData={{
-        id: grammarPoint.id,
-        shortTitle: grammarPoint.shortTitle,
-        order: grammarPoint.order,
-        structure: grammarPoint.structure ?? undefined,
-        detailedTitle: grammarPoint.detailedTitle ?? undefined,
-        englishTitle: grammarPoint.englishTitle ?? undefined,
-        torfl: grammarPoint.torfl ?? undefined,
-      }}
-    />
+    <form action={actions.updateGrammarPoint} method="post">
+      <GrammarPointForm
+        client:load
+        success={!!updateResult?.data}
+        error={updateResult?.error?.message}
+        initialData={{
+          id: grammarPoint.id,
+          shortTitle: grammarPoint.shortTitle,
+          order: grammarPoint.order,
+          structure: grammarPoint.structure ?? undefined,
+          detailedTitle: grammarPoint.detailedTitle ?? undefined,
+          englishTitle: grammarPoint.englishTitle ?? undefined,
+          torfl: grammarPoint.torfl ?? undefined,
+          explanation: grammarPoint.explanation ?? undefined,
+        }}
+      />
+    </form>
 
     <div class="space-y-4 pt-5">
       <div>

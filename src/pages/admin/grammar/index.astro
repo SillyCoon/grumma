@@ -11,6 +11,10 @@ const { data: grammarPointsList, error } = await Astro.callAction(
 if (!grammarPointsList) {
   throw new Error(`Failed to load grammar points, ${error}`);
 }
+
+const createGrammarPointResult = Astro.getActionResult(
+  actions.createGrammarPoint,
+);
 ---
 
 <AdminLayout
@@ -18,5 +22,19 @@ if (!grammarPointsList) {
   action={{ label: "Create", href: "./grammar/create" }}
   description="See all grammar points and create new ones."
 >
-  <GrammarPointsTable grammarPoints={grammarPointsList} client:load />
+  {
+    createGrammarPointResult && !createGrammarPointResult.error && (
+      <div class="rounded border border-green-200 bg-green-50 p-3 text-green-800 text-sm">
+        Grammar point saved successfully!
+      </div>
+    )
+  }
+
+  <GrammarPointsTable
+    grammarPoints={grammarPointsList}
+    error={createGrammarPointResult?.error?.message}
+    client:load
+  />
 </AdminLayout>
+
+<script></script>

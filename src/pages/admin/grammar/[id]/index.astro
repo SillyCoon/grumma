@@ -24,7 +24,7 @@ if (!grammarPoint) {
 const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
 ---
 
-<AdminLayout title={`Edit: ${grammarPoint.detailedTitle}`} back="../grammar">
+<AdminLayout title={`Edit: ${grammarPoint.shortTitle}`} back="../grammar">
   <form action={actions.updateGrammarPoint} method="post">
     <GrammarPointForm
       client:load

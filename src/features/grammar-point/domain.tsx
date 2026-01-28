@@ -8,6 +8,4 @@ export type GrammarPoint = {
   englishTitle: string | null;
   explanation: string | null;
   hide: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 };

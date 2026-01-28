@@ -1,15 +1,67 @@
-import { For } from "solid-js";
+import { createSignal, For } from "solid-js";
 import type { GrammarPoint } from "./domain";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 import { Button } from "packages/ui/button";
 import { cn } from "packages/ui/utils";
+import { actions } from "astro:actions";
+import { toast } from "solid-toast";
+import { SaveConfirmation } from "@components/common/SaveConfirmation";
 
 export const GrammarPointsTable = (props: {
   grammarPoints: GrammarPoint[];
+  error?: string;
 }) => {
-  const [parent, points] = useDragAndDrop<HTMLTableRowElement, GrammarPoint>(
-    props.grammarPoints,
-  );
+  const [parent, points, setPoints] = useDragAndDrop<
+    HTMLTableRowElement,
+    GrammarPoint
+  >(props.grammarPoints, {
+    draggable: (el) => el.id !== "non-draggable",
+  });
+
+  if (props.error) {
+    toast.error(props.error);
+  }
+
+  const [newPoints, setNewPoints] = createSignal<string[]>([]);
+
+  const addNewPoint = () => {
+    setNewPoints([...newPoints(), "New grammar point"]);
+  };
+
+  const updatePoint = (index: number, value: string) => {
+    const updated = [...newPoints()];
+    updated[index] = value;
+    setNewPoints(updated);
+  };
+
+  const updateOrder = async () => {
+    try {
+      const response = await actions.updateGrammarPointsOrder(
+        points().map((gp, index) => ({
+          id: gp.id,
+          order: index + 1,
+        })),
+      );
+      if (response.error) {
+        toast.error(
+          `Failed to update order: ${
+            response.error?.message ?? "Unknown error"
+          }`,
+        );
+      } else {
+        setPoints((points) =>
+          points.map((gp, index) => ({ ...gp, order: index + 1 })),
+        );
+        toast.success("Order updated successfully");
+      }
+    } catch (error) {
+      toast.error(
+        `Failed to update order: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
+  };
 
   return (
     <div>
@@ -17,7 +69,13 @@ export const GrammarPointsTable = (props: {
         <h2 class="mb-4 font-semibold text-2xl">
           Existing Grammar Points ({props.grammarPoints.length})
         </h2>
-        <Button>Save order</Button>
+        <SaveConfirmation title="grammar points order" onSave={updateOrder}>
+          <Button
+            disabled={!points().some((gp, index) => gp.order !== index + 1)}
+          >
+            Save Order
+          </Button>
+        </SaveConfirmation>
       </div>
       <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
         <table class="w-full text-sm">
@@ -86,7 +144,68 @@ export const GrammarPointsTable = (props: {
                 );
               }}
             </For>
+            <For each={newPoints()}>
+              {(gp, index) => (
+                <tr class="border-b bg-green-50" id="non-draggable">
+                  <td class="px-6 py-3 font-medium text-slate-900">New</td>
+                  <td class="px-6 py-3 text-slate-700" colSpan={4}>
+                    <form
+                      id={`new-point-form-${index()}`}
+                      method="post"
+                      action={actions.createGrammarPoint}
+                    >
+                      <input
+                        id="detailedTitle"
+                        name="detailedTitle"
+                        type="hidden"
+                        value="-"
+                      />
+                      <input
+                        id="englishTitle"
+                        name="englishTitle"
+                        type="hidden"
+                        value="-"
+                      />
+                      <input
+                        id="shortTitle"
+                        name="shortTitle"
+                        ref={(el) => {
+                          const isLast = index() === newPoints().length - 1;
+                          isLast && el.focus({ preventScroll: false });
+                        }}
+                        onChange={(e) => updatePoint(index(), e.target.value)}
+                        class="w-full"
+                        value={gp}
+                      />
+                    </form>
+                  </td>
+
+                  <td class="px-6 py-3 text-center">
+                    <button
+                      type="submit"
+                      form={`new-point-form-${index()}`}
+                      class="inline-block cursor-pointer font-medium text-blue-600 text-xs hover:underline"
+                    >
+                      Save
+                    </button>
+                  </td>
+                </tr>
+              )}
+            </For>
           </tbody>
+          <tfoot>
+            <tr>
+              <td class="px-6 py-3 text-slate-700" colSpan={6}>
+                <Button
+                  variant="ghost"
+                  disabled={newPoints().length > 0}
+                  onClick={addNewPoint}
+                >
+                  + Quick Create
+                </Button>
+              </td>
+            </tr>
+          </tfoot>
         </table>
 
         {props.grammarPoints.length === 0 && (

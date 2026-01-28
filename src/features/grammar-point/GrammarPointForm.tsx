@@ -49,11 +49,7 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
   return (
     <Card variant="outlined">
       <CardHeader>
-        <CardTitle>
-          {props.initialData
-            ? "Edit Grammar Point"
-            : "Create New Grammar Point"}
-        </CardTitle>
+        <CardTitle>Grammar Point</CardTitle>
       </CardHeader>
       <CardContent class="space-y-6">
         <Show when={props.error}>
@@ -188,8 +184,8 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             {props.isLoading
               ? "Saving..."
               : props.initialData
-                ? "Update Grammar Point"
-                : "Create Grammar Point"}
+                ? "Update"
+                : "Create"}
           </Button>
         </div>
       </CardContent>

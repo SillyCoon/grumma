@@ -24,44 +24,31 @@ if (!grammarPoint) {
 const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
 ---
 
-<AdminLayout title={`Edit: ${grammarPoint.shortTitle}`}>
-  <div class="space-y-8">
+<AdminLayout title={`Edit: ${grammarPoint.detailedTitle}`} back="../grammar">
+  <form action={actions.updateGrammarPoint} method="post">
+    <GrammarPointForm
+      client:load
+      success={!!updateResult?.data}
+      error={updateResult?.error?.message}
+      initialData={{
+        id: grammarPoint.id,
+        shortTitle: grammarPoint.shortTitle,
+        order: grammarPoint.order,
+        structure: grammarPoint.structure ?? undefined,
+        detailedTitle: grammarPoint.detailedTitle ?? undefined,
+        englishTitle: grammarPoint.englishTitle ?? undefined,
+        torfl: grammarPoint.torfl ?? undefined,
+        explanation: grammarPoint.explanation ?? undefined,
+      }}
+    />
+  </form>
+
+  <div class="space-y-4 pt-5">
     <div>
-      <a
-        href="/admin/grammar"
-        class="text-blue-600 hover:underline text-sm mb-4 inline-block"
-      >
-        ← Back to Grammar Points
-      </a>
-      <h1 class="text-4xl font-bold mt-4">Edit Grammar Point</h1>
-      <p class="text-slate-600 mt-2">ID: {grammarPoint.id}</p>
+      <h2 class="text-2xl font-semibold mb-4">
+        Exercises ({grammarPoint.exercises.length})
+      </h2>
     </div>
-
-    <form action={actions.updateGrammarPoint} method="post">
-      <GrammarPointForm
-        client:load
-        success={!!updateResult?.data}
-        error={updateResult?.error?.message}
-        initialData={{
-          id: grammarPoint.id,
-          shortTitle: grammarPoint.shortTitle,
-          order: grammarPoint.order,
-          structure: grammarPoint.structure ?? undefined,
-          detailedTitle: grammarPoint.detailedTitle ?? undefined,
-          englishTitle: grammarPoint.englishTitle ?? undefined,
-          torfl: grammarPoint.torfl ?? undefined,
-          explanation: grammarPoint.explanation ?? undefined,
-        }}
-      />
-    </form>
-
-    <div class="space-y-4 pt-5">
-      <div>
-        <h2 class="text-2xl font-semibold mb-4">
-          Exercises ({grammarPoint.exercises.length})
-        </h2>
-      </div>
-      <ExercisesForm grammarPointId={grammarPoint.id} client:only="solid-js" />
-    </div>
+    <ExercisesForm grammarPointId={grammarPoint.id} client:only="solid-js" />
   </div>
 </AdminLayout>

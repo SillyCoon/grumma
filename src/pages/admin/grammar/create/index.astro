@@ -1,0 +1,18 @@
+---
+import AdminLayout from "@layouts/AdminLayout.astro";
+import { actions } from "astro:actions";
+import { GrammarPointForm } from "~/features/grammar-point/GrammarPointForm";
+
+const createResult = Astro.getActionResult(actions.createGrammarPoint);
+---
+
+<AdminLayout title="Create" back="../grammar">
+  <form action={actions.createGrammarPoint} method="post">
+    <GrammarPointForm
+      success={!!createResult?.data}
+      error={createResult?.error?.message}
+      client:load
+      ><p>You can create exercises on edit screen later</p></GrammarPointForm
+    >
+  </form>
+</AdminLayout>

@@ -12,7 +12,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "packages/ui/dialog";
 import { Button } from "packages/ui/button";
 import { cn } from "packages/ui/utils";
@@ -25,8 +24,6 @@ import {
 
 import { v4 } from "uuid";
 import { unwrap, type SetStoreFunction } from "solid-js/store";
-import { IconButton } from "packages/ui/icon-button";
-import { AiFillDelete } from "solid-icons/ai";
 import {
   Answer,
   Text,
@@ -37,6 +34,7 @@ import {
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { exercisesStore } from "./domain";
+import { DeleteConfirmation } from "@components/common/DeleteConfirmation";
 
 const AcceptableAnswers = (props: {
   answer: Answer;
@@ -308,8 +306,8 @@ export const ExercisesForm = (props: {
                   exercise={exercise}
                   setExercise={setExercise}
                 />
-                <DeleteExerciseDialog
-                  exerciseIndex={index()}
+                <DeleteConfirmation
+                  title={`exercise #${index() + 1}`}
                   onDelete={() => deleteExercise(index())}
                 />
               </div>
@@ -353,35 +351,5 @@ export const ExercisesForm = (props: {
         Save Exercises
       </Button>
     </ol>
-  );
-};
-
-const DeleteExerciseDialog = (props: {
-  onDelete: () => void;
-  exerciseIndex: number;
-}) => {
-  return (
-    <Dialog>
-      <DialogTrigger>
-        <IconButton variant="destructive" size="md">
-          <AiFillDelete />
-        </IconButton>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            Are you sure you want to delete exercise #{props.exerciseIndex + 1}?
-          </DialogTitle>
-          <DialogDescription>
-            All data related to this exercise will be permanently removed.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button variant="destructive" onClick={props.onDelete}>
-            Yes, delete
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 };

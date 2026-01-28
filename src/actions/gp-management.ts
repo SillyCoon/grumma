@@ -9,7 +9,7 @@ import {
   exercisesTmp,
 } from "libs/db/schema-tmp";
 import { db } from "libs/db";
-import { eq, max } from "drizzle-orm";
+import { eq, max, sql } from "drizzle-orm";
 import { exerciseSchema } from "~/features/exercise/domain";
 
 export const gpManagement = {
@@ -95,6 +95,48 @@ export const gpManagement = {
         throw new ActionError({
           code: "BAD_REQUEST",
           message: `Failed to update grammar point: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    },
+  }),
+  updateGrammarPointsOrder: defineAction({
+    accept: "json",
+    input: z.array(
+      z.object({
+        id: z.number().int().positive(),
+        order: z.number().int().nonnegative(),
+      }),
+    ),
+    handler: async (input, context) => {
+      const user = extractUser(context);
+      if (!isUserAdmin(user)) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Admin access required to update grammar points order",
+        });
+      }
+
+      const sqlA = sql`
+          UPDATE ${grammarPointsTmp} o
+          SET "order" = v.new_order
+          FROM (
+            VALUES
+              ${sql.join(
+                input.map((o) => sql`(${o.id}::int, ${o.order}::int)`),
+                sql`, `,
+              )}
+          ) AS v(id, new_order)
+          WHERE o.id = v.id
+        `;
+
+      try {
+        await db.execute(sqlA);
+
+        return input;
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: `Failed to update grammar points order: ${error instanceof Error ? error.message : "Unknown error"}`,
         });
       }
     },

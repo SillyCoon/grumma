@@ -1,0 +1,2 @@
+ALTER TABLE "tmp"."grammar_point_tmp" DROP CONSTRAINT "grammar_point_tmp_detailedTitle_unique";--> statement-breakpoint
+ALTER TABLE "tmp"."grammar_point_tmp" DROP CONSTRAINT "grammar_point_tmp_englishTitle_unique";

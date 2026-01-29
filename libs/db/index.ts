@@ -16,3 +16,6 @@ export const makeDb = (connectionString: string) =>
   drizzle(postgres(connectionString, { prepare: false }), {
     schema: { ...schema, ...tmpSchema },
   });
+
+export type Database = typeof db;
+export type Transaction = Parameters<Parameters<Database["transaction"]>[0]>[0];

@@ -1,8 +1,15 @@
 import { createStore } from "solid-js/store";
 import type { AcceptableAnswer, Exercise } from "../domain";
+import { makePersisted } from "@solid-primitives/storage";
 
-export const exercisesStore = (initialExercises: Exercise[]) => {
-  const [exercises, setExercises] = createStore<Exercise[]>(initialExercises);
+export const exercisesStore = (
+  grammarPointId: number,
+  initialExercises: Exercise[],
+) => {
+  const [exercises, setExercises] = makePersisted(
+    createStore<Exercise[]>(initialExercises),
+    { name: `exercises-${grammarPointId}` },
+  );
 
   const addAcceptableAnswer = (exerciseIndex: number, answerIndex: number) => {
     setExercises(exerciseIndex, "parts", answerIndex, (part) => {

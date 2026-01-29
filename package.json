@@ -31,6 +31,7 @@
     "@formkit/drag-and-drop": "^0.5.3",
     "@kobalte/core": "^0.13.11",
     "@solid-primitives/refs": "^1.1.2",
+    "@solid-primitives/storage": "^4.3.3",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.76.1",
     "@tailwindcss/vite": "^4.1.15",

@@ -3,7 +3,13 @@ import {
   TextFieldInput,
   TextFieldTextArea,
 } from "packages/ui/text-field";
-import { createSignal, For, Show } from "solid-js";
+import {
+  createSignal,
+  For,
+  Match,
+  Show,
+  Switch as SolidSwitch,
+} from "solid-js";
 import { Select, SelectOption } from "packages/ui/select";
 import {
   Dialog,
@@ -22,7 +28,6 @@ import {
   ContextMenuTrigger,
 } from "packages/ui/context-menu";
 
-import { v4 } from "uuid";
 import { unwrap, type SetStoreFunction } from "solid-js/store";
 import {
   Answer,
@@ -35,6 +40,12 @@ import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { exercisesStore } from "./domain";
 import { DeleteConfirmation } from "@components/common/DeleteConfirmation";
+import {
+  Switch,
+  SwitchControl,
+  SwitchLabel,
+  SwitchThumb,
+} from "packages/ui/switch";
 
 const AcceptableAnswers = (props: {
   answer: Answer;
@@ -230,7 +241,25 @@ const Part = (props: {
   );
 };
 
-export const ExerciseComponent = (props: {
+const ExercisePreview = (props: { exercise: Exercise }) => {
+  return (
+    <div class="inline-flex grow flex-wrap gap-1 py-2">
+      <For each={props.exercise.parts}>
+        {(part) => (
+          <div>
+            {part.type === "text" ? (
+              <span>{part.text}</span>
+            ) : (
+              <span class="text-success">{part.text}</span>
+            )}
+          </div>
+        )}
+      </For>
+    </div>
+  );
+};
+
+export const ExerciseInput = (props: {
   exercise: Exercise;
   setExercise: SetStoreFunction<Exercise>;
 }) => {
@@ -275,7 +304,6 @@ const validate = (exercise: Exercise) => {
 };
 
 const EmptyExercise = (order: number): Exercise => ({
-  id: v4(),
   order,
   parts: [
     Text(0, "Left part of the sentence "),
@@ -288,68 +316,107 @@ export const ExercisesForm = (props: {
   grammarPointId: number;
   defaultExercises?: Exercise[];
 }) => {
+  const [isEditing, setIsEditing] = createSignal(false);
+
   const MAX_EXERCISES = 12;
   const { exercises, setExercises, deleteExercise } = exercisesStore(
-    props.defaultExercises ?? [],
+    props.grammarPointId,
+    structuredClone(unwrap(props.defaultExercises)) ?? [],
   );
   const hasCapacity = () => exercises.length < MAX_EXERCISES;
   return (
-    <ol class="list-decimal pl-5">
-      <For each={exercises}>
-        {(exercise, index) => {
-          const setExercise = setExercises.bind(null, index());
-
-          return (
-            <li>
-              <div class="flex flex-row items-center gap-2">
-                <ExerciseComponent
-                  exercise={exercise}
-                  setExercise={setExercise}
-                />
-                <DeleteConfirmation
-                  title={`exercise #${index() + 1}`}
-                  onDelete={() => deleteExercise(index())}
-                />
-              </div>
-            </li>
-          );
-        }}
-      </For>
-      <Button
-        variant={"ghost"}
-        disabled={!hasCapacity()}
-        class="w-full"
-        onClick={() =>
-          setExercises(exercises.length, EmptyExercise(exercises.length))
-        }
-      >
-        <Show
-          when={hasCapacity()}
-          fallback={`Max number of exercises is ${MAX_EXERCISES}`}
+    <div>
+      <div class="mb-4 ml-auto flex w-fit flex-row gap-2">
+        <Switch
+          checked={isEditing()}
+          onChange={setIsEditing}
+          class="flex items-center space-x-2"
         >
-          + Add exercise
-        </Show>
-      </Button>
-      <Button
-        onClick={async () => {
-          try {
-            const result = await actions.createExercises({
-              grammarPointId: props.grammarPointId,
-              exercises: unwrap(exercises),
-            });
-            if (result.error) {
-              toast.error("Failed to save exercises");
-              console.log("Error creating exercises:", result.error);
-            } else {
-              toast.success("Exercises saved successfully");
+          <SwitchControl>
+            <SwitchThumb />
+          </SwitchControl>
+          <SwitchLabel>Edit mode</SwitchLabel>
+        </Switch>
+
+        <Button variant={"ghost"}>Reset</Button>
+      </div>
+
+      <ol class="list-decimal pl-5">
+        <SolidSwitch>
+          <Match when={isEditing()}>
+            <For each={exercises}>
+              {(exercise, index) => {
+                const setExercise = setExercises.bind(null, index());
+
+                return (
+                  <li class="flex flex-row justify-between">
+                    <ExerciseInput
+                      exercise={exercise}
+                      setExercise={setExercise}
+                    />
+                    <DeleteConfirmation
+                      title={`exercise #${index()}`}
+                      onDelete={() => deleteExercise(index())}
+                    />
+                  </li>
+                );
+              }}
+            </For>
+          </Match>
+          <Match when={!isEditing()}>
+            <For each={props.defaultExercises}>
+              {(exercise) => {
+                return (
+                  <li>
+                    <ExercisePreview exercise={exercise} />
+                  </li>
+                );
+              }}
+            </For>
+          </Match>
+        </SolidSwitch>
+        <Show when={isEditing()}>
+          <Button
+            variant={"ghost"}
+            disabled={!hasCapacity()}
+            class="w-full"
+            onClick={() =>
+              setExercises(
+                exercises.length,
+                EmptyExercise(exercises.length + 1),
+              )
             }
-          } catch {
-            toast.error("Failed to save exercises");
-          }
-        }}
-      >
-        Save Exercises
-      </Button>
-    </ol>
+          >
+            <Show
+              when={hasCapacity()}
+              fallback={`Max number of exercises is ${MAX_EXERCISES}`}
+            >
+              + Add exercise
+            </Show>
+          </Button>
+
+          <Button
+            onClick={async () => {
+              try {
+                const result = await actions.createOrUpdateExercises({
+                  grammarPointId: props.grammarPointId,
+                  exercises: unwrap(exercises),
+                });
+                if (result.error) {
+                  toast.error("Failed to save exercises");
+                  console.log("Error updating exercises:", result.error);
+                } else {
+                  toast.success("Exercises saved successfully");
+                }
+              } catch {
+                toast.error("Failed to save exercises");
+              }
+            }}
+          >
+            Save Exercises
+          </Button>
+        </Show>
+      </ol>
+    </div>
   );
 };

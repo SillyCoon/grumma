@@ -40,9 +40,9 @@ const exercisePartSchema = z.discriminatedUnion("type", [
 ]);
 
 export const exerciseSchema = z.object({
-  id: z.string().uuid(),
+  id: z.number().int().positive().optional(),
   parts: z.array(exercisePartSchema).min(2),
-  order: z.number().int().positive().or(z.literal(0)),
+  order: z.number().int().positive(),
 });
 
 export type Exercise = z.infer<typeof exerciseSchema>;

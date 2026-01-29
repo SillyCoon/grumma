@@ -1,0 +1,734 @@
+{
+  "id": "001cf04c-8cae-4794-a6de-ef37a423ab5b",
+  "prevId": "d4c8e708-6e25-4b81-8a17-9f7e5d2af88f",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "grumma.exercise": {
+      "name": "exercise",
+      "schema": "grumma",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "exercise_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "grumma",
+            "type": "always"
+          }
+        },
+        "grammarPointId": {
+          "name": "grammarPointId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ru": {
+          "name": "ru",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "en": {
+          "name": "en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "helper": {
+          "name": "helper",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "exercise_grammarPointId_grammar_point_id_fk": {
+          "name": "exercise_grammarPointId_grammar_point_id_fk",
+          "tableFrom": "exercise",
+          "columnsFrom": [
+            "grammarPointId"
+          ],
+          "tableTo": "grammar_point",
+          "schemaTo": "grumma",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "grumma.feedback": {
+      "name": "feedback",
+      "schema": "grumma",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "feedback_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "grumma",
+            "type": "always"
+          }
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grammarPointId": {
+          "name": "grammarPointId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exerciseOrder": {
+          "name": "exerciseOrder",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "feedback_grammarPointId_grammar_point_id_fk": {
+          "name": "feedback_grammarPointId_grammar_point_id_fk",
+          "tableFrom": "feedback",
+          "columnsFrom": [
+            "grammarPointId"
+          ],
+          "tableTo": "grammar_point",
+          "schemaTo": "grumma",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "grumma.grammar_point": {
+      "name": "grammar_point",
+      "schema": "grumma",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "shortTitle": {
+          "name": "shortTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "structure": {
+          "name": "structure",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "detailedTitle": {
+          "name": "detailedTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "englishTitle": {
+          "name": "englishTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "torfl": {
+          "name": "torfl",
+          "type": "varchar(2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "grammar_point_shortTitle_unique": {
+          "name": "grammar_point_shortTitle_unique",
+          "columns": [
+            "shortTitle"
+          ],
+          "nullsNotDistinct": false
+        },
+        "grammar_point_title_unique": {
+          "name": "grammar_point_title_unique",
+          "columns": [
+            "title"
+          ],
+          "nullsNotDistinct": false
+        },
+        "grammar_point_detailedTitle_unique": {
+          "name": "grammar_point_detailedTitle_unique",
+          "columns": [
+            "detailedTitle"
+          ],
+          "nullsNotDistinct": false
+        },
+        "grammar_point_englishTitle_unique": {
+          "name": "grammar_point_englishTitle_unique",
+          "columns": [
+            "englishTitle"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "grumma.space_repetition": {
+      "name": "space_repetition",
+      "schema": "grumma",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "space_repetition_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "grumma",
+            "type": "always"
+          }
+        },
+        "answer": {
+          "name": "answer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "answeredAt": {
+          "name": "answeredAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grammarPointId": {
+          "name": "grammarPointId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isCorrect": {
+          "name": "isCorrect",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reviewSessionId": {
+          "name": "reviewSessionId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stage": {
+          "name": "stage",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "space_repetition_grammarPointId_grammar_point_id_fk": {
+          "name": "space_repetition_grammarPointId_grammar_point_id_fk",
+          "tableFrom": "space_repetition",
+          "columnsFrom": [
+            "grammarPointId"
+          ],
+          "tableTo": "grammar_point",
+          "schemaTo": "grumma",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "tmp.acceptable_answer": {
+      "name": "acceptable_answer",
+      "schema": "tmp",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "acceptable_answer_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "tmp",
+            "type": "always"
+          }
+        },
+        "answerId": {
+          "name": "answerId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant": {
+          "name": "variant",
+          "type": "acceptableAnswerVariant",
+          "typeSchema": "tmp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "acceptable_answer_answerId_exercise_part_id_fk": {
+          "name": "acceptable_answer_answerId_exercise_part_id_fk",
+          "tableFrom": "acceptable_answer",
+          "columnsFrom": [
+            "answerId"
+          ],
+          "tableTo": "exercise_part",
+          "schemaTo": "tmp",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "tmp.exercise_part": {
+      "name": "exercise_part",
+      "schema": "tmp",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "exercise_part_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "tmp",
+            "type": "always"
+          }
+        },
+        "exerciseId": {
+          "name": "exerciseId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "exercisePartType",
+          "typeSchema": "tmp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "exercise_part_exerciseId_exercise_tmp_id_fk": {
+          "name": "exercise_part_exerciseId_exercise_tmp_id_fk",
+          "tableFrom": "exercise_part",
+          "columnsFrom": [
+            "exerciseId"
+          ],
+          "tableTo": "exercise_tmp",
+          "schemaTo": "tmp",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "tmp.exercise_tmp": {
+      "name": "exercise_tmp",
+      "schema": "tmp",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "exercise_tmp_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "tmp",
+            "type": "always"
+          }
+        },
+        "grammarPointId": {
+          "name": "grammarPointId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "exercise_tmp_grammarPointId_grammar_point_tmp_id_fk": {
+          "name": "exercise_tmp_grammarPointId_grammar_point_tmp_id_fk",
+          "tableFrom": "exercise_tmp",
+          "columnsFrom": [
+            "grammarPointId"
+          ],
+          "tableTo": "grammar_point_tmp",
+          "schemaTo": "tmp",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "exercise_tmp_order_unique": {
+          "name": "exercise_tmp_order_unique",
+          "columns": [
+            "order"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "tmp.grammar_point_tmp": {
+      "name": "grammar_point_tmp",
+      "schema": "tmp",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "name": "grammar_point_tmp_id_seq",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cache": "1",
+            "cycle": false,
+            "schema": "tmp",
+            "type": "always"
+          }
+        },
+        "shortTitle": {
+          "name": "shortTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "detailedTitle": {
+          "name": "detailedTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "englishTitle": {
+          "name": "englishTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "structure": {
+          "name": "structure",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "explanation": {
+          "name": "explanation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "torfl": {
+          "name": "torfl",
+          "type": "varchar(2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hide": {
+          "name": "hide",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "grammar_point_tmp_shortTitle_unique": {
+          "name": "grammar_point_tmp_shortTitle_unique",
+          "columns": [
+            "shortTitle"
+          ],
+          "nullsNotDistinct": false
+        },
+        "grammar_point_tmp_order_unique": {
+          "name": "grammar_point_tmp_order_unique",
+          "columns": [
+            "order"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "tmp.exercisePartType": {
+      "name": "exercisePartType",
+      "schema": "tmp",
+      "values": [
+        "text",
+        "answer"
+      ]
+    },
+    "tmp.acceptableAnswerVariant": {
+      "name": "acceptableAnswerVariant",
+      "schema": "tmp",
+      "values": [
+        "correct",
+        "incorrect",
+        "try-again"
+      ]
+    }
+  },
+  "schemas": {
+    "grumma": "grumma",
+    "tmp": "tmp"
+  },
+  "views": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

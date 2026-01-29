@@ -8,9 +8,9 @@ import {
   acceptableAnswersTmp,
   exercisesTmp,
 } from "libs/db/schema-tmp";
-import { db } from "libs/db";
+import { db, type Transaction } from "libs/db";
 import { eq, max, sql } from "drizzle-orm";
-import { exerciseSchema } from "~/features/exercise/domain";
+import { exerciseSchema, type Exercise } from "~/features/exercise/domain";
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -222,51 +222,7 @@ export const gpManagement = {
 
       try {
         await db.transaction(async (tx) => {
-          for (const exercise of input.exercises) {
-            const insertedExercise = await tx
-              .insert(exercisesTmp)
-              .values({
-                grammarPointId: input.grammarPointId,
-                order: exercise.order,
-              })
-              .returning();
-
-            const insertedPart = await tx
-              .insert(exercisePartsTmp)
-              .values(
-                exercise.parts.map((part) => ({
-                  exerciseId: insertedExercise[0].id,
-                  order: part.index,
-                  type: part.type,
-                  text: part.text,
-                  description: "description" in part ? part.description : null,
-                })),
-              )
-              .returning();
-
-            const acceptableAnswersToInsert = insertedPart.flatMap(
-              (part, idx) => {
-                const originalPart = exercise.parts[idx];
-                if (
-                  originalPart.type === "answer" &&
-                  originalPart.acceptableAnswers
-                ) {
-                  return originalPart.acceptableAnswers.map((a) => ({
-                    answerId: part.id,
-                    text: a.text,
-                    description: a.description || null,
-                    variant: a.variant,
-                  }));
-                }
-                return [];
-              },
-            );
-
-            acceptableAnswersToInsert.length &&
-              (await tx
-                .insert(acceptableAnswersTmp)
-                .values(acceptableAnswersToInsert));
-          }
+          await createExercises(tx, input.grammarPointId, input.exercises);
         });
 
         return input;
@@ -278,4 +234,176 @@ export const gpManagement = {
       }
     },
   }),
+  createOrUpdateExercises: defineAction({
+    accept: "json",
+    input: z.object({
+      grammarPointId: z.number().int().positive(),
+      exercises: exerciseSchema.array().min(1),
+    }),
+    handler: async (input, context) => {
+      const user = extractUser(context);
+      if (!isUserAdmin(user)) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Admin access required to update exercises",
+        });
+      }
+
+      const newExercises = input.exercises.filter((ex) => !ex.id);
+      const existingExercises = input.exercises.filter((ex) => ex.id);
+
+      try {
+        await db.transaction(async (tx) => {
+          await createExercises(tx, input.grammarPointId, newExercises);
+          await putExercises(tx, existingExercises);
+        });
+
+        return input;
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: `Failed to update exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    },
+  }),
+  getExercisesByGrammarPointId: defineAction({
+    accept: "json",
+    input: z.object({
+      grammarPointId: z.number().int().positive(),
+    }),
+    handler: async ({ grammarPointId }, context) => {
+      const user = extractUser(context);
+      if (!isUserAdmin(user)) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Admin access required",
+        });
+      }
+
+      try {
+        const data = await db.query.exercisesTmp.findMany({
+          where: eq(exercisesTmp.grammarPointId, grammarPointId),
+          orderBy: (ex, { asc }) => asc(ex.order),
+          with: {
+            parts: {
+              orderBy: (part, { asc }) => asc(part.order),
+              with: {
+                acceptableAnswers: true,
+              },
+            },
+          },
+        });
+        const result: Exercise[] = data.map((exercise) => ({
+          id: exercise.id,
+          order: exercise.order,
+          parts: exercise.parts.map((part) => {
+            if (part.type === "answer") {
+              return {
+                index: part.order,
+                type: part.type,
+                text: part.text,
+                description: part.description || undefined,
+                acceptableAnswers: part.acceptableAnswers.map((ans) => ({
+                  text: ans.text,
+                  description: ans.description || undefined,
+                  variant: ans.variant,
+                })),
+              };
+            }
+            return {
+              index: part.order,
+              type: part.type,
+              text: part.text,
+              description: part.description || undefined,
+            };
+          }),
+        }));
+        return result;
+      } catch (error) {
+        throw new ActionError({
+          code: "BAD_REQUEST",
+          message: `Failed to fetch exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    },
+  }),
+};
+
+const createExercises = async (
+  tx: Transaction,
+  grammarPointId: number,
+  exercises: Exercise[],
+) => {
+  for (const exercise of exercises) {
+    const insertedExercise = await tx
+      .insert(exercisesTmp)
+      .values({
+        grammarPointId: grammarPointId,
+        order: exercise.order,
+      })
+      .returning();
+
+    await createParts(tx, insertedExercise[0].id, exercise.parts);
+  }
+};
+
+const createParts = async (
+  tx: Transaction,
+  exerciseId: number,
+  parts: Exercise["parts"],
+) => {
+  const insertedPart = await tx
+    .insert(exercisePartsTmp)
+    .values(
+      parts.map((part) => ({
+        exerciseId: exerciseId,
+        order: part.index,
+        type: part.type,
+        text: part.text,
+        description: "description" in part ? part.description : null,
+      })),
+    )
+    .returning();
+
+  const acceptableAnswersToInsert = insertedPart.flatMap((part, idx) => {
+    const originalPart = parts[idx];
+    if (originalPart.type === "answer" && originalPart.acceptableAnswers) {
+      return originalPart.acceptableAnswers.map((a) => ({
+        answerId: part.id,
+        text: a.text,
+        description: a.description || null,
+        variant: a.variant,
+      }));
+    }
+    return [];
+  });
+
+  acceptableAnswersToInsert.length &&
+    (await tx.insert(acceptableAnswersTmp).values(acceptableAnswersToInsert));
+};
+
+const putExercises = async (tx: Transaction, exercises: Exercise[]) => {
+  for (const exercise of exercises) {
+    if (!exercise.id) continue;
+
+    await tx
+      .update(exercisesTmp)
+      .set({
+        order: exercise.order,
+      })
+      .where(eq(exercisesTmp.id, exercise.id));
+
+    await tx
+      .delete(acceptableAnswersTmp)
+      .where(eq(acceptableAnswersTmp.answerId, exercise.id))
+      .execute();
+
+    await tx
+      .delete(exercisePartsTmp)
+      .where(eq(exercisePartsTmp.exerciseId, exercise.id))
+      .execute();
+
+    await createParts(tx, exercise.id, exercise.parts);
+  }
 };

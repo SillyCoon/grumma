@@ -39,19 +39,23 @@ import {
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { exercisesStore } from "./domain";
-import { DeleteConfirmation } from "@components/common/DeleteConfirmation";
 import {
   Switch,
   SwitchControl,
   SwitchLabel,
   SwitchThumb,
 } from "packages/ui/switch";
+import { ResetConfirmation } from "@components/common/ResetConfirmation";
+import { IconButton } from "packages/ui/icon-button";
+import { AiFillEye, AiFillEyeInvisible } from "solid-icons/ai";
+import { Tooltip, TooltipContent, TooltipTrigger } from "packages/ui/tooltip";
 
 const AcceptableAnswers = (props: {
   answer: Answer;
   onChange: SetStoreFunction<AcceptableAnswer[]>;
 }) => {
   let addButton: HTMLButtonElement | undefined;
+  console.log(props.answer.acceptableAnswers);
 
   return (
     <div class="flex flex-col gap-2">
@@ -78,21 +82,32 @@ const AcceptableAnswers = (props: {
                       required
                     />
                   </TextField>
-                  <Select
-                    onChange={(e) => {
-                      props.onChange(
-                        index(),
-                        "variant",
-                        e.target.value as AcceptableAnswer["variant"],
-                      );
+                  <Select<AcceptableAnswer["variant"]>
+                    onSelect={(value) => {
+                      props.onChange(index(), "variant", value);
                     }}
                     id={`variant[${index()}]`}
                     class="w-fit"
-                    value={"incorrect"}
+                    value={answer.variant}
                   >
-                    <SelectOption value="correct">Correct</SelectOption>
-                    <SelectOption value="incorrect">Incorrect</SelectOption>
-                    <SelectOption value="try-again">Try Again</SelectOption>
+                    <For
+                      each={
+                        [
+                          { label: "Correct", value: "correct" },
+                          { label: "Incorrect", value: "incorrect" },
+                          { label: "Try Again", value: "try-again" },
+                        ] as const
+                      }
+                    >
+                      {(variant) => (
+                        <SelectOption
+                          value={variant.value}
+                          selected={answer.variant === variant.value}
+                        >
+                          {variant.label}
+                        </SelectOption>
+                      )}
+                    </For>
                   </Select>
                 </div>
                 <TextField
@@ -142,7 +157,7 @@ const EditAnswer = (props: {
           </DialogDescription>
         </DialogHeader>
         <div class="mt-2 flex flex-col gap-3">
-          <TextField class="grow">
+          <TextField class="grow" onChange={(v) => props.onChange("text", v)}>
             <TextFieldInput
               type="text"
               value={props.answer?.text}
@@ -150,7 +165,11 @@ const EditAnswer = (props: {
               required
             />
           </TextField>
-          <TextField class="grow">
+          <TextField
+            class="grow"
+            onChange={(v) => props.onChange("description", v)}
+            value={props.answer?.description || ""}
+          >
             <TextFieldTextArea placeholder="Description (shown after answer is submitted)" />
           </TextField>
 
@@ -165,7 +184,9 @@ const EditAnswer = (props: {
           />
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="button" onClick={() => props.onOpenChange?.(false)}>
+            Close
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -192,7 +213,6 @@ const AnswerPart = (props: {
   onChange: SetStoreFunction<Answer>;
 }) => {
   const [open, setOpen] = createSignal(false);
-  const initialValue = props.answer.text;
   return (
     <ContextMenu>
       <EditAnswer
@@ -202,15 +222,12 @@ const AnswerPart = (props: {
         onChange={props.onChange}
       />
 
-      <ContextMenuTrigger
-        contentEditable
-        class="inline-block min-w-5 border-success border-b text-success outline-none"
-        as="span"
-        onInput={(e) =>
-          props.onChange("text", e.currentTarget.textContent ?? "")
-        }
-      >
-        {initialValue}
+      <ContextMenuTrigger as="span">
+        <input
+          class="inline-block min-w-5 border-success border-b text-success outline-none"
+          value={props.answer.text}
+          onChange={(e) => props.onChange("text", e.currentTarget.value ?? "")}
+        />
       </ContextMenuTrigger>
       <ContextMenuContent>
         <ContextMenuItem onClick={() => setOpen(true)}>
@@ -243,7 +260,11 @@ const Part = (props: {
 
 const ExercisePreview = (props: { exercise: Exercise }) => {
   return (
-    <div class="inline-flex grow flex-wrap gap-1 py-2">
+    <div
+      class={cn("inline-flex grow flex-wrap gap-1 py-2", {
+        "opacity-50": props.exercise.hide,
+      })}
+    >
       <For each={props.exercise.parts}>
         {(part) => (
           <div>
@@ -265,7 +286,7 @@ export const ExerciseInput = (props: {
 }) => {
   const validationResult = () => validate(props.exercise);
   return (
-    <div class="inline-flex grow flex-wrap gap-1 py-2">
+    <div class={cn("inline-flex grow flex-wrap gap-1 py-2")}>
       <For each={props.exercise.parts}>
         {(part, index) => (
           <div>
@@ -282,6 +303,7 @@ export const ExerciseInput = (props: {
           </div>
         )}
       </For>
+
       <div class="text-error">
         {validationResult() && ` ⚠️ ${validationResult()}`}
       </div>
@@ -305,6 +327,7 @@ const validate = (exercise: Exercise) => {
 
 const EmptyExercise = (order: number): Exercise => ({
   order,
+  hide: true,
   parts: [
     Text(0, "Left part of the sentence "),
     Answer(1, "answer"),
@@ -315,14 +338,19 @@ const EmptyExercise = (order: number): Exercise => ({
 export const ExercisesForm = (props: {
   grammarPointId: number;
   defaultExercises?: Exercise[];
+  isEditing?: boolean;
 }) => {
-  const [isEditing, setIsEditing] = createSignal(false);
+  const [isEditing, setIsEditing] = createSignal(props.isEditing ?? false);
 
   const MAX_EXERCISES = 12;
-  const { exercises, setExercises, deleteExercise } = exercisesStore(
+  const { exercises, setExercises, toggleHideExercise, clear } = exercisesStore(
     props.grammarPointId,
     structuredClone(unwrap(props.defaultExercises)) ?? [],
   );
+  const [previewExercises, setPreviewExercises] = createSignal<Exercise[]>(
+    props.defaultExercises ?? [],
+  );
+
   const hasCapacity = () => exercises.length < MAX_EXERCISES;
   return (
     <div>
@@ -337,8 +365,6 @@ export const ExercisesForm = (props: {
           </SwitchControl>
           <SwitchLabel>Edit mode</SwitchLabel>
         </Switch>
-
-        <Button variant={"ghost"}>Reset</Button>
       </div>
 
       <ol class="list-decimal pl-5">
@@ -349,22 +375,40 @@ export const ExercisesForm = (props: {
                 const setExercise = setExercises.bind(null, index());
 
                 return (
-                  <li class="flex flex-row justify-between">
-                    <ExerciseInput
-                      exercise={exercise}
-                      setExercise={setExercise}
-                    />
-                    <DeleteConfirmation
-                      title={`exercise #${index()}`}
-                      onDelete={() => deleteExercise(index())}
-                    />
+                  <li>
+                    <div class="flex flex-row justify-between">
+                      <ExerciseInput
+                        exercise={exercise}
+                        setExercise={setExercise}
+                      />
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <IconButton
+                            variant={exercise.hide ? "warning" : "success"}
+                            onClick={() => toggleHideExercise(index())}
+                          >
+                            <Show
+                              when={!exercise.hide}
+                              fallback={<AiFillEyeInvisible />}
+                            >
+                              <AiFillEye />
+                            </Show>
+                          </IconButton>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {exercise.hide
+                            ? "Hidden from users"
+                            : "Visible to users"}
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                   </li>
                 );
               }}
             </For>
           </Match>
           <Match when={!isEditing()}>
-            <For each={props.defaultExercises}>
+            <For each={previewExercises()}>
               {(exercise) => {
                 return (
                   <li>
@@ -394,27 +438,36 @@ export const ExercisesForm = (props: {
               + Add exercise
             </Show>
           </Button>
-
-          <Button
-            onClick={async () => {
-              try {
-                const result = await actions.createOrUpdateExercises({
-                  grammarPointId: props.grammarPointId,
-                  exercises: unwrap(exercises),
-                });
-                if (result.error) {
+          <div class="mt-4 ml-auto flex w-fit flex-row gap-2">
+            <ResetConfirmation
+              title="exercises"
+              onReset={() => {
+                clear();
+                globalThis.location.reload();
+              }}
+            />
+            <Button
+              onClick={async () => {
+                try {
+                  const result = await actions.putExercises({
+                    grammarPointId: props.grammarPointId,
+                    exercises: unwrap(exercises),
+                  });
+                  if (result.error) {
+                    toast.error("Failed to save exercises");
+                  } else {
+                    setPreviewExercises(exercises);
+                    clear();
+                    toast.success("Exercises saved successfully");
+                  }
+                } catch {
                   toast.error("Failed to save exercises");
-                  console.log("Error updating exercises:", result.error);
-                } else {
-                  toast.success("Exercises saved successfully");
                 }
-              } catch {
-                toast.error("Failed to save exercises");
-              }
-            }}
-          >
-            Save Exercises
-          </Button>
+              }}
+            >
+              Save Exercises
+            </Button>
+          </div>
         </Show>
       </ol>
     </div>

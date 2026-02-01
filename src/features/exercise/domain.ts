@@ -1,6 +1,7 @@
 import { z } from "astro/zod";
 
 export const textSchema = z.object({
+  id: z.number().int().positive().optional(),
   index: z.number(),
   type: z.literal("text"),
   text: z.string().min(1, "Text cannot be empty"),
@@ -13,6 +14,7 @@ export const Text = (index: number, text: string): Text => ({
 });
 
 export const acceptableAnswerSchema = z.object({
+  id: z.number().int().positive().optional(),
   text: z.string().min(1, "Acceptable answer cannot be empty"),
   description: z.string().optional(),
   variant: z.enum(["correct", "incorrect", "try-again"]),
@@ -20,6 +22,7 @@ export const acceptableAnswerSchema = z.object({
 export type AcceptableAnswer = z.infer<typeof acceptableAnswerSchema>;
 
 export const answerSchema = z.object({
+  id: z.number().int().positive().optional(),
   index: z.number(),
   type: z.literal("answer"),
   text: z.string().min(1, "Answer cannot be empty"),
@@ -43,6 +46,7 @@ export const exerciseSchema = z.object({
   id: z.number().int().positive().optional(),
   parts: z.array(exercisePartSchema).min(2),
   order: z.number().int().positive(),
+  hide: z.boolean(),
 });
 
 export type Exercise = z.infer<typeof exerciseSchema>;

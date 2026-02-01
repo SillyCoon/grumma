@@ -6,9 +6,11 @@ export const exercisesStore = (
   grammarPointId: number,
   initialExercises: Exercise[],
 ) => {
+  const key = `exercises-${grammarPointId}`;
+
   const [exercises, setExercises] = makePersisted(
     createStore<Exercise[]>(initialExercises),
-    { name: `exercises-${grammarPointId}` },
+    { name: key },
   );
 
   const addAcceptableAnswer = (exerciseIndex: number, answerIndex: number) => {
@@ -52,10 +54,11 @@ export const exercisesStore = (
   return {
     exercises,
     setExercises,
+    clear: () => localStorage.removeItem(key),
     addAcceptableAnswer,
     updateAcceptableAnswer,
-    deleteExercise: (index: number) =>
-      setExercises((e) => e.filter((_, i) => i !== index)),
+    toggleHideExercise: (index: number) =>
+      setExercises(index, "hide", (prev) => !prev),
     getAnswer,
   };
 };

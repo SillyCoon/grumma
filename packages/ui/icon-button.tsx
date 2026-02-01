@@ -20,6 +20,8 @@ const iconButtonVariants = cva(
         ghost: "text-foreground hover:bg-accent active:bg-accent/80",
         destructive:
           "text-destructive hover:bg-destructive/10 active:bg-destructive/15",
+        success: "text-success hover:bg-success/10 active:bg-success/15",
+        warning: "text-warning hover:bg-warning/10 active:bg-warning/15",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

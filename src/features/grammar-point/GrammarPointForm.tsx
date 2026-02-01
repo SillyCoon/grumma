@@ -110,7 +110,7 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             <Select
               id="torfl"
               name="torfl"
-              value={props.initialData?.torfl}
+              value={props.initialData?.torfl ?? "A1"}
               required
             >
               <SelectOption value="A1">A1</SelectOption>

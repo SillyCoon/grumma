@@ -234,7 +234,7 @@ export const gpManagement = {
       }
     },
   }),
-  createOrUpdateExercises: defineAction({
+  putExercises: defineAction({
     accept: "json",
     input: z.object({
       grammarPointId: z.number().int().positive(),
@@ -249,13 +249,24 @@ export const gpManagement = {
         });
       }
 
+      const dbExercises = new Set(
+        (
+          await db
+            .select({ id: exercisesTmp.id })
+            .from(exercisesTmp)
+            .where(eq(exercisesTmp.grammarPointId, input.grammarPointId))
+        ).map(({ id }) => id),
+      );
+
       const newExercises = input.exercises.filter((ex) => !ex.id);
-      const existingExercises = input.exercises.filter((ex) => ex.id);
+      const existingExercises = input.exercises.filter(
+        (ex) => ex.id && dbExercises.has(ex.id),
+      );
 
       try {
         await db.transaction(async (tx) => {
-          await createExercises(tx, input.grammarPointId, newExercises);
           await putExercises(tx, existingExercises);
+          await createExercises(tx, input.grammarPointId, newExercises);
         });
 
         return input;
@@ -296,15 +307,18 @@ export const gpManagement = {
         });
         const result: Exercise[] = data.map((exercise) => ({
           id: exercise.id,
+          hide: exercise.hide,
           order: exercise.order,
           parts: exercise.parts.map((part) => {
             if (part.type === "answer") {
               return {
+                id: part.id,
                 index: part.order,
                 type: part.type,
                 text: part.text,
                 description: part.description || undefined,
                 acceptableAnswers: part.acceptableAnswers.map((ans) => ({
+                  id: ans.id,
                   text: ans.text,
                   description: ans.description || undefined,
                   variant: ans.variant,
@@ -312,6 +326,7 @@ export const gpManagement = {
               };
             }
             return {
+              id: part.id,
               index: part.order,
               type: part.type,
               text: part.text,
@@ -341,6 +356,7 @@ const createExercises = async (
       .values({
         grammarPointId: grammarPointId,
         order: exercise.order,
+        hide: exercise.hide,
       })
       .returning();
 
@@ -391,13 +407,9 @@ const putExercises = async (tx: Transaction, exercises: Exercise[]) => {
       .update(exercisesTmp)
       .set({
         order: exercise.order,
+        hide: exercise.hide,
       })
       .where(eq(exercisesTmp.id, exercise.id));
-
-    await tx
-      .delete(acceptableAnswersTmp)
-      .where(eq(acceptableAnswersTmp.answerId, exercise.id))
-      .execute();
 
     await tx
       .delete(exercisePartsTmp)

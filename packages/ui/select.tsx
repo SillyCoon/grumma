@@ -9,7 +9,7 @@ export const SelectContainer = (
 
 export const Select = <T extends string>(
   props: {
-    children: JSX.Element[];
+    children: JSX.Element[] | JSX.Element;
     onSelect?: (value: T) => void;
     value: T;
   } & Omit<JSX.SelectHTMLAttributes<HTMLSelectElement>, "value" | "onSelect">,

@@ -1,0 +1,1 @@
+ALTER TABLE "tmp"."exercise_tmp" ADD COLUMN "hide" boolean DEFAULT true NOT NULL;

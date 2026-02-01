@@ -37,6 +37,7 @@ export const exercisesTmp = grummaTmp.table("exercise_tmp", {
     .notNull()
     .references(() => grammarPointsTmp.id),
   order: integer().notNull().unique(),
+  hide: boolean().notNull().default(true),
   ...createdAtUpdatedAt,
 });
 
@@ -67,7 +68,7 @@ export const acceptableAnswersTmp = grummaTmp.table("acceptable_answer", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   answerId: integer()
     .notNull()
-    .references(() => exercisePartsTmp.id),
+    .references(() => exercisePartsTmp.id, { onDelete: "cascade" }),
   text: text().notNull(),
   description: text(),
   variant: variantEnum().notNull(),

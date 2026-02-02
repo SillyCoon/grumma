@@ -70,7 +70,7 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
   deploy:
     environment: staging
-    needs: [publish, migrate]
+    needs: [publish]
     runs-on: ubuntu-latest
     permissions:
       contents: "read"

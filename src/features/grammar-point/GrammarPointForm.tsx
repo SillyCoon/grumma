@@ -1,4 +1,4 @@
-import { children, createSignal, Show } from "solid-js";
+import { children, createSignal, For, Show } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import {
@@ -113,32 +113,30 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
               value={props.initialData?.torfl ?? "A1"}
               required
             >
-              <SelectOption value="A1">A1</SelectOption>
-              <SelectOption value="A2">A2</SelectOption>
-              <SelectOption value="B1">B1</SelectOption>
-              <SelectOption value="B2">B2</SelectOption>
-              <SelectOption value="C1">C1</SelectOption>
-              <SelectOption value="C2">C2</SelectOption>
+              <For each={["", "A1", "A2", "B1", "B2", "C1", "C2"]}>
+                {(level) => (
+                  <SelectOption
+                    value={level}
+                    selected={level === props.initialData?.torfl}
+                  >
+                    {level === "" ? "Select level" : level}
+                  </SelectOption>
+                )}
+              </For>
             </Select>
           </SelectContainer>
         </div>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <TextField>
-              <TextFieldLabel for="structure">
-                Structure{""}
-                <TextFieldTextArea
-                  id="structure"
-                  name="structure"
-                  value={props.initialData?.structure}
-                  onInput={(e) =>
-                    setStructure((e.target as HTMLTextAreaElement).value)
-                  }
-                  placeholder="e.g., Кто? Что?"
-                  rows="4"
-                />
-              </TextFieldLabel>
+            <TextField value={structure()} onChange={setStructure}>
+              <TextFieldLabel for="structure">Structure{""}</TextFieldLabel>
+              <TextFieldTextArea
+                id="structure"
+                name="structure"
+                placeholder="e.g., Кто? Что?"
+                rows="4"
+              />
             </TextField>
 
             <p class="mt-1 text-slate-500 text-xs">
@@ -152,20 +150,14 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         </div>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <TextField>
-              <TextFieldLabel for="explanation">
-                Explanation{""}
-                <TextFieldTextArea
-                  id="explanation"
-                  name="explanation"
-                  value={props.initialData?.explanation}
-                  onInput={(e) =>
-                    setExplanation((e.target as HTMLTextAreaElement).value)
-                  }
-                  placeholder="e.g. Представьте себе кролика..."
-                  rows="4"
-                />
-              </TextFieldLabel>
+            <TextField value={explanation()} onChange={setExplanation}>
+              <TextFieldLabel for="explanation">Explanation{""}</TextFieldLabel>
+              <TextFieldTextArea
+                id="explanation"
+                name="explanation"
+                placeholder="e.g. Представьте себе кролика..."
+                rows="4"
+              />
             </TextField>
 
             <p class="mt-1 text-slate-500 text-xs">

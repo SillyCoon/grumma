@@ -4,6 +4,7 @@ import { Anchor } from "ui/anchor";
 import Logo from "./Logo.astro";
 import { HamburgerButton } from "./solid/HamburgerButton";
 import { Nav } from "./solid/Nav";
+import { isUserAdmin } from "libs/auth/admin";
 
 const user = Astro.locals.user;
 const reviewCount =
@@ -15,7 +16,12 @@ const reviewCount =
     <HamburgerButton client:load />
     <Anchor class="text-3xl font-bold text-white" href="/"><Logo /></Anchor>
     <div class="justify-between gap-5 hidden lg:flex">
-      <Nav client:load loggedIn={!!user} reviewCount={reviewCount} />
+      <Nav
+        client:load
+        loggedIn={!!user}
+        reviewCount={reviewCount}
+        isAdmin={isUserAdmin(user ?? undefined)}
+      />
     </div>
   </div>
 </header>

@@ -2,7 +2,7 @@ import { createEffect, Show } from "solid-js";
 import { Nav } from "../Nav";
 import { setSidebarOpen, sidebarOpen } from "./store";
 
-export const Sidebar = (props: { loggedIn?: boolean }) => {
+export const Sidebar = (props: { loggedIn?: boolean; isAdmin?: boolean }) => {
   const close = () => {
     setSidebarOpen((v) => !v);
   };
@@ -27,7 +27,11 @@ export const Sidebar = (props: { loggedIn?: boolean }) => {
       >
         <div class="grow overflow-y-auto overflow-x-hidden">
           <ul class="flex flex-col space-y-1 px-3 py-4">
-            <Nav onClick={close} loggedIn={props.loggedIn} />
+            <Nav
+              onClick={close}
+              loggedIn={props.loggedIn}
+              isAdmin={props.isAdmin}
+            />
           </ul>
         </div>
       </div>

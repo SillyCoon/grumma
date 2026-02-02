@@ -17,50 +17,31 @@ const { title, description, action, back } = Astro.props;
 
 <Layout title={`Admin - ${title}`}>
   <div class="flex gap-4 min-h-screen">
-    <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-slate-100 p-6 border-r">
-      <nav class="space-y-2">
-        <a
-          href="/admin"
-          class="block px-4 py-2 rounded hover:bg-slate-200 transition text-xs font-medium"
-          >Dashboard</a
-        >
-        <a
-          href="/admin/grammar"
-          class="block px-4 py-2 rounded hover:bg-slate-200 transition text-xs font-medium"
-          >Grammar Points</a
-        >
-      </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-8">
-      <div class="space-y-8">
-        <div>
-          <div class="flex flex-row justify-between">
-            <div class="flex flex-row gap-4">
-              {
-                back && (
-                  <a href={back} class="text-primary">
-                    <IoArrowBackOutline size={40} />
-                  </a>
-                )
-              }
-              <h1 class="text-4xl font-bold mb-2">{title}</h1>
-            </div>
-
+    <main class="flex-1 p-8 space-y-8">
+      <div>
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-row gap-4">
             {
-              action && (
-                <a href={action.href}>
-                  <Button class="mt-4">{action.label}</Button>
+              back && (
+                <a href={back} class="text-primary">
+                  <IoArrowBackOutline size={40} />
                 </a>
               )
             }
+            <h1 class="text-4xl font-bold mb-2">{title}</h1>
           </div>
-          {description && <p class="text-slate-600">{description}</p>}
+
+          {
+            action && (
+              <a href={action.href}>
+                <Button class="mt-4">{action.label}</Button>
+              </a>
+            )
+          }
         </div>
-        <slot />
+        {description && <p class="text-slate-600">{description}</p>}
       </div>
+      <slot />
     </main>
   </div>
 </Layout>

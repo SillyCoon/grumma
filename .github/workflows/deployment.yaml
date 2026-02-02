@@ -69,6 +69,7 @@ jobs:
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
   deploy:
+    environment: staging
     needs: [publish, migrate]
     runs-on: ubuntu-latest
     permissions:

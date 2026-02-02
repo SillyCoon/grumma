@@ -439,13 +439,19 @@ export const ExercisesForm = (props: {
             </Show>
           </Button>
           <div class="mt-4 ml-auto flex w-fit flex-row gap-2">
-            <ResetConfirmation
-              title="exercises"
-              onReset={() => {
-                clear();
-                globalThis.location.reload();
-              }}
-            />
+            <Tooltip>
+              <TooltipTrigger>
+                <ResetConfirmation
+                  title="exercises"
+                  onReset={() => {
+                    clear();
+                    globalThis.location.reload();
+                  }}
+                />
+              </TooltipTrigger>
+              <TooltipContent>Clear all local changes</TooltipContent>
+            </Tooltip>
+
             <Button
               onClick={async () => {
                 try {

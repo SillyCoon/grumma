@@ -3,15 +3,25 @@ import { navigate } from "astro:transitions/client";
 import { NavButtonClass } from "ui/navigation-button";
 import { HelpNav } from "./HelpNav";
 import { NavButton } from "./NavButton";
+import { Show } from "solid-js";
 
 export const Nav = (props: {
   loggedIn?: boolean;
+  isAdmin?: boolean;
   reviewCount?: number | null;
   onClick?: () => void;
 }) => {
   const reviewCount = props.reviewCount || undefined;
+
   return (
     <>
+      <Show when={props.isAdmin}>
+        <NavButton
+          text="Admin Panel"
+          link="/admin/grammar"
+          onClick={props.onClick}
+        />
+      </Show>
       <NavButton
         disabled={!props.loggedIn}
         text="Dashboard"

@@ -13,6 +13,7 @@ import { Feedback } from "@components/solid/Exercise/Feedback";
 import { ContactSupport } from "ui/icons/ContactSupport";
 import { IconButton } from "ui/dumb-icon-button";
 import { Anchor } from "ui/anchor";
+import { isUserAdmin } from "libs/auth/admin";
 
 interface Props {
   title: string;
@@ -28,6 +29,7 @@ const {
   fluid,
 } = Astro.props;
 const loggedIn = !!Astro.locals.user;
+const isAdmin = isUserAdmin(Astro.locals.user ?? undefined);
 const topPadding = Astro.props.topPadding ?? true;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -79,7 +81,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <body>
     <Header transition:persist />
     <LoadingIndicator color="#8A5D33" />
-    <Sidebar loggedIn={loggedIn} client:idle />
+    <Sidebar loggedIn={loggedIn} isAdmin={isAdmin} client:idle />
 
     <main
       class={`flex flex-auto flex-col min-h-[calc(100dvh-76px)] relative ${!fluid && "container"} pb-15 mx-auto ${topPadding && "pt-8"}`}
@@ -122,7 +124,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       is:inline
       data-goatcounter="https://sillycoon.goatcounter.com/count"
       async
-      src="//gc.zgo.at/count.js"
-    ></script>
+      src="//gc.zgo.at/count.js"></script>
   </body>
 </html>

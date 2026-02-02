@@ -55,6 +55,9 @@ const grammarPointExercises = await Astro.callAction(
       <h2 class="text-2xl font-semibold mb-4">
         Exercises ({grammarPoint.exercises.length})
       </h2>
+      <p class="text-sm text-slate-500">
+        All changes are not visible to users until you push "Save exercises".
+      </p>
     </div>
     <ExercisesForm
       defaultExercises={grammarPointExercises.data}

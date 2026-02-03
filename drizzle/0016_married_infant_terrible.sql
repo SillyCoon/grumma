@@ -1,0 +1,1 @@
+ALTER TABLE "tmp"."exercise_part" ADD COLUMN "language" varchar(10) DEFAULT 'ru' NOT NULL;

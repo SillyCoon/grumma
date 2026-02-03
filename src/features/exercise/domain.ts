@@ -45,6 +45,7 @@ const exercisePartSchema = z.discriminatedUnion("type", [
 export const exerciseSchema = z.object({
   id: z.number().int().positive().optional(),
   parts: z.array(exercisePartSchema).min(2),
+  translationParts: z.array(exercisePartSchema).min(2),
   order: z.number().int().positive(),
   hide: z.boolean(),
 });

@@ -92,8 +92,8 @@ const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
     explanation: g.explanation ?? undefined,
     exercises: exercises.map((e) => ({
       grammarPointId: `${g.id}`,
-      ru: e.ru.join(""),
-      en: e.en.join(""),
+      ru: e.ru.map((s) => s.trim()).join(" "),
+      en: e.en.map((s) => s.trim()).join(" "),
       ruGrammar: e.ru[1],
       enGrammar: e.en[1],
       draft: "",

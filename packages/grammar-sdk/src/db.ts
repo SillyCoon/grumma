@@ -1,18 +1,24 @@
 import { eq, inArray } from "drizzle-orm";
 import { db } from "../../../libs/db";
-import { grammarPoints } from "../../../libs/db/schema";
-import { Example } from "./example";
-import type { GrammarPointDb } from "./types/dto";
 import type { GrammarPoint } from "./types/GrammarPoint";
-import { extractGrammar } from "./utils";
+import { grammarPointsTmp } from "../../../libs/db/schema-tmp";
+import type { GrammarPointDb } from "./types/dto";
 
 export const fetchGrammarPointFromDb = async (
-  id: string,
+  id: number,
 ): Promise<GrammarPoint | undefined> => {
-  const grammarDto = await db.query.grammarPoints.findFirst({
-    where: eq(grammarPoints.id, +id),
+  const grammarDto = await db.query.grammarPointsTmp.findFirst({
+    where: eq(grammarPointsTmp.id, +id),
     with: {
-      exercises: true,
+      exercises: {
+        with: {
+          parts: {
+            with: {
+              acceptableAnswers: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -22,19 +28,35 @@ export const fetchGrammarPointFromDb = async (
 export const fetchGrammarPointsFromDb = async (
   ids: number[],
 ): Promise<GrammarPoint[]> => {
-  const grammarDto = await db.query.grammarPoints.findMany({
-    where: inArray(grammarPoints.id, ids),
+  const grammarDto = await db.query.grammarPointsTmp.findMany({
+    where: inArray(grammarPointsTmp.id, ids),
     with: {
-      exercises: true,
+      exercises: {
+        with: {
+          parts: {
+            with: {
+              acceptableAnswers: true,
+            },
+          },
+        },
+      },
     },
   });
 
   return grammarDto.map(GrammarPointFromDB);
 };
 export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
-  const grammarDto = await db.query.grammarPoints.findMany({
+  const grammarDto = await db.query.grammarPointsTmp.findMany({
     with: {
-      exercises: true,
+      exercises: {
+        with: {
+          parts: {
+            with: {
+              acceptableAnswers: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -47,6 +69,18 @@ export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
     );
 };
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
+  const exercises = g.exercises.map((e) => ({
+    ru: e.parts
+      .filter((p) => p.language === "ru")
+      .toSorted((a, b) => a.order - b.order)
+      .map((p) => p.text) as [string, string, string],
+    en: e.parts
+      .filter((p) => p.language === "en")
+      .toSorted((a, b) => a.order - b.order)
+      .map((p) => p.text) as [string, string, string],
+    order: e.order,
+  }));
+
   return {
     ...g,
     id: `${g.id}`,
@@ -54,18 +88,15 @@ const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
     detailedTitle: g.detailedTitle ?? undefined,
     englishTitle: g.englishTitle ?? undefined,
     structure: g.structure ?? undefined,
-    examples: g.exercises.map((e) => ({
-      ru: Example(e.ru),
-      en: Example(e.en),
-      order: e.order,
-    })),
-    exercises: g.exercises.map((e) => ({
+    examples: exercises,
+    explanation: g.explanation ?? undefined,
+    exercises: exercises.map((e) => ({
       grammarPointId: `${g.id}`,
-      ru: e.ru,
-      en: e.en,
-      ruGrammar: extractGrammar(e.ru) ?? "",
-      enGrammar: extractGrammar(e.en) ?? "",
-      draft: e.helper ?? "",
+      ru: e.ru.join(""),
+      en: e.en.join(""),
+      ruGrammar: e.ru[1],
+      enGrammar: e.en[1],
+      draft: "",
       order: e.order,
     })),
   };

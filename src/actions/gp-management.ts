@@ -10,7 +10,11 @@ import {
 } from "libs/db/schema-tmp";
 import { db, type Transaction } from "libs/db";
 import { eq, max, sql } from "drizzle-orm";
-import { exerciseSchema, type Exercise } from "~/features/exercise/domain";
+import {
+  exerciseSchema,
+  type Exercise,
+  type ExercisePart,
+} from "~/features/exercise/domain";
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -271,6 +275,7 @@ export const gpManagement = {
 
         return input;
       } catch (error) {
+        console.error(error);
         throw new ActionError({
           code: "BAD_REQUEST",
           message: `Failed to update exercises: ${error instanceof Error ? error.message : "Unknown error"}`,
@@ -309,30 +314,43 @@ export const gpManagement = {
           id: exercise.id,
           hide: exercise.hide,
           order: exercise.order,
-          parts: exercise.parts.map((part) => {
-            if (part.type === "answer") {
+          parts: exercise.parts
+            .filter((part) => part.language === "ru")
+            .map((part) => {
+              if (part.type === "answer") {
+                return {
+                  id: part.id,
+                  index: part.order,
+                  type: part.type,
+                  text: part.text,
+                  description: part.description ?? undefined,
+                  acceptableAnswers: part.acceptableAnswers.map((ans) => ({
+                    id: ans.id,
+                    text: ans.text,
+                    description: ans.description ?? undefined,
+                    variant: ans.variant,
+                  })),
+                };
+              }
               return {
                 id: part.id,
                 index: part.order,
                 type: part.type,
                 text: part.text,
                 description: part.description || undefined,
-                acceptableAnswers: part.acceptableAnswers.map((ans) => ({
-                  id: ans.id,
-                  text: ans.text,
-                  description: ans.description || undefined,
-                  variant: ans.variant,
-                })),
               };
-            }
-            return {
-              id: part.id,
-              index: part.order,
-              type: part.type,
-              text: part.text,
-              description: part.description || undefined,
-            };
-          }),
+            }),
+          translationParts: exercise.parts
+            .filter((part) => part.language === "en")
+            .map((part) => {
+              return {
+                id: part.id,
+                index: part.order,
+                type: part.type,
+                text: part.text,
+                description: part.description ?? undefined,
+              };
+            }),
         }));
         return result;
       } catch (error) {
@@ -360,24 +378,38 @@ const createExercises = async (
       })
       .returning();
 
-    await createParts(tx, insertedExercise[0].id, exercise.parts);
+    await createParts(
+      tx,
+      insertedExercise[0].id,
+      exercise.parts,
+      exercise.translationParts,
+    );
   }
+};
+
+const toDbPart = (exercisePart: ExercisePart, language: "ru" | "en") => {
+  return {
+    order: exercisePart.index,
+    type: exercisePart.type,
+    text: exercisePart.text,
+    description:
+      "description" in exercisePart ? exercisePart.description || null : null,
+    language,
+  };
 };
 
 const createParts = async (
   tx: Transaction,
   exerciseId: number,
   parts: Exercise["parts"],
+  translationParts: Exercise["parts"],
 ) => {
   const insertedPart = await tx
     .insert(exercisePartsTmp)
     .values(
       parts.map((part) => ({
         exerciseId: exerciseId,
-        order: part.index,
-        type: part.type,
-        text: part.text,
-        description: "description" in part ? part.description : null,
+        ...toDbPart(part, "ru"),
       })),
     )
     .returning();
@@ -397,6 +429,16 @@ const createParts = async (
 
   acceptableAnswersToInsert.length &&
     (await tx.insert(acceptableAnswersTmp).values(acceptableAnswersToInsert));
+
+  await tx
+    .insert(exercisePartsTmp)
+    .values(
+      translationParts.map((part) => ({
+        exerciseId: exerciseId,
+        ...toDbPart(part, "en"),
+      })),
+    )
+    .returning();
 };
 
 const putExercises = async (tx: Transaction, exercises: Exercise[]) => {
@@ -416,6 +458,11 @@ const putExercises = async (tx: Transaction, exercises: Exercise[]) => {
       .where(eq(exercisePartsTmp.exerciseId, exercise.id))
       .execute();
 
-    await createParts(tx, exercise.id, exercise.parts);
+    await createParts(
+      tx,
+      exercise.id,
+      exercise.parts,
+      exercise.translationParts,
+    );
   }
 };

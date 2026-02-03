@@ -55,6 +55,7 @@ export const exercisePartsTmp = grummaTmp.table("exercise_part", {
   type: partTypeEnum().notNull(),
   text: text().notNull(),
   description: text(),
+  language: varchar({ length: 10 }).notNull().default("ru"),
   ...createdAtUpdatedAt,
 });
 

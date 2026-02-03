@@ -7,6 +7,7 @@ on: workflow_dispatch
 env:
   IMAGE_NAME: grumma
   SERVICE: grumma-oss
+  REGION: asia-northeast1
 
 jobs:
   publish:
@@ -17,7 +18,7 @@ jobs:
       packages: write
       id-token: write
     outputs:
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      image: ${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,7 +49,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,format=long,prefix=
 
@@ -69,7 +70,8 @@ jobs:
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
   deploy:
-    needs: [publish, migrate]
+    environment: staging
+    needs: [publish]
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
@@ -80,16 +82,17 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: "google-github-actions/auth@v2"
+        uses: "google-github-actions/auth@v3"
         with:
           project_id: "${{ env.PROJECT_ID }}"
           workload_identity_provider: "${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}"
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: Create Service declaration
         run: |-
           export IMAGE="${{ needs.publish.outputs.image }}"
           export SERVICE="${{ env.SERVICE }}"
-          export PUBLIC_REAL_TIME_CONTENT_UPDATE=${{env.PUBLIC_REAL_TIME_CONTENT_UPDATE}}
+          export PUBLIC_REAL_TIME_CONTENT_UPDATE="false"
           envsubst < gcloud/service.template.yaml > service.yaml
           cat service.yaml
 

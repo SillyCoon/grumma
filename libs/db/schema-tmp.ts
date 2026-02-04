@@ -5,6 +5,7 @@ import {
   pgSchema,
   text,
   timestamp,
+  unique,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -31,15 +32,19 @@ export const grammarPointsTmp = grummaTmp.table("grammar_point_tmp", {
   ...createdAtUpdatedAt,
 });
 
-export const exercisesTmp = grummaTmp.table("exercise_tmp", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  grammarPointId: integer()
-    .notNull()
-    .references(() => grammarPointsTmp.id),
-  order: integer().notNull().unique(),
-  hide: boolean().notNull().default(true),
-  ...createdAtUpdatedAt,
-});
+export const exercisesTmp = grummaTmp.table(
+  "exercise_tmp",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    grammarPointId: integer()
+      .notNull()
+      .references(() => grammarPointsTmp.id),
+    order: integer().notNull(),
+    hide: boolean().notNull().default(true),
+    ...createdAtUpdatedAt,
+  },
+  (table) => [unique().on(table.grammarPointId, table.order)],
+);
 
 export const partTypeEnum = grummaTmp.enum("exercisePartType", [
   "text",

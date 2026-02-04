@@ -22,8 +22,7 @@ export const Part = (props: Props) => {
       {props.part[0].trim()}{" "}
       <span class={variants({ variant: props.variant })}>
         {props.part[1].trim()}
-      </span>
-      {""}
+      </span>{" "}
       {props.part[2].trim()}
     </p>
   );

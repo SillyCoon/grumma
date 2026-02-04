@@ -1,0 +1,1 @@
+ALTER TABLE "tmp"."exercise_tmp" ADD CONSTRAINT "exercise_tmp_grammarPointId_order_unique" UNIQUE("grammarPointId","order");

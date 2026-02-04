@@ -19,9 +19,11 @@ const variants = cva("", {
 export const Part = (props: Props) => {
   return (
     <p class="text-center text-lg md:text-xl">
-      {props.part[0]}
-      <span class={variants({ variant: props.variant })}>{props.part[1]}</span>
-      {props.part[2]}
+      {props.part[0].trim()}{" "}
+      <span class={variants({ variant: props.variant })}>
+        {props.part[1].trim()}
+      </span>{" "}
+      {props.part[2].trim()}
     </p>
   );
 };

@@ -67,3 +67,10 @@ export const feedback = grumma.table("feedback", {
   email: text(),
   createdAt: timestamp().notNull(),
 });
+
+export const tour = grumma.table("tour", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: text().notNull(),
+  type: text().notNull(),
+  completed: boolean().notNull().default(false),
+});

@@ -8,9 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
 import { BarList } from "ui/progress-bar-list";
 import { Skeleton } from "ui/skeleton";
 import { Streak } from "@components/solid/dashboard/Streak";
+import { DashboardTour } from "@components/solid/dashboard/DashboardTour";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {
   today: new Date(),
+});
+
+const { data: tourCompleted } = await Astro.callAction(actions.getTourStatus, {
+  type: "dashboard",
 });
 
 // const schedule: Schedule = await (await fetchSchedule(Astro)).json();
@@ -26,10 +31,12 @@ const torfl =
 ---
 
 <Layout title="Dashboard" transition:persist>
+  <DashboardTour completed={tourCompleted ?? true} client:only="solid-js" />
   <section
     class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-3 md:grid-cols-2 md:gap-y-10 gap-5"
   >
     <DashboardCell
+      data-tour="learn-card"
       title="Learn"
       description="Get the new lesson"
       color="bg-primary"
@@ -37,6 +44,7 @@ const torfl =
       href="/sr/lesson"
     />
     <DashboardCell
+      data-tour="reviews-card"
       title="Reviews"
       description="Review the lessons you've learned"
       color="bg-secondary"
@@ -44,7 +52,7 @@ const torfl =
       href="/sr/review"
     />
 
-    <Card class="col-span-1">
+    <Card class="col-span-1" data-tour="streak-card">
       <CardHeader>
         <CardTitle>Streak</CardTitle>
       </CardHeader>

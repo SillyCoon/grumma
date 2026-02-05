@@ -18,6 +18,7 @@ import {
 } from "space-repetition";
 import { extractUser } from "./utils";
 import { gpManagement } from "./gp-management";
+import { tour } from "./tour";
 
 export const SignupErrors = new Map([
   ["weak_password", "Password is too weak, please use 8 symbols or more"],
@@ -238,4 +239,5 @@ export const server = {
     },
   }),
   ...gpManagement,
+  ...tour,
 };

@@ -7,9 +7,17 @@ export type Props = {
   href: string;
   color: string;
   count: number;
+  "data-tour"?: string;
 };
 
-const { title, description, href, color, count } = Astro.props;
+const {
+  title,
+  description,
+  href,
+  color,
+  count,
+  "data-tour": dataTour,
+} = Astro.props;
 ---
 
 <a
@@ -18,6 +26,7 @@ const { title, description, href, color, count } = Astro.props;
     color,
   )}
   href={href}
+  data-tour={dataTour}
 >
   <div class="p-5 text-white">
     <div class="flex flex-row justify-between">

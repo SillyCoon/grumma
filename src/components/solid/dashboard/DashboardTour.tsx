@@ -21,27 +21,27 @@ export function DashboardTour(props: { completed: boolean }) {
       steps: [
         {
           title: "Welcome to Grumma!",
-          intro: "Let me show you around",
+          intro: "Let me show you around.",
         },
         {
           element: '[data-tour="learn-card"]',
           title: "Learn New Grammar",
           intro:
-            'Click here to start learning a new grammar point. When you finish reading push the "play" button to check your understanding. After completing lesson, the grammar points will be added to your review schedule to help reinforce your learning over time.',
+            'Click here to start learning a new grammar point. When you finish reading push the "arrow" button on the right to check your understanding. After completing lesson, the new grammar point will be added to your review schedule to help reinforce your learning over time.',
           position: "bottom",
         },
         {
           element: '[data-tour="reviews-card"]',
           title: "Review Your Knowledge",
           intro:
-            "Push this button to start a new review session. Regular reviews help you remember what you've learned using spaced repetition.",
+            "Push this button to start a new review session. Regular reviews use spaced repetition system to help you remember what you've learned.",
           position: "bottom",
         },
         {
           element: '[data-tour="streak-card"]',
           title: "Your Learning Streak",
           intro:
-            "Keep your streak alive! This tracks how many consecutive days you've studied. Consistency is key to mastering any language.",
+            "Keep your streak alive! This tracks how many consecutive days you've studied. Consistency is the key to mastering any language.",
           position: "bottom",
         },
         {

@@ -27,6 +27,7 @@
         "feedback": "workspace:*",
         "grammar-sdk": "workspace:*",
         "immutable": "^5.1.4",
+        "intro.js": "^8.3.2",
         "postgres": "^3.4.7",
         "resend": "^4.8.0",
         "solid-icons": "^1.2.0",
@@ -1052,6 +1053,8 @@
     "imurmurhash": ["imurmurhash@0.1.4", "", {}, "sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA=="],
 
     "inherits": ["inherits@2.0.4", "", {}, "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ=="],
+
+    "intro.js": ["intro.js@8.3.2", "", {}, "sha512-+QsuU8P7Z/O7stAwZ8Uj6CPyKsY6xVx/7hKTVLjlIEPYHaT43XnEUUYHCln6Ehr7GlDuwczh6I8PD/HGf4EG0A=="],
 
     "iron-webcrypto": ["iron-webcrypto@1.2.1", "", {}, "sha512-feOM6FaSr6rEABp/eDfVseKyTMDt+KGpeB35SkVn9Tyn0CqvVsY3EwI0v5i8nMHyJnzCIQf7nsy3p41TPkJZhg=="],
 

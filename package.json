@@ -46,6 +46,7 @@
     "feedback": "workspace:*",
     "grammar-sdk": "workspace:*",
     "immutable": "^5.1.4",
+    "intro.js": "^8.3.2",
     "postgres": "^3.4.7",
     "resend": "^4.8.0",
     "solid-icons": "^1.2.0",

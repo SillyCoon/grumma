@@ -40,7 +40,7 @@ const makeGpSession = (
 };
 
 describe("Naive", () => {
-  test("Native algorithm works", () => {
+  test("Naive algorithm works", () => {
     const firstSessionDate = new Date("2020-10-10T10:00");
     const secondSessionDate = new Date("2020-11-10T10:00");
     const thirdSessionDate = new Date("2020-11-19T10:00");
@@ -70,10 +70,10 @@ describe("Naive", () => {
     expect(schedule).toEqual([
       {
         grammarPointId: "1",
-        stage: 1,
+        stage: 0,
         availableAt: addMinute(
           nextTime(secondSessionDate, 1),
-          StageSettings[1],
+          StageSettings[0],
         ),
       },
       {
@@ -98,8 +98,8 @@ describe("Naive", () => {
       },
       {
         grammarPointId: "7",
-        stage: 1,
-        availableAt: addMinute(nextTime(thirdSessionDate, 2), StageSettings[1]),
+        stage: 0,
+        availableAt: addMinute(nextTime(thirdSessionDate, 2), StageSettings[0]),
       },
     ]);
   });

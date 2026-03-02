@@ -14,8 +14,13 @@ const grammar = await fetchGrammarList();
 
 <Layout title="Review results">
   {
-    sessionResult?.data && (
+    sessionResult?.data ? (
       <SessionResult sessionResult={sessionResult.data} grammar={grammar} />
+    ) : (
+      <div>
+        No session result found, probably it hasn't been calculated yet. Please
+        reload the page.
+      </div>
     )
   }
 </Layout>

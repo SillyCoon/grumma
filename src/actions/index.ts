@@ -192,7 +192,17 @@ export const server = {
     }),
     handler: async ({ sessionId }, context) => {
       const user = extractUser(context);
-      return await getSessionResult(user, sessionId);
+      // add retry logic here because sometimes the session result is not calculated by the time user is redirected to the result page
+      let retries = 5;
+      while (retries > 0) {
+        try {
+          return await getSessionResult(user, sessionId);
+        } catch {
+          console.info("Waiting for session result...", sessionId);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          retries--;
+        }
+      }
     },
   }),
   saveFeedback: defineAction({

@@ -1,6 +1,5 @@
 import { Seq } from "immutable";
 import type { Attempt } from "../types/Attempt";
-import type { Stage } from "../types/Stage";
 
 export type Session = {
   sessionId: string;
@@ -9,7 +8,10 @@ export type Session = {
 export function Session(attempts: Attempt[]): Session {
   const sessionId = attempts.at(0)?.reviewSessionId;
   if (!sessionId || !attempts.every((a) => a.reviewSessionId === sessionId)) {
-    throw new Error("All attempts must have the same reviewSessionId");
+    console.log("Invalid session attempts", attempts);
+    throw new Error(
+      "All attempts must have the same reviewSessionId and not be empty!",
+    );
   }
 
   return {
@@ -25,15 +27,13 @@ export type SessionResult = {
   total: number;
 };
 
-type Key = `${string}-${Stage}`;
-
 export namespace Session {
   export const calculateResult = ({
     attempts,
     sessionId,
   }: Session): SessionResult => {
     const attemptsByGpStage = Seq(attempts).groupBy(
-      (a) => `${a.grammarPointId}-${a.stage}` as Key,
+      (a) => `${a.grammarPointId}-${a.stage}`,
     );
 
     const meaningfulAttempts = Array.from(

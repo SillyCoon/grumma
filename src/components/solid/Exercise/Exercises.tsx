@@ -8,11 +8,13 @@ import { simpleShuffle } from "utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { Exercise } from "./Exercise";
 
+type ExerciseForReview = ExerciseType & { stage?: Stage };
+
 export const Exercises = (props: {
-  exercises: ExerciseType[];
+  exercises: ExerciseForReview[];
   type: "sr" | "practice";
 }) => {
-  const [exercisesLeft, setExercisesLeft] = createSignal<ExerciseType[]>(
+  const [exercisesLeft, setExercisesLeft] = createSignal<ExerciseForReview[]>(
     simpleShuffle(props.exercises),
   );
 
@@ -27,7 +29,7 @@ export const Exercises = (props: {
   });
 
   const handleNext = (
-    completed: ExerciseType,
+    completed: ExerciseForReview,
     result: { answer: string; correct: boolean },
   ) => {
     const e = exercise();
@@ -38,8 +40,7 @@ export const Exercises = (props: {
         answeredAt: new Date(),
         grammarPointId: e.grammarPointId,
         reviewSessionId: sessionId,
-        // TODO: this will work only if amount of exercises is the same as the amount of stages
-        stage: (exercise()?.order ?? 1) as Stage,
+        stage: exercise()?.stage ?? 0,
       });
     }
 

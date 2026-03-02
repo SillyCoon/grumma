@@ -118,5 +118,6 @@ export type { Attempt } from "./src/types/Attempt";
 export type { Lesson } from "./src/types/Lesson";
 export type { Schedule } from "./src/types/Schedule";
 export type { Stage } from "./src/types/Stage";
+export type { GrammarPointReview } from "./src/types/GrammarPointReview";
 
 export { addToRepetitions, removeFromRepetitions };

@@ -20,6 +20,6 @@ export const compareAnswer = (correct: string, answer: string): boolean => {
 };
 
 export const validAnswer = (answer: string) => {
-  const reg = /[^а-яё\s]/i;
+  const reg = /[^а-яё\s-]/i;
   return !reg.test(answer);
 };

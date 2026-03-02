@@ -8,7 +8,6 @@ export type Session = {
 export function Session(attempts: Attempt[]): Session {
   const sessionId = attempts.at(0)?.reviewSessionId;
   if (!sessionId || !attempts.every((a) => a.reviewSessionId === sessionId)) {
-    console.log("Invalid session attempts", attempts);
     throw new Error(
       "All attempts must have the same reviewSessionId and not be empty!",
     );

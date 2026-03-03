@@ -22,3 +22,18 @@ export const StageSettings: Record<Stage, number> = {
   10: toMinutes(60, "d"),
   11: toMinutes(120, "d"),
 };
+
+export const MockStageSettings: Record<Stage, number> = {
+  0: toMinutes(0, "h"),
+  1: toMinutes(0, "h"),
+  2: toMinutes(0, "h"),
+  3: toMinutes(0, "h"),
+  4: toMinutes(0, "h"),
+  5: toMinutes(0, "h"),
+  6: toMinutes(0, "h"),
+  7: toMinutes(0, "h"),
+  8: toMinutes(0, "h"),
+  9: toMinutes(0, "h"),
+  10: toMinutes(0, "h"),
+  11: toMinutes(0, "h"),
+};

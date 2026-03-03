@@ -4,6 +4,7 @@ import { Lesson } from "./types/Lesson";
 import type { Stage } from "./types/Stage";
 import type { Schedule } from "./types/Schedule";
 import type { GrammarPoint } from "grammar-sdk";
+import type { GrammarPointReview } from "./types/GrammarPointReview";
 
 export interface Settings {
   stageMinutes: Record<Stage, number>;
@@ -20,6 +21,13 @@ export interface RepetitionAlgorithm {
   getSchedule(attempts: Attempt[], settings?: Settings): Schedule;
 }
 
+export const calculateExerciseOrderByStage = (
+  exercisesNumber: number,
+  stage: Stage,
+) => {
+  return stage >= exercisesNumber ? stage % exercisesNumber : stage;
+};
+
 interface SpaceRepetition {
   repeatingGrammarPoints(): string[];
   nextLessons(amount: number, grammar: GrammarPoint[]): Lesson[];
@@ -28,7 +36,7 @@ interface SpaceRepetition {
     algorithm: RepetitionAlgorithm,
     settings: Settings,
     grammar: GrammarPoint[],
-  ): Lesson[];
+  ): GrammarPointReview[];
 }
 
 export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
@@ -60,7 +68,7 @@ export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
     algorithm: RepetitionAlgorithm,
     settings: Settings,
     grammar: GrammarPoint[],
-  ): Lesson[] => {
+  ): GrammarPointReview[] => {
     const schedule = algorithm.getSchedule(attempts, settings);
 
     return schedule
@@ -73,10 +81,12 @@ export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
 
         return {
           ...info,
-          exercise: exercises[r.stage],
+          exercise:
+            exercises[calculateExerciseOrderByStage(exercises.length, r.stage)],
+          stage: r.stage,
         };
       })
-      .filter((v): v is Lesson => !!v);
+      .filter((v): v is GrammarPointReview => !!v);
   };
 
   return {

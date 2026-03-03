@@ -12,7 +12,7 @@ import {
   removeFromRepetitions,
   saveAttempt,
 } from "./src/SpaceRepetitionRepository";
-import { StageSettings } from "./src/StageSettings";
+import { MockStageSettings, StageSettings } from "./src/StageSettings";
 import type { Attempt } from "./src/types/Attempt";
 import type { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
@@ -21,7 +21,9 @@ import { countStreak as countStreakUtils } from "./src/utils";
 const algorithm = NaiveAlgorithm;
 const settings = {
   stageDowngradeMultiplier: 2,
-  stageMinutes: StageSettings,
+  stageMinutes: import.meta.env.MOCK_STAGE_SETTINGS
+    ? MockStageSettings
+    : StageSettings,
 };
 
 export const getLessons = async (
@@ -118,5 +120,6 @@ export type { Attempt } from "./src/types/Attempt";
 export type { Lesson } from "./src/types/Lesson";
 export type { Schedule } from "./src/types/Schedule";
 export type { Stage } from "./src/types/Stage";
+export type { GrammarPointReview } from "./src/types/GrammarPointReview";
 
 export { addToRepetitions, removeFromRepetitions };

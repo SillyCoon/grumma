@@ -9,6 +9,8 @@ import {
   NavigationMenuTrigger,
 } from "ui/navigation-menu";
 import { NavButton } from "./NavButton";
+import { actions } from "astro:actions";
+import { toast } from "solid-toast";
 
 type Props = {
   onClick?: () => void;
@@ -43,6 +45,20 @@ const HelpMenu = (props: Props) => {
           </NavigationMenuLink>
           <NavigationMenuLink href="/contact-us" onClick={props.onClick}>
             <NavigationMenuLabel>Contact us</NavigationMenuLabel>
+          </NavigationMenuLink>
+          <NavigationMenuLink
+            href="/"
+            onClick={async () => {
+              try {
+                await actions.resetTour({ type: "dashboard" });
+              } catch {
+                toast.error(
+                  "Failed to start the tour, please try again later.",
+                );
+              }
+            }}
+          >
+            <NavigationMenuLabel>Show Welcome Tour</NavigationMenuLabel>
           </NavigationMenuLink>
         </NavigationMenuContent>
       </NavigationMenuItem>

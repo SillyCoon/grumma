@@ -1,10 +1,10 @@
 ---
 import { Exercises } from "@components/solid/Exercise/Exercises";
 import Layout from "@layouts/Layout.astro";
-import type { Lesson } from "space-repetition";
+import type { GrammarPointReview } from "space-repetition";
 import { GET as getReview } from "../../api/sr/review";
 
-const review = (await (await getReview(Astro)).json()) as Lesson[];
+const review = (await (await getReview(Astro)).json()) as GrammarPointReview[];
 if (!review.length) return Astro.redirect("/sr/review/no-reviews");
 ---
 
@@ -15,6 +15,6 @@ if (!review.length) return Astro.redirect("/sr/review/no-reviews");
     transition:persist="exercises"
     transition:persist-props
     client:only="solid-js"
-    exercises={review.map((r) => r.exercise)}
+    exercises={review.map((r) => ({ ...r.exercise, stage: r.stage }))}
   />
 </Layout>

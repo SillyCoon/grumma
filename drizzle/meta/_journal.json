@@ -134,6 +134,13 @@
       "when": 1770191385212,
       "tag": "0018_ordinary_punisher",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1770289740236,
+      "tag": "0019_woozy_vampiro",
+      "breakpoints": true
     }
   ]
 }

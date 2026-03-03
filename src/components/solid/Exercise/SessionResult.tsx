@@ -5,6 +5,7 @@ import { For, Show } from "solid-js";
 import type { SessionResult as SessionResultType } from "space-repetition/session";
 import { Card, CardContent, CardHeader } from "ui/card";
 import { Example } from "../example/Example";
+import { calculateExerciseOrderByStage } from "packages/space-repetition/src/SpaceRepetition";
 
 export const SessionResult = (props: {
   sessionResult?: SessionResultType;
@@ -16,7 +17,12 @@ export const SessionResult = (props: {
   const answers = () =>
     sessionResult()?.attempts?.map?.((attempt) => {
       const gp = props.grammar.find((gp) => gp.id === attempt.grammarPointId);
-      const example = gp?.examples.find((e) => e.order === attempt.stage);
+      // TODO: session result should return the example, so we don't have to calculate the order and replace the answer on the client
+      const order = calculateExerciseOrderByStage(
+        gp?.examples.length ?? 0,
+        attempt.stage,
+      );
+      const example = gp?.examples.find((e) => e.order === order);
       return {
         ...example,
         ru: example?.ru

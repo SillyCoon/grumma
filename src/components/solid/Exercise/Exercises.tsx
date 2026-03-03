@@ -41,6 +41,7 @@ export const Exercises = (props: {
         grammarPointId: e.grammarPointId,
         reviewSessionId: sessionId,
         stage: exercise()?.stage ?? 0,
+        exerciseOrder: e.order,
       });
     }
 

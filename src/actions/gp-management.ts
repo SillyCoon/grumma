@@ -14,7 +14,7 @@ import {
   exerciseSchema,
   type Exercise,
   type ExercisePart,
-} from "~/features/exercise/domain";
+} from "grammar-sdk/exercise";
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -267,13 +267,36 @@ export const gpManagement = {
         (ex) => ex.id && dbExercises.has(ex.id),
       );
 
+      console.log("Updating exercises:", {
+        grammarPointId: input.grammarPointId,
+        dbExercises,
+        newExercises,
+        existingExercises,
+      });
+
       try {
-        await db.transaction(async (tx) => {
+        const result = await db.transaction(async (tx) => {
           await putExercises(tx, existingExercises);
-          await createExercises(tx, input.grammarPointId, newExercises);
+          return await createExercises(tx, input.grammarPointId, newExercises);
         });
 
-        return input;
+        const resultExercises: Exercise[] = input.exercises.map((exercise) => {
+          if (exercise.id) return exercise;
+          const inserted = result.get(exercise.order);
+          if (!inserted) {
+            console.error("Failed to find inserted exercise ID", {
+              order: exercise.order,
+              grammarPointId: input.grammarPointId,
+            });
+            throw new ActionError({
+              code: "INTERNAL_SERVER_ERROR",
+              message:
+                "Failed to retrieve inserted exercise ID, something went wrong with the database transaction",
+            });
+          }
+          return { ...exercise, id: inserted };
+        });
+        return resultExercises;
       } catch (error) {
         console.error(error);
         throw new ActionError({
@@ -312,6 +335,7 @@ export const gpManagement = {
         });
         const result: Exercise[] = data.map((exercise) => ({
           id: exercise.id,
+          grammarPointId: exercise.grammarPointId.toString(),
           hide: exercise.hide,
           order: exercise.order,
           parts: exercise.parts
@@ -363,11 +387,15 @@ export const gpManagement = {
   }),
 };
 
+/**
+ * Create exercise for grammar point only. Order is unique for grammar point
+ */
 const createExercises = async (
   tx: Transaction,
   grammarPointId: number,
   exercises: Exercise[],
 ) => {
+  const insertedMap = new Map<number, number>();
   for (const exercise of exercises) {
     const insertedExercise = await tx
       .insert(exercisesTmp)
@@ -384,7 +412,9 @@ const createExercises = async (
       exercise.parts,
       exercise.translationParts,
     );
+    insertedMap.set(exercise.order, insertedExercise[0].id);
   }
+  return insertedMap;
 };
 
 const toDbPart = (exercisePart: ExercisePart, language: "ru" | "en") => {

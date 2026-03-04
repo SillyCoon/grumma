@@ -3,6 +3,7 @@ import { db } from "../../../libs/db";
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { grammarPointsTmp } from "../../../libs/db/schema-tmp";
 import type { GrammarPointDb } from "./types/dto";
+import type { ExercisePart } from "./exercise";
 
 export const fetchGrammarPointFromDb = async (
   id: number,
@@ -68,6 +69,7 @@ export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
         (b.order ?? Number.MAX_SAFE_INTEGER),
     );
 };
+
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
   const exercises = g.exercises.map((e) => ({
     ru: e.parts
@@ -82,22 +84,54 @@ const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
   }));
 
   return {
-    ...g,
     id: `${g.id}`,
+    shortTitle: g.shortTitle,
+    order: g.order,
     torfl: g.torfl ?? "Coming soon",
     detailedTitle: g.detailedTitle ?? undefined,
     englishTitle: g.englishTitle ?? undefined,
     structure: g.structure ?? undefined,
     examples: exercises,
     explanation: g.explanation ?? undefined,
-    exercises: exercises.map((e) => ({
-      grammarPointId: `${g.id}`,
-      ru: e.ru.map((s) => s.trim()).join(" "),
-      en: e.en.map((s) => s.trim()).join(" "),
-      ruGrammar: e.ru[1],
-      enGrammar: e.en[1],
-      draft: "",
+    exercises: g.exercises.map((e) => ({
+      id: e.id,
+      grammarPointId: e.grammarPointId.toString(),
       order: e.order,
+      hide: e.hide,
+      parts: e.parts
+        .filter((p) => p.language === "ru")
+        .toSorted((a, b) => a.order - b.order)
+        .map(partFromDB),
+      translationParts: e.parts
+        .filter((p) => p.language === "en")
+        .toSorted((a, b) => a.order - b.order)
+        .map(partFromDB),
     })),
+  };
+};
+
+const partFromDB = (
+  p: GrammarPointDb["exercises"][number]["parts"][number],
+): ExercisePart => {
+  if (p.type === "text") {
+    return {
+      id: p.id,
+      index: p.order,
+      type: p.type,
+      text: p.text,
+    };
+  }
+  return {
+    id: p.id,
+    index: p.order,
+    type: p.type,
+    text: p.text,
+    description: p.description ?? undefined,
+    acceptableAnswers:
+      p.acceptableAnswers?.map((ans) => ({
+        text: ans.text,
+        description: ans.description ?? undefined,
+        variant: ans.variant,
+      })) ?? [],
   };
 };

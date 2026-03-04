@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
-import type { Exercise, GrammarPoint } from "grammar-sdk";
+import type { GrammarPoint } from "grammar-sdk";
+import type { Exercise } from "grammar-sdk/exercise";
 import { Range } from "immutable";
 import type { Example } from "../src/example";
 
@@ -27,11 +28,9 @@ export const mockExample = (): Example => [
 
 export const mockExercise = (e?: Partial<Exercise>): Exercise => ({
   grammarPointId: faker.string.uuid(),
-  en: faker.string.alpha(),
-  ru: faker.string.alpha(),
-  ruGrammar: faker.string.alpha(),
-  enGrammar: faker.string.alpha(),
-  draft: faker.string.alpha(),
   order: faker.number.int({ min: 1, max: 12 }),
+  hide: false,
+  parts: [],
+  translationParts: [],
   ...e,
 });

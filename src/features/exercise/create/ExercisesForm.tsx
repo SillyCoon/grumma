@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import { Button } from "packages/ui/button";
 import { unwrap } from "solid-js/store";
-import { Answer, Text, type Exercise } from "~/features/exercise/domain";
+import { Answer, Text, type Exercise } from "grammar-sdk/exercise";
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { exercisesStore } from "./domain";
@@ -24,7 +24,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "packages/ui/tooltip";
 import { ExercisePreview } from "./ExercisePreview";
 import { ExerciseInput } from "./ExerciseInput";
 
-const EmptyExercise = (order: number): Exercise => ({
+const EmptyExercise = (order: number, grammarPointId: number): Exercise => ({
+  grammarPointId: grammarPointId.toString(),
   order,
   hide: true,
   parts: [
@@ -131,7 +132,7 @@ export const ExercisesForm = (props: {
             onClick={() =>
               setExercises(
                 exercises.length,
-                EmptyExercise(exercises.length + 1),
+                EmptyExercise(exercises.length, props.grammarPointId),
               )
             }
           >
@@ -167,7 +168,8 @@ export const ExercisesForm = (props: {
                     console.error(result.error);
                     toast.error("Failed to save exercises");
                   } else {
-                    setPreviewExercises(exercises);
+                    setPreviewExercises(result.data);
+                    setExercises(result.data);
                     clear();
                     toast.success("Exercises saved successfully");
                   }

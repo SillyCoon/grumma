@@ -141,6 +141,13 @@
       "when": 1770289740236,
       "tag": "0019_woozy_vampiro",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1772780598894,
+      "tag": "0020_abandoned_solo",
+      "breakpoints": true
     }
   ]
 }

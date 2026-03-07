@@ -248,6 +248,73 @@ export const server = {
       return { success: true };
     },
   }),
+  resetPassword: defineAction({
+    accept: "form",
+    input: z.object({
+      email: z.string().email(),
+    }),
+    handler: async (input, context) => {
+      const supabase = createSupabaseServerInstance({
+        headers: context.request.headers,
+        cookies: context.cookies,
+      });
+
+      const { data, error } = await supabase.auth.resetPasswordForEmail(
+        input.email,
+        {
+          redirectTo: `${process.env.PUBLIC_URL || PUBLIC_URL}/login/update`,
+        },
+      );
+
+      if (error) {
+        throw new ActionError({
+          code: "FORBIDDEN",
+          message: "Failed to send reset password email",
+        });
+      }
+
+      return data;
+    },
+  }),
+  updatePassword: defineAction({
+    accept: "form",
+    input: z.object({
+      password: z.string(),
+      code: z.string(),
+    }),
+    handler: async (input, context) => {
+      const supabase = createSupabaseServerInstance({
+        headers: context.request.headers,
+        cookies: context.cookies,
+      });
+
+      const claims = await supabase.auth.exchangeCodeForSession(input.code);
+      if (claims.error) {
+        throw new UpdatePasswordFailed();
+      }
+
+      if (claims.data.user?.email) {
+        const { data, error } = await supabase.auth.updateUser({
+          email: claims.data.user.email,
+          password: input.password,
+        });
+        if (error) {
+          throw new UpdatePasswordFailed();
+        }
+        return data;
+      }
+      throw new UpdatePasswordFailed();
+    },
+  }),
   ...gpManagement,
   ...tour,
 };
+
+class UpdatePasswordFailed extends ActionError {
+  constructor() {
+    super({
+      code: "FORBIDDEN",
+      message: "Failed to update password",
+    });
+  }
+}

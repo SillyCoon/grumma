@@ -1,0 +1,24 @@
+---
+import { UpdatePasswordForm } from "@components/solid/UpdatePassword";
+import Layout from "@layouts/Layout.astro";
+import { actions } from "astro:actions";
+
+const result = Astro.getActionResult(actions.updatePassword);
+const code = Astro.url.searchParams.get("code");
+if (!code || result?.data) {
+  return Astro.redirect("/login");
+}
+if (Astro.locals.user) {
+  return Astro.redirect("/dashboard");
+}
+---
+
+<Layout title="Login">
+  <div class="grid gap-6 mx-auto w-fit">
+    <UpdatePasswordForm
+      code={code}
+      errorMessage={result?.error?.message}
+      transition:persist
+    />
+  </div>
+</Layout>

@@ -6,7 +6,6 @@ import { Alert, AlertDescription } from "packages/ui/alert";
 
 const result = Astro.getActionResult(actions.resetPassword);
 
-console.log("Forgot password result:", result);
 
 if (Astro.locals.user) {
   console.log("User is already logged in, redirecting to dashboard");

@@ -5,6 +5,7 @@
   "exports": {
     ".": "./index.ts",
     "./example": "./src/example/index.ts",
+    "./exercise": "./src/exercise.ts",
     "./mocks": "./__mocks__/index.ts"
   },
   "devDependencies": {

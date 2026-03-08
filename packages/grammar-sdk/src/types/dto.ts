@@ -1,6 +1,9 @@
-import type { InferSelectModel } from "drizzle-orm";
-
-import type { exercises, grammarPoints } from "../../../../libs/db/schema";
+import type {
+  acceptableAnswersTmp,
+  exercisePartsTmp,
+  exercisesTmp,
+  grammarPointsTmp,
+} from "../../../../libs/db/schema-tmp";
 
 interface ExerciseDto {
   en: string;
@@ -22,6 +25,10 @@ export interface GrammarPointDto {
   torfl: string;
 }
 
-export type GrammarPointDb = InferSelectModel<typeof grammarPoints> & {
-  exercises: InferSelectModel<typeof exercises>[];
+export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
+  exercises: (typeof exercisesTmp.$inferSelect & {
+    parts: (typeof exercisePartsTmp.$inferSelect & {
+      acceptableAnswers?: (typeof acceptableAnswersTmp.$inferSelect)[];
+    })[];
+  })[];
 };

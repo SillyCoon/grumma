@@ -1,6 +1,6 @@
 import { actions } from "astro:actions";
 import { navigate } from "astro:transitions/client";
-import type { Exercise } from "grammar-sdk";
+import type { Exercise } from "grammar-sdk/exercise";
 import toast from "solid-toast";
 import { Button } from "ui/button";
 import { Checkbox } from "ui/checkbox";

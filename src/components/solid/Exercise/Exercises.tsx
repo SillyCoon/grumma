@@ -1,6 +1,6 @@
 import { clearPracticeSession, saveAttempt } from "@services/sr";
 import { navigate } from "astro:transitions/client";
-import type { Exercise as ExerciseType } from "grammar-sdk";
+import type { Exercise as ExerciseType } from "grammar-sdk/exercise";
 import { Match, Switch, createEffect, createSignal, onMount } from "solid-js";
 import type { Stage } from "space-repetition";
 import { Spinner } from "ui/Spinner";

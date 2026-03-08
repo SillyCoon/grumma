@@ -23,14 +23,14 @@ import {
 } from "packages/ui/context-menu";
 
 import type { SetStoreFunction } from "solid-js/store";
+import type { JSX } from "astro/jsx-runtime";
 import type {
-  Answer,
-  Text,
   AcceptableAnswer,
+  Answer,
   Exercise,
   ExercisePart,
-} from "~/features/exercise/domain";
-import type { JSX } from "astro/jsx-runtime";
+  Text,
+} from "grammar-sdk/exercise";
 
 const AcceptableAnswers = (props: {
   answer: Answer;

@@ -1,6 +1,6 @@
 import { createStore } from "solid-js/store";
-import type { AcceptableAnswer, Exercise } from "../domain";
 import { makePersisted } from "@solid-primitives/storage";
+import type { AcceptableAnswer, Exercise } from "grammar-sdk/exercise";
 
 export const exercisesStore = (
   grammarPointId: number,

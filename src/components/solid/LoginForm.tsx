@@ -97,11 +97,6 @@ const Form = (props: {
           <Button type="submit" form="password">
             {props.type === "signin" ? "Login" : "Create account"}
           </Button>
-          {props.type === "signin" && (
-            <a href="/login/forgot" class="contents">
-              <Button variant="ghost">Forgot password?</Button>
-            </a>
-          )}
         </form>
       </CardContent>
 

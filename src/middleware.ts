@@ -14,6 +14,12 @@ const PATHS_TO_IGNORE = [
 
 export const onRequest = defineMiddleware(
   async ({ locals, cookies, url, request, redirect }, next) => {
+    const expectedOrigin = new URL(request.url).origin;
+    const receivedOrigin = request.headers.get("origin");
+
+    console.log("Expected Origin:", expectedOrigin);
+    console.log("Received Origin:", receivedOrigin);
+
     const supabase = createSupabaseServerInstance({
       cookies,
       headers: request.headers,

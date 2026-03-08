@@ -9,7 +9,8 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://grumma.org",
   security: {
-    checkOrigin: false,
+    checkOrigin: true,
+    allowedDomains: [{ hostname: "grumma.org", protocol: "https" }],
   },
   env: {
     schema: {

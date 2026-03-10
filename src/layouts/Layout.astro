@@ -97,6 +97,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <Anchor href="https://buymeacoffee.com/grumma">
           <Image height={30} src={coffee} alt="By me a coffee logo" />
         </Anchor>
+        <Anchor href="/privacy-policy" class="text-black underline"
+          >Privacy Policy</Anchor
+        >
         {
           loggedIn && (
             <Feedback position="bottom" client:only>

@@ -10,6 +10,7 @@ const PATHS_TO_IGNORE = [
   "logout",
   "grammar",
   "help",
+  "privacy-policy",
 ];
 
 export const onRequest = defineMiddleware(

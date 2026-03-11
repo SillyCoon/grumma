@@ -2,11 +2,6 @@ name: Database Schema Dump
 
 on:
   workflow_dispatch:
-    inputs:
-      schema_name:
-        description: "Schema name to dump"
-        required: true
-        default: "tmp"
   schedule:
     - cron: "0 23 * * *"
 
@@ -22,13 +17,15 @@ jobs:
       - name: Dump PostgreSQL schema
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SCHEMA_NAME: ${{ github.event.inputs.schema_name || 'public' }}
+          SCHEMA_NAME: ${{ secrets.SCHEMA_NAME }}
         run: |
           pg_dump "$DATABASE_URL" --schema="$SCHEMA_NAME" --no-owner --no-privileges > db-dump.sql
 
-      - name: Upload schema dump
-        uses: actions/upload-artifact@v4
+      - name: Upload to Supabase Storage
+        uses: ./.github/actions/db-dump-upload
         with:
-          name: db-dump
-          path: db-dump.sql
-          retention-days: 30
+          supabase-url: ${{ secrets.SUPABASE_URL }}
+          supabase-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          bucket: db-backups
+          path: ${{ secrets.SCHEMA_NAME }}/${{ github.run_id }}-$(date +%Y%m%d).sql
+          file: db-dump.sql

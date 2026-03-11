@@ -1,0 +1,34 @@
+name: Database Schema Dump
+
+on:
+  workflow_dispatch:
+    inputs:
+      schema_name:
+        description: "Schema name to dump"
+        required: true
+        default: "tmp"
+  schedule:
+    - cron: "0 23 * * *"
+
+jobs:
+  dump-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Dump PostgreSQL schema
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SCHEMA_NAME: ${{ github.event.inputs.schema_name || 'public' }}
+        run: |
+          pg_dump "$DATABASE_URL" --schema="$SCHEMA_NAME" --no-owner --no-privileges > db-dump.sql
+
+      - name: Upload schema dump
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-dump
+          path: db-dump.sql
+          retention-days: 30

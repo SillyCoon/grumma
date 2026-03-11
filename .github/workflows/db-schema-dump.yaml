@@ -1,0 +1,34 @@
+name: Database Schema Dump
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 23 * * *"
+
+jobs:
+  dump-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Dump PostgreSQL schema
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SCHEMA_NAME: ${{ secrets.SCHEMA_NAME }}
+        run: |
+          pg_dump "$DATABASE_URL" --schema="$SCHEMA_NAME" --no-owner --no-privileges > db-dump.sql
+
+      - name: Upload to Supabase Storage
+        uses: ./.github/actions/db-dump-upload
+        with:
+          supabase-url: ${{ secrets.SUPABASE_URL }}
+          supabase-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          bucket: db-backups
+          path: ${{ secrets.SCHEMA_NAME }}/${{ github.run_id }}-$(date +%Y%m%d).sql
+          file: db-dump.sql

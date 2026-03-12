@@ -20,46 +20,18 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: oven-sh/setup-bun@v2
+
+    - name: Install dependencies
+      shell: bash
+      run: bun install
+
     - name: Upload to Supabase Storage
-      shell: node {0}
+      shell: bash
       env:
         SUPABASE_URL: ${{ inputs.supabase-url }}
         SUPABASE_KEY: ${{ inputs.supabase-key }}
         BUCKET: ${{ inputs.bucket }}
         FILE_PATH: ${{ inputs.path }}
         FILE: ${{ inputs.file }}
-      run: |
-        import fs from 'fs';
-        import path from 'path';
-
-        const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseKey = process.env.SUPABASE_KEY;
-        const bucket = process.env.BUCKET;
-        const filePath = process.env.FILE_PATH;
-        const file = process.env.FILE;
-
-        if (!fs.existsSync(file)) {
-          throw new Error(`File not found: ${file}`);
-        }
-
-        const fileContent = fs.readFileSync(file);
-        const fileName = path.basename(file);
-
-        const uploadUrl = `${supabaseUrl}/storage/v1/object/${bucket}/${filePath}`;
-
-        const response = await fetch(uploadUrl, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${supabaseKey}`,
-            'Content-Type': 'application/octet-stream',
-            'x-upsert': 'true'
-          },
-          body: fileContent
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Upload failed: ${response.status} ${response.statusText} - ${errorText}`);
-        }
-
-        console.log(`Successfully uploaded to ${bucket}/${filePath}`);
+      run: bun ${{ github.action_path }}/src/index.ts

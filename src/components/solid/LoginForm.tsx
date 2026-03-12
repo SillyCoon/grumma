@@ -121,27 +121,6 @@ const Form = (props: {
             form="google"
           />
         </form>
-        <Popover>
-          <PopoverTrigger>
-            <span class="cursor-pointer text-primary text-sm underline">
-              Why the website link is not grumma.org?
-            </span>
-          </PopoverTrigger>
-          <PopoverContent>
-            <div class="flex max-w-100 flex-col gap-0.5">
-              <p>
-                If you decide to sign in with Google, the website link on the
-                next step will be different. As a free project, we use a free
-                login system and cannot choose the link.
-              </p>
-              <p>
-                We will not see any of your Google account information except
-                your email address and name. However, if you are still worried,
-                please use the regular login form instead.
-              </p>
-            </div>
-          </PopoverContent>
-        </Popover>
       </CardFooter>
     </Card>
   );

@@ -29,8 +29,8 @@ runs:
         FILE_PATH: ${{ inputs.path }}
         FILE: ${{ inputs.file }}
       run: |
-        const fs = require('fs');
-        const path = require('path');
+        import fs from 'fs';
+        import path from 'path';
 
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_KEY;

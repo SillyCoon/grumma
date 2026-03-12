@@ -1,8 +1,6 @@
-import { SupabaseClient } from "@supabase/supabase-js";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { readdir } from "fs/promises";
-import { createSupabaseServerInstance } from "libs/supabase";
-import path from "path";
+import { readdir } from "node:fs/promises";
+import path from "node:path";
 import postgres from "postgres";
 import * as tmpSchema from "./schema-tmp";
 import { eq } from "drizzle-orm/sql";
@@ -18,7 +16,6 @@ for (const filename of files) {
   const content = await file.text();
   const id = filename.split(".")[0].split("-")[1];
   console.log(`Migrating grammar point with id ${id}... file: ${filename}`);
-  // await new Promise((resolve) => setTimeout(resolve, 500));
   await db
     .update(tmpSchema.grammarPointsTmp)
     .set({

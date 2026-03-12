@@ -1,6 +1,6 @@
 import { ActionError, defineAction } from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
-import { z } from "astro:schema";
+import { z } from "astro/zod";
 import { fetchGrammarPoint } from "grammar-sdk";
 import { db } from "libs/db";
 import { createSupabaseServerInstance } from "libs/supabase";
@@ -33,7 +33,7 @@ export const server = {
   signup: defineAction({
     accept: "form",
     input: z.object({
-      email: z.string().email(),
+      email: z.email(),
       password: z.string(),
     }),
     handler: async (input, context) => {
@@ -64,7 +64,7 @@ export const server = {
   signin: defineAction({
     accept: "form",
     input: z.object({
-      email: z.string().email(),
+      email: z.email(),
       password: z.string(),
     }),
     handler: async (input, context) => {
@@ -208,7 +208,7 @@ export const server = {
   saveFeedback: defineAction({
     accept: "json",
     input: z.object({
-      email: z.string().email().optional(),
+      email: z.email().optional(),
       grammar: z
         .object({
           grammarPointId: z.number().int(),
@@ -251,7 +251,7 @@ export const server = {
   resetPassword: defineAction({
     accept: "form",
     input: z.object({
-      email: z.string().email(),
+      email: z.email(),
     }),
     handler: async (input, context) => {
       const supabase = createSupabaseServerInstance({

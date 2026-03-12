@@ -17,10 +17,14 @@ if (!fs.existsSync(file)) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const { data, error } = await supabase.storage
+const fileBuffer = fs.readFileSync(file);
+console.log(`Uploading ${fileBuffer.length} bytes...`);
+
+const { error } = await supabase.storage
   .from(bucket)
-  .upload(filePath, Bun.file(file), {
+  .upload(filePath, fileBuffer, {
     upsert: true,
+    contentType: "application/sql",
   });
 
 if (error) {

@@ -24,11 +24,15 @@ jobs:
         run: |
           pg_dump "$DATABASE_URL" --schema="$SCHEMA_NAME" --no-owner --no-privileges > db-dump.sql
 
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +%Y%m%d)" >> "$GITHUB_OUTPUT"
+
       - name: Upload to Supabase Storage
         uses: ./.github/actions/db-dump-upload
         with:
           supabase-url: ${{ secrets.SUPABASE_URL }}
           supabase-key: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           bucket: db-backups
-          path: ${{ secrets.SCHEMA_NAME }}/${{ github.run_id }}-$(date +%Y%m%d).sql
+          path: ${{ secrets.SCHEMA_NAME }}/${{ github.run_id }}-${{ steps.date.outputs.date }}.sql
           file: db-dump.sql

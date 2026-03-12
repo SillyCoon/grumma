@@ -15,14 +15,12 @@ if (!fs.existsSync(file)) {
   throw new Error(`File not found: ${file}`);
 }
 
-const fileContent = fs.readFileSync(file);
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const { data, error } = await supabase.storage
   .from(bucket)
-  .upload(filePath, fileContent, {
+  .upload(filePath, Bun.file(file), {
     upsert: true,
-    contentType: "application/octet-stream",
   });
 
 if (error) {

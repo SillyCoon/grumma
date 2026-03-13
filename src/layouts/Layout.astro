@@ -90,12 +90,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <footer
         class="p-6 absolute h-10 left-0 flex flex-row bottom-0 w-full items-center justify-center gap-5 bg-white text-secondary-foreground text-center"
       >
-        <Anchor href="https://github.com/SillyCoon/grumma">
+        <Anchor href="https://github.com/SillyCoon/grumma" target="_blank">
           <Image
             height={30}
             width={30}
             src={github}
-            alt="GitHub logo"
+            alt="Source code"
             title="Source code"
           />
         </Anchor>
@@ -106,6 +106,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             alt="By me a coffee logo"
             title="Donation"
           />
+        </Anchor>
+        <Anchor href="https://buymeacoffee.com/grumma" target="_blank">
+          <Image height={30} src={coffee} alt="Donations" title="Donations" />
         </Anchor>
         <Anchor href="/privacy-policy" class="text-black">
           <PrivacyIcon size={24} title="Privacy policy" />

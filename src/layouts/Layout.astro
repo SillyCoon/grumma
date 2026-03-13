@@ -9,11 +9,10 @@ import Header from "../components/Header.astro";
 import { Image } from "astro:assets";
 import github from "public/github-mark.svg";
 import coffee from "public/coffee.svg";
-import { Feedback } from "@components/solid/Exercise/Feedback";
-import { ContactSupport } from "ui/icons/ContactSupport";
-import { IconButton } from "ui/dumb-icon-button";
 import { Anchor } from "ui/anchor";
 import { isUserAdmin } from "libs/auth/admin";
+import { MdOutlinePrivacy_tip as PrivacyIcon } from "solid-icons/md";
+import { MdOutlineContact_support as SupportIcon } from "solid-icons/md";
 
 interface Props {
   title: string;
@@ -89,24 +88,33 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <slot />
 
       <footer
-        class="absolute h-10 left-0 flex flex-row bottom-0 w-full items-center justify-center gap-5 bg-white text-secondary-foreground text-center"
+        class="p-6 absolute h-10 left-0 flex flex-row bottom-0 w-full items-center justify-center gap-5 bg-white text-secondary-foreground text-center"
       >
         <Anchor href="https://github.com/SillyCoon/grumma">
-          <Image height={30} width={30} src={github} alt="GitHub logo" />
+          <Image
+            height={30}
+            width={30}
+            src={github}
+            alt="GitHub logo"
+            title="Source code"
+          />
         </Anchor>
         <Anchor href="https://buymeacoffee.com/grumma">
-          <Image height={30} src={coffee} alt="By me a coffee logo" />
+          <Image
+            height={30}
+            src={coffee}
+            alt="By me a coffee logo"
+            title="Donation"
+          />
         </Anchor>
-        <Anchor href="/privacy-policy" class="text-black underline"
-          >Privacy Policy</Anchor
-        >
+        <Anchor href="/privacy-policy" class="text-black">
+          <PrivacyIcon size={24} title="Privacy policy" />
+        </Anchor>
         {
           loggedIn && (
-            <Feedback position="bottom" client:only>
-              <IconButton>
-                <ContactSupport />
-              </IconButton>
-            </Feedback>
+            <Anchor href="/contact-us" class="text-black">
+              <SupportIcon size={24} title="Contact us" />
+            </Anchor>
           )
         }
         <Toaster position="bottom-right" client:only="solid-js" />

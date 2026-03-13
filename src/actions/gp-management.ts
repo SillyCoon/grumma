@@ -1,5 +1,5 @@
 import { ActionError, defineAction } from "astro:actions";
-import { z } from "astro:content";
+import { z } from "astro/zod";
 import { isUserAdmin } from "libs/auth/admin";
 import { extractUser } from "./utils";
 import {

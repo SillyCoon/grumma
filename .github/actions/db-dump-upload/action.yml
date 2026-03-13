@@ -1,0 +1,37 @@
+name: "Upload to Supabase Storage"
+description: "Upload a file to Supabase Storage bucket"
+inputs:
+  supabase-url:
+    description: "Supabase project URL"
+    required: true
+  supabase-key:
+    description: "Supabase service role key"
+    required: true
+  bucket:
+    description: "Storage bucket name"
+    required: true
+  path:
+    description: "Path in bucket"
+    required: true
+  file:
+    description: "File to upload"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: oven-sh/setup-bun@v2
+
+    - name: Install dependencies
+      shell: bash
+      run: bun install
+
+    - name: Upload to Supabase Storage
+      shell: bash
+      env:
+        SUPABASE_URL: ${{ inputs.supabase-url }}
+        SUPABASE_KEY: ${{ inputs.supabase-key }}
+        BUCKET: ${{ inputs.bucket }}
+        FILE_PATH: ${{ inputs.path }}
+        FILE: ${{ inputs.file }}
+      run: bun ${{ github.action_path }}/src/index.ts

@@ -275,27 +275,66 @@ export const gpManagement = {
       });
 
       try {
-        const result = await db.transaction(async (tx) => {
+        await db.transaction(async (tx) => {
           await putExercises(tx, existingExercises);
-          return await createExercises(tx, input.grammarPointId, newExercises);
+          await createExercises(tx, input.grammarPointId, newExercises);
         });
 
-        const resultExercises: Exercise[] = input.exercises.map((exercise) => {
-          if (exercise.id) return exercise;
-          const inserted = result.get(exercise.order);
-          if (!inserted) {
-            console.error("Failed to find inserted exercise ID", {
-              order: exercise.order,
-              grammarPointId: input.grammarPointId,
-            });
-            throw new ActionError({
-              code: "INTERNAL_SERVER_ERROR",
-              message:
-                "Failed to retrieve inserted exercise ID, something went wrong with the database transaction",
-            });
-          }
-          return { ...exercise, id: inserted };
+        const data = await db.query.exercisesTmp.findMany({
+          where: eq(exercisesTmp.grammarPointId, input.grammarPointId),
+          orderBy: (ex, { asc }) => asc(ex.order),
+          with: {
+            parts: {
+              orderBy: (part, { asc }) => asc(part.order),
+              with: {
+                acceptableAnswers: true,
+              },
+            },
+          },
         });
+        const resultExercises: Exercise[] = data.map((exercise) => ({
+          id: exercise.id,
+          grammarPointId: exercise.grammarPointId.toString(),
+          hide: exercise.hide,
+          order: exercise.order,
+          parts: exercise.parts
+            .filter((part) => part.language === "ru")
+            .map((part) => {
+              if (part.type === "answer") {
+                return {
+                  id: part.id,
+                  index: part.order,
+                  type: part.type,
+                  text: part.text,
+                  description: part.description ?? undefined,
+                  acceptableAnswers: part.acceptableAnswers.map((ans) => ({
+                    id: ans.id,
+                    text: ans.text,
+                    description: ans.description ?? undefined,
+                    variant: ans.variant,
+                  })),
+                };
+              }
+              return {
+                id: part.id,
+                index: part.order,
+                type: part.type,
+                text: part.text,
+                description: part.description ?? undefined,
+              };
+            }),
+          translationParts: exercise.parts
+            .filter((part) => part.language === "en")
+            .map((part) => {
+              return {
+                id: part.id,
+                index: part.order,
+                type: part.type,
+                text: part.text,
+                description: part.description ?? undefined,
+              };
+            }),
+        }));
         return resultExercises;
       } catch (error) {
         console.error(error);

@@ -8,6 +8,7 @@ import { Toaster } from "solid-toast";
 import Header from "../components/Header.astro";
 import { Image } from "astro:assets";
 import github from "public/github-mark.svg";
+import telegram from "public/telegram.svg";
 import coffee from "public/coffee.svg";
 import { Anchor } from "ui/anchor";
 import { isUserAdmin } from "libs/auth/admin";
@@ -99,12 +100,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             title="Source code"
           />
         </Anchor>
-        <Anchor href="https://buymeacoffee.com/grumma">
+        <Anchor href="https://t.me/grummasrs" target="_blank">
           <Image
             height={30}
-            src={coffee}
-            alt="By me a coffee logo"
-            title="Donation"
+            width={30}
+            src={telegram}
+            alt="Grumma news and community"
+            title="Grumma news and community"
           />
         </Anchor>
         <Anchor href="https://buymeacoffee.com/grumma" target="_blank">

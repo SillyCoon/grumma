@@ -3,8 +3,7 @@ import { splitProps, type ParentProps } from "solid-js";
 import { cn } from "./utils";
 
 export const Anchor = (
-  props: JSX.HTMLAttributes<HTMLAnchorElement> &
-    ParentProps<{ href: string; class?: string }>,
+  props: ParentProps<JSX.AnchorHTMLAttributes<HTMLAnchorElement>>,
 ) => {
   const [local, others] = splitProps(props, ["class"]);
   return (

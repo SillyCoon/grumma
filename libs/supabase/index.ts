@@ -25,8 +25,8 @@ export function createSupabaseServerInstance(
     "headers" in context ? context.headers : context.request.headers;
 
   const supabase = createServerClient(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_KEY,
+    process.env.SUPABASE_URL ?? "",
+    process.env.SUPABASE_KEY ?? "",
     {
       cookieOptions,
       cookies: {
@@ -47,7 +47,7 @@ export function createSupabaseServerInstance(
 
 export function createSupabaseClientInstance() {
   return createBrowserClient(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_KEY,
+    import.meta.env.SUPABASE_URL ?? "",
+    import.meta.env.SUPABASE_KEY ?? "",
   );
 }

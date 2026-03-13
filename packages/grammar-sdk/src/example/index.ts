@@ -8,7 +8,8 @@ export const Example = {
     if (parts.length < 3) {
       parts.push(...new Array(3 - parts.length).fill(""));
     }
-    return parts as Example;
+    // TODO: enable more when we have more than 3 parts
+    return parts.slice(0, 3) as Example;
   },
   replaceAnswer: ([a, answer, b]: Example, newAnswer: string): Example => {
     return [a, answer.replaceAll(/\p{L}+/gu, newAnswer), b];

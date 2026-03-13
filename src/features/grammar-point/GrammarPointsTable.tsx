@@ -1,4 +1,4 @@
-import { createSignal, For } from "solid-js";
+import { createEffect, createSignal, For } from "solid-js";
 import type { GrammarPoint } from "./domain";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 import { Button } from "packages/ui/button";
@@ -9,6 +9,7 @@ import { SaveConfirmation } from "@components/common/SaveConfirmation";
 
 export const GrammarPointsTable = (props: {
   grammarPoints: GrammarPoint[];
+  createdGrammarPoint?: GrammarPoint;
   error?: string;
 }) => {
   const [parent, points, setPoints] = useDragAndDrop<
@@ -18,21 +19,24 @@ export const GrammarPointsTable = (props: {
     draggable: (el) => el.id !== "non-draggable",
   });
 
+  const [isAdding, setIsAdding] = createSignal<boolean>(false);
+
   if (props.error) {
     toast.error(props.error);
   }
 
-  const [newPoints, setNewPoints] = createSignal<string[]>([]);
+  createEffect(() => {
+    const newPoint = props.createdGrammarPoint;
+    if (!newPoint) return;
 
-  const addNewPoint = () => {
-    setNewPoints([...newPoints(), "New grammar point"]);
-  };
-
-  const updatePoint = (index: number, value: string) => {
-    const updated = [...newPoints()];
-    updated[index] = value;
-    setNewPoints(updated);
-  };
+    setPoints((prev) => {
+      if (prev.some((gp) => gp.id === newPoint.id)) {
+        return prev;
+      }
+      return [...prev, newPoint];
+    });
+    setIsAdding(false);
+  });
 
   const updateOrder = async () => {
     try {
@@ -67,7 +71,7 @@ export const GrammarPointsTable = (props: {
     <div>
       <div class="flex flex-row justify-between">
         <h2 class="mb-4 font-semibold text-2xl">
-          Existing Grammar Points ({props.grammarPoints.length})
+          Existing Grammar Points ({points().length})
         </h2>
         <SaveConfirmation title="grammar points order" onSave={updateOrder}>
           <Button
@@ -144,67 +148,63 @@ export const GrammarPointsTable = (props: {
                 );
               }}
             </For>
-            <For each={newPoints()}>
-              {(gp, index) => (
-                <tr class="border-b bg-green-50" id="non-draggable">
-                  <td class="px-6 py-3 font-medium text-slate-900">New</td>
-                  <td class="px-6 py-3 text-slate-700" colSpan={4}>
-                    <form
-                      id={`new-point-form-${index()}`}
-                      method="post"
-                      action={actions.createGrammarPoint}
-                    >
-                      <input
-                        id="detailedTitle"
-                        name="detailedTitle"
-                        type="hidden"
-                        value="-"
-                      />
-                      <input
-                        id="englishTitle"
-                        name="englishTitle"
-                        type="hidden"
-                        value="-"
-                      />
-                      <input
-                        id="shortTitle"
-                        name="shortTitle"
-                        ref={(el) => {
-                          const isLast = index() === newPoints().length - 1;
-                          isLast && el.focus({ preventScroll: false });
-                        }}
-                        onChange={(e) => updatePoint(index(), e.target.value)}
-                        class="w-full"
-                        value={gp}
-                      />
-                    </form>
-                  </td>
-
-                  <td class="px-6 py-3 text-center">
-                    <button
-                      type="submit"
-                      form={`new-point-form-${index()}`}
-                      class="inline-block cursor-pointer font-medium text-blue-600 text-xs hover:underline"
-                    >
-                      Save
-                    </button>
-                  </td>
-                </tr>
-              )}
-            </For>
           </tbody>
           <tfoot>
-            <tr>
-              <td class="px-6 py-3 text-slate-700" colSpan={6}>
-                <Button
-                  variant="ghost"
-                  disabled={newPoints().length > 0}
-                  onClick={addNewPoint}
-                >
-                  + Quick Create
-                </Button>
-              </td>
-            </tr>
+            {isAdding() ? (
+              <tr
+                class="border-b bg-green-50"
+                id="non-draggable"
+                onKeyDown={(e) => e.key === "Escape" && setIsAdding(false)}
+              >
+                <td class="px-6 py-3 font-medium text-slate-900">New</td>
+                <td class="px-6 py-3 text-slate-700" colSpan={4}>
+                  <form
+                    id={"new-point-form"}
+                    method="post"
+                    action={actions.createGrammarPoint}
+                  >
+                    <input
+                      id="detailedTitle"
+                      name="detailedTitle"
+                      type="hidden"
+                      value="-"
+                    />
+                    <input
+                      id="englishTitle"
+                      name="englishTitle"
+                      type="hidden"
+                      value="-"
+                    />
+                    <input
+                      id="shortTitle"
+                      name="shortTitle"
+                      placeholder="New grammar point"
+                      ref={(el) =>
+                        setTimeout(() => el.focus({ preventScroll: false }), 0)
+                      }
+                      class="w-full"
+                    />
+                  </form>
+                </td>
+                <td class="px-6 py-3 text-center">
+                  <button
+                    type="submit"
+                    form={"new-point-form"}
+                    class="inline-block cursor-pointer font-medium text-blue-600 text-xs hover:underline"
+                  >
+                    Save
+                  </button>
+                </td>
+              </tr>
+            ) : (
+              <tr>
+                <td class="px-6 py-3 text-slate-700" colSpan={6}>
+                  <Button variant="ghost" onClick={() => setIsAdding(true)}>
+                    + Quick Create
+                  </Button>
+                </td>
+              </tr>
+            )}
           </tfoot>
         </table>
 

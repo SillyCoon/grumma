@@ -19,13 +19,6 @@ if (!grammarPoint) {
 }
 
 const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
-
-const grammarPointExercises = await Astro.callAction(
-  actions.getExercisesByGrammarPointId,
-  {
-    grammarPointId: +grammarPoint.id,
-  },
-);
 ---
 
 <AdminLayout title={`Edit: ${grammarPoint.shortTitle}`} back="../grammar">
@@ -57,7 +50,7 @@ const grammarPointExercises = await Astro.callAction(
       </p>
     </div>
     <ExercisesForm
-      defaultExercises={grammarPointExercises.data}
+      defaultExercises={grammarPoint.exercises}
       grammarPointId={+grammarPoint.id}
       client:only="solid-js"
     />

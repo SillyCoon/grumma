@@ -16,7 +16,7 @@ import {
   getSessionResult,
   removeFromRepetitions,
 } from "space-repetition";
-import { extractUser } from "./utils";
+import { extractUser, makeContext } from "./utils";
 import { gpManagement } from "./gp-management";
 import { tour } from "./tour";
 
@@ -143,8 +143,8 @@ export const server = {
     input: z.object({
       grammarPointId: z.string(),
     }),
-    handler: async (input, _context) => {
-      return fetchGrammarPoint(input.grammarPointId);
+    handler: async (input, context) => {
+      return fetchGrammarPoint(input.grammarPointId, makeContext(context));
     },
   }),
   saveAttempt: defineAction({

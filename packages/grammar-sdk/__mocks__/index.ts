@@ -16,8 +16,9 @@ export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
     .map((i) => mockExercise({ grammarPointId: gp?.id, order: i }))
     .toArray()
     .toSorted((a, b) => a.order - b.order),
-  ...gp,
   torfl: "A1",
+  hidden: faker.datatype.boolean(),
+  ...gp,
 });
 
 export const mockExample = (): Example => [

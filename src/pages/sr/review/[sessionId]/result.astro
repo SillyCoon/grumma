@@ -2,14 +2,15 @@
 import { SessionResult } from "@components/solid/Exercise/SessionResult";
 import Layout from "@layouts/Layout.astro";
 import { actions } from "astro:actions";
-import { fetchGrammarList } from "grammar-sdk";
+import { fetchAllGrammarPoints } from "grammar-sdk";
+import { contextFromAstro } from "~/libs/context";
 
 const sessionResult = Astro.params.sessionId
   ? await Astro.callAction(actions.sessionResult, {
       sessionId: Astro.params.sessionId,
     })
   : undefined;
-const grammar = await fetchGrammarList();
+const grammar = await fetchAllGrammarPoints(contextFromAstro(Astro));
 ---
 
 <Layout title="Review results">

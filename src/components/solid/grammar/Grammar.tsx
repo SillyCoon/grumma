@@ -32,7 +32,9 @@ export const Grammar = (props: GrammarProps) => {
   const cramDisabled = () => !cram().length;
 
   const groupedGrammar = () =>
-    Object.entries(Object.groupBy(filteredGrammar(), (v) => v.torfl));
+    Object.entries(
+      Object.groupBy(filteredGrammar(), (v) => v.torfl ?? "Coming soon!"),
+    );
 
   return (
     <section class="grid">

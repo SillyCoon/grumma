@@ -2,15 +2,10 @@
 import { actions } from "astro:actions";
 import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { GrammarPointsTable } from "~/features/grammar-point/GrammarPointsTable";
+import { fetchAllGrammarPoints } from "packages/grammar-sdk";
+import { contextFromAstro } from "~/libs/context";
 
-const { data: grammarPointsList, error } = await Astro.callAction(
-  actions.getAllGrammarPoints,
-  undefined,
-);
-
-if (!grammarPointsList) {
-  throw new Error(`Failed to load grammar points, ${error}`);
-}
+const grammarPointsList = await fetchAllGrammarPoints(contextFromAstro(Astro));
 
 const createGrammarPointResult = Astro.getActionResult(
   actions.createGrammarPoint,

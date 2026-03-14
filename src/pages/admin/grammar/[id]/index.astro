@@ -3,6 +3,8 @@ import { actions } from "astro:actions";
 import AdminLayout from "../../../../layouts/AdminLayout.astro";
 import { GrammarPointForm } from "~/features/grammar-point/GrammarPointForm";
 import { ExercisesForm } from "~/features/exercise/create/ExercisesForm";
+import { fetchGrammarPoint } from "packages/grammar-sdk";
+import { contextFromAstro } from "~/libs/context";
 
 const { id } = Astro.params;
 
@@ -10,12 +12,7 @@ if (!id || isNaN(Number(id))) {
   return Astro.redirect("/admin/grammar");
 }
 
-const { data: grammarPoint } = await Astro.callAction(
-  actions.getGrammarPointById,
-  {
-    id: Number(id),
-  },
-);
+const grammarPoint = await fetchGrammarPoint(id, contextFromAstro(Astro));
 
 if (!grammarPoint) {
   return Astro.redirect("/admin/grammar");
@@ -26,7 +23,7 @@ const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
 const grammarPointExercises = await Astro.callAction(
   actions.getExercisesByGrammarPointId,
   {
-    grammarPointId: grammarPoint.id,
+    grammarPointId: +grammarPoint.id,
   },
 );
 ---
@@ -38,7 +35,7 @@ const grammarPointExercises = await Astro.callAction(
       success={!!updateResult?.data}
       error={updateResult?.error?.message}
       initialData={{
-        id: grammarPoint.id,
+        id: +grammarPoint.id,
         shortTitle: grammarPoint.shortTitle,
         order: grammarPoint.order,
         structure: grammarPoint.structure ?? undefined,
@@ -61,7 +58,7 @@ const grammarPointExercises = await Astro.callAction(
     </div>
     <ExercisesForm
       defaultExercises={grammarPointExercises.data}
-      grammarPointId={grammarPoint.id}
+      grammarPointId={+grammarPoint.id}
       client:only="solid-js"
     />
   </div>

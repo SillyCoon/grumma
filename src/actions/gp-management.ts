@@ -112,46 +112,6 @@ export const gpManagement = {
       }
     },
   }),
-  getGrammarPointById: defineAction({
-    accept: "json",
-    input: z.object({
-      id: z.number().int().positive(),
-    }),
-    handler: async ({ id }, context) => {
-      const user = extractUser(context);
-      if (!isUserAdmin(user)) {
-        throw new ActionError({
-          code: "FORBIDDEN",
-          message: "Admin access required",
-        });
-      }
-
-      try {
-        const result = await db.query.grammarPointsTmp.findFirst({
-          where: eq(grammarPointsTmp.id, id),
-          with: {
-            exercises: {
-              orderBy: (ex, { asc }) => asc(ex.order),
-            },
-          },
-        });
-
-        if (!result) {
-          throw new ActionError({
-            code: "NOT_FOUND",
-            message: "Grammar point not found",
-          });
-        }
-
-        return result;
-      } catch (error) {
-        throw new ActionError({
-          code: "BAD_REQUEST",
-          message: `Failed to fetch grammar point: ${error instanceof Error ? error.message : "Unknown error"}`,
-        });
-      }
-    },
-  }),
   createExercises: defineAction({
     accept: "json",
     input: z.object({

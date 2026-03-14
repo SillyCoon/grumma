@@ -27,6 +27,7 @@ export const GrammarPointDb = {
         .toSorted((a, b) => a.order - b.order)
         .map((p) => p.text) as [string, string, string],
       order: e.order,
+      hide: e.hide,
     }));
 
     return {
@@ -53,7 +54,7 @@ export const GrammarPointDb = {
           .toSorted((a, b) => a.order - b.order)
           .map(partFromDB),
       })),
-      hidden: g.hide,
+      hide: g.hide,
     };
   },
 };

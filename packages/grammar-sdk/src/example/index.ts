@@ -1,3 +1,4 @@
+import type { Context } from "../context";
 import type { ExercisePart } from "../exercise";
 
 export type Example = [string, string, string];
@@ -13,5 +14,29 @@ export const Example = {
   },
   replaceAnswer: ([a, answer, b]: Example, newAnswer: string): Example => {
     return [a, answer.replaceAll(/\p{L}+/gu, newAnswer), b];
+  },
+};
+
+export type FullExample = {
+  ru: Example;
+  en: Example;
+  order: number;
+  hide: boolean;
+};
+
+export const FullExample = {
+  isVisible(example: FullExample, context: Context): boolean {
+    if (example.hide) {
+      return context.user.role === "admin";
+    }
+    return true;
+  },
+};
+
+export const FullExamples = {
+  filterVisible(examples: FullExample[], context: Context): FullExample[] {
+    return examples.filter((example) =>
+      FullExample.isVisible(example, context),
+    );
   },
 };

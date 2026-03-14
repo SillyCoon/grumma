@@ -1,4 +1,6 @@
 import { z } from "astro/zod";
+import { is } from "drizzle-orm";
+import { Context } from "./context";
 
 export const textSchema = z.object({
   id: z.number().int().positive().optional(),
@@ -53,3 +55,15 @@ export const exerciseSchema = z.object({
 
 export type Exercise = z.infer<typeof exerciseSchema>;
 export type ExercisePart = Text | Answer;
+
+export const Exercise = {
+  isVisible(exercise: Exercise, context: Context) {
+    return !exercise.hide || Context.isAdmin(context);
+  },
+};
+
+export const Exercises = {
+  filterVisible(exercises: Exercise[], context: Context) {
+    return exercises.filter((ex) => Exercise.isVisible(ex, context));
+  },
+};

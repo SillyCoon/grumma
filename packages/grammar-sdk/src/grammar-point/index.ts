@@ -1,18 +1,14 @@
 import { Context } from "../context";
-import type { Example } from "../example";
-import type { Exercise } from "../exercise";
+import { FullExamples, type Example, type FullExample } from "../example";
+import { Exercises, type Exercise } from "../exercise";
 
 export interface GrammarPoint {
   id: string;
   shortTitle: string;
   order: number;
-  hidden: boolean;
+  hide: boolean;
 
-  examples: {
-    ru: Example;
-    en: Example;
-    order: number;
-  }[];
+  examples: FullExample[];
   exercises: Exercise[];
 
   torfl?: string;
@@ -24,13 +20,19 @@ export interface GrammarPoint {
 
 export const GrammarPoint = {
   isVisible(gp: GrammarPoint, context: Context) {
-    return !gp.hidden || Context.isAdmin(context);
+    return !gp.hide || Context.isAdmin(context);
   },
 };
 
 export const GrammarPoints = {
-  // TODO: filter out exercises and examples that are hidden
   filterVisible(grammarPoints: GrammarPoint[], context: Context) {
-    return grammarPoints.filter((gp) => GrammarPoint.isVisible(gp, context));
+    const filteredGrammar = grammarPoints.filter((gp) =>
+      GrammarPoint.isVisible(gp, context),
+    );
+    return filteredGrammar.map((gp) => ({
+      ...gp,
+      exercises: Exercises.filterVisible(gp.exercises, context),
+      examples: FullExamples.filterVisible(gp.examples, context),
+    }));
   },
 };

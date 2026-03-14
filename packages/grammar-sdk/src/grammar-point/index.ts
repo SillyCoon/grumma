@@ -2,6 +2,8 @@ import { err, ok, type Result } from "neverthrow";
 import { Context } from "../context";
 import { FullExamples, type FullExample } from "../example";
 import { Exercises, type Exercise } from "../exercise";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
+import { Set } from "immutable";
 
 export interface GrammarPoint {
   id: string;
@@ -48,6 +50,23 @@ export const GrammarPoints = {
   },
   maxOrder(grammarPoints: GrammarPoint[]) {
     return grammarPoints.reduce((max, gp) => Math.max(max, gp.order), 0);
+  },
+  validateNewOrder(
+    grammarPoints: GrammarPoint[],
+    newOrder: { id: string; order: number }[],
+  ): Result<true, string> {
+    const newOrderSet = Set(newOrder.map((o) => o.order));
+    if (!Set(grammarPoints.map((gp) => gp.id)).equals(newOrderSet)) {
+      return err(
+        "Can't update order partially. All grammar points must be included.",
+      );
+    }
+
+    if (newOrderSet.size !== newOrder.length) {
+      return err("Duplicate orders are not allowed.");
+    }
+
+    return ok(true);
   },
   checkViolation(
     grammarPoints: GrammarPoint[],

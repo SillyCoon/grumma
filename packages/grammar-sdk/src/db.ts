@@ -1,4 +1,4 @@
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { db } from "../../../libs/db";
 import {
   GrammarPoints,
@@ -126,6 +126,41 @@ export const updateGrammarPoint = async (
     .update(grammarPointsTmp)
     .set(updateData)
     .where(eq(grammarPointsTmp.id, +id));
+
+  return ok(true);
+};
+
+export const updateGrammarPointsOrder = async (
+  newOrder: { id: string; order: number }[],
+  context: Context,
+): Promise<Result<true, string | AuthorizationError>> => {
+  if (!Context.isAdmin(context)) {
+    return err(
+      new AuthorizationError(
+        "Currently users without admin rights cannot update grammar points.",
+      ),
+    );
+  }
+
+  const grammarPoints = await getGrammarPoints();
+  const valid = GrammarPoints.validateNewOrder(grammarPoints, newOrder);
+  if (valid.isErr()) {
+    return valid;
+  }
+
+  const sqlUpdate = sql`
+          UPDATE ${grammarPointsTmp} o
+          SET "order" = v.new_order
+          FROM (
+            VALUES
+              ${sql.join(
+                newOrder.map((o) => sql`(${o.id}::int, ${o.order}::int)`),
+                sql`, `,
+              )}
+          ) AS v(id, new_order)
+          WHERE o.id = v.id
+        `;
+  await db.execute(sqlUpdate);
 
   return ok(true);
 };

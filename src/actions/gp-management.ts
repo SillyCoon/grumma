@@ -9,7 +9,7 @@ import {
   exercisesTmp,
 } from "libs/db/schema-tmp";
 import { db, type Transaction } from "libs/db";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import {
   exerciseSchema,
   type Exercise,
@@ -17,10 +17,25 @@ import {
 } from "grammar-sdk/exercise";
 import { contextFromAstro } from "~/libs/context";
 import {
+  type AuthorizationError,
   createGrammarPoint,
   isAuthorizationError,
   updateGrammarPoint,
+  updateGrammarPointsOrder,
 } from "packages/grammar-sdk";
+
+const handleError = (error: string | AuthorizationError) => {
+  if (isAuthorizationError(error)) {
+    throw new ActionError({
+      code: "FORBIDDEN",
+      message: error.message,
+    });
+  }
+  throw new ActionError({
+    code: "BAD_REQUEST",
+    message: `${error}`,
+  });
+};
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -72,16 +87,7 @@ export const gpManagement = {
         return { success: true };
       }
       if (result.isErr()) {
-        if (isAuthorizationError(result.error)) {
-          throw new ActionError({
-            code: "FORBIDDEN",
-            message: result.error.message,
-          });
-        }
-        throw new ActionError({
-          code: "BAD_REQUEST",
-          message: `${result.error}`,
-        });
+        handleError(result.error);
       }
     },
   }),
@@ -94,36 +100,15 @@ export const gpManagement = {
       }),
     ),
     handler: async (input, context) => {
-      const user = extractUser(context);
-      if (!isUserAdmin(user)) {
-        throw new ActionError({
-          code: "FORBIDDEN",
-          message: "Admin access required to update grammar points order",
-        });
+      const result = await updateGrammarPointsOrder(
+        input.map((o) => ({ id: `${o.id}`, order: o.order })),
+        contextFromAstro(context),
+      );
+      if (result.isOk()) {
+        return { success: true };
       }
-
-      const sqlA = sql`
-          UPDATE ${grammarPointsTmp} o
-          SET "order" = v.new_order
-          FROM (
-            VALUES
-              ${sql.join(
-                input.map((o) => sql`(${o.id}::int, ${o.order}::int)`),
-                sql`, `,
-              )}
-          ) AS v(id, new_order)
-          WHERE o.id = v.id
-        `;
-
-      try {
-        await db.execute(sqlA);
-
-        return input;
-      } catch (error) {
-        throw new ActionError({
-          code: "BAD_REQUEST",
-          message: `Failed to update grammar points order: ${error instanceof Error ? error.message : "Unknown error"}`,
-        });
+      if (result.isErr()) {
+        handleError(result.error);
       }
     },
   }),

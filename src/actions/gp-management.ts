@@ -9,12 +9,18 @@ import {
   exercisesTmp,
 } from "libs/db/schema-tmp";
 import { db, type Transaction } from "libs/db";
-import { eq, max, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import {
   exerciseSchema,
   type Exercise,
   type ExercisePart,
 } from "grammar-sdk/exercise";
+import { contextFromAstro } from "~/libs/context";
+import {
+  createGrammarPoint,
+  isAuthorizationError,
+  updateGrammarPoint,
+} from "packages/grammar-sdk";
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -28,32 +34,20 @@ export const gpManagement = {
       torfl: z.string().optional(),
     }),
     handler: async (input, context) => {
-      const user = extractUser(context);
-      if (!isUserAdmin(user)) {
-        throw new ActionError({
-          code: "FORBIDDEN",
-          message: "Admin access required to create grammar points",
-        });
+      const result = await createGrammarPoint(input, contextFromAstro(context));
+      if (result.isOk()) {
+        return { id: result.value };
       }
-
-      try {
-        const [{ maxOrder }] = await db
-          .select({ maxOrder: max(grammarPointsTmp.order) })
-          .from(grammarPointsTmp);
-
-        const [insertResult] = await db
-          .insert(grammarPointsTmp)
-          .values({
-            order: (maxOrder ?? 0) + 1,
-            ...input,
-          })
-          .returning();
-
-        return insertResult;
-      } catch (error) {
+      if (result.isErr()) {
+        if (isAuthorizationError(result.error)) {
+          throw new ActionError({
+            code: "FORBIDDEN",
+            message: result.error.message,
+          });
+        }
         throw new ActionError({
           code: "BAD_REQUEST",
-          message: `Failed to create grammar point: ${error instanceof Error ? error.message : "Unknown error"}`,
+          message: `${result.error}`,
         });
       }
     },
@@ -70,35 +64,23 @@ export const gpManagement = {
       torfl: z.string().optional(),
     }),
     handler: async (input, context) => {
-      const user = extractUser(context);
-      if (!isUserAdmin(user)) {
-        throw new ActionError({
-          code: "FORBIDDEN",
-          message: "Admin access required to update grammar points",
-        });
+      const result = await updateGrammarPoint(
+        { ...input, id: `${input.id}` },
+        contextFromAstro(context),
+      );
+      if (result.isOk()) {
+        return { success: true };
       }
-
-      const { id, ...updateData } = input;
-
-      try {
-        const result = await db
-          .update(grammarPointsTmp)
-          .set(updateData)
-          .where(eq(grammarPointsTmp.id, id))
-          .returning();
-
-        if (!result.length) {
+      if (result.isErr()) {
+        if (isAuthorizationError(result.error)) {
           throw new ActionError({
-            code: "NOT_FOUND",
-            message: "Grammar point not found",
+            code: "FORBIDDEN",
+            message: result.error.message,
           });
         }
-
-        return result[0];
-      } catch (error) {
         throw new ActionError({
           code: "BAD_REQUEST",
-          message: `Failed to update grammar point: ${error instanceof Error ? error.message : "Unknown error"}`,
+          message: `${result.error}`,
         });
       }
     },

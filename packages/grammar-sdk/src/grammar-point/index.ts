@@ -1,5 +1,6 @@
+import { err, ok, type Result } from "neverthrow";
 import { Context } from "../context";
-import { FullExamples, type Example, type FullExample } from "../example";
+import { FullExamples, type FullExample } from "../example";
 import { Exercises, type Exercise } from "../exercise";
 
 export interface GrammarPoint {
@@ -18,6 +19,16 @@ export interface GrammarPoint {
   explanation?: string;
 }
 
+export type CreateGrammarPoint = Omit<
+  GrammarPoint,
+  "id" | "order" | "examples" | "exercises" | "hide"
+>;
+
+export type UpdateGrammarPoint = Partial<
+  Omit<GrammarPoint, "examples" | "exercises">
+> &
+  Pick<GrammarPoint, "id">;
+
 export const GrammarPoint = {
   isVisible(gp: GrammarPoint, context: Context) {
     return !gp.hide || Context.isAdmin(context);
@@ -34,5 +45,24 @@ export const GrammarPoints = {
       exercises: Exercises.filterVisible(gp.exercises, context),
       examples: FullExamples.filterVisible(gp.examples, context),
     }));
+  },
+  maxOrder(grammarPoints: GrammarPoint[]) {
+    return grammarPoints.reduce((max, gp) => Math.max(max, gp.order), 0);
+  },
+  checkViolation(
+    grammarPoints: GrammarPoint[],
+    uoc: UpdateGrammarPoint | CreateGrammarPoint,
+  ): Result<true, string> {
+    if (grammarPoints.some((gp) => "order" in uoc && gp.order === uoc.order)) {
+      return err(
+        `Another grammar point already has the order ${"order" in uoc ? uoc.order : ""}.`,
+      );
+    }
+    if (grammarPoints.some((gp) => gp.shortTitle === uoc.shortTitle)) {
+      return err(
+        `Another grammar point already has the short title "${uoc.shortTitle}".`,
+      );
+    }
+    return ok(true);
   },
 };

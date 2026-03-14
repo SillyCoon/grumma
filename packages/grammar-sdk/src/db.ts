@@ -1,8 +1,15 @@
 import { eq, inArray } from "drizzle-orm";
 import { db } from "../../../libs/db";
-import type { GrammarPoint } from "./grammar-point";
+import {
+  GrammarPoints,
+  type CreateGrammarPoint,
+  type GrammarPoint,
+  type UpdateGrammarPoint,
+} from "./grammar-point";
 import { grammarPointsTmp } from "../../../libs/db/schema-tmp";
 import { GrammarPointDb, GrammarPointsDb } from "./grammar-point/dto";
+import { err, ok, type Result } from "neverthrow";
+import { Context } from "./context";
 
 export const getGrammarPoint = async (
   id: number,
@@ -44,4 +51,81 @@ export const getGrammarPoints = async (
   });
 
   return GrammarPointsDb.toGrammarPoints(grammarDto);
+};
+
+export class AuthorizationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthorizationError";
+  }
+}
+
+export const isAuthorizationError = (
+  error: unknown,
+): error is AuthorizationError => {
+  return error instanceof Error && error.name === "AuthorizationError";
+};
+
+/**
+ *
+ * @param data Grammar point without exercises and examples. Currently always hidden
+ */
+export const createGrammarPoint = async (
+  data: CreateGrammarPoint,
+  context: Context,
+): Promise<Result<number, string | AuthorizationError>> => {
+  if (!Context.isAdmin(context)) {
+    return err(
+      new AuthorizationError(
+        "Currently users without admin rights cannot create grammar points.",
+      ),
+    );
+  }
+  const grammarPoints = await getGrammarPoints();
+  const violates = GrammarPoints.checkViolation(grammarPoints, data);
+  if (violates.isErr()) {
+    return err(violates.error);
+  }
+  const maxOrder = GrammarPoints.maxOrder(grammarPoints);
+
+  const created = await db
+    .insert(grammarPointsTmp)
+    .values({
+      ...data,
+      hide: true,
+      order: maxOrder + 1,
+    })
+    .returning();
+
+  return created?.[0]?.id
+    ? ok(created[0].id)
+    : err("Unexpected error occurred while creating grammar point.");
+};
+
+export const updateGrammarPoint = async (
+  update: UpdateGrammarPoint,
+  context: Context,
+): Promise<Result<true, string | AuthorizationError>> => {
+  if (!Context.isAdmin(context)) {
+    return err(
+      new AuthorizationError(
+        "Currently users without admin rights cannot update grammar points.",
+      ),
+    );
+  }
+
+  const grammarPoints = await getGrammarPoints();
+  const violates = GrammarPoints.checkViolation(grammarPoints, update);
+  if (violates.isErr()) {
+    return err(violates.error);
+  }
+
+  const { id, ...updateData } = update;
+
+  await db
+    .update(grammarPointsTmp)
+    .set(updateData)
+    .where(eq(grammarPointsTmp.id, +id));
+
+  return ok(true);
 };

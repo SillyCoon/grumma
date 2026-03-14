@@ -27,3 +27,5 @@ export const fetchAllGrammarPoints = async (
   const grammarPoints = await getGrammarPoints();
   return GrammarPoints.filterVisible(grammarPoints, context);
 };
+
+export { createGrammarPoint, updateGrammarPoint } from "./db";

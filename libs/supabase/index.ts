@@ -31,7 +31,10 @@ export function createSupabaseServerInstance(
       cookieOptions,
       cookies: {
         getAll() {
-          return parseCookieHeader(headers.get("Cookie") ?? "");
+          return parseCookieHeader(headers.get("Cookie") ?? "").filter(
+            (cookie): cookie is { name: string; value: string } =>
+              cookie.value !== undefined,
+          );
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) => {

@@ -32,4 +32,5 @@ export {
   createGrammarPoint,
   updateGrammarPoint,
   updateGrammarPointsOrder,
+  putExercises,
 } from "./db";

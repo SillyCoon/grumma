@@ -1,6 +1,8 @@
 import { z } from "astro/zod";
-import { is } from "drizzle-orm";
-import { Context } from "./context";
+import { Context } from "../context";
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
+import { Seq, Set } from "immutable";
+import { err, ok } from "neverthrow";
 
 export const textSchema = z.object({
   id: z.number().int().positive().optional(),
@@ -62,8 +64,42 @@ export const Exercise = {
   },
 };
 
+export type UpdateExercise = Exercise & { id: number };
+
 export const Exercises = {
   filterVisible(exercises: Exercise[], context: Context) {
     return exercises.filter((ex) => Exercise.isVisible(ex, context));
+  },
+  validate(exercises: Exercise[], existingExercises: Exercise[]) {
+    const newIds = Set(exercises.map((e) => e.grammarPointId));
+    if (newIds.size > 1) {
+      return err("All exercises must belong to the same grammar point.");
+    }
+    const existingOrders = Set<number>(existingExercises.map((ex) => ex.order));
+    const newOrders = Set<number>(exercises.map((ex) => ex.order));
+    if (existingOrders.intersect(newOrders).size !== newOrders.size) {
+      return err(
+        "Order values must be unique and cannot conflict with existing exercises.",
+      );
+    }
+    return ok(true);
+  },
+  splitToCreateAndUpdate(
+    exercises: Exercise[],
+    existingExercises: Exercise[],
+  ): { toCreate: Exercise[]; toUpdate: UpdateExercise[] } {
+    const existingIds = Set<number>(
+      existingExercises.map((ex) => ex.id).filter((id): id is number => !!id),
+    );
+    const toCreate: Exercise[] = [];
+    const toUpdate: UpdateExercise[] = [];
+    for (const exercise of exercises) {
+      if (exercise.id && existingIds.has(exercise.id)) {
+        toUpdate.push(exercise as UpdateExercise);
+      } else {
+        toCreate.push(exercise);
+      }
+    }
+    return { toCreate, toUpdate };
   },
 };

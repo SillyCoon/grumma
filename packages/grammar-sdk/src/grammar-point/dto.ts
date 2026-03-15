@@ -5,7 +5,7 @@ import type {
   exercisesTmp,
   grammarPointsTmp,
 } from "../../../../libs/db/schema-tmp";
-import type { ExercisePart } from "../exercise";
+import { ExerciseDb } from "../exercise/dto";
 
 export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
   exercises: (typeof exercisesTmp.$inferSelect & {
@@ -40,20 +40,7 @@ export const GrammarPointDb = {
       structure: g.structure ?? undefined,
       examples: exercises,
       explanation: g.explanation ?? undefined,
-      exercises: g.exercises.map((e) => ({
-        id: e.id,
-        grammarPointId: e.grammarPointId.toString(),
-        order: e.order,
-        hide: e.hide,
-        parts: e.parts
-          .filter((p) => p.language === "ru")
-          .toSorted((a, b) => a.order - b.order)
-          .map(partFromDB),
-        translationParts: e.parts
-          .filter((p) => p.language === "en")
-          .toSorted((a, b) => a.order - b.order)
-          .map(partFromDB),
-      })),
+      exercises: g.exercises.map((e) => ExerciseDb.toExercise(e)),
       hide: g.hide,
     };
   },
@@ -69,30 +56,4 @@ export const GrammarPointsDb = {
           (b.order ?? Number.MAX_SAFE_INTEGER),
       );
   },
-};
-
-const partFromDB = (
-  p: GrammarPointDb["exercises"][number]["parts"][number],
-): ExercisePart => {
-  if (p.type === "text") {
-    return {
-      id: p.id,
-      index: p.order,
-      type: p.type,
-      text: p.text,
-    };
-  }
-  return {
-    id: p.id,
-    index: p.order,
-    type: p.type,
-    text: p.text,
-    description: p.description ?? undefined,
-    acceptableAnswers:
-      p.acceptableAnswers?.map((ans) => ({
-        text: ans.text,
-        description: ans.description ?? undefined,
-        variant: ans.variant,
-      })) ?? [],
-  };
 };

@@ -1,4 +1,4 @@
-import { fetchGrammarList } from "grammar-sdk";
+import { fetchAllGrammarPoints, type Context } from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
 import { db } from "../../libs/db";
 import type { User } from "../../src/models/user";
@@ -17,6 +17,7 @@ import type { Attempt } from "./src/types/Attempt";
 import type { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
 import { countStreak as countStreakUtils } from "./src/utils";
+import { isUserAdmin } from "../../libs/auth/admin";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -26,11 +27,17 @@ const settings = {
     : StageSettings,
 };
 
+const contextFromUser = (user: User): Context => ({
+  user: {
+    role: isUserAdmin(user) ? "admin" : "user",
+  },
+});
+
 export const getLessons = async (
   amount: number,
   user: User,
 ): Promise<Lesson[]> => {
-  const grammarPoints = await fetchGrammarList();
+  const grammarPoints = await fetchAllGrammarPoints(contextFromUser(user));
   const attempts = await getAttempts(db, user);
 
   const spaceRepetition = SpaceRepetition(attempts);
@@ -46,7 +53,7 @@ export const addAttempt = async (
 
 export const getNextRound = async (user: User): Promise<Lesson[]> => {
   const attempts = await getAttempts(db, user);
-  const grammarPoints = await fetchGrammarList();
+  const grammarPoints = await fetchAllGrammarPoints(contextFromUser(user));
 
   const spaceRepetition = SpaceRepetition(attempts);
   const nextRound = spaceRepetition.nextRound(
@@ -77,7 +84,7 @@ export const countStreak = async (
 
 export const getInReviewByTorfl = async (user: User) => {
   const schedule = await getSchedule(user);
-  const grammar = await fetchGrammarList();
+  const grammar = await fetchAllGrammarPoints(contextFromUser(user));
 
   const grammarPointsById = IMap(grammar.map((v) => [v.id, v]));
 

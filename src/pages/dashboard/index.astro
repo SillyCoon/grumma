@@ -22,12 +22,18 @@ const { data: tourCompleted } = await Astro.callAction(actions.getTourStatus, {
 const { user } = Astro.locals;
 
 const torfl =
-  dashboard?.inReviewByTorflCount.map((v) => ({
-    id: v.torfl,
-    name: v.torfl,
-    total: v.total,
-    value: v.count,
-  })) ?? [];
+  dashboard?.inReviewByTorflCount
+    .map((v) =>
+      v.torfl
+        ? {
+            id: v.torfl,
+            name: v.torfl,
+            total: v.total,
+            value: v.count,
+          }
+        : undefined,
+    )
+    .filter((v): v is NonNullable<typeof v> => v !== undefined) ?? [];
 ---
 
 <Layout title="Dashboard" transition:persist>

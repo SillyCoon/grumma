@@ -1,3 +1,4 @@
 export * from "./src/grammar";
-export type { Exercise } from "./src/types/Exercise";
-export type { GrammarPoint } from "./src/types/GrammarPoint";
+export type { GrammarPoint } from "./src/grammar-point";
+export type { Context } from "./src/context";
+export { AuthorizationError, isAuthorizationError } from "./src/db";

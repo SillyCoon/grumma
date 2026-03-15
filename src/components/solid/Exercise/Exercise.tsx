@@ -3,7 +3,7 @@ import { SendButton } from "../generic/SendButton";
 import { Description } from "./Description";
 import { Task } from "./Task";
 
-import type { Exercise as ExerciseType } from "grammar-sdk";
+import type { Exercise as ExerciseType } from "grammar-sdk/exercise";
 
 import { actions } from "astro:actions";
 import { FabButton } from "packages/ui/fab";
@@ -16,12 +16,7 @@ import { AnswerResult } from "./AnswerResult";
 import { Feedback } from "./Feedback";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
-import {
-  compareAnswer,
-  normalizeAnswer,
-  parseToExercise,
-  validAnswer,
-} from "./utils";
+import { compareAnswer, normalizeAnswer, validAnswer } from "./utils";
 
 interface ExerciseProps {
   exercise: ExerciseType;
@@ -44,8 +39,7 @@ export const Exercise = (props: ExerciseProps) => {
 
   const correctAnswer = () =>
     normalizeAnswer(
-      parseToExercise(props.exercise.ru).find((v) => v.type === "grammar")
-        ?.text ?? "",
+      props.exercise.parts.find((v) => v.type === "answer")?.text ?? "",
     );
 
   const handleSubmit = () => {
@@ -75,12 +69,8 @@ export const Exercise = (props: ExerciseProps) => {
   return (
     <div class="flex shrink-0 grow justify-center md:items-center">
       <div class="w-full">
-        <Task
-          text={props.exercise.ru}
-          answer={answer()}
-          draft={props.exercise.draft}
-        />
-        <Description text={props.exercise.en} />
+        <Task parts={props.exercise.parts} answer={answer()} />
+        <Description parts={props.exercise.translationParts} />
         <form
           class="mx-auto mt-4 flex max-w-[31.25rem] items-center"
           onSubmit={(e) => {

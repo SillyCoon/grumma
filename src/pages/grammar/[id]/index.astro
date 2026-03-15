@@ -6,11 +6,14 @@ import { fetchGrammarPoint } from "grammar-sdk";
 import { Button } from "packages/ui/button";
 import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
+import { contextFromAstro } from "~/libs/context";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
 
-const grammarPoint = id ? await fetchGrammarPoint(id) : undefined;
+const grammarPoint = id
+  ? await fetchGrammarPoint(id, contextFromAstro(Astro))
+  : undefined;
 const inReview = id
   ? ((
       (await (await fetchGpInReview(Astro)).json()) ?? ([] as string[])

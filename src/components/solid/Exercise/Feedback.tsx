@@ -1,4 +1,4 @@
-import type { Exercise } from "grammar-sdk";
+import type { Exercise } from "grammar-sdk/exercise";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { Button } from "ui/button";

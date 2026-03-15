@@ -1,5 +1,6 @@
 import { getPracticeSessionResults } from "@services/practice";
 import type { GrammarPoint } from "grammar-sdk";
+import type { Exercise as ExerciseType } from "grammar-sdk/exercise";
 import { Example as ExampleImpl } from "grammar-sdk/example";
 import { For, Show } from "solid-js";
 import type { SessionResult as SessionResultType } from "space-repetition/session";
@@ -14,29 +15,56 @@ export const SessionResult = (props: {
   const sessionResult = () =>
     props.sessionResult ?? getPracticeSessionResults();
 
-  const answers = () =>
-    sessionResult()?.attempts?.map?.((attempt) => {
-      const gp = props.grammar.find((gp) => gp.id === attempt.grammarPointId);
-      // TODO: session result should return the example, so we don't have to calculate the order and replace the answer on the client
-      const order = calculateExerciseOrderByStage(
-        gp?.examples.length ?? 0,
-        attempt.stage,
-      );
-      const example = gp?.examples.find((e) => e.order === order);
-      return {
-        ...example,
-        ru: example?.ru
-          ? ExampleImpl.replaceAnswer(example.ru, attempt.answer)
-          : undefined,
-        isCorrect: attempt.isCorrect,
-        grammarPointId: attempt.grammarPointId,
-      };
-    }) as {
+  const answers = () => {
+    const session = sessionResult();
+    if (!session) return [];
+
+    return session.attempts
+      .map((attempt) => {
+        const gp = props.grammar.find((gp) => gp.id === attempt.grammarPointId);
+        if (!gp) {
+          console.warn(
+            `Grammar point with id ${attempt.grammarPointId} not found`,
+          );
+          return undefined;
+        }
+        // TODO: session result should return the example, so we don't have to calculate the order and replace the answer on the client
+        const order = calculateExerciseOrderByStage(
+          gp.exercises.length,
+          attempt.stage,
+        );
+        const exercise: ExerciseType | undefined = gp.exercises.find(
+          (e) => e.order === order,
+        );
+        if (!exercise) {
+          console.warn(
+            `Exercise with order ${order} not found for grammar point ${gp.id}`,
+          );
+          return undefined;
+        }
+
+        return {
+          ...exercise,
+          ru: exercise.parts
+            ? ExampleImpl.replaceAnswer(
+                ExampleImpl.fromExerciseParts(exercise.parts),
+                attempt.answer,
+              )
+            : undefined,
+          en: exercise.translationParts
+            ? ExampleImpl.fromExerciseParts(exercise.translationParts)
+            : undefined,
+          isCorrect: attempt.isCorrect,
+          grammarPointId: attempt.grammarPointId,
+        };
+      })
+      .filter((answer) => answer !== undefined) as {
       ru: ExampleImpl;
       en: ExampleImpl;
       isCorrect: boolean;
       grammarPointId: string;
     }[];
+  };
 
   const backTo = () => `/sr/review/${sessionResult()?.sessionId}/result`;
 

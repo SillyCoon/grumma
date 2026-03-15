@@ -1,17 +1,15 @@
 import { For } from "solid-js";
-import { parseToExercise } from "./utils";
+import type { ExercisePart } from "grammar-sdk/exercise";
 
-export const Description = (props: { text: string }) => {
+export const Description = (props: { parts: ExercisePart[] }) => {
   return (
     <div class="mt-2 text-center">
-      <For each={parseToExercise(props.text)}>
+      <For each={props.parts}>
         {(part) => (
           <span
-            class={`text-gray-600 ${
-              part.type === "grammar" ? "font-bold" : ""
-            }`}
+            class={`text-gray-600 ${part.type === "answer" ? "font-bold" : ""}`}
           >
-            {part.text}
+            {part.text}{" "}
           </span>
         )}
       </For>

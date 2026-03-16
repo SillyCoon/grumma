@@ -32,7 +32,6 @@ const createGrammarPointResult = Astro.getActionResult(
 
   <GrammarPointsTable
     grammarPoints={grammarPointsList}
-    createdGrammarPoint={createGrammarPointResult?.data}
     error={createGrammarPointResult?.error?.message}
     client:load
   />

@@ -35,18 +35,22 @@ export const GrammarPoint = {
   isVisible(gp: GrammarPoint, context: Context) {
     return !gp.hide || Context.isAdmin(context);
   },
+  filterVisible(gp: GrammarPoint, context: Context) {
+    return GrammarPoint.isVisible(gp, context)
+      ? {
+          ...gp,
+          exercises: Exercises.filterVisible(gp.exercises, context),
+          examples: FullExamples.filterVisible(gp.examples, context),
+        }
+      : undefined;
+  },
 };
 
 export const GrammarPoints = {
   filterVisible(grammarPoints: GrammarPoint[], context: Context) {
-    const filteredGrammar = grammarPoints.filter((gp) =>
-      GrammarPoint.isVisible(gp, context),
-    );
-    return filteredGrammar.map((gp) => ({
-      ...gp,
-      exercises: Exercises.filterVisible(gp.exercises, context),
-      examples: FullExamples.filterVisible(gp.examples, context),
-    }));
+    return grammarPoints
+      .map((gp) => GrammarPoint.filterVisible(gp, context))
+      .filter((gp): gp is GrammarPoint => gp !== undefined);
   },
   maxOrder(grammarPoints: GrammarPoint[]) {
     return grammarPoints.reduce((max, gp) => Math.max(max, gp.order), 0);

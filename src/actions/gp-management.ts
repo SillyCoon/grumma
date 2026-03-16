@@ -10,6 +10,7 @@ import {
   updateGrammarPoint,
   updateGrammarPointsOrder,
 } from "packages/grammar-sdk";
+import { fetchGrammarPoint } from "grammar-sdk";
 
 const handleError = (error: string | AuthorizationError) => {
   if (isAuthorizationError(error)) {
@@ -109,12 +110,21 @@ export const gpManagement = {
         input.exercises,
         contextFromAstro(context),
       );
-      if (result.isOk()) {
-        return { success: true };
+      const gp = await fetchGrammarPoint(
+        input.exercises[0].grammarPointId,
+        contextFromAstro(context),
+      );
+      if (!gp) {
+        throw new ActionError({
+          code: "NOT_FOUND",
+          message: "Grammar point not found.",
+        });
       }
+
       if (result.isErr()) {
         handleError(result.error);
       }
+      return gp.exercises;
     },
   }),
 };

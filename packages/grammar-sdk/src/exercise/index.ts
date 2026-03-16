@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 import { Context } from "../context";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
-import { Seq, Set } from "immutable";
+import { Set } from "immutable";
 import { err, ok } from "neverthrow";
 
 export const textSchema = z.object({

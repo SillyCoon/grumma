@@ -161,7 +161,6 @@ export const ExercisesForm = (props: {
               onClick={async () => {
                 try {
                   const result = await actions.putExercises({
-                    grammarPointId: props.grammarPointId,
                     exercises: unwrap(exercises),
                   });
                   if (result.error) {

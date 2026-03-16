@@ -1,4 +1,3 @@
-import type { Result } from "neverthrow";
 import type { Exercise, ExercisePart } from ".";
 import type {
   acceptableAnswersTmp,

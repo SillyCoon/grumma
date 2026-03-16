@@ -2,16 +2,19 @@ name: Build and test
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: oven-sh/setup-bun@v2
-    - run: bun install
-    - run: bun run check
-    - run: bun run build
-    - run: bun run test
-    - run: bun run test:integration
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - run: bun install
+      - run: bun run check
+      - run: bun run build
+      - run: bun run test
+      - run: bun run test:integration

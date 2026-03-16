@@ -77,12 +77,17 @@ export const GrammarPoints = {
     grammarPoints: GrammarPoint[],
     uoc: UpdateGrammarPoint | CreateGrammarPoint,
   ): Result<true, string> {
-    if (grammarPoints.some((gp) => "order" in uoc && gp.order === uoc.order)) {
+    const grammarToCheck =
+      "id" in uoc
+        ? grammarPoints.filter((gp) => gp.id !== uoc.id)
+        : grammarPoints;
+
+    if (grammarToCheck.some((gp) => "order" in uoc && gp.order === uoc.order)) {
       return err(
         `Another grammar point already has the order ${"order" in uoc ? uoc.order : ""}.`,
       );
     }
-    if (grammarPoints.some((gp) => gp.shortTitle === uoc.shortTitle)) {
+    if (grammarToCheck.some((gp) => gp.shortTitle === uoc.shortTitle)) {
       return err(
         `Another grammar point already has the short title "${uoc.shortTitle}".`,
       );

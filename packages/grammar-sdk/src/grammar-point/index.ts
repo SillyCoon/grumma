@@ -55,12 +55,17 @@ export const GrammarPoints = {
     grammarPoints: GrammarPoint[],
     newOrder: { id: string; order: number }[],
   ): Result<true, string> {
-    const newOrderSet = Set(newOrder.map((o) => o.order));
-    if (!Set(grammarPoints.map((gp) => gp.id)).equals(newOrderSet)) {
+    if (
+      !Set(grammarPoints.map((gp) => gp.id)).equals(
+        Set(newOrder.map((o) => o.id)),
+      )
+    ) {
       return err(
         "Can't update order partially. All grammar points must be included.",
       );
     }
+
+    const newOrderSet = Set(newOrder.map((o) => o.order));
 
     if (newOrderSet.size !== newOrder.length) {
       return err("Duplicate orders are not allowed.");

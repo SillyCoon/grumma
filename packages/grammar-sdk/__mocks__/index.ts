@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import type { GrammarPoint } from "grammar-sdk";
-import type { Exercise } from "grammar-sdk/exercise";
+import type { GrammarPoint } from "../src/grammar-point";
+import type { Exercise } from "../src/exercise";
 import { Range } from "immutable";
 import type { Example, FullExample } from "../src/example";
 

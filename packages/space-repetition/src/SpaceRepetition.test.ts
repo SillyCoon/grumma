@@ -61,6 +61,7 @@ describe("nextRound", () => {
     const grammarPoints: GrammarPoint[] = [
       {
         ...gp,
+        torfl: "A1",
         exercises: [
           {
             hide: false,

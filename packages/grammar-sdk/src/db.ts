@@ -263,7 +263,7 @@ export const putExercises = async (
     );
   }
 
-  const validation = Exercises.validate(exercises, existingExercises);
+  const validation = Exercises.validate(exercises);
   if (validation.isErr()) {
     return validation;
   }

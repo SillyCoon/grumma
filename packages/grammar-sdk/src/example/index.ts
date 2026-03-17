@@ -15,6 +15,15 @@ export const Example = {
   replaceAnswer: ([a, answer, b]: Example, newAnswer: string): Example => {
     return [a, answer.replaceAll(/\p{L}+/gu, newAnswer), b];
   },
+  fromLegacy: (str: string): Example => {
+    const regex = /(.*)%(.*?)%(.*)/;
+    const matches = str.match(regex);
+
+    if (matches) {
+      return [matches[1] ?? "", matches[2] ?? "", matches[3] ?? ""];
+    }
+    return ["", "", ""];
+  },
 };
 
 export type FullExample = {

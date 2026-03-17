@@ -17,7 +17,6 @@ export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
 
 const makeExample = (parts: GrammarPointDb["exercises"][number]["parts"]) =>
   parts
-    .filter((p) => p.language === "ru")
     .toSorted((a, b) => a.order - b.order)
     .map((p) => p.text)
     .concat(new Array(3).fill(""))

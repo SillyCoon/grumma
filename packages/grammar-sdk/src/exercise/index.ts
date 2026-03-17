@@ -70,22 +70,28 @@ export const Exercises = {
   filterVisible(exercises: Exercise[], context: Context) {
     return exercises.filter((ex) => Exercise.isVisible(ex, context));
   },
-  validate(exercises: Exercise[], existingExercises: Exercise[]) {
-    const newIds = Set(exercises.map((e) => e.grammarPointId));
+  validateUpdate(updating: UpdateExercise[], existingExercises: Exercise[]) {
+    if (existingExercises.length !== updating.length) {
+      return err("Partial exercises updates are not supported yet.");
+    }
+    return ok(true);
+  },
+  validate(updatingOrCreating: Exercise[]) {
+    const newIds = Set(updatingOrCreating.map((e) => e.grammarPointId));
     if (newIds.size > 1) {
       return err("All exercises must belong to the same grammar point.");
     }
-    const existingOrders = Set<number>(existingExercises.map((ex) => ex.order));
-    const newOrders = Set<number>(exercises.map((ex) => ex.order));
-    if (existingOrders.intersect(newOrders).size !== newOrders.size) {
-      return err(
-        "Order values must be unique and cannot conflict with existing exercises.",
-      );
+
+    if (
+      Set(updatingOrCreating.map((e) => e.order)).size !==
+      updatingOrCreating.length
+    ) {
+      return err("Exercise order values must be unique.");
     }
     return ok(true);
   },
   splitToCreateAndUpdate(
-    exercises: Exercise[],
+    updatingOrCreating: Exercise[],
     existingExercises: Exercise[],
   ): { toCreate: Exercise[]; toUpdate: UpdateExercise[] } {
     const existingIds = Set<number>(
@@ -93,7 +99,7 @@ export const Exercises = {
     );
     const toCreate: Exercise[] = [];
     const toUpdate: UpdateExercise[] = [];
-    for (const exercise of exercises) {
+    for (const exercise of updatingOrCreating) {
       if (exercise.id && existingIds.has(exercise.id)) {
         toUpdate.push(exercise as UpdateExercise);
       } else {

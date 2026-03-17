@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
-import type { Exercise, GrammarPoint } from "grammar-sdk";
+import type { GrammarPoint } from "../src/grammar-point";
+import type { Exercise } from "../src/exercise";
 import { Range } from "immutable";
-import type { Example } from "../src/example";
+import type { Example, FullExample } from "../src/example";
 
 export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
   id: faker.string.uuid(),
@@ -10,13 +11,14 @@ export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
   englishTitle: `${faker.lorem.sentence()}`,
   order: faker.number.int({ min: 1, max: 100 }),
   structure: faker.string.sample(),
-  examples: [{ ru: mockExample(), en: mockExample(), order: 0 }],
+  examples: [{ ru: mockExample(), en: mockExample(), order: 0, hide: false }],
   exercises: Range(0, 12)
     .map((i) => mockExercise({ grammarPointId: gp?.id, order: i }))
     .toArray()
     .toSorted((a, b) => a.order - b.order),
-  ...gp,
   torfl: "A1",
+  hide: faker.datatype.boolean(),
+  ...gp,
 });
 
 export const mockExample = (): Example => [
@@ -25,13 +27,19 @@ export const mockExample = (): Example => [
   ` ${faker.commerce.productMaterial()}`,
 ];
 
+export const mockFullExample = (e?: Partial<FullExample>): FullExample => ({
+  ru: mockExample(),
+  en: mockExample(),
+  order: faker.number.int({ min: 1, max: 100 }),
+  hide: faker.datatype.boolean(),
+  ...e,
+});
+
 export const mockExercise = (e?: Partial<Exercise>): Exercise => ({
   grammarPointId: faker.string.uuid(),
-  en: faker.string.alpha(),
-  ru: faker.string.alpha(),
-  ruGrammar: faker.string.alpha(),
-  enGrammar: faker.string.alpha(),
-  draft: faker.string.alpha(),
   order: faker.number.int({ min: 1, max: 12 }),
+  hide: false,
+  parts: [],
+  translationParts: [],
   ...e,
 });

@@ -1,6 +1,5 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { actions, type SafeResult } from "astro:actions";
-import { Popover, PopoverContent, PopoverTrigger } from "packages/ui/popover";
 import { Show } from "solid-js";
 import { Alert, AlertDescription, AlertTitle } from "ui/alert";
 import { Button } from "ui/button";

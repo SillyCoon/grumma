@@ -4,16 +4,12 @@ import {
   fetchGrammarPointFromDb,
   fetchGrammarPointsFromDb,
 } from "./db";
-import { fetchGrammarFromApi, fetchGrammarPointFromApi } from "./realtime";
 import type { GrammarPoint } from "./types/GrammarPoint";
 
 export const fetchGrammarPoint = async (
   id: string,
 ): Promise<GrammarPoint | undefined> => {
-  const gp =
-    process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE === "true"
-      ? await fetchGrammarPointFromApi(id)
-      : await fetchGrammarPointFromDb(id);
+  const gp = await fetchGrammarPointFromDb(id);
   const explanation = await fetchExplanation(id);
   return gp ? { ...gp, explanation } : undefined;
 };
@@ -35,9 +31,7 @@ export const fetchGrammarPoints = async (
  * @returns All grammar WITHOUT explanations
  */
 export const fetchGrammarList = async (): Promise<GrammarPoint[]> => {
-  return process.env.PUBLIC_REAL_TIME_CONTENT_UPDATE === "true"
-    ? fetchGrammarFromApi()
-    : fetchGrammarFromDb();
+  return fetchGrammarFromDb();
 };
 
 export const fetchExplanation = async (grammarPointId: string | number) => {

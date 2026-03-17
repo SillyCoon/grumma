@@ -25,7 +25,7 @@ export const GrammarPointsTable = (props: {
   const [newPoints, setNewPoints] = createSignal<string[]>([]);
 
   const addNewPoint = () => {
-    setNewPoints([...newPoints(), "New grammar point"]);
+    setNewPoints([...newPoints(), ""]);
   };
 
   const updatePoint = (index: number, value: string) => {
@@ -169,6 +169,7 @@ export const GrammarPointsTable = (props: {
                       <input
                         id="shortTitle"
                         name="shortTitle"
+                        placeholder="New grammar point"
                         ref={(el) => {
                           const isLast = index() === newPoints().length - 1;
                           isLast && el.focus({ preventScroll: false });

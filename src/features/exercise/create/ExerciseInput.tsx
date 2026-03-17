@@ -29,7 +29,7 @@ import type {
   AcceptableAnswer,
   Exercise,
   ExercisePart,
-} from "~/features/exercise/domain";
+} from "grammar-sdk/exercise";
 import type { JSX } from "astro/jsx-runtime";
 
 const AcceptableAnswers = (props: {

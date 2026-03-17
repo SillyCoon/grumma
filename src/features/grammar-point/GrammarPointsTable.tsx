@@ -1,11 +1,11 @@
 import { createSignal, For } from "solid-js";
-import type { GrammarPoint } from "./domain";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 import { Button } from "packages/ui/button";
 import { cn } from "packages/ui/utils";
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { SaveConfirmation } from "@components/common/SaveConfirmation";
+import type { GrammarPoint } from "packages/grammar-sdk";
 
 export const GrammarPointsTable = (props: {
   grammarPoints: GrammarPoint[];
@@ -38,7 +38,7 @@ export const GrammarPointsTable = (props: {
     try {
       const response = await actions.updateGrammarPointsOrder(
         points().map((gp, index) => ({
-          id: gp.id,
+          id: +gp.id,
           order: index + 1,
         })),
       );

@@ -168,7 +168,7 @@ export const ExercisesForm = (props: {
                     console.error(result.error);
                     toast.error("Failed to save exercises");
                   } else {
-                    setPreviewExercises(exercises);
+                    setPreviewExercises(result.data.exercises);
                     setExercises(result.data);
                     clear();
                     toast.success("Exercises saved successfully");

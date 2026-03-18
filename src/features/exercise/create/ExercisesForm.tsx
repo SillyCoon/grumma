@@ -169,10 +169,6 @@ export const ExercisesForm = (props: {
                   } else {
                     setPreviewExercises(result.data);
                     setExercises(result.data);
-                    clear();
-                    toast.success("Exercises saved successfully");
-                  }
-                } catch {
                   toast.error("Failed to save exercises");
                 }
               }}

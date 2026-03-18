@@ -19,6 +19,7 @@ import {
 import { extractUser } from "./utils";
 import { gpManagement } from "./gp-management";
 import { tour } from "./tour";
+import { contextFromAstro } from "~/libs/context";
 
 export const SignupErrors = new Map([
   ["weak_password", "Password is too weak, please use 8 symbols or more"],
@@ -143,8 +144,8 @@ export const server = {
     input: z.object({
       grammarPointId: z.string(),
     }),
-    handler: async (input, _context) => {
-      return fetchGrammarPoint(input.grammarPointId);
+    handler: async (input, context) => {
+      return fetchGrammarPoint(input.grammarPointId, contextFromAstro(context));
     },
   }),
   saveAttempt: defineAction({

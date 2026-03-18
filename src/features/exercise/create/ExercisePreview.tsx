@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import type { Exercise, ExercisePart } from "../domain";
+import type { Exercise, ExercisePart } from "grammar-sdk/exercise";
 import { cn } from "packages/ui/utils";
 
 const PartsPreview = (props: { parts: ExercisePart[] }) => {

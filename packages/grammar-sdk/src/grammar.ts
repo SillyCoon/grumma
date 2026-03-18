@@ -1,4 +1,5 @@
 import { createSupabaseClientInstance } from "../../../libs/supabase";
+import type { Context } from "./context";
 import {
   fetchGrammarFromDb,
   fetchGrammarPointFromDb,
@@ -8,6 +9,7 @@ import type { GrammarPoint } from "./types/GrammarPoint";
 
 export const fetchGrammarPoint = async (
   id: string,
+  context: Context,
 ): Promise<GrammarPoint | undefined> => {
   const gp = await fetchGrammarPointFromDb(id);
   const explanation = await fetchExplanation(id);
@@ -16,6 +18,7 @@ export const fetchGrammarPoint = async (
 
 export const fetchGrammarPoints = async (
   ids: string[],
+  context: Context,
 ): Promise<GrammarPoint[]> => {
   const gp = await fetchGrammarPointsFromDb(ids.map((id) => +id));
   return Promise.all(
@@ -30,7 +33,9 @@ export const fetchGrammarPoints = async (
  *
  * @returns All grammar WITHOUT explanations
  */
-export const fetchGrammarList = async (): Promise<GrammarPoint[]> => {
+export const fetchAllGrammarPoints = async (
+  context: Context,
+): Promise<GrammarPoint[]> => {
   return fetchGrammarFromDb();
 };
 

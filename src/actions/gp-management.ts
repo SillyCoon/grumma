@@ -11,10 +11,10 @@ import {
 import { db, type Transaction } from "libs/db";
 import { eq, max, sql } from "drizzle-orm";
 import {
-  exerciseSchema,
   type Exercise,
+  exerciseSchema,
   type ExercisePart,
-} from "~/features/exercise/domain";
+} from "grammar-sdk/exercise";
 
 export const gpManagement = {
   createGrammarPoint: defineAction({
@@ -311,6 +311,7 @@ export const gpManagement = {
           },
         });
         const result: Exercise[] = data.map((exercise) => ({
+          grammarPointId: `${exercise.grammarPointId}`,
           id: exercise.id,
           hide: exercise.hide,
           order: exercise.order,

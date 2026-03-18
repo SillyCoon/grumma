@@ -3,10 +3,11 @@ import { fetchGrammarPoints } from "grammar-sdk";
 import { simpleShuffle } from "utils/array";
 import { Exercises } from "../../../components/solid/Exercise/Exercises";
 import Layout from "../../../layouts/Layout.astro";
+import { contextFromAstro } from "~/libs/context";
 
 const ids = Astro.params.id?.split("-") ?? [];
 
-const grammarPoints = await fetchGrammarPoints(ids);
+const grammarPoints = await fetchGrammarPoints(ids, contextFromAstro(Astro));
 const exercises = simpleShuffle(grammarPoints.flatMap((g) => g.exercises));
 ---
 

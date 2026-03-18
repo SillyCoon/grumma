@@ -169,7 +169,7 @@ export const ExercisesForm = (props: {
                     toast.error("Failed to save exercises");
                   } else {
                     setPreviewExercises(result.data.exercises);
-                    setExercises(result.data);
+                    setExercises(result.data.exercises);
                     clear();
                     toast.success("Exercises saved successfully");
                   }

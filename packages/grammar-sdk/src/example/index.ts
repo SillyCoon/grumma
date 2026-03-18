@@ -12,8 +12,8 @@ export const Example = {
     // TODO: enable more when we have more than 3 parts
     return parts.slice(0, 3) as Example;
   },
-  replaceAnswer: ([a, answer, b]: Example, newAnswer: string): Example => {
-    return [a, answer.replaceAll(/\p{L}+/gu, newAnswer), b];
+  replaceAnswer: ([a, _answer, b]: Example, newAnswer: string): Example => {
+    return [a, newAnswer, b];
   },
   fromLegacy: (str: string): Example => {
     const regex = /(.*)%(.*?)%(.*)/;

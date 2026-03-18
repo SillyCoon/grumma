@@ -57,7 +57,7 @@ export const GrammarPointsTable = (props: {
     try {
       const response = await actions.updateGrammarPointsOrder(
         points().map((gp, index) => ({
-          id: +gp.id,
+          id: gp.id,
           order: index + 1,
         })),
       );

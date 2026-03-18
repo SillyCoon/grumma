@@ -1,9 +1,10 @@
 ---
 import { SessionResult } from "@components/solid/Exercise/SessionResult";
 import Layout from "@layouts/Layout.astro";
-import { fetchGrammarList } from "grammar-sdk";
+import { fetchAllGrammarPoints } from "grammar-sdk";
+import { contextFromAstro } from "~/libs/context";
 
-const grammar = await fetchGrammarList();
+const grammar = await fetchAllGrammarPoints(contextFromAstro(Astro));
 ---
 
 <Layout title="Practice results">

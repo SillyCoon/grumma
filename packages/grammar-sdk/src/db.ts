@@ -6,7 +6,7 @@ import type { GrammarPointDb } from "./types/dto";
 import type { GrammarPoint } from "./types/GrammarPoint";
 import { extractGrammar } from "./utils";
 
-export const fetchGrammarPointFromDb = async (
+export const getGrammarPoint = async (
   id: string,
 ): Promise<GrammarPoint | undefined> => {
   const grammarDto = await db.query.grammarPoints.findFirst({
@@ -19,32 +19,17 @@ export const fetchGrammarPointFromDb = async (
   return grammarDto && GrammarPointFromDB(grammarDto);
 };
 
-export const fetchGrammarPointsFromDb = async (
-  ids: number[],
+export const getGrammarPoints = async (
+  ids?: number[],
 ): Promise<GrammarPoint[]> => {
   const grammarDto = await db.query.grammarPoints.findMany({
-    where: inArray(grammarPoints.id, ids),
+    ...(ids ? { where: inArray(grammarPoints.id, ids) } : {}),
     with: {
       exercises: true,
     },
   });
 
   return grammarDto.map(GrammarPointFromDB);
-};
-export const fetchGrammarFromDb = async (): Promise<GrammarPoint[]> => {
-  const grammarDto = await db.query.grammarPoints.findMany({
-    with: {
-      exercises: true,
-    },
-  });
-
-  return grammarDto
-    .map(GrammarPointFromDB)
-    .toSorted(
-      (a, b) =>
-        (a.order ?? Number.MAX_SAFE_INTEGER) -
-        (b.order ?? Number.MAX_SAFE_INTEGER),
-    );
 };
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
   return {

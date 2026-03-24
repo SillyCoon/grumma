@@ -1,28 +1,25 @@
 import { createSupabaseClientInstance } from "../../../libs/supabase";
 import type { Context } from "./context";
 import { getGrammarPoint, getGrammarPoints } from "./db";
-import type { GrammarPoint } from "./grammar-point";
+import { GrammarPoint, GrammarPoints } from "./grammar-point";
 
 export const fetchGrammarPoint = async (
   id: string,
   context: Context,
 ): Promise<GrammarPoint | undefined> => {
-  const gp = await getGrammarPoint(id);
-  const explanation = await fetchExplanation(id);
-  return gp ? { ...gp, explanation } : undefined;
+  const grammarPoint = await getGrammarPoint(+id);
+  if (grammarPoint && !GrammarPoint.filterVisible(grammarPoint, context)) {
+    return undefined;
+  }
+  return grammarPoint;
 };
 
 export const fetchGrammarPoints = async (
   ids: string[],
   context: Context,
 ): Promise<GrammarPoint[]> => {
-  const gp = await getGrammarPoints(ids.map((id) => +id));
-  return Promise.all(
-    gp.map(async (g) => {
-      const explanation = await fetchExplanation(g.id);
-      return { ...g, explanation };
-    }),
-  );
+  const grammarPoints = await getGrammarPoints(ids.map((id) => +id));
+  return GrammarPoints.filterVisible(grammarPoints, context);
 };
 
 /**
@@ -32,7 +29,8 @@ export const fetchGrammarPoints = async (
 export const fetchAllGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
-  return getGrammarPoints();
+  const grammarPoints = await getGrammarPoints();
+  return GrammarPoints.filterVisible(grammarPoints, context);
 };
 
 export const fetchExplanation = async (grammarPointId: string | number) => {

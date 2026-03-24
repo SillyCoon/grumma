@@ -6,7 +6,7 @@ import type { GrammarPoint } from "./grammar-point";
 import type { InferSelectModel } from "drizzle-orm";
 
 export const getGrammarPoint = async (
-  id: string,
+  id: number,
 ): Promise<GrammarPoint | undefined> => {
   const grammarDto = await db.query.grammarPoints.findFirst({
     where: eq(grammarPoints.id, +id),

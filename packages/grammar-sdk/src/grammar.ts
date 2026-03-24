@@ -1,7 +1,7 @@
 import { createSupabaseClientInstance } from "../../../libs/supabase";
 import type { Context } from "./context";
 import { getGrammarPoint, getGrammarPoints } from "./db";
-import type { GrammarPoint } from "./types/GrammarPoint";
+import type { GrammarPoint } from "./grammar-point";
 
 export const fetchGrammarPoint = async (
   id: string,

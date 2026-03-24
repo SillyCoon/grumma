@@ -28,7 +28,13 @@ export const getGrammarPoints = async (
     },
   });
 
-  return grammarDto.map(GrammarPointFromDB);
+  return grammarDto
+    .map(GrammarPointFromDB)
+    .toSorted(
+      (a, b) =>
+        (a.order ?? Number.MAX_SAFE_INTEGER) -
+        (b.order ?? Number.MAX_SAFE_INTEGER),
+    );
 };
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
   return {

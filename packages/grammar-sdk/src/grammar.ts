@@ -20,13 +20,13 @@ export const fetchGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
   const grammarPoints = await getGrammarPoints(ids.map((id) => +id));
-  const explanations = await Promise.all(
-    ids.map((id) => fetchExplanation(id)), // TODO: remove this when explanations are moved to DB
+  const result = await Promise.all(
+    grammarPoints.map(async (gp) => {
+      const e = await fetchExplanation(gp.id);
+      return { ...gp, explanation: e };
+    }), // TODO: remove this when explanations are moved to DB
   );
-  grammarPoints.forEach((gp, index) => {
-    gp.explanation = explanations[index];
-  });
-  return GrammarPoints.filterVisible(grammarPoints, context);
+  return GrammarPoints.filterVisible(result, context);
 };
 
 /**

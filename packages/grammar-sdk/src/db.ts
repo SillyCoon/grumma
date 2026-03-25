@@ -37,6 +37,7 @@ export const getGrammarPoints = async (
     );
 };
 const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
+  const sortedExercises = g.exercises.toSorted((a, b) => a.order - b.order);
   return {
     id: `${g.id}`,
     hide: false,
@@ -46,13 +47,15 @@ const GrammarPointFromDB = (g: GrammarPointDb): GrammarPoint => {
     detailedTitle: g.detailedTitle ?? undefined,
     englishTitle: g.englishTitle ?? undefined,
     structure: g.structure ?? undefined,
-    examples: g.exercises.map((e) => ({
-      hide: false,
-      ru: Example.fromLegacy(e.ru),
-      en: Example.fromLegacy(e.en),
-      order: e.order,
-    })),
-    exercises: g.exercises.map((e) => {
+    examples: sortedExercises
+      .map((e) => ({
+        hide: false,
+        ru: Example.fromLegacy(e.ru),
+        en: Example.fromLegacy(e.en),
+        order: e.order,
+      }))
+      .toSorted((a, b) => a.order - b.order),
+    exercises: sortedExercises.map((e) => {
       const ru = Example.fromLegacy(e.ru);
       const en = Example.fromLegacy(e.en);
       return {

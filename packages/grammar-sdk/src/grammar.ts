@@ -8,10 +8,7 @@ export const fetchGrammarPoint = async (
   context: Context,
 ): Promise<GrammarPoint | undefined> => {
   const grammarPoint = await getGrammarPoint(+id);
-  if (grammarPoint && !GrammarPoint.filterVisible(grammarPoint, context)) {
-    return undefined;
-  }
-  return grammarPoint;
+  return grammarPoint && GrammarPoint.filterVisible(grammarPoint, context);
 };
 
 export const fetchGrammarPoints = async (

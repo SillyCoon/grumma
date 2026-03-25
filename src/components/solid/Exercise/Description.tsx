@@ -9,7 +9,7 @@ export const Description = (props: { parts: ExercisePart[] }) => {
           <span
             class={`text-gray-600 ${part.type === "answer" ? "font-bold" : ""}`}
           >
-            {part.text}{" "}
+            {part.text}
           </span>
         )}
       </For>

@@ -8,6 +8,10 @@ export const fetchGrammarPoint = async (
   context: Context,
 ): Promise<GrammarPoint | undefined> => {
   const grammarPoint = await getGrammarPoint(+id);
+  const explanation = await fetchExplanation(id); // TODO: remove this when explanations are moved to DB
+  if (grammarPoint) {
+    grammarPoint.explanation = explanation;
+  }
   return grammarPoint && GrammarPoint.filterVisible(grammarPoint, context);
 };
 
@@ -16,6 +20,12 @@ export const fetchGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
   const grammarPoints = await getGrammarPoints(ids.map((id) => +id));
+  const explanations = await Promise.all(
+    ids.map((id) => fetchExplanation(id)), // TODO: remove this when explanations are moved to DB
+  );
+  grammarPoints.forEach((gp, index) => {
+    gp.explanation = explanations[index];
+  });
   return GrammarPoints.filterVisible(grammarPoints, context);
 };
 

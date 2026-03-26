@@ -128,6 +128,10 @@ export const updateGrammarPoint = async (
 
   const { id, ...updateData } = update;
 
+  if (Object.values(updateData).every((value) => value === undefined)) {
+    return err("At least one field is required to update a grammar point.");
+  }
+
   await db
     .update(grammarPointsTmp)
     .set(updateData)

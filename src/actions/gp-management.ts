@@ -102,16 +102,14 @@ export const gpManagement = {
   }),
   putExercises: defineAction({
     accept: "json",
-    input: z.object({
-      exercises: exerciseSchema.array().min(1),
-    }),
+    input: exerciseSchema.array().min(1),
     handler: async (input, context) => {
-      const result = await putExercises(
-        input.exercises,
-        contextFromAstro(context),
-      );
+      const result = await putExercises(input, contextFromAstro(context));
+      if (result.isErr()) {
+        handleError(result.error);
+      }
       const gp = await fetchGrammarPoint(
-        input.exercises[0].grammarPointId,
+        input[0].grammarPointId,
         contextFromAstro(context),
       );
       if (!gp) {
@@ -119,10 +117,6 @@ export const gpManagement = {
           code: "NOT_FOUND",
           message: "Grammar point not found.",
         });
-      }
-
-      if (result.isErr()) {
-        handleError(result.error);
       }
       return gp.exercises;
     },

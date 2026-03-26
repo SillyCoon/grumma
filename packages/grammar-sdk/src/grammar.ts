@@ -1,4 +1,3 @@
-import { createSupabaseClientInstance } from "../../../libs/supabase";
 import type { Context } from "./context";
 import { getGrammarPoint, getGrammarPoints } from "./db";
 import { GrammarPoint, GrammarPoints } from "./grammar-point";
@@ -8,11 +7,10 @@ export const fetchGrammarPoint = async (
   context: Context,
 ): Promise<GrammarPoint | undefined> => {
   const grammarPoint = await getGrammarPoint(+id);
-  const explanation = await fetchExplanation(id); // TODO: remove this when explanations are moved to DB
-  if (grammarPoint) {
-    grammarPoint.explanation = explanation;
+  if (grammarPoint && !GrammarPoint.filterVisible(grammarPoint, context)) {
+    return undefined;
   }
-  return grammarPoint && GrammarPoint.filterVisible(grammarPoint, context);
+  return grammarPoint;
 };
 
 export const fetchGrammarPoints = async (
@@ -20,19 +18,9 @@ export const fetchGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
   const grammarPoints = await getGrammarPoints(ids.map((id) => +id));
-  const result = await Promise.all(
-    grammarPoints.map(async (gp) => {
-      const e = await fetchExplanation(gp.id);
-      return { ...gp, explanation: e };
-    }), // TODO: remove this when explanations are moved to DB
-  );
-  return GrammarPoints.filterVisible(result, context);
+  return GrammarPoints.filterVisible(grammarPoints, context);
 };
 
-/**
- *
- * @returns All grammar WITHOUT explanations
- */
 export const fetchAllGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
@@ -40,16 +28,9 @@ export const fetchAllGrammarPoints = async (
   return GrammarPoints.filterVisible(grammarPoints, context);
 };
 
-export const fetchExplanation = async (grammarPointId: string | number) => {
-  const supabase = createSupabaseClientInstance();
-
-  const url = supabase.storage
-    .from("explanations")
-    .getPublicUrl(`SON-${grammarPointId}.html`).data.publicUrl;
-
-  const response = await fetch(url);
-  if (response.ok) {
-    return await response.text();
-  }
-  return undefined;
-};
+export {
+  createGrammarPoint,
+  updateGrammarPoint,
+  updateGrammarPointsOrder,
+  putExercises,
+} from "./db";

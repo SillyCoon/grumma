@@ -1,4 +1,4 @@
-import { fetchAllGrammarPoints } from "grammar-sdk";
+import { fetchAllGrammarPoints, type Context } from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
 import { db } from "../../libs/db";
 import type { User } from "../../src/models/user";
@@ -17,7 +17,6 @@ import type { Attempt } from "./src/types/Attempt";
 import type { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
 import { countStreak as countStreakUtils } from "./src/utils";
-import type { Context } from "grammar-sdk";
 import { isUserAdmin } from "../../libs/auth/admin";
 
 const algorithm = NaiveAlgorithm;

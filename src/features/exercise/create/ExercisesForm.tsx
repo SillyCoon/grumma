@@ -132,7 +132,7 @@ export const ExercisesForm = (props: {
             onClick={() =>
               setExercises(
                 exercises.length,
-                EmptyExercise(exercises.length + 1, props.grammarPointId),
+                EmptyExercise(exercises.length, props.grammarPointId),
               )
             }
           >
@@ -161,19 +161,14 @@ export const ExercisesForm = (props: {
               onClick={async () => {
                 try {
                   const result = await actions.putExercises({
-                    grammarPointId: props.grammarPointId,
                     exercises: unwrap(exercises),
                   });
                   if (result.error) {
                     console.error(result.error);
                     toast.error("Failed to save exercises");
                   } else {
-                    setPreviewExercises(result.data.exercises);
-                    setExercises(result.data.exercises);
-                    clear();
-                    toast.success("Exercises saved successfully");
-                  }
-                } catch {
+                    setPreviewExercises(result.data);
+                    setExercises(result.data);
                   toast.error("Failed to save exercises");
                 }
               }}

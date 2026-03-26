@@ -1,0 +1,99 @@
+- main:
+  - heading "Кто ты? Кто я?" [level=1]
+  - heading "Личные местоимения" [level=1]
+  - heading "Personal pronouns" [level=1]
+  - heading "Structure" [level=3]
+  - text: I — Я You (singular) — Ты He, she, it — Он, она́, оно́ We — Мы You (plural, polite singular) — Вы They — Они́
+  - heading "Examples" [level=3]
+  - paragraph: Я — журналист. (I, first person)
+  - button "Show translations"
+  - paragraph: Ты — мужчина. (You, singular casual)
+  - button "Show translations"
+  - paragraph: Она не японка. (She, third person)
+  - button "Show translations"
+  - paragraph: Он — инженер. (He, third person)
+  - button "Show translations"
+  - paragraph: Они живут здесь. (They, third person plural)
+  - button "Show translations"
+  - paragraph: Мама врач. Она работает в больнице. (She, third person)
+  - button "Show translations"
+  - paragraph: Мне нравится этот парень. Он красивый. (He, third person)
+  - button "Show translations"
+  - paragraph: Я и моя семья живём в России. Мы — русские. (We, first person plural)
+  - button "Show translations"
+  - paragraph: Где вы обычно гуляете? (You, polite or plural)
+  - button "Show translations"
+  - paragraph: — Ты знаешь этих людей? — Да, они мои друзья. (They, third person plural)
+  - button "Show translations"
+  - paragraph: Я еду на автобусе. (I, first person)
+  - button "Show translations"
+  - paragraph: Мы любим есть пиццу. (We, first person plural)
+  - button "Show translations"
+  - heading "Explanation" [level=3]
+  - heading "How to use" [level=3]
+  - paragraph:
+    - strong: Personal pronouns
+    - text: are used instead of nouns to indicate the subject of a sentence. In positive sentences, we use a dash (—) after the personal pronoun to give additional information about the subject (similar to using ‘to be’ in English).
+  - heading "How to form" [level=3]
+  - table:
+    - rowgroup:
+      - row "Person English pronoun Russian pronoun":
+        - columnheader "Person"
+        - columnheader "English pronoun"
+        - columnheader "Russian pronoun"
+    - rowgroup:
+      - row "1st person singular I Я":
+        - cell "1st person singular"
+        - cell "I"
+        - cell "Я"
+      - row "2nd person singular informal You Ты":
+        - cell "2nd person singular informal"
+        - cell "You"
+        - cell "Ты"
+      - row "3rd person singular (masculine) He Он":
+        - cell "3rd person singular (masculine)"
+        - cell "He"
+        - cell "Он"
+      - row "3rd person singular (feminine) She Она́":
+        - cell "3rd person singular (feminine)"
+        - cell "She"
+        - cell "Она́"
+      - row "3rd person singular (neuter, only for inanimate objects) It Оно́":
+        - cell "3rd person singular (neuter, only for inanimate objects)"
+        - cell "It"
+        - cell "Оно́"
+      - row "1st person plural We Мы":
+        - cell "1st person plural"
+        - cell "We"
+        - cell "Мы"
+      - row "2nd person formal or plural You Вы":
+        - cell "2nd person formal or plural"
+        - cell "You"
+        - cell "Вы"
+      - row "3rd person plural They Они́":
+        - cell "3rd person plural"
+        - cell "They"
+        - cell "Они́"
+  - paragraph:
+    - text: "Important note: There are no gender-neutral singular pronouns in Russian (like ‘they’ in English). Avoid using"
+    - emphasis:
+      - strong: оно
+    - text: or
+    - emphasis:
+      - strong: они
+    - text: in this context.
+  - link "Practice once":
+    - /url: /grammar/55/practice
+    - button "Practice once"
+  - link "Source code":
+    - /url: https://github.com/SillyCoon/grumma
+    - img "Source code"
+  - link "Grumma news and community":
+    - /url: https://t.me/grummasrs
+    - img "Grumma news and community"
+  - link "Donations":
+    - /url: https://buymeacoffee.com/grumma
+    - img "Donations"
+  - link "Privacy policy":
+    - /url: /privacy-policy
+    - img "Privacy policy"

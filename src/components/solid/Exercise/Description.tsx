@@ -3,7 +3,7 @@ import type { ExercisePart } from "grammar-sdk/exercise";
 
 export const Description = (props: { parts: ExercisePart[] }) => {
   return (
-    <div class="mt-2 text-center">
+    <div class="mt-2 text-center" data-testid="exercise-description">
       <For each={props.parts}>
         {(part) => (
           <span

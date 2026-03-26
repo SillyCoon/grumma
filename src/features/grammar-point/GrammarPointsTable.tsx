@@ -7,32 +7,13 @@ import { toast } from "solid-toast";
 import { SaveConfirmation } from "@components/common/SaveConfirmation";
 import type { GrammarPoint } from "packages/grammar-sdk";
 
-type TmpGrammarPoint = Omit<
-  GrammarPoint,
-  | "exercises"
-  | "examples"
-  | "id"
-  | "torfl"
-  | "structure"
-  | "detailedTitle"
-  | "englishTitle"
-  | "explanation"
-> & {
-  id: number;
-  torfl: string | null;
-  structure: string | null;
-  detailedTitle: string | null;
-  englishTitle: string | null;
-  explanation: string | null;
-};
-
 export const GrammarPointsTable = (props: {
-  grammarPoints: TmpGrammarPoint[];
+  grammarPoints: GrammarPoint[];
   error?: string;
 }) => {
   const [parent, points, setPoints] = useDragAndDrop<
     HTMLTableRowElement,
-    TmpGrammarPoint
+    GrammarPoint
   >(props.grammarPoints, {
     draggable: (el) => el.id !== "non-draggable",
   });
@@ -57,7 +38,7 @@ export const GrammarPointsTable = (props: {
     try {
       const response = await actions.updateGrammarPointsOrder(
         points().map((gp, index) => ({
-          id: gp.id,
+          id: +gp.id,
           order: index + 1,
         })),
       );

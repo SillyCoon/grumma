@@ -8,6 +8,8 @@ on:
         default: "https://grumma.org"
 jobs:
   test:
+    permissions:
+      contents: read
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:

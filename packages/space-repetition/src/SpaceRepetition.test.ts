@@ -64,31 +64,32 @@ describe("nextRound", () => {
         torfl: "A1",
         exercises: [
           {
+            hide: false,
             grammarPointId: "gp1",
-            ru: "exercise 1",
-            en: "exercise 1",
-            ruGrammar: "",
-            enGrammar: "",
-            draft: "",
+            parts: [],
+            translationParts: [],
             order: 0,
           },
           {
+            hide: false,
             grammarPointId: "gp1",
-            ru: "exercise 2",
-            en: "exercise 2",
-            ruGrammar: "",
-            enGrammar: "",
-            draft: "",
+            parts: [],
+            translationParts: [],
             order: 1,
           },
           {
+            hide: false,
             grammarPointId: "gp1",
-            ru: "exercise 3",
-            en: "exercise 3",
-            ruGrammar: "",
-            enGrammar: "",
-            draft: "",
+            parts: [],
+            translationParts: [],
             order: 2,
+          },
+          {
+            hide: false,
+            grammarPointId: "gp1",
+            parts: [],
+            translationParts: [],
+            order: 3,
           },
         ],
       },
@@ -98,7 +99,7 @@ describe("nextRound", () => {
     const result = sr.nextRound(mockAlgorithm, settings, grammarPoints);
 
     expect(result).toHaveLength(1);
-    expect(result[0].exercise.order).toBe(1);
+    expect(result[0].exercise.order).toBe(0);
     expect(result[0].stage).toBe(4);
   });
 });

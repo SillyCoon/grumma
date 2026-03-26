@@ -1,32 +1,32 @@
 import { createSupabaseClientInstance } from "../../../libs/supabase";
 import type { Context } from "./context";
-import {
-  fetchGrammarFromDb,
-  fetchGrammarPointFromDb,
-  fetchGrammarPointsFromDb,
-} from "./db";
-import type { GrammarPoint } from "./types/GrammarPoint";
+import { getGrammarPoint, getGrammarPoints } from "./db";
+import { GrammarPoint, GrammarPoints } from "./grammar-point";
 
 export const fetchGrammarPoint = async (
   id: string,
   context: Context,
 ): Promise<GrammarPoint | undefined> => {
-  const gp = await fetchGrammarPointFromDb(id);
-  const explanation = await fetchExplanation(id);
-  return gp ? { ...gp, explanation } : undefined;
+  const grammarPoint = await getGrammarPoint(+id);
+  const explanation = await fetchExplanation(id); // TODO: remove this when explanations are moved to DB
+  if (grammarPoint) {
+    grammarPoint.explanation = explanation;
+  }
+  return grammarPoint && GrammarPoint.filterVisible(grammarPoint, context);
 };
 
 export const fetchGrammarPoints = async (
   ids: string[],
   context: Context,
 ): Promise<GrammarPoint[]> => {
-  const gp = await fetchGrammarPointsFromDb(ids.map((id) => +id));
-  return Promise.all(
-    gp.map(async (g) => {
-      const explanation = await fetchExplanation(g.id);
-      return { ...g, explanation };
-    }),
+  const grammarPoints = await getGrammarPoints(ids.map((id) => +id));
+  const result = await Promise.all(
+    grammarPoints.map(async (gp) => {
+      const e = await fetchExplanation(gp.id);
+      return { ...gp, explanation: e };
+    }), // TODO: remove this when explanations are moved to DB
   );
+  return GrammarPoints.filterVisible(result, context);
 };
 
 /**
@@ -36,7 +36,8 @@ export const fetchGrammarPoints = async (
 export const fetchAllGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
-  return fetchGrammarFromDb();
+  const grammarPoints = await getGrammarPoints();
+  return GrammarPoints.filterVisible(grammarPoints, context);
 };
 
 export const fetchExplanation = async (grammarPointId: string | number) => {

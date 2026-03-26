@@ -3,7 +3,7 @@ import { parseToExercise } from "./utils";
 
 export const Description = (props: { text: string }) => {
   return (
-    <div class="mt-2 text-center">
+    <div class="mt-2 text-center" data-testid="exercise-description">
       <For each={parseToExercise(props.text)}>
         {(part) => (
           <span

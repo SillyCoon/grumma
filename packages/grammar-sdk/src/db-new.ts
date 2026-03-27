@@ -7,6 +7,7 @@ import {
   type UpdateGrammarPoint,
 } from "./grammar-point";
 import {
+  acceptableAnswersTmp,
   exercisePartsTmp,
   exercisesTmp,
   grammarPointsTmp,
@@ -200,13 +201,12 @@ const createExercises = async (
   return ok(true);
 };
 
-// Drizzle doesn't support nested inserts with 2+ nesting levels.
 const createParts = async (
   tx: Transaction,
   exerciseId: number,
   partsToCreate: PartToCreateDb[],
 ) => {
-  return await tx
+  const inserted = await tx
     .insert(exercisePartsTmp)
     .values(
       partsToCreate.map((part) => ({
@@ -215,6 +215,22 @@ const createParts = async (
       })),
     )
     .returning();
+
+  const acceptableAnswersToInsert = partsToCreate.flatMap((part) => {
+    const partId = inserted.find((i) => i.order === part.order)?.id;
+    if (!part.acceptableAnswers || !partId) {
+      return [];
+    }
+    return part.acceptableAnswers.map((answer) => ({
+      ...answer,
+      answerId: partId,
+    }));
+  });
+
+  acceptableAnswersToInsert.length &&
+    (await tx.insert(acceptableAnswersTmp).values(acceptableAnswersToInsert));
+
+  return ok(true);
 };
 
 const updateExercises = async (

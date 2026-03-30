@@ -1,4 +1,3 @@
-import type { Context } from "./context";
 import { createSupabaseClientInstance } from "../../../libs/supabase";
 import { getGrammarPoint, getGrammarPoints } from "./db";
 import {

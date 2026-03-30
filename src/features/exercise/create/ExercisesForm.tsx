@@ -132,7 +132,7 @@ export const ExercisesForm = (props: {
             onClick={() =>
               setExercises(
                 exercises.length,
-                EmptyExercise(exercises.length + 1, props.grammarPointId),
+                EmptyExercise(exercises.length, props.grammarPointId),
               )
             }
           >

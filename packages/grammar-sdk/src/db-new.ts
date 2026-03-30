@@ -1,5 +1,5 @@
 import { eq, inArray, sql } from "drizzle-orm";
-import { db, type Transaction } from "../../../libs/db";
+import { db, type DbClient, type Transaction } from "../../../libs/db";
 import {
   GrammarPoints,
   type CreateGrammarPoint,
@@ -20,8 +20,9 @@ import { ExerciseDb, type PartToCreateDb } from "./exercise/dto";
 
 export const getGrammarPoint = async (
   id: number,
+  dbClient: DbClient = db,
 ): Promise<GrammarPoint | undefined> => {
-  const grammarDto = await db.query.grammarPointsTmp.findFirst({
+  const grammarDto = await dbClient.query.grammarPointsTmp.findFirst({
     where: eq(grammarPointsTmp.id, id),
     with: {
       exercises: {
@@ -41,8 +42,9 @@ export const getGrammarPoint = async (
 
 export const getGrammarPoints = async (
   ids?: number[],
+  dbClient: DbClient = db,
 ): Promise<GrammarPoint[]> => {
-  const grammarDto = await db.query.grammarPointsTmp.findMany({
+  const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
     where: ids ? inArray(grammarPointsTmp.id, ids) : undefined,
     with: {
       exercises: {
@@ -258,6 +260,7 @@ const updateExercises = async (
 };
 
 export const putExercises = async (
+  db: DbClient,
   exercises: Exercise[],
   context: Context,
 ): Promise<Result<true, string | AuthorizationError>> => {
@@ -274,7 +277,7 @@ export const putExercises = async (
     return err("Grammar point ID is required to create exercises.");
   }
 
-  const existingExercises = await getGrammarPoint(+grammarPointId).then(
+  const existingExercises = await getGrammarPoint(+grammarPointId, db).then(
     (gp) => gp?.exercises,
   );
   if (!existingExercises) {

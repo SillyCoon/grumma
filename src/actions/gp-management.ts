@@ -11,6 +11,7 @@ import {
   updateGrammarPointsOrder,
 } from "packages/grammar-sdk/src/db-new";
 import { fetchGrammarPoint } from "grammar-sdk";
+import { db } from "libs/db";
 
 const handleError = (error: string | AuthorizationError) => {
   if (isAuthorizationError(error)) {
@@ -104,7 +105,7 @@ export const gpManagement = {
     accept: "json",
     input: exerciseSchema.array().min(1),
     handler: async (input, context) => {
-      const result = await putExercises(input, contextFromAstro(context));
+      const result = await putExercises(db, input, contextFromAstro(context));
       if (result.isErr()) {
         handleError(result.error);
       }

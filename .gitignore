@@ -28,3 +28,10 @@ pnpm-debug.log*
 erl_crash.dump
 
 *storybook.log
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

@@ -160,15 +160,17 @@ export const ExercisesForm = (props: {
             <Button
               onClick={async () => {
                 try {
-                  const result = await actions.putExercises({
-                    exercises: unwrap(exercises),
-                  });
+                  const result = await actions.putExercises(unwrap(exercises));
                   if (result.error) {
                     console.error(result.error);
                     toast.error("Failed to save exercises");
                   } else {
                     setPreviewExercises(result.data);
                     setExercises(result.data);
+                    clear();
+                    toast.success("Exercises saved successfully");
+                  }
+                } catch {
                   toast.error("Failed to save exercises");
                 }
               }}

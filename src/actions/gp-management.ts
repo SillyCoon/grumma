@@ -61,7 +61,6 @@ export const gpManagement = {
     input: z.object({
       id: z.number().int().positive(),
       shortTitle: z.string().min(1).optional(),
-      title: z.string().min(1).optional(),
       structure: z.string().optional(),
       detailedTitle: z.string().optional(),
       englishTitle: z.string().optional(),

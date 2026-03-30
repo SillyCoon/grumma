@@ -72,3 +72,10 @@ export const fetchExplanation = async (grammarPointId: string | number) => {
   }
   return undefined;
 };
+
+export {
+  createGrammarPoint,
+  updateGrammarPoint,
+  updateGrammarPointsOrder,
+  putExercises,
+} from "./db-new";

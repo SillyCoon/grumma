@@ -1,4 +1,4 @@
-import type { GrammarPoint } from "./";
+import type { GrammarPoint } from "../..";
 import type {
   acceptableAnswersTmp,
   exercisePartsTmp,

@@ -321,9 +321,14 @@ describe("putExercises", () => {
     });
 
     test("should update exercise parts and translation parts", async () => {
+      const [existing] = await db
+        .insert(exercisesTmp)
+        .values({ grammarPointId: 1, order: 1, hide: false })
+        .returning();
+
       const existingExercise = [
         createExercise({
-          id: 1,
+          id: existing.id,
           grammarPointId: "1",
           order: 1,
           parts: [
@@ -403,9 +408,14 @@ describe("putExercises", () => {
     });
 
     test("should add new acceptable answer to existing exercise part", async () => {
+      const [existing] = await db
+        .insert(exercisesTmp)
+        .values({ grammarPointId: 1, order: 1, hide: false })
+        .returning();
+
       const existingExercise = [
         createExercise({
-          id: 1,
+          id: existing.id,
           grammarPointId: "1",
           order: 1,
           parts: [

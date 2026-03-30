@@ -1,4 +1,4 @@
-import { fetchAllGrammarPoints, type Context } from "grammar-sdk";
+import { fetchAllGrammarPoints, Context } from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
 import { db } from "../../libs/db";
 import type { User } from "../../src/models/user";

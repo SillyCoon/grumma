@@ -48,9 +48,23 @@ export const fetchAllGrammarPoints = async (
   return GrammarPoints.filterVisible(grammarPoints, context);
 };
 
+export const fetchExplanation = async (grammarPointId: string | number) => {
+  const supabase = createSupabaseClientInstance();
+
+  const url = supabase.storage
+    .from("explanations")
+    .getPublicUrl(`SON-${grammarPointId}.html`).data.publicUrl;
+
+  const response = await fetch(url);
+  if (response.ok) {
+    return await response.text();
+  }
+  return undefined;
+};
+
 export {
   createGrammarPoint,
   updateGrammarPoint,
   updateGrammarPointsOrder,
   putExercises,
-} from "./db";
+} from "./db-new";

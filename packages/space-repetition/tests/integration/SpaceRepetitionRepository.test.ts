@@ -38,7 +38,7 @@ describe("SpaceRepetitionRepository", () => {
   let db: ReturnType<typeof makeDb>;
 
   beforeAll(async () => {
-    postgresContainer = await new PostgreSqlContainer()
+    postgresContainer = await new PostgreSqlContainer("postgres:15.6-alpine")
       .withExposedPorts({ container: 5432, host: 6543 })
       .start();
 

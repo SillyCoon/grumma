@@ -218,16 +218,18 @@ const createParts = async (
     )
     .returning();
 
-  const acceptableAnswersToInsert = partsToCreate.flatMap((part) => {
-    const partId = inserted.find((i) => i.order === part.order)?.id;
-    if (!part.acceptableAnswers || !partId) {
-      return [];
-    }
-    return part.acceptableAnswers.map((answer) => ({
-      ...answer,
-      answerId: partId,
-    }));
-  });
+  const acceptableAnswersToInsert = partsToCreate
+    .filter((p) => p.language === "ru")
+    .flatMap((part) => {
+      const partId = inserted.find((i) => i.order === part.order)?.id;
+      if (!part.acceptableAnswers || !partId) {
+        return [];
+      }
+      return part.acceptableAnswers.map((answer) => ({
+        ...answer,
+        answerId: partId,
+      }));
+    });
 
   acceptableAnswersToInsert.length &&
     (await tx.insert(acceptableAnswersTmp).values(acceptableAnswersToInsert));

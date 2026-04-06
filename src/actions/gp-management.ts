@@ -1,16 +1,16 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import { exerciseSchema } from "packages/grammar-sdk/src/exercise";
+import { exerciseSchema } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 import {
   type AuthorizationError,
+  fetchGrammarPoint,
   createGrammarPoint,
   isAuthorizationError,
   putExercises,
   updateGrammarPoint,
   updateGrammarPointsOrder,
-} from "packages/grammar-sdk/src/db-new";
-import { fetchGrammarPoint } from "grammar-sdk";
+} from "grammar-sdk";
 import { db } from "libs/db";
 
 const handleError = (error: string | AuthorizationError) => {

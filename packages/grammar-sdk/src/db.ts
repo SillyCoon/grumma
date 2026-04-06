@@ -1,5 +1,5 @@
 import { eq, inArray, sql } from "drizzle-orm";
-import { db, type Transaction } from "../../../libs/db";
+import { db, type DbClient, type Transaction } from "../../../libs/db";
 import {
   GrammarPoints,
   type CreateGrammarPoint,
@@ -7,6 +7,7 @@ import {
   type UpdateGrammarPoint,
 } from "./grammar-point";
 import {
+  acceptableAnswersTmp,
   exercisePartsTmp,
   exercisesTmp,
   grammarPointsTmp,
@@ -19,8 +20,9 @@ import { ExerciseDb, type PartToCreateDb } from "./exercise/dto";
 
 export const getGrammarPoint = async (
   id: number,
+  dbClient: DbClient = db,
 ): Promise<GrammarPoint | undefined> => {
-  const grammarDto = await db.query.grammarPointsTmp.findFirst({
+  const grammarDto = await dbClient.query.grammarPointsTmp.findFirst({
     where: eq(grammarPointsTmp.id, id),
     with: {
       exercises: {
@@ -40,8 +42,9 @@ export const getGrammarPoint = async (
 
 export const getGrammarPoints = async (
   ids?: number[],
+  dbClient: DbClient = db,
 ): Promise<GrammarPoint[]> => {
-  const grammarDto = await db.query.grammarPointsTmp.findMany({
+  const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
     where: ids ? inArray(grammarPointsTmp.id, ids) : undefined,
     with: {
       exercises: {
@@ -128,6 +131,10 @@ export const updateGrammarPoint = async (
 
   const { id, ...updateData } = update;
 
+  if (Object.values(updateData).every((value) => value === undefined)) {
+    return err("At least one field is required to update a grammar point.");
+  }
+
   await db
     .update(grammarPointsTmp)
     .set(updateData)
@@ -196,13 +203,12 @@ const createExercises = async (
   return ok(true);
 };
 
-// Drizzle doesn't support nested inserts with 2+ nesting levels.
 const createParts = async (
   tx: Transaction,
   exerciseId: number,
   partsToCreate: PartToCreateDb[],
 ) => {
-  return await tx
+  const inserted = await tx
     .insert(exercisePartsTmp)
     .values(
       partsToCreate.map((part) => ({
@@ -211,6 +217,22 @@ const createParts = async (
       })),
     )
     .returning();
+
+  const acceptableAnswersToInsert = partsToCreate.flatMap((part) => {
+    const partId = inserted.find((i) => i.order === part.order)?.id;
+    if (!part.acceptableAnswers || !partId) {
+      return [];
+    }
+    return part.acceptableAnswers.map((answer) => ({
+      ...answer,
+      answerId: partId,
+    }));
+  });
+
+  acceptableAnswersToInsert.length &&
+    (await tx.insert(acceptableAnswersTmp).values(acceptableAnswersToInsert));
+
+  return ok(true);
 };
 
 const updateExercises = async (
@@ -238,6 +260,7 @@ const updateExercises = async (
 };
 
 export const putExercises = async (
+  db: DbClient,
   exercises: Exercise[],
   context: Context,
 ): Promise<Result<true, string | AuthorizationError>> => {
@@ -254,7 +277,7 @@ export const putExercises = async (
     return err("Grammar point ID is required to create exercises.");
   }
 
-  const existingExercises = await getGrammarPoint(+grammarPointId).then(
+  const existingExercises = await getGrammarPoint(+grammarPointId, db).then(
     (gp) => gp?.exercises,
   );
   if (!existingExercises) {

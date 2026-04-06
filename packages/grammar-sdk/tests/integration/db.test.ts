@@ -19,7 +19,7 @@ import {
   exercisesTmp,
   grammarPointsTmp,
 } from "../../../../libs/db/schema-tmp";
-import { getGrammarPoint, putExercises } from "../../src/db-new";
+import { getGrammarPoint, putExercises } from "../../src/db";
 import type { Context } from "../../src/context";
 import type { Exercise } from "../../src/exercise";
 

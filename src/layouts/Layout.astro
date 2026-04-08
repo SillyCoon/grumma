@@ -14,6 +14,7 @@ import { Anchor } from "ui/anchor";
 import { isUserAdmin } from "libs/auth/admin";
 import { MdOutlinePrivacy_tip as PrivacyIcon } from "solid-icons/md";
 import { MdOutlineContact_support as SupportIcon } from "solid-icons/md";
+import { COMMUNITY_URL } from "~/libs/community";
 
 interface Props {
   title: string;
@@ -115,13 +116,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <Anchor href="/privacy-policy" class="text-black">
           <PrivacyIcon size={24} title="Privacy policy" />
         </Anchor>
-        {
-          loggedIn && (
-            <Anchor href="/contact-us" class="text-black">
-              <SupportIcon size={24} title="Contact us" />
-            </Anchor>
-          )
-        }
+        <Anchor href={COMMUNITY_URL} target="_blank" class="text-black">
+          <SupportIcon size={24} title="Community" />
+        </Anchor>
         <Toaster position="bottom-right" client:only="solid-js" />
       </footer>
     </main>

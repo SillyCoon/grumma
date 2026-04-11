@@ -20,7 +20,7 @@ RUN --mount=type=secret,id=supabase-url,env=SUPABASE_URL \
   --mount=type=secret,id=supabase-key,env=SUPABASE_KEY \
   bun run build
 
-FROM node:22-alpine AS runtime
+FROM node:24-alpine AS runtime
 WORKDIR /app
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist

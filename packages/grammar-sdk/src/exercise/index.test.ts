@@ -2,7 +2,6 @@ import { describe, expect, test } from "vitest";
 import { Exercises, type UpdateExercise } from ".";
 import { mockExercise } from "../../__mocks__";
 import { err } from "neverthrow";
-import type { Context } from "../context";
 
 describe("Exercise", () => {
   describe("validate", () => {

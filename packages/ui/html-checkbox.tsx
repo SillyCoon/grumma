@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import { createEffect, splitProps } from "solid-js";
+import { createEffect, createSignal, splitProps } from "solid-js";
 
 import { cn } from "ui/utils";
 
@@ -26,10 +26,17 @@ const HtmlCheckbox = (props: HtmlCheckboxProps) => {
     }
   });
 
+  const [checked, setChecked] = createSignal(!!props.checked);
+
+  // HACK: solid SSR
+  createEffect(() => {
+    setChecked(!!props.checked);
+  });
+
   return (
     <label
       class={cn(
-        "items-top group relative inline-flex space-x-2",
+        "items-top group relative inline-flex content-center items-center gap-2 space-x-2",
         local.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
         local.class,
       )}
@@ -40,6 +47,7 @@ const HtmlCheckbox = (props: HtmlCheckboxProps) => {
         }}
         type="checkbox"
         class="peer sr-only"
+        checked={checked()}
         disabled={local.disabled}
         {...others}
       />
@@ -85,6 +93,7 @@ const HtmlCheckbox = (props: HtmlCheckboxProps) => {
           </svg>
         )}
       </span>
+      {props.children}
     </label>
   );
 };

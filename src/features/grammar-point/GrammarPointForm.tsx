@@ -16,6 +16,7 @@ import {
 } from "packages/ui/select";
 import type { JSX } from "solid-js/jsx-runtime";
 import { ExplanationDisplay } from "@components/solid/grammar-point/ExplanationDisplay";
+import { HtmlCheckbox } from "ui/html-checkbox";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -27,6 +28,7 @@ interface GrammarPointFormProps {
     structure?: string;
     torfl?: string;
     explanation?: string;
+    hide?: boolean;
   };
   success?: boolean;
   error?: string;
@@ -52,6 +54,13 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
         <CardTitle>Grammar Point</CardTitle>
       </CardHeader>
       <CardContent class="space-y-6">
+        <HtmlCheckbox
+          id="hide"
+          name="hide"
+          checked={props.initialData?.hide ?? true}
+        >
+          Hide from users (admins can still see it)
+        </HtmlCheckbox>
         <Show when={props.error}>
           <div class="rounded border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
             {props.error}

@@ -1,4 +1,4 @@
-import { NavigationButton } from "packages/ui/navigation-button";
+import { NavigationButton } from "ui/navigation-button";
 import { setSidebarOpen } from "./Sidebar/store";
 
 export const NavButton = (props: {
@@ -6,6 +6,7 @@ export const NavButton = (props: {
   disabled?: boolean;
   text: string;
   badgeContent?: string | number;
+  target?: "_blank";
   onClick?: () => void;
 }) => {
   return (

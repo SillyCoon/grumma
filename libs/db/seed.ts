@@ -1,13 +1,20 @@
 import "dotenv/config";
+import { faker } from "@faker-js/faker";
 import { db } from "./index";
-import { grammarPoints, exercises } from "./schema";
+import {
+  acceptableAnswersTmp,
+  exercisesTmp,
+  exercisePartsTmp,
+  grammarPointsTmp,
+} from "./schema-tmp";
 
-const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
+faker.seed(12345);
+
+const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
   {
     id: 1,
     order: 1,
     shortTitle: "nominative",
-    title: "Nominative Case (Именительный падеж)",
     structure: "Кто? Что?",
     detailedTitle: "The Case of the Subject",
     englishTitle: "Who? What?",
@@ -17,7 +24,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 2,
     order: 2,
     shortTitle: "genitive",
-    title: "Genitive Case (Родительный падеж)",
     structure: "Кого? Чего?",
     detailedTitle: "The Case of Possession",
     englishTitle: "Whose? Of what?",
@@ -27,7 +33,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 3,
     order: 3,
     shortTitle: "dative",
-    title: "Dative Case (Дательный падеж)",
     structure: "Кому? Чему?",
     detailedTitle: "The Case of Indirect Object",
     englishTitle: "To whom? To what?",
@@ -37,7 +42,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 4,
     order: 4,
     shortTitle: "accusative",
-    title: "Accusative Case (Винительный падеж)",
     structure: "Кого? Что?",
     detailedTitle: "The Case of Direct Object",
     englishTitle: "Whom? What?",
@@ -47,7 +51,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 5,
     order: 5,
     shortTitle: "instrumental",
-    title: "Instrumental Case (Творительный падеж)",
     structure: "Кем? Чем?",
     detailedTitle: "The Case of Agent",
     englishTitle: "By whom? By what?",
@@ -57,7 +60,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 6,
     order: 6,
     shortTitle: "prepositional",
-    title: "Prepositional Case (Предложный падеж)",
     structure: "О ком? О чём?",
     detailedTitle: "The Case of Location",
     englishTitle: "About whom? About what?",
@@ -67,7 +69,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 7,
     order: 7,
     shortTitle: "present-simple",
-    title: "Present Simple Tense",
     structure: "Я делаю",
     detailedTitle: "Simple Present Actions",
     englishTitle: "I do",
@@ -77,7 +78,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 8,
     order: 8,
     shortTitle: "past-simple",
-    title: "Past Simple Tense",
     structure: "Я делал(а)",
     detailedTitle: "Simple Past Actions",
     englishTitle: "I did",
@@ -87,7 +87,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 9,
     order: 9,
     shortTitle: "future-simple",
-    title: "Future Simple Tense",
     structure: "Я буду делать",
     detailedTitle: "Simple Future Actions",
     englishTitle: "I will do",
@@ -97,7 +96,6 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
     id: 10,
     order: 10,
     shortTitle: "aspect",
-    title: "Verbal Aspect (Вид глагола)",
     structure: "Perfective vs Imperfective",
     detailedTitle: "Understanding Aspect in Russian",
     englishTitle: "Completed vs Ongoing Actions",
@@ -105,325 +103,143 @@ const grammarPointsData: (typeof grammarPoints.$inferInsert)[] = [
   },
 ];
 
-const exercisesData: (typeof exercises.$inferInsert)[] = [
-  // Nominative case exercises (grammarPointId: 1)
-  {
-    grammarPointId: 1,
-    order: 0,
-    ru: "%Кто% это?",
-    en: "%Who% is this?",
-    helper: "",
-  },
-  {
-    grammarPointId: 1,
-    order: 1,
-    ru: "%Это кот%.",
-    en: "%This is a cat%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 1,
-    order: 2,
-    ru: "%Кто говорит%?",
-    en: "%Who is speaking%?",
-    helper: "",
-  },
-  {
-    grammarPointId: 1,
-    order: 3,
-    ru: "%Я студент%.",
-    en: "%I am a student%.",
-    helper: "",
-  },
+const exercisesData: (typeof exercisesTmp.$inferInsert)[] = Array.from(
+  { length: 40 },
+  (_, i) => ({
+    id: i + 1,
+    grammarPointId: Math.floor(i / 4) + 1,
+    order: i % 4,
+  }),
+);
 
-  // Genitive case exercises (grammarPointId: 2)
-  {
-    grammarPointId: 2,
-    order: 0,
-    ru: "%Чего% нет?",
-    en: "%What% is missing?",
-    helper: "",
-  },
-  {
-    grammarPointId: 2,
-    order: 1,
-    ru: "Нет %воды%.",
-    en: "There is no %water%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 2,
-    order: 2,
-    ru: "Книга %студента%.",
-    en: "The %student's% book.",
-    helper: "",
-  },
-  {
-    grammarPointId: 2,
-    order: 3,
-    ru: "Дом %дерева%.",
-    en: "A %wooden% house.",
-    helper: "",
-  },
-
-  // Dative case exercises (grammarPointId: 3)
-  {
-    grammarPointId: 3,
-    order: 0,
-    ru: "Я дам книгу %другу%.",
-    en: "I will give the book to a %friend%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 3,
-    order: 1,
-    ru: "Он помогает %матери%.",
-    en: "He helps his %mother%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 3,
-    order: 2,
-    ru: "Это письмо %учителю%.",
-    en: "This letter is for the %teacher%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 3,
-    order: 3,
-    ru: "%Мне% нравится музыка.",
-    en: "%I% like music.",
-    helper: "",
-  },
-
-  // Accusative case exercises (grammarPointId: 4)
-  {
-    grammarPointId: 4,
-    order: 0,
-    ru: "Я вижу %кота%.",
-    en: "I see the %cat%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 4,
-    order: 1,
-    ru: "Он читает %книгу%.",
-    en: "He reads a %book%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 4,
-    order: 2,
-    ru: "Они любят %города%.",
-    en: "They love the %cities%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 4,
-    order: 3,
-    ru: "%Каждый день% я гуляю в парке.",
-    en: "%Every day% I walk in the park.",
-    helper: "",
-  },
-
-  // Instrumental case exercises (grammarPointId: 5)
-  {
-    grammarPointId: 5,
-    order: 0,
-    ru: "Я пишу %ручкой%.",
-    en: "I write with a %pen%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 5,
-    order: 1,
-    ru: "Он работает %учителем%.",
-    en: "He works as a %teacher%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 5,
-    order: 2,
-    ru: "Путешествуют %поездом%.",
-    en: "They travel by %train%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 5,
-    order: 3,
-    ru: "Это музей %искусства%.",
-    en: "This is an art %museum%.",
-    helper: "",
-  },
-
-  // Prepositional case exercises (grammarPointId: 6)
-  {
-    grammarPointId: 6,
-    order: 0,
-    ru: "Я живу %в доме%.",
-    en: "I live %in a house%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 6,
-    order: 1,
-    ru: "Он говорит %о фильме%.",
-    en: "He is talking %about the film%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 6,
-    order: 2,
-    ru: "Книга %на столе%.",
-    en: "The book is %on the table%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 6,
-    order: 3,
-    ru: "%При университете% есть библиотека.",
-    en: "%At the university% there is a library.",
-    helper: "",
-  },
-
-  // Present tense exercises (grammarPointId: 7)
-  {
-    grammarPointId: 7,
-    order: 0,
-    ru: "%Я читаю%.",
-    en: "%I read%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 7,
-    order: 1,
-    ru: "Он %говорит% по-русски.",
-    en: "He %speaks% Russian.",
-    helper: "",
-  },
-  {
-    grammarPointId: 7,
-    order: 2,
-    ru: "Они %живут% в городе.",
-    en: "They %live% in the city.",
-    helper: "",
-  },
-  {
-    grammarPointId: 7,
-    order: 3,
-    ru: "Мы %учимся% в школе.",
-    en: "We %study% at school.",
-    helper: "",
-  },
-
-  // Past tense exercises (grammarPointId: 8)
-  {
-    grammarPointId: 8,
-    order: 0,
-    ru: "%Я читал% книгу.",
-    en: "%I read% a book.",
-    helper: "",
-  },
-  {
-    grammarPointId: 8,
-    order: 1,
-    ru: "%Она писала% письмо.",
-    en: "%She was writing% a letter.",
-    helper: "",
-  },
-  {
-    grammarPointId: 8,
-    order: 2,
-    ru: "%Они жили% в деревне.",
-    en: "%They lived% in a village.",
-    helper: "",
-  },
-  {
-    grammarPointId: 8,
-    order: 3,
-    ru: "%Я был% в Москве.",
-    en: "%I was% in Moscow.",
-    helper: "",
-  },
-
-  // Future tense exercises (grammarPointId: 9)
-  {
-    grammarPointId: 9,
-    order: 0,
-    ru: "%Я буду читать%.",
-    en: "%I will read%.",
-    helper: "",
-  },
-  {
-    grammarPointId: 9,
-    order: 1,
-    ru: "Он %напишет% письмо.",
-    en: "He %will write% a letter.",
-    helper: "",
-  },
-  {
-    grammarPointId: 9,
-    order: 2,
-    ru: "Они %будут жить% здесь.",
-    en: "They %will live% here.",
-    helper: "",
-  },
-  {
-    grammarPointId: 9,
-    order: 3,
-    ru: "%Завтра я буду% дома.",
-    en: "%Tomorrow I will be% at home.",
-    helper: "",
-  },
-
-  // Aspect exercises (grammarPointId: 10)
-  {
-    grammarPointId: 10,
-    order: 0,
-    ru: "%Я пишу% письмо.",
-    en: "%I am writing% a letter.",
-    helper: "",
-  },
-  {
-    grammarPointId: 10,
-    order: 1,
-    ru: "%Я написал% письмо.",
-    en: "%I wrote% a letter.",
-    helper: "",
-  },
-  {
-    grammarPointId: 10,
-    order: 2,
-    ru: "%читать% vs %прочитать%",
-    en: "%to read% vs %to finish reading%",
-    helper: "",
-  },
-  {
-    grammarPointId: 10,
-    order: 3,
-    ru: "%Я буду читать% книгу.",
-    en: "%I will be reading% the book.",
-    helper: "",
-  },
+const ruWords = [
+  "кот",
+  "собака",
+  "дом",
+  "книга",
+  "стол",
+  "стул",
+  "окно",
+  "дверь",
+  "яблоко",
+  "молоко",
+  "хлеб",
+  "вода",
+  "сон",
+  "день",
+  "ночь",
+  "год",
+  "мама",
+  "папа",
+  "брат",
+  "сестра",
+  "друг",
+  "учитель",
+  "ученик",
 ];
+
+const enWords = [
+  "cat",
+  "dog",
+  "house",
+  "book",
+  "table",
+  "chair",
+  "window",
+  "door",
+  "apple",
+  "milk",
+  "bread",
+  "water",
+  "sleep",
+  "day",
+  "night",
+  "year",
+  "mother",
+  "father",
+  "brother",
+  "sister",
+  "friend",
+  "teacher",
+  "student",
+];
+
+const getRandomWords = (words: string[], count: number) => {
+  const selected: string[] = [];
+  for (let i = 0; i < count; i++) {
+    selected.push(faker.helpers.arrayElement(words));
+  }
+  return selected.join(" ");
+};
+
+const exercisePartsData: (typeof exercisePartsTmp.$inferInsert)[] = Array.from(
+  { length: 240 },
+  (_, i) => {
+    const exerciseIndex = Math.floor(i / 6);
+    const partIndex = i % 6;
+    const isEnglish = partIndex >= 3;
+    const isAnswer = partIndex === 2 || partIndex === 5;
+    const words = isEnglish ? enWords : ruWords;
+    const wordCount = faker.number.int({ min: 1, max: 3 });
+    return {
+      exerciseId: exerciseIndex + 1,
+      order: partIndex,
+      type: isAnswer ? ("answer" as const) : ("text" as const),
+      text: ` ${getRandomWords(words, wordCount)} `,
+      language: isEnglish ? "en" : "ru",
+    };
+  },
+);
 
 const seed = async () => {
   try {
     console.log("🌱 Starting database seed...");
     console.log("Cleaning existing data...");
-    await db.delete(exercises);
-    await db.delete(grammarPoints);
+    await db.delete(acceptableAnswersTmp);
+    await db.delete(exercisePartsTmp);
+    await db.delete(exercisesTmp);
+    await db.delete(grammarPointsTmp);
     console.log("✅ Cleaned existing data.");
 
     // Insert grammar points
     console.log("Inserting grammar points...");
-    await db.insert(grammarPoints).values(grammarPointsData);
+    await db.insert(grammarPointsTmp).values(grammarPointsData);
     console.log("✅ Inserted 10 grammar points");
 
     // Insert exercises
     console.log("Inserting exercises...");
-    await db.insert(exercises).values(exercisesData);
+    await db.insert(exercisesTmp).values(exercisesData);
     console.log("✅ Inserted 40 exercises");
+
+    // Insert exercise parts
+    console.log("Inserting exercise parts...");
+    const insertedParts = await db
+      .insert(exercisePartsTmp)
+      .values(exercisePartsData)
+      .returning({
+        id: exercisePartsTmp.id,
+        exerciseId: exercisePartsTmp.exerciseId,
+        order: exercisePartsTmp.order,
+      });
+    console.log(`✅ Inserted ${insertedParts.length} exercise parts`);
+
+    // Build acceptable answers from inserted parts
+    const answerParts = insertedParts.filter(
+      (p) => p.order === 2 || p.order === 5,
+    );
+    const newAcceptableAnswers: (typeof acceptableAnswersTmp.$inferInsert)[] =
+      answerParts.map((p) => ({
+        answerId: p.id,
+        text: faker.lorem.words({ min: 2, max: 5 }),
+        variant: "correct" as const,
+      }));
+
+    // Insert acceptable answers
+    console.log("Inserting acceptable answers...");
+    await db.insert(acceptableAnswersTmp).values(newAcceptableAnswers);
+    console.log(
+      `✅ Inserted ${newAcceptableAnswers.length} acceptable answers`,
+    );
 
     console.log("Seed completed successfully!");
     process.exit(0);

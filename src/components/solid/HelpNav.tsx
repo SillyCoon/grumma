@@ -11,7 +11,6 @@ import {
 import { NavButton } from "./NavButton";
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
-import { COMMUNITY_URL } from "~/libs/community";
 
 type Props = {
   onClick?: () => void;
@@ -44,9 +43,6 @@ const HelpMenu = (props: Props) => {
           <NavigationMenuLink href="/help" onClick={props.onClick}>
             <NavigationMenuLabel>How to use</NavigationMenuLabel>
           </NavigationMenuLink>
-          <NavigationMenuLink href={COMMUNITY_URL} onClick={props.onClick}>
-            <NavigationMenuLabel>Community</NavigationMenuLabel>
-          </NavigationMenuLink>
           <NavigationMenuLink
             href="/"
             onClick={async () => {
@@ -71,11 +67,6 @@ const HelpFlat = (props: Props) => {
   return (
     <div class="lg:hidden">
       <NavButton text="How to use" link="/help" onClick={props.onClick} />
-      <NavButton
-        text="Community"
-        link={COMMUNITY_URL}
-        onClick={props.onClick}
-      />
     </div>
   );
 };

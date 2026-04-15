@@ -6,11 +6,12 @@ export const NavigationButton = (props: {
   disabled?: boolean;
   text: string;
   badgeContent?: string | number;
+  target?: "_blank";
   onClick?: () => void;
   onKeyUp?: (e: KeyboardEvent) => void;
 }) => {
   return (
-    <Anchor href={props.link} onKeyUp={props.onKeyUp}>
+    <Anchor href={props.link} onKeyUp={props.onKeyUp} target={props.target}>
       <button
         tabIndex={-1}
         onClick={props.onClick}

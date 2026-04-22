@@ -148,6 +148,13 @@
       "when": 1772780598894,
       "tag": "0020_abandoned_solo",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1776296961011,
+      "tag": "0021_panoramic_mongoose",
+      "breakpoints": true
     }
   ]
 }

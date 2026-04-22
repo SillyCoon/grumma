@@ -13,7 +13,7 @@ import {
   test,
 } from "vitest";
 import { makeDb } from "../../../../libs/db";
-import { grammarPoints, spaceRepetitions } from "../../../../libs/db/schema";
+import { spaceRepetitions } from "../../../../libs/db/schema";
 import {
   addToRepetitions,
   getAttempts,
@@ -21,6 +21,7 @@ import {
   saveAttempt,
 } from "../../src/SpaceRepetitionRepository";
 import type { Attempt } from "../../src/types/Attempt";
+import { grammarPointsTmp } from "../../../../libs/db/schema-tmp";
 
 const mockAttempt = (grammarPointId: string): Attempt => {
   return {
@@ -48,10 +49,9 @@ describe("SpaceRepetitionRepository", () => {
 
     db = makeDb(postgresContainer.getConnectionUri());
 
-    await db.insert(grammarPoints).values([
+    await db.insert(grammarPointsTmp).values([
       {
         id: 1,
-        title: "hello",
         order: 1,
         structure: "hello",
         shortTitle: "hello",
@@ -61,7 +61,6 @@ describe("SpaceRepetitionRepository", () => {
       },
       {
         id: 2,
-        title: "goodbye",
         order: 2,
         structure: "goodbye",
         shortTitle: "goodbye",

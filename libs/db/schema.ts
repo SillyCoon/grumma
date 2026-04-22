@@ -8,9 +8,13 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { grammarPointsTmp } from "./schema-tmp";
 
 export const grumma = pgSchema("grumma");
 
+/**
+ * @deprecated use schema-tmp
+ */
 export const grammarPoints = grumma.table("grammar_point", {
   id: integer("id").primaryKey(),
   shortTitle: text().notNull().unique(),
@@ -23,6 +27,9 @@ export const grammarPoints = grumma.table("grammar_point", {
   torfl: varchar({ length: 2 }),
 });
 
+/**
+ * @deprecated use schema-tmp
+ */
 export const exercises = grumma.table("exercise", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   grammarPointId: integer()
@@ -34,10 +41,16 @@ export const exercises = grumma.table("exercise", {
   helper: text(),
 });
 
+/**
+ * @deprecated use schema-tmp
+ */
 export const grammarPointRelations = relations(grammarPoints, ({ many }) => ({
   exercises: many(exercises),
 }));
 
+/**
+ * @deprecated use schema-tmp
+ */
 export const exercisesRelations = relations(exercises, ({ one }) => ({
   grammarPointId: one(grammarPoints, {
     fields: [exercises.grammarPointId],
@@ -51,7 +64,10 @@ export const spaceRepetitions = grumma.table("space_repetition", {
   answeredAt: timestamp().notNull(),
   grammarPointId: integer()
     .notNull()
-    .references(() => grammarPoints.id),
+    .references(() => grammarPointsTmp.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   isCorrect: boolean().notNull(),
   reviewSessionId: uuid().notNull(),
   stage: integer().notNull(),
@@ -61,7 +77,7 @@ export const spaceRepetitions = grumma.table("space_repetition", {
 export const feedback = grumma.table("feedback", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   userId: text(),
-  grammarPointId: integer().references(() => grammarPoints.id),
+  grammarPointId: integer().references(() => grammarPointsTmp.id),
   exerciseOrder: integer(),
   message: text().notNull(),
   email: text(),

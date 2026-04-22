@@ -57,6 +57,11 @@ export const exerciseSchema = z.object({
 
 export type Exercise = z.infer<typeof exerciseSchema>;
 export type ExercisePart = Text | Answer;
+export const EmptyExercisePart = (order: number): ExercisePart => ({
+  type: "text",
+  text: "",
+  index: order,
+});
 
 export const Exercise = {
   isVisible(exercise: Exercise, context: Context) {

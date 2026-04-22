@@ -17,10 +17,13 @@ const addEmptyPart = (
 ) => {
   if (parts.length >= 3) return parts;
   if (parts.length < 2) throw new Error("Exercise must have at least 2 parts");
-  if (parts[0]?.type === "answer") {
-    return [EmptyExercisePart(0), ...parts];
-  }
-  return [...parts, EmptyExercisePart(parts.length)];
+  const newParts = () => {
+    if (parts[0]?.type === "answer") {
+      return [EmptyExercisePart(0), ...parts];
+    }
+    return [...parts, EmptyExercisePart(parts.length)];
+  };
+  return newParts().map((part, index) => ({ ...part, index }));
 };
 
 const padLeftRight = (exercise: Exercise): Exercise => {

@@ -173,23 +173,50 @@ const getRandomWords = (words: string[], count: number) => {
 };
 
 const exercisePartsData: (typeof exercisePartsTmp.$inferInsert)[] = Array.from(
-  { length: 240 },
+  { length: 80 },
   (_, i) => {
-    const exerciseIndex = Math.floor(i / 6);
-    const partIndex = i % 6;
-    const isEnglish = partIndex >= 3;
-    const isAnswer = partIndex === 2 || partIndex === 5;
+    const exerciseIndex = i % 40;
+    const isEnglish = i >= 40;
     const words = isEnglish ? enWords : ruWords;
     const wordCount = faker.number.int({ min: 1, max: 3 });
-    return {
+
+    const hasLeft = faker.datatype.boolean();
+    const hasRight = !hasLeft || faker.datatype.boolean();
+
+    const parts: (typeof exercisePartsTmp.$inferInsert)[] = [];
+    let order = 0;
+
+    if (hasLeft) {
+      parts.push({
+        exerciseId: exerciseIndex + 1,
+        order: order++,
+        type: "text",
+        text: ` ${getRandomWords(words, wordCount)} `,
+        language: isEnglish ? "en" : "ru",
+      });
+    }
+
+    parts.push({
       exerciseId: exerciseIndex + 1,
-      order: partIndex,
-      type: isAnswer ? ("answer" as const) : ("text" as const),
+      order: order++,
+      type: "answer",
       text: ` ${getRandomWords(words, wordCount)} `,
       language: isEnglish ? "en" : "ru",
-    };
+    });
+
+    if (hasRight) {
+      parts.push({
+        exerciseId: exerciseIndex + 1,
+        order: order++,
+        type: "text",
+        text: ` ${getRandomWords(words, wordCount)} `,
+        language: isEnglish ? "en" : "ru",
+      });
+    }
+
+    return parts;
   },
-);
+).flat();
 
 const seed = async () => {
   try {
@@ -220,13 +247,12 @@ const seed = async () => {
         id: exercisePartsTmp.id,
         exerciseId: exercisePartsTmp.exerciseId,
         order: exercisePartsTmp.order,
+        type: exercisePartsTmp.type,
       });
     console.log(`✅ Inserted ${insertedParts.length} exercise parts`);
 
     // Build acceptable answers from inserted parts
-    const answerParts = insertedParts.filter(
-      (p) => p.order === 2 || p.order === 5,
-    );
+    const answerParts = insertedParts.filter((p) => p.type === "answer");
     const newAcceptableAnswers: (typeof acceptableAnswersTmp.$inferInsert)[] =
       answerParts.map((p) => ({
         answerId: p.id,

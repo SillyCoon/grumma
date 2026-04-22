@@ -5,22 +5,17 @@ import {
   Show,
   Switch as SolidSwitch,
 } from "solid-js";
-import { Button } from "packages/ui/button";
+import { Button } from "ui/button";
 import { unwrap } from "solid-js/store";
 import { Answer, Text, type Exercise } from "grammar-sdk/exercise";
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { exercisesStore } from "./domain";
-import {
-  Switch,
-  SwitchControl,
-  SwitchLabel,
-  SwitchThumb,
-} from "packages/ui/switch";
+import { Switch, SwitchControl, SwitchLabel, SwitchThumb } from "ui/switch";
 import { ResetConfirmation } from "@components/common/ResetConfirmation";
-import { IconButton } from "packages/ui/icon-button";
+import { IconButton } from "ui/icon-button";
 import { AiFillEye, AiFillEyeInvisible } from "solid-icons/ai";
-import { Tooltip, TooltipContent, TooltipTrigger } from "packages/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "ui/tooltip";
 import { ExercisePreview } from "./ExercisePreview";
 import { ExerciseInput } from "./ExerciseInput";
 
@@ -38,6 +33,16 @@ const EmptyExercise = (order: number, grammarPointId: number): Exercise => ({
     Answer(1, "answer"),
     Text(2, " right part of the sentence."),
   ],
+});
+
+const filterEmptyParts = (exercise: Exercise): Exercise => ({
+  ...exercise,
+  parts: exercise.parts.filter(
+    (part) => !(part.type === "text" && part.text.trim() === ""),
+  ),
+  translationParts: exercise.translationParts.filter(
+    (part) => !(part.type === "text" && part.text.trim() === ""),
+  ),
 });
 
 export const ExercisesForm = (props: {
@@ -160,7 +165,9 @@ export const ExercisesForm = (props: {
             <Button
               onClick={async () => {
                 try {
-                  const result = await actions.putExercises(unwrap(exercises));
+                  const result = await actions.putExercises(
+                    unwrap(exercises).map(filterEmptyParts),
+                  );
                   if (result.error) {
                     console.error(result.error);
                     toast.error("Failed to save exercises");

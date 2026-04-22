@@ -1,15 +1,22 @@
 import { createStore } from "solid-js/store";
 import { makePersisted } from "@solid-primitives/storage";
-import {
-  type AcceptableAnswer,
-  type Exercise,
-  EmptyExercisePart,
+import type {
+  AcceptableAnswer,
+  Exercise,
+  ExercisePart,
 } from "grammar-sdk/exercise";
+
+export const EmptyExercisePart = (order: number): ExercisePart => ({
+  type: "text",
+  text: "",
+  index: order,
+});
 
 const addEmptyPart = (
   parts: Exercise["parts"] | Exercise["translationParts"],
 ) => {
   if (parts.length >= 3) return parts;
+  if (parts.length < 2) throw new Error("Exercise must have at least 2 parts");
   if (parts[0]?.type === "answer") {
     return [EmptyExercisePart(0), ...parts];
   }

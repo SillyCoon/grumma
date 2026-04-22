@@ -1,6 +1,28 @@
 import { createStore } from "solid-js/store";
 import { makePersisted } from "@solid-primitives/storage";
-import type { AcceptableAnswer, Exercise } from "grammar-sdk/exercise";
+import {
+  type AcceptableAnswer,
+  type Exercise,
+  EmptyExercisePart,
+} from "grammar-sdk/exercise";
+
+const addEmptyPart = (
+  parts: Exercise["parts"] | Exercise["translationParts"],
+) => {
+  if (parts.length >= 3) return parts;
+  if (parts[0]?.type === "answer") {
+    return [EmptyExercisePart(0), ...parts];
+  }
+  return [...parts, EmptyExercisePart(parts.length)];
+};
+
+const padLeftRight = (exercise: Exercise): Exercise => {
+  return {
+    ...exercise,
+    parts: addEmptyPart(exercise.parts),
+    translationParts: addEmptyPart(exercise.translationParts),
+  };
+};
 
 export const exercisesStore = (
   grammarPointId: number,
@@ -9,7 +31,7 @@ export const exercisesStore = (
   const key = `exercises-${grammarPointId}`;
 
   const [exercises, setExercises] = makePersisted(
-    createStore<Exercise[]>(initialExercises),
+    createStore<Exercise[]>(initialExercises.map(padLeftRight)),
     { name: key },
   );
 

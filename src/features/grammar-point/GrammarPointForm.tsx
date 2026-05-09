@@ -8,12 +8,7 @@ import {
   TextFieldTextArea,
 } from "ui/text-field";
 import { StructureDisplay } from "../../components/solid/grammar-point/StructureDisplay";
-import {
-  Select,
-  SelectContainer,
-  SelectLabel,
-  SelectOption,
-} from "packages/ui/select";
+import { Select, SelectContainer, SelectLabel, SelectOption } from "ui/select";
 import type { JSX } from "solid-js/jsx-runtime";
 import { ExplanationDisplay } from "@components/solid/grammar-point/ExplanationDisplay";
 import { HtmlCheckbox } from "ui/html-checkbox";
@@ -145,7 +140,9 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
                 name="structure"
                 placeholder="e.g., Кто? Что?"
                 rows="4"
-              />
+              >
+                {structure()}
+              </TextFieldTextArea>
             </TextField>
 
             <p class="mt-1 text-slate-500 text-xs">
@@ -166,7 +163,9 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
                 name="explanation"
                 placeholder="e.g. Представьте себе кролика..."
                 rows="4"
-              />
+              >
+                {explanation()}
+              </TextFieldTextArea>
             </TextField>
 
             <p class="mt-1 text-slate-500 text-xs">

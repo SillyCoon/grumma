@@ -34,8 +34,13 @@ export const ForgotPasswordForm = (props: {
           class="grid gap-4"
         >
           <TextField class="space-y-1">
-            <TextFieldLabel>Email</TextFieldLabel>
-            <TextFieldInput name="email" type="email" />
+            <TextFieldLabel for="email">Email</TextFieldLabel>
+            <TextFieldInput
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="username"
+            />
           </TextField>
           {resolved()}
           <Show when={props.errorMessage}>

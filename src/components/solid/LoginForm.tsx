@@ -61,6 +61,9 @@ const Form = (props: {
   type: "signin" | "signup";
   errorMessage?: string;
 }) => {
+  const passwordId = () =>
+    props.type === "signin" ? "current-password" : "new-password";
+
   return (
     <Card variant="outlined">
       <CardHeader>
@@ -81,12 +84,28 @@ const Form = (props: {
           class="grid gap-4"
         >
           <TextField class="space-y-1">
-            <TextFieldLabel>Email</TextFieldLabel>
-            <TextFieldInput name="email" type="email" />
+            <TextFieldLabel for="email">Email</TextFieldLabel>
+            <TextFieldInput
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="username"
+            />
           </TextField>
           <TextField class="space-y-1">
-            <TextFieldLabel>Password</TextFieldLabel>
-            <TextFieldInput name="password" type="password" />
+            <TextFieldLabel
+              for={
+                props.type === "signin" ? "current-password" : "new-password"
+              }
+            >
+              Password
+            </TextFieldLabel>
+            <TextFieldInput
+              id={passwordId()}
+              name="password"
+              type="password"
+              autocomplete={passwordId()}
+            />
           </TextField>
           <Show when={props.result?.error}>
             <Alert variant="destructive">

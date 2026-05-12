@@ -29,6 +29,7 @@ export const grammarPointsTmp = grummaTmp.table("grammar_point_tmp", {
   explanation: text(),
   torfl: varchar({ length: 2 }),
   hide: boolean().notNull().default(true),
+  note: text(),
   ...createdAtUpdatedAt,
 });
 

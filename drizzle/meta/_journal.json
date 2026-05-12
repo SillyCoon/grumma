@@ -155,6 +155,13 @@
       "when": 1776296961011,
       "tag": "0021_panoramic_mongoose",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1778572572767,
+      "tag": "0022_wandering_sabra",
+      "breakpoints": true
     }
   ]
 }

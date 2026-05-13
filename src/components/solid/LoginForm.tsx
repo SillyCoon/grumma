@@ -1,6 +1,7 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { actions, type SafeResult } from "astro:actions";
-import { Show } from "solid-js";
+import { BsEye, BsEyeSlash } from "solid-icons/bs";
+import { createSignal, Show } from "solid-js";
 import { Alert, AlertDescription, AlertTitle } from "ui/alert";
 import { Button } from "ui/button";
 import {
@@ -12,8 +13,10 @@ import {
   CardTitle,
 } from "ui/card";
 import { SignInWithGoogle } from "ui/google-button";
+import { IconButton } from "ui/icon-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "ui/tabs";
 import { TextField, TextFieldInput, TextFieldLabel } from "ui/text-field";
+import { autofocus } from "@solid-primitives/autofocus";
 
 type Result =
   | SafeResult<
@@ -61,6 +64,11 @@ const Form = (props: {
   type: "signin" | "signup";
   errorMessage?: string;
 }) => {
+  const [showPassword, setShowPassword] = createSignal(false);
+
+  const passwordId = () =>
+    props.type === "signin" ? "current-password" : "new-password";
+
   return (
     <Card variant="outlined">
       <CardHeader>
@@ -81,12 +89,45 @@ const Form = (props: {
           class="grid gap-4"
         >
           <TextField class="space-y-1">
-            <TextFieldLabel>Email</TextFieldLabel>
-            <TextFieldInput name="email" type="email" />
+            <TextFieldLabel for="email">Email</TextFieldLabel>
+            <TextFieldInput
+              autofocus
+              ref={autofocus}
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="username"
+              required
+            />
           </TextField>
-          <TextField class="space-y-1">
-            <TextFieldLabel>Password</TextFieldLabel>
-            <TextFieldInput name="password" type="password" />
+          <TextField class="relative space-y-1">
+            <TextFieldLabel
+              for={
+                props.type === "signin" ? "current-password" : "new-password"
+              }
+            >
+              Password
+            </TextFieldLabel>
+            <div class="relative">
+              <TextFieldInput
+                id={passwordId()}
+                name="password"
+                type={showPassword() ? "text" : "password"}
+                autocomplete={passwordId()}
+                required
+              />
+              <IconButton
+                type="button"
+                class="absolute top-0 right-0"
+                onClick={() => setShowPassword(!showPassword())}
+              >
+                {showPassword() ? (
+                  <BsEyeSlash aria-label="Hide password" />
+                ) : (
+                  <BsEye aria-label="Show password" />
+                )}
+              </IconButton>
+            </div>
           </TextField>
           <Show when={props.result?.error}>
             <Alert variant="destructive">

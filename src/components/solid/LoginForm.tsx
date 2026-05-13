@@ -16,7 +16,7 @@ import { SignInWithGoogle } from "ui/google-button";
 import { IconButton } from "ui/icon-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "ui/tabs";
 import { TextField, TextFieldInput, TextFieldLabel } from "ui/text-field";
-import { Tooltip, TooltipContent, TooltipTrigger } from "ui/tooltip";
+import { autofocus } from "@solid-primitives/autofocus";
 
 type Result =
   | SafeResult<
@@ -91,6 +91,8 @@ const Form = (props: {
           <TextField class="space-y-1">
             <TextFieldLabel for="email">Email</TextFieldLabel>
             <TextFieldInput
+              autofocus
+              ref={autofocus}
               id="email"
               name="email"
               type="email"

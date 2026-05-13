@@ -117,10 +117,15 @@ const Form = (props: {
                 required
               />
               <IconButton
+                type="button"
                 class="absolute top-0 right-0"
                 onClick={() => setShowPassword(!showPassword())}
               >
-                {showPassword() ? <BsEyeSlash /> : <BsEye />}
+                {showPassword() ? (
+                  <BsEyeSlash aria-label="Hide password" />
+                ) : (
+                  <BsEye aria-label="Show password" />
+                )}
               </IconButton>
             </div>
           </TextField>

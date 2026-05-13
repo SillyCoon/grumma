@@ -36,6 +36,7 @@ export const ForgotPasswordForm = (props: {
           <TextField class="space-y-1">
             <TextFieldLabel for="email">Email</TextFieldLabel>
             <TextFieldInput
+              required
               id="email"
               name="email"
               type="email"

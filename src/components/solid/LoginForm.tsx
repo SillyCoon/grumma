@@ -1,6 +1,7 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { actions, type SafeResult } from "astro:actions";
-import { Show } from "solid-js";
+import { BsEye, BsEyeSlash } from "solid-icons/bs";
+import { createSignal, Show } from "solid-js";
 import { Alert, AlertDescription, AlertTitle } from "ui/alert";
 import { Button } from "ui/button";
 import {
@@ -12,8 +13,10 @@ import {
   CardTitle,
 } from "ui/card";
 import { SignInWithGoogle } from "ui/google-button";
+import { IconButton } from "ui/icon-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "ui/tabs";
 import { TextField, TextFieldInput, TextFieldLabel } from "ui/text-field";
+import { Tooltip, TooltipContent, TooltipTrigger } from "ui/tooltip";
 
 type Result =
   | SafeResult<
@@ -61,6 +64,8 @@ const Form = (props: {
   type: "signin" | "signup";
   errorMessage?: string;
 }) => {
+  const [showPassword, setShowPassword] = createSignal(false);
+
   const passwordId = () =>
     props.type === "signin" ? "current-password" : "new-password";
 
@@ -90,9 +95,10 @@ const Form = (props: {
               name="email"
               type="email"
               autocomplete="username"
+              required
             />
           </TextField>
-          <TextField class="space-y-1">
+          <TextField class="relative space-y-1">
             <TextFieldLabel
               for={
                 props.type === "signin" ? "current-password" : "new-password"
@@ -100,12 +106,21 @@ const Form = (props: {
             >
               Password
             </TextFieldLabel>
-            <TextFieldInput
-              id={passwordId()}
-              name="password"
-              type="password"
-              autocomplete={passwordId()}
-            />
+            <div class="relative">
+              <TextFieldInput
+                id={passwordId()}
+                name="password"
+                type={showPassword() ? "text" : "password"}
+                autocomplete={passwordId()}
+                required
+              />
+              <IconButton
+                class="absolute top-0 right-0"
+                onClick={() => setShowPassword(!showPassword())}
+              >
+                {showPassword() ? <BsEyeSlash /> : <BsEye />}
+              </IconButton>
+            </div>
           </TextField>
           <Show when={props.result?.error}>
             <Alert variant="destructive">

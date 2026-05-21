@@ -88,14 +88,9 @@ const partFromDB = (p: ExerciseDb["parts"][number]): ExercisePart => {
   };
 };
 
+// TODO: validate parts are correct (e.g. no more than 1 answer part, at least 1 text part, etc.)
 const partsFromDB = (parts: ExerciseDb["parts"]): ExercisePart[] => {
   const answerIndex = parts.findIndex((p) => p.type === "answer");
-
-  if (answerIndex === -1) {
-    throw new Error(
-      `No answer part found for exercise ${parts[0]?.exerciseId}`,
-    );
-  }
 
   const sorted = parts.toSorted((a, b) => a.order - b.order).map(partFromDB);
 

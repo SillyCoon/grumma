@@ -42,7 +42,7 @@ export const GrammarPointDb = {
         hide: e.hide,
       })),
       explanation: g.explanation ?? undefined,
-      exercises: g.exercises.map((e) => ExerciseDb.toExercise(e)),
+      exercises,
       hide: g.hide,
     };
   },

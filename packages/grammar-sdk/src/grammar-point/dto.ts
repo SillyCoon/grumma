@@ -5,6 +5,7 @@ import type {
   exercisesTmp,
   grammarPointsTmp,
 } from "../../../../libs/db/schema-tmp";
+import type { ExercisePart } from "../exercise";
 import { ExerciseDb } from "../exercise/dto";
 
 export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
@@ -15,15 +16,17 @@ export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
   })[];
 };
 
-const makeExample = (parts: GrammarPointDb["exercises"][number]["parts"]) =>
+const makeExample = (parts: ExercisePart[]) =>
   parts
-    .toSorted((a, b) => a.order - b.order)
+    .toSorted((a, b) => a.index - b.index)
     .map((p) => p.text)
     .concat(new Array(3).fill(""))
     .slice(0, 3) as [string, string, string];
 
 export const GrammarPointDb = {
   toGrammarPoint: (g: GrammarPointDb): GrammarPoint => {
+    const exercises = g.exercises.map((e) => ExerciseDb.toExercise(e));
+
     return {
       id: `${g.id}`,
       shortTitle: g.shortTitle,
@@ -32,14 +35,14 @@ export const GrammarPointDb = {
       detailedTitle: g.detailedTitle ?? undefined,
       englishTitle: g.englishTitle ?? undefined,
       structure: g.structure ?? undefined,
-      examples: g.exercises.map((e) => ({
-        ru: makeExample(e.parts.filter((p) => p.language === "ru")),
-        en: makeExample(e.parts.filter((p) => p.language === "en")),
+      examples: exercises.map((e) => ({
+        ru: makeExample(e.parts),
+        en: makeExample(e.translationParts),
         order: e.order,
         hide: e.hide,
       })),
       explanation: g.explanation ?? undefined,
-      exercises: g.exercises.map((e) => ExerciseDb.toExercise(e)),
+      exercises,
       hide: g.hide,
     };
   },

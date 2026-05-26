@@ -1,4 +1,4 @@
-import type { Exercise, ExercisePart } from ".";
+import { type Exercise, type ExercisePart, Text } from ".";
 import type {
   acceptableAnswersTmp,
   exercisePartsTmp,
@@ -39,14 +39,8 @@ export const ExerciseDb = {
       grammarPointId: e.grammarPointId.toString(),
       order: e.order,
       hide: e.hide,
-      parts: e.parts
-        .filter((p) => p.language === "ru")
-        .toSorted((a, b) => a.order - b.order)
-        .map(partFromDB),
-      translationParts: e.parts
-        .filter((p) => p.language === "en")
-        .toSorted((a, b) => a.order - b.order)
-        .map(partFromDB),
+      parts: partsFromDB(e.parts.filter((p) => p.language === "ru")),
+      translationParts: partsFromDB(e.parts.filter((p) => p.language === "en")),
     };
   },
   fromExerciseToCreate: (exercise: Exercise): CreateExerciseDb => {
@@ -92,6 +86,26 @@ const partFromDB = (p: ExerciseDb["parts"][number]): ExercisePart => {
         variant: ans.variant,
       })) ?? [],
   };
+};
+
+// TODO: validate parts are correct (e.g. no more than 1 answer part, at least 1 text part, etc.)
+const partsFromDB = (parts: ExerciseDb["parts"]): ExercisePart[] => {
+  const sorted = parts.toSorted((a, b) => a.order - b.order).map(partFromDB);
+  const answerIndex = sorted.findIndex((p) => p.type === "answer");
+  if (answerIndex === -1) {
+    throw new Error(
+      `No answer part found for exercise ${parts[0]?.exerciseId}`,
+    );
+  }
+  if (sorted.length >= 3) return sorted;
+  const padded = [...sorted];
+  if (answerIndex === 0) padded.unshift(Text(0, ""));
+  else padded.push(Text(0, ""));
+  while (padded.length < 3) padded.push(Text(0, ""));
+  return padded.map((v, i) => ({
+    ...v,
+    index: i,
+  }));
 };
 
 const partToDb = (

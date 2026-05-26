@@ -34,6 +34,11 @@ const createExercise = (overrides: Partial<Exercise> = {}): Exercise => ({
   parts: [
     { index: 0, type: "text", text: "Question text" },
     { index: 1, type: "answer", text: "Answer text", acceptableAnswers: [] },
+    {
+      index: 2,
+      type: "text",
+      text: "Right part",
+    },
   ],
   translationParts: [
     { index: 0, type: "text", text: "Translation text" },
@@ -42,6 +47,11 @@ const createExercise = (overrides: Partial<Exercise> = {}): Exercise => ({
       type: "answer",
       text: "Translation answer",
       acceptableAnswers: [],
+    },
+    {
+      index: 2,
+      type: "text",
+      text: "Right part",
     },
   ],
   ...overrides,
@@ -52,6 +62,51 @@ const withAnyId = <T extends object>(object: T): T => {
     ...object,
     id: expect.any(Number),
   };
+};
+
+const insertExercise = async (
+  db: ReturnType<typeof makeDb>,
+  exercise: Partial<Omit<Exercise, "id" | "grammarPointId">> & {
+    grammarPointId?: number;
+  },
+) => {
+  const [existing] = await db
+    .insert(exercisesTmp)
+    .values({ grammarPointId: 1, order: 1, hide: false, ...exercise })
+    .returning();
+
+  await db.insert(exercisePartsTmp).values([
+    {
+      exerciseId: existing.id,
+      order: 0,
+      type: "text",
+      text: "Existing part",
+      language: "ru",
+    },
+    {
+      exerciseId: existing.id,
+      order: 1,
+      type: "answer",
+      text: "Existing answer part",
+      language: "ru",
+    },
+    {
+      exerciseId: existing.id,
+      order: 0,
+      type: "text",
+      text: "Existing part",
+      language: "en",
+    },
+    {
+      exerciseId: existing.id,
+      order: 1,
+      type: "answer",
+      text: "Existing answer part",
+      language: "en",
+    },
+  ]);
+
+  return existing;
 };
 
 describe("putExercises", () => {
@@ -230,6 +285,11 @@ describe("putExercises", () => {
                 { text: "Wrong", description: "Bad", variant: "incorrect" },
               ],
             },
+            {
+              index: 2,
+              type: "text",
+              text: "Right part",
+            },
           ],
           translationParts: [
             { index: 0, type: "text", text: "Translation" },
@@ -239,6 +299,11 @@ describe("putExercises", () => {
               text: "Translation answer",
               acceptableAnswers: [],
             },
+            {
+              index: 2,
+              type: "text",
+              text: "Right part",
+            },
           ],
         }),
       ];
@@ -246,7 +311,7 @@ describe("putExercises", () => {
       await putExercises(db, exercises, adminContext);
       const result = await getGrammarPoint(1, db);
 
-      expect(result?.exercises[0].parts).toHaveLength(2);
+      expect(result?.exercises[0].parts).toHaveLength(3);
       expect(result?.exercises[0].parts[0]).not.toHaveProperty(
         "acceptableAnswers",
       );
@@ -275,10 +340,11 @@ describe("putExercises", () => {
 
   describe("update exercises", () => {
     test("should hide existing exercise", async () => {
-      const [existing] = await db
-        .insert(exercisesTmp)
-        .values({ grammarPointId: 1, order: 1, hide: false })
-        .returning();
+      const existing = await insertExercise(db, {
+        grammarPointId: 1,
+        order: 1,
+        hide: false,
+      });
 
       const exercises = [
         createExercise({
@@ -298,10 +364,11 @@ describe("putExercises", () => {
     });
 
     test("should update exercise order", async () => {
-      const [existing] = await db
-        .insert(exercisesTmp)
-        .values({ grammarPointId: 1, order: 1, hide: false })
-        .returning();
+      const existing = await insertExercise(db, {
+        grammarPointId: 1,
+        order: 1,
+        hide: false,
+      });
 
       const exercises = [
         createExercise({
@@ -321,10 +388,11 @@ describe("putExercises", () => {
     });
 
     test("should update exercise parts and translation parts", async () => {
-      const [existing] = await db
-        .insert(exercisesTmp)
-        .values({ grammarPointId: 1, order: 1, hide: false })
-        .returning();
+      const existing = await insertExercise(db, {
+        grammarPointId: 1,
+        order: 1,
+        hide: false,
+      });
 
       const existingExercise = [
         createExercise({
@@ -379,6 +447,11 @@ describe("putExercises", () => {
                 },
               ],
             },
+            {
+              index: 2,
+              type: "text",
+              text: "Right part",
+            },
           ],
           translationParts: [
             { index: 0, type: "text", text: "Updated translation text" },
@@ -387,6 +460,11 @@ describe("putExercises", () => {
               type: "answer",
               text: "Updated translation answer",
               acceptableAnswers: [],
+            },
+            {
+              index: 2,
+              type: "text",
+              text: "Right part",
             },
           ],
         }),
@@ -408,10 +486,11 @@ describe("putExercises", () => {
     });
 
     test("should add new acceptable answer to existing exercise part", async () => {
-      const [existing] = await db
-        .insert(exercisesTmp)
-        .values({ grammarPointId: 1, order: 1, hide: false })
-        .returning();
+      const existing = await insertExercise(db, {
+        grammarPointId: 1,
+        order: 1,
+        hide: false,
+      });
 
       const existingExercise = [
         createExercise({
@@ -512,10 +591,11 @@ describe("putExercises", () => {
 
   describe("mixed create and update", () => {
     test("should create new exercises while updating existing ones", async () => {
-      const [existing] = await db
-        .insert(exercisesTmp)
-        .values({ grammarPointId: 1, order: 1, hide: false })
-        .returning();
+      const existing = await insertExercise(db, {
+        grammarPointId: 1,
+        order: 1,
+        hide: false,
+      });
 
       const exercises = [
         createExercise({

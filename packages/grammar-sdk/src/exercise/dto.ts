@@ -90,20 +90,19 @@ const partFromDB = (p: ExerciseDb["parts"][number]): ExercisePart => {
 
 // TODO: validate parts are correct (e.g. no more than 1 answer part, at least 1 text part, etc.)
 const partsFromDB = (parts: ExerciseDb["parts"]): ExercisePart[] => {
-  const answerIndex = parts.findIndex((p) => p.type === "answer");
-
   const sorted = parts.toSorted((a, b) => a.order - b.order).map(partFromDB);
-
-  if (parts.length >= 3) return sorted;
-
-  const pad = () => {
-    if (answerIndex === 0) {
-      return [Text(0, ""), ...sorted];
-    }
-    return [...sorted, Text(2, "")];
-  };
-
-  return pad().map((v, i) => ({
+  const answerIndex = sorted.findIndex((p) => p.type === "answer");
+  if (answerIndex === -1) {
+    throw new Error(
+      `No answer part found for exercise ${parts[0]?.exerciseId}`,
+    );
+  }
+  if (sorted.length >= 3) return sorted;
+  const padded = [...sorted];
+  if (answerIndex === 0) padded.unshift(Text(0, ""));
+  else padded.push(Text(0, ""));
+  while (padded.length < 3) padded.push(Text(0, ""));
+  return padded.map((v, i) => ({
     ...v,
     index: i,
   }));

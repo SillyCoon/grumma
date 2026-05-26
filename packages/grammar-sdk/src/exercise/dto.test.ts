@@ -164,4 +164,23 @@ describe("Exercise DTO", () => {
       }),
     ] as ExercisePart[]);
   });
+
+  test("throws if answer part is missing", () => {
+    const exercise: ExerciseDb = {
+      id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      grammarPointId: 1,
+      order: 0,
+      hide: false,
+      parts: [
+        mockDbPart({ order: 0, language: "ru", type: "text", text: "Left" }),
+        mockDbPart({ order: 1, language: "ru", type: "text", text: "Right" }),
+        mockDbPart({ order: 0, language: "en", type: "text", text: "Left" }),
+        mockDbPart({ order: 1, language: "en", type: "text", text: "Right" }),
+      ],
+    };
+
+    expect(() => ExerciseDb.toExercise(exercise)).toThrow();
+  });
 });

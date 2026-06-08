@@ -33,6 +33,24 @@ export const grammarPointsTmp = grummaTmp.table("grammar_point_tmp", {
   ...createdAtUpdatedAt,
 });
 
+export const labels = grummaTmp.table("label", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar({ length: 50 }).notNull().unique(),
+  color: varchar({ length: 7 }).notNull(), // Hex color code
+  ...createdAtUpdatedAt,
+});
+
+export const grammarPointsLabelsTmp = grummaTmp.table("grammar_point_label", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  grammarPointId: integer()
+    .notNull()
+    .references(() => grammarPointsTmp.id, { onDelete: "cascade" }),
+  labelId: integer()
+    .notNull()
+    .references(() => labels.id, { onDelete: "cascade" }),
+  ...createdAtUpdatedAt,
+});
+
 export const exercisesTmp = grummaTmp.table(
   "exercise_tmp",
   {
@@ -86,6 +104,7 @@ export const grammarPointRelationsTmp = relations(
   grammarPointsTmp,
   ({ many }) => ({
     exercises: many(exercisesTmp),
+    labels: many(grammarPointsLabelsTmp),
   }),
 );
 

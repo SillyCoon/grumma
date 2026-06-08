@@ -162,6 +162,13 @@
       "when": 1778572572767,
       "tag": "0022_wandering_sabra",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1780961949288,
+      "tag": "0023_tranquil_roxanne_simpson",
+      "breakpoints": true
     }
   ]
 }

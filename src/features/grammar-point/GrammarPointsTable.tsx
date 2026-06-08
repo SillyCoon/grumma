@@ -28,12 +28,6 @@ export const GrammarPointsTable = (props: {
     setNewPoints([...newPoints(), ""]);
   };
 
-  const updatePoint = (index: number, value: string) => {
-    const updated = [...newPoints()];
-    updated[index] = value;
-    setNewPoints(updated);
-  };
-
   const updateOrder = async () => {
     try {
       const response = await actions.updateGrammarPointsOrder(
@@ -145,12 +139,12 @@ export const GrammarPointsTable = (props: {
               }}
             </For>
             <For each={newPoints()}>
-              {(gp, index) => (
+              {(gp) => (
                 <tr class="border-b bg-green-50" id="non-draggable">
                   <td class="px-6 py-3 font-medium text-slate-900">New</td>
                   <td class="px-6 py-3 text-slate-700" colSpan={4}>
                     <form
-                      id={`new-point-form-${index()}`}
+                      id="new-point-form"
                       method="post"
                       action={actions.createGrammarPoint}
                     >
@@ -167,14 +161,10 @@ export const GrammarPointsTable = (props: {
                         value="-"
                       />
                       <input
+                        required
                         id="shortTitle"
                         name="shortTitle"
                         placeholder="New grammar point"
-                        ref={(el) => {
-                          const isLast = index() === newPoints().length - 1;
-                          isLast && el.focus({ preventScroll: false });
-                        }}
-                        onChange={(e) => updatePoint(index(), e.target.value)}
                         class="w-full"
                         value={gp}
                       />
@@ -183,8 +173,8 @@ export const GrammarPointsTable = (props: {
 
                   <td class="px-6 py-3 text-center">
                     <button
+                      form="new-point-form"
                       type="submit"
-                      form={`new-point-form-${index()}`}
                       class="inline-block cursor-pointer font-medium text-blue-600 text-xs hover:underline"
                     >
                       Save

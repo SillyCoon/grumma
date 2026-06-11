@@ -428,10 +428,7 @@ export const updateLabel = async (
     return err(existing.error);
   }
 
-  if (
-    existing.isErr() ||
-    !existing.value.some((label) => label.id === update.id)
-  ) {
+  if (!existing.value.some((label) => label.id === update.id)) {
     return err(`Label with id ${update.id} does not exist.`);
   }
 

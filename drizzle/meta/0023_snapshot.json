@@ -1,5 +1,5 @@
 {
-  "id": "1d0b9020-e98f-4831-8453-505353e7efea",
+  "id": "ad11c3e9-c73c-4759-ab75-0c2d88da1d84",
   "prevId": "bb344835-f2d4-49a4-bbf5-065c3909a0c9",
   "version": "7",
   "dialect": "postgresql",
@@ -836,14 +836,14 @@
       "name": "label_to_grammar_point",
       "schema": "tmp",
       "columns": {
-        "label_id": {
-          "name": "label_id",
+        "labelId": {
+          "name": "labelId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "grammar_point_id": {
-          "name": "grammar_point_id",
+        "grammarPointId": {
+          "name": "grammarPointId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -851,13 +851,13 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "label_to_grammar_point_label_id_label_id_fk": {
-          "name": "label_to_grammar_point_label_id_label_id_fk",
+        "label_to_grammar_point_labelId_label_id_fk": {
+          "name": "label_to_grammar_point_labelId_label_id_fk",
           "tableFrom": "label_to_grammar_point",
           "tableTo": "label",
           "schemaTo": "tmp",
           "columnsFrom": [
-            "label_id"
+            "labelId"
           ],
           "columnsTo": [
             "id"
@@ -865,13 +865,13 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "label_to_grammar_point_grammar_point_id_grammar_point_tmp_id_fk": {
-          "name": "label_to_grammar_point_grammar_point_id_grammar_point_tmp_id_fk",
+        "label_to_grammar_point_grammarPointId_grammar_point_tmp_id_fk": {
+          "name": "label_to_grammar_point_grammarPointId_grammar_point_tmp_id_fk",
           "tableFrom": "label_to_grammar_point",
           "tableTo": "grammar_point_tmp",
           "schemaTo": "tmp",
           "columnsFrom": [
-            "grammar_point_id"
+            "grammarPointId"
           ],
           "columnsTo": [
             "id"
@@ -881,11 +881,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "label_to_grammar_point_label_id_grammar_point_id_pk": {
-          "name": "label_to_grammar_point_label_id_grammar_point_id_pk",
+        "label_to_grammar_point_labelId_grammarPointId_pk": {
+          "name": "label_to_grammar_point_labelId_grammarPointId_pk",
           "columns": [
-            "label_id",
-            "grammar_point_id"
+            "labelId",
+            "grammarPointId"
           ]
         }
       },

@@ -19,11 +19,18 @@ export interface GrammarPoint {
   englishTitle?: string;
   structure?: string;
   explanation?: string;
+  labels: number[];
 }
+
+export type GrammarPointLabel = {
+  id: number;
+  name: string;
+  color: string;
+};
 
 export type CreateGrammarPoint = Omit<
   GrammarPoint,
-  "id" | "order" | "examples" | "exercises" | "hide"
+  "id" | "order" | "examples" | "exercises" | "hide" | "labels"
 >;
 
 export type UpdateGrammarPoint = Partial<

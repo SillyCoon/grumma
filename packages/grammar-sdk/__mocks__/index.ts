@@ -18,6 +18,10 @@ export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
     .toSorted((a, b) => a.order - b.order),
   torfl: "A1",
   hide: faker.datatype.boolean(),
+  labels: faker.helpers.arrayElements(
+    [1, 2, 3, 4, 5],
+    faker.number.int({ min: 0, max: 5 }),
+  ),
   ...gp,
 });
 

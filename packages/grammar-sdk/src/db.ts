@@ -11,12 +11,21 @@ import {
   exercisePartsTmp,
   exercisesTmp,
   grammarPointsTmp,
+  labels,
+  labelsToGrammarPoints,
 } from "../../../libs/db/schema-tmp";
 import { GrammarPointDb, GrammarPointsDb } from "./grammar-point/dto";
-import { err, ok, type Result } from "neverthrow";
+import { err, ok, okAsync, ResultAsync, type Result } from "neverthrow";
 import { Context } from "./context";
 import { type Exercise, Exercises } from "./exercise";
 import { ExerciseDb, type PartToCreateDb } from "./exercise/dto";
+import {
+  LabelDb,
+  LabelsDb,
+  type CreateLabel,
+  type Label,
+  type UpdateLabel,
+} from "./label";
 
 export const getGrammarPoint = async (
   id: number,
@@ -25,6 +34,7 @@ export const getGrammarPoint = async (
   const grammarDto = await dbClient.query.grammarPointsTmp.findFirst({
     where: eq(grammarPointsTmp.id, id),
     with: {
+      labels: true,
       exercises: {
         with: {
           parts: {
@@ -47,6 +57,7 @@ export const getGrammarPoints = async (
   const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
     where: ids ? inArray(grammarPointsTmp.id, ids) : undefined,
     with: {
+      labels: true,
       exercises: {
         with: {
           parts: {
@@ -111,6 +122,54 @@ export const createGrammarPoint = async (
     : err("Unexpected error occurred while creating grammar point.");
 };
 
+const deleteLabelsFrom = (
+  tx: Transaction | DbClient,
+  grammarPointId: number,
+): ResultAsync<unknown, string> => {
+  return ResultAsync.fromPromise(
+    tx
+      .delete(labelsToGrammarPoints)
+      .where(eq(labelsToGrammarPoints.grammarPointId, grammarPointId))
+      .execute(),
+    () =>
+      `Failed to delete existing labels from grammar point: ${grammarPointId}.`,
+  );
+};
+
+const assignLabelsTo = (
+  tx: Transaction | DbClient,
+  grammarPointId: number,
+  labels: number[],
+): ResultAsync<unknown, string> => {
+  if (!labels.length) {
+    return okAsync(true);
+  }
+
+  return ResultAsync.fromPromise(
+    tx
+      .insert(labelsToGrammarPoints)
+      .values(
+        labels.map((labelId) => ({
+          grammarPointId,
+          labelId,
+        })),
+      )
+      .execute(),
+    () =>
+      `Failed to assign new labels to grammar point: ${grammarPointId}. ${labels.join(", ")}`,
+  );
+};
+
+const changeLabels = (
+  tx: Transaction | DbClient,
+  grammarPointId: number,
+  labels: number[],
+): ResultAsync<true, string> => {
+  return deleteLabelsFrom(tx, grammarPointId)
+    .andThen(() => assignLabelsTo(tx, grammarPointId, labels))
+    .map(() => true);
+};
+
 export const updateGrammarPoint = async (
   update: UpdateGrammarPoint,
   context: Context,
@@ -139,6 +198,10 @@ export const updateGrammarPoint = async (
     .update(grammarPointsTmp)
     .set(updateData)
     .where(eq(grammarPointsTmp.id, +id));
+
+  if (updateData?.labels) {
+    return changeLabels(db, +id, updateData.labels!);
+  }
 
   return ok(true);
 };
@@ -303,4 +366,86 @@ export const putExercises = async (
     if (result.isErr()) return result;
     return await updateExercises(tx, toUpdate);
   });
+};
+
+export const getLabels = async (
+  db: DbClient,
+  context: Context,
+): Promise<Result<Label[], string | AuthorizationError>> => {
+  if (!Context.isAdmin(context)) {
+    return err(
+      new AuthorizationError(
+        "Currently users without admin rights cannot view labels.",
+      ),
+    );
+  }
+
+  try {
+    const labels = await db.query.labels.findMany();
+    return ok(LabelsDb.toLabels(labels));
+  } catch (error) {
+    return err(String(error));
+  }
+};
+
+export const createLabel = async (
+  db: DbClient,
+  label: CreateLabel,
+  context: Context,
+): Promise<Result<Label, string | AuthorizationError>> => {
+  if (!Context.isAdmin(context)) {
+    return err(
+      new AuthorizationError(
+        "Currently users without admin rights cannot create labels.",
+      ),
+    );
+  }
+
+  try {
+    const [created] = await db.insert(labels).values(label).returning();
+
+    return ok(LabelDb.toLabel(created));
+  } catch (error) {
+    return err(String(error));
+  }
+};
+
+export const updateLabel = async (
+  db: DbClient,
+  update: UpdateLabel,
+  context: Context,
+): Promise<Result<true, string | AuthorizationError>> => {
+  if (!Context.isAdmin(context)) {
+    return err(
+      new AuthorizationError(
+        "Currently users without admin rights cannot update labels.",
+      ),
+    );
+  }
+
+  const existing = await getLabels(db, context);
+  if (existing.isErr()) {
+    return err(existing.error);
+  }
+
+  if (
+    existing.isErr() ||
+    !existing.value.some((label) => label.id === update.id)
+  ) {
+    return err(`Label with id ${update.id} does not exist.`);
+  }
+
+  const { id, ...updateData } = update;
+
+  if (Object.values(updateData).every((value) => value === undefined)) {
+    return err("At least one field is required to update a label.");
+  }
+
+  try {
+    await db.update(labels).set(updateData).where(eq(labels.id, id));
+
+    return ok(true);
+  } catch (error) {
+    return err(String(error));
+  }
 };

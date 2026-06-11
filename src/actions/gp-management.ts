@@ -67,6 +67,7 @@ export const gpManagement = {
       englishTitle: z.string().optional(),
       torfl: z.string().optional(),
       hide: z.boolean(),
+      labels: z.array(z.number().int().positive()).optional(),
     }),
     handler: async (input, context) => {
       const result = await updateGrammarPoint(

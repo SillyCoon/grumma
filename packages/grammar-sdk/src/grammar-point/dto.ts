@@ -4,11 +4,15 @@ import type {
   exercisePartsTmp,
   exercisesTmp,
   grammarPointsTmp,
+  labels,
 } from "../../../../libs/db/schema-tmp";
 import type { ExercisePart } from "../exercise";
 import { ExerciseDb } from "../exercise/dto";
 
 export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
+  labelsToGrammarPoints: {
+    label: typeof labels.$inferSelect;
+  }[];
   exercises: (typeof exercisesTmp.$inferSelect & {
     parts: (typeof exercisePartsTmp.$inferSelect & {
       acceptableAnswers?: (typeof acceptableAnswersTmp.$inferSelect)[];
@@ -43,6 +47,7 @@ export const GrammarPointDb = {
       })),
       explanation: g.explanation ?? undefined,
       exercises,
+      labels: g.labelsToGrammarPoints.map((l) => l.label.id),
       hide: g.hide,
     };
   },

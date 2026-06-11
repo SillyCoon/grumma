@@ -162,6 +162,13 @@
       "when": 1778572572767,
       "tag": "0022_wandering_sabra",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1781176614088,
+      "tag": "0023_swift_captain_stacy",
+      "breakpoints": true
     }
   ]
 }

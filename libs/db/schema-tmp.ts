@@ -3,6 +3,7 @@ import {
   boolean,
   integer,
   pgSchema,
+  primaryKey,
   text,
   timestamp,
   unique,
@@ -30,6 +31,13 @@ export const grammarPointsTmp = grummaTmp.table("grammar_point_tmp", {
   torfl: varchar({ length: 2 }),
   hide: boolean().notNull().default(true),
   note: text(),
+  ...createdAtUpdatedAt,
+});
+
+export const labels = grummaTmp.table("label", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar({ length: 50 }).notNull().unique(),
+  color: varchar({ length: 7 }).notNull(), // Hex color code
   ...createdAtUpdatedAt,
 });
 
@@ -86,6 +94,38 @@ export const grammarPointRelationsTmp = relations(
   grammarPointsTmp,
   ({ many }) => ({
     exercises: many(exercisesTmp),
+    labelsToGrammarPoints: many(labelsToGrammarPoints),
+  }),
+);
+
+export const labelsRelationsTmp = relations(labels, ({ many }) => ({
+  labelsToGrammarPoints: many(labelsToGrammarPoints),
+}));
+
+export const labelsToGrammarPoints = grummaTmp.table(
+  "label_to_grammar_point",
+  {
+    labelId: integer()
+      .notNull()
+      .references(() => labels.id, { onDelete: "cascade" }),
+    grammarPointId: integer()
+      .notNull()
+      .references(() => grammarPointsTmp.id, { onDelete: "cascade" }),
+  },
+  (t) => [primaryKey({ columns: [t.labelId, t.grammarPointId] })],
+);
+
+export const labelsToGrammarPointsRelations = relations(
+  labelsToGrammarPoints,
+  ({ one }) => ({
+    label: one(labels, {
+      fields: [labelsToGrammarPoints.labelId],
+      references: [labels.id],
+    }),
+    grammarPoint: one(grammarPointsTmp, {
+      fields: [labelsToGrammarPoints.grammarPointId],
+      references: [grammarPointsTmp.id],
+    }),
   }),
 );
 

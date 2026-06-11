@@ -34,7 +34,7 @@ export const getGrammarPoint = async (
   const grammarDto = await dbClient.query.grammarPointsTmp.findFirst({
     where: eq(grammarPointsTmp.id, id),
     with: {
-      labels: true,
+      labelsToGrammarPoints: { with: { label: true } },
       exercises: {
         with: {
           parts: {
@@ -57,7 +57,7 @@ export const getGrammarPoints = async (
   const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
     where: ids ? inArray(grammarPointsTmp.id, ids) : undefined,
     with: {
-      labels: true,
+      labelsToGrammarPoints: { with: { label: true } },
       exercises: {
         with: {
           parts: {

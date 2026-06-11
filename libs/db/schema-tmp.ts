@@ -94,21 +94,21 @@ export const grammarPointRelationsTmp = relations(
   grammarPointsTmp,
   ({ many }) => ({
     exercises: many(exercisesTmp),
-    labels: many(labels),
+    labelsToGrammarPoints: many(labelsToGrammarPoints),
   }),
 );
 
 export const labelsRelationsTmp = relations(labels, ({ many }) => ({
-  grammarPoints: many(grammarPointsTmp),
+  labelsToGrammarPoints: many(labelsToGrammarPoints),
 }));
 
 export const labelsToGrammarPoints = grummaTmp.table(
   "label_to_grammar_point",
   {
-    labelId: integer("label_id")
+    labelId: integer()
       .notNull()
       .references(() => labels.id, { onDelete: "cascade" }),
-    grammarPointId: integer("grammar_point_id")
+    grammarPointId: integer()
       .notNull()
       .references(() => grammarPointsTmp.id, { onDelete: "cascade" }),
   },

@@ -10,7 +10,9 @@ import type { ExercisePart } from "../exercise";
 import { ExerciseDb } from "../exercise/dto";
 
 export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
-  labels: (typeof labels.$inferSelect)[];
+  labelsToGrammarPoints: {
+    label: typeof labels.$inferSelect;
+  }[];
   exercises: (typeof exercisesTmp.$inferSelect & {
     parts: (typeof exercisePartsTmp.$inferSelect & {
       acceptableAnswers?: (typeof acceptableAnswersTmp.$inferSelect)[];
@@ -45,7 +47,7 @@ export const GrammarPointDb = {
       })),
       explanation: g.explanation ?? undefined,
       exercises,
-      labels: g.labels.map((l) => l.id),
+      labels: g.labelsToGrammarPoints.map((l) => l.label.id),
       hide: g.hide,
     };
   },

@@ -15,6 +15,7 @@ import { HtmlCheckbox } from "ui/html-checkbox";
 import type { Label } from "packages/grammar-sdk";
 import { Labels } from "./Labels";
 import { actions } from "astro:actions";
+import toast from "solid-toast";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -58,10 +59,17 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
               <Labels
                 selected={props.initialData?.labels ?? []}
                 onAssign={async (labelIds) => {
-                  await actions.changeLabels({
+                  const result = await actions.changeLabels({
                     grammarPointId: props.initialData?.id as number,
                     labelIds,
                   });
+                  if (result?.error) {
+                    toast.error(
+                      `Failed to update labels: ${
+                        result.error?.message ?? "Unknown error"
+                      }`,
+                    );
+                  }
                 }}
               />
             </Show>

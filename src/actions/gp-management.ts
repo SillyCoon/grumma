@@ -70,7 +70,6 @@ export const gpManagement = {
       labels: z.array(z.number().int().positive()).optional(),
     }),
     handler: async (input, context) => {
-      console.log("Updating grammar point with input:", input);
       const result = await updateGrammarPoint(
         { ...input, id: `${input.id}` },
         contextFromAstro(context),
@@ -134,7 +133,9 @@ export const gpManagement = {
       const result = await createLabel(
         db,
         {
-          color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+          color: `#${Math.floor(Math.random() * 0x1000000)
+            .toString(16)
+            .padStart(6, "0")}`,
           name: input.name,
         },
         contextFromAstro(context),

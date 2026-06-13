@@ -24,7 +24,15 @@ const id = v4();
 
   Array.from(forms).forEach((form) => {
     form?.addEventListener("keydown", (ev) => {
-      if ("key" in ev && ev.key === "Enter") {
+      const target = ev.target as HTMLElement | null;
+      const isTextArea = target instanceof HTMLTextAreaElement;
+      const isContentEditable = target?.isContentEditable === true;
+      if (
+        "key" in ev &&
+        ev.key === "Enter" &&
+        !isTextArea &&
+        !isContentEditable
+      ) {
         ev.preventDefault();
       }
     });

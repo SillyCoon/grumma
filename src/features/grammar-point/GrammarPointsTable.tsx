@@ -1,4 +1,4 @@
-import { createSignal, For } from "solid-js";
+import { createMemo, createSignal, For } from "solid-js";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 import { Button } from "packages/ui/button";
 import { cn } from "packages/ui/utils";
@@ -21,7 +21,9 @@ export const GrammarPointsTable = (props: {
     draggable: (el) => el.id !== "non-draggable",
   });
 
-  const labelsMap = () => new Map(props.labels.map((v) => [v.id, v]));
+  const labelsMap = createMemo(
+    () => new Map(props.labels.map((v) => [v.id, v])),
+  );
 
   if (props.error) {
     toast.error(props.error);
@@ -167,7 +169,7 @@ export const GrammarPointsTable = (props: {
               {(gp) => (
                 <tr class="border-b bg-green-50" id="non-draggable">
                   <td class="px-6 py-3 font-medium text-slate-900">New</td>
-                  <td class="px-6 py-3 text-slate-700" colSpan={4}>
+                  <td class="px-6 py-3 text-slate-700" colSpan={5}>
                     <form
                       id="new-point-form"
                       method="post"
@@ -211,7 +213,7 @@ export const GrammarPointsTable = (props: {
           </tbody>
           <tfoot>
             <tr>
-              <td class="px-6 py-3 text-slate-700" colSpan={6}>
+              <td class="px-6 py-3 text-slate-700" colSpan={7}>
                 <Button
                   variant="ghost"
                   disabled={newPoints().length > 0}

@@ -87,7 +87,10 @@ export const GrammarPointsTable = (props: {
         </h2>
         <SaveConfirmation title="grammar points order" onSave={updateOrder}>
           <Button
-            disabled={!points().some((gp, index) => gp.order !== index + 1)}
+            disabled={
+              !sortEnabled() ||
+              !points().some((gp, index) => gp.order !== index + 1)
+            }
           >
             Save Order
           </Button>

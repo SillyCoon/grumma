@@ -1,6 +1,6 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import { exerciseSchema } from "grammar-sdk";
+import { createLabel, exerciseSchema, getLabels } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 import {
   type AuthorizationError,
@@ -122,6 +122,66 @@ export const gpManagement = {
         });
       }
       return gp.exercises;
+    },
+  }),
+  createLabel: defineAction({
+    accept: "json",
+    input: z.object({
+      name: z.string().min(1),
+    }),
+    handler: async (input, context) => {
+      const result = await createLabel(
+        db,
+        {
+          color: `#${Math.floor(Math.random() * 0x1000000)
+            .toString(16)
+            .padStart(6, "0")}`,
+          name: input.name,
+        },
+        contextFromAstro(context),
+      );
+      if (result.isErr()) {
+        handleError(result.error);
+      }
+      if (result.isOk()) {
+        return result.value;
+      }
+    },
+  }),
+  getLabels: defineAction({
+    accept: "json",
+    handler: async (_input, context) => {
+      const result = await getLabels(contextFromAstro(context), db);
+      if (result.isErr()) {
+        handleError(result.error);
+      }
+      if (result.isOk()) {
+        return result.value;
+      }
+    },
+  }),
+
+  changeLabels: defineAction({
+    accept: "json",
+    input: z.object({
+      grammarPointId: z.number().int().positive(),
+      labelIds: z.array(z.number().int().positive()),
+    }),
+    handler: async ({ grammarPointId, labelIds }, context) => {
+      const result = await updateGrammarPoint(
+        {
+          id: `${grammarPointId}`,
+          labels: labelIds,
+        },
+        contextFromAstro(context),
+      );
+
+      if (result.isErr()) {
+        handleError(result.error);
+      }
+      if (result.isOk()) {
+        return result.value;
+      }
     },
   }),
 };

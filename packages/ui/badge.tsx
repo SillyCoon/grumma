@@ -34,10 +34,16 @@ const badgeVariants = cva(
 type BadgeProps = ComponentProps<"div"> &
   VariantProps<typeof badgeVariants> & {
     round?: boolean;
+    customColor?: string;
   };
 
 const Badge: Component<BadgeProps> = (props) => {
-  const [local, others] = splitProps(props, ["class", "variant", "round"]);
+  const [local, others] = splitProps(props, [
+    "class",
+    "variant",
+    "round",
+    "customColor",
+  ]);
   return (
     <div
       class={cn(
@@ -45,6 +51,14 @@ const Badge: Component<BadgeProps> = (props) => {
         local.round ? "rounded-full" : "rounded-md",
         local.class,
       )}
+      style={
+        local.customColor
+          ? {
+              "background-color": local.customColor,
+              color: `contrast-color(${local.customColor})`,
+            }
+          : undefined
+      }
       {...others}
     />
   );

@@ -1,4 +1,4 @@
-import { createSignal, For } from "solid-js";
+import { createMemo, createSignal, For } from "solid-js";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 import { Button } from "packages/ui/button";
 import { cn } from "packages/ui/utils";
@@ -6,9 +6,12 @@ import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { SaveConfirmation } from "@components/common/SaveConfirmation";
 import type { GrammarPoint } from "packages/grammar-sdk";
+import type { Label } from "grammar-sdk";
+import { Badge } from "packages/ui/badge";
 
 export const GrammarPointsTable = (props: {
   grammarPoints: GrammarPoint[];
+  labels: Label[];
   error?: string;
 }) => {
   const [parent, points, setPoints] = useDragAndDrop<
@@ -17,6 +20,10 @@ export const GrammarPointsTable = (props: {
   >(props.grammarPoints, {
     draggable: (el) => el.id !== "non-draggable",
   });
+
+  const labelsMap = createMemo(
+    () => new Map(props.labels.map((v) => [v.id, v])),
+  );
 
   if (props.error) {
     toast.error(props.error);
@@ -90,6 +97,9 @@ export const GrammarPointsTable = (props: {
               <th class="px-6 py-3 text-left font-semibold text-slate-900">
                 TORFL
               </th>
+              <th class="px-6 py-3 text-left font-semibold text-slate-900">
+                Labels
+              </th>
               <th class="px-6 py-3 text-center font-semibold text-slate-900">
                 Actions
               </th>
@@ -126,6 +136,23 @@ export const GrammarPointsTable = (props: {
                         <span class="text-slate-400 text-xs">—</span>
                       )}
                     </td>
+                    <td class="flex max-w-xs flex-row flex-wrap gap-1 px-6 py-3">
+                      <For
+                        each={gp.labels.map((labelId) =>
+                          labelsMap().get(labelId),
+                        )}
+                      >
+                        {(label) => {
+                          if (!label) return null;
+                          return (
+                            <Badge customColor={label.color}>
+                              {label.name}
+                            </Badge>
+                          );
+                        }}
+                      </For>
+                      {}
+                    </td>
                     <td class="px-6 py-3 text-center">
                       <a
                         href={`/admin/grammar/${gp.id}`}
@@ -142,7 +169,7 @@ export const GrammarPointsTable = (props: {
               {(gp) => (
                 <tr class="border-b bg-green-50" id="non-draggable">
                   <td class="px-6 py-3 font-medium text-slate-900">New</td>
-                  <td class="px-6 py-3 text-slate-700" colSpan={4}>
+                  <td class="px-6 py-3 text-slate-700" colSpan={5}>
                     <form
                       id="new-point-form"
                       method="post"
@@ -186,7 +213,7 @@ export const GrammarPointsTable = (props: {
           </tbody>
           <tfoot>
             <tr>
-              <td class="px-6 py-3 text-slate-700" colSpan={6}>
+              <td class="px-6 py-3 text-slate-700" colSpan={7}>
                 <Button
                   variant="ghost"
                   disabled={newPoints().length > 0}

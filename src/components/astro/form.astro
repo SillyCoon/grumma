@@ -1,0 +1,32 @@
+---
+import { v4 } from "uuid";
+
+interface Props {
+  action: string;
+  method: string;
+}
+
+const id = v4();
+---
+
+<form
+  data-no-enter-submit
+  action={Astro.props.action}
+  method={Astro.props.method}
+>
+  <slot />
+</form>
+
+<script>
+  let forms = document.querySelectorAll<HTMLFormElement>(
+    "form[data-no-enter-submit]",
+  );
+
+  Array.from(forms).forEach((form) => {
+    form?.addEventListener("keydown", (ev) => {
+      if ("key" in ev && ev.key === "Enter") {
+        ev.preventDefault();
+      }
+    });
+  });
+</script>

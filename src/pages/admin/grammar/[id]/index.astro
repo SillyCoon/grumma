@@ -5,6 +5,7 @@ import { GrammarPointForm } from "~/features/grammar-point/GrammarPointForm";
 import { ExercisesForm } from "~/features/exercise/create/ExercisesForm";
 import { fetchGrammarPoint } from "packages/grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
+import Form from "@components/astro/form.astro";
 
 const { id } = Astro.params;
 
@@ -22,7 +23,7 @@ const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
 ---
 
 <AdminLayout title={`Edit: ${grammarPoint.shortTitle}`} back="../grammar">
-  <form action={actions.updateGrammarPoint} method="post">
+  <Form action={actions.updateGrammarPoint} method="post">
     <GrammarPointForm
       client:load
       success={!!updateResult?.data}
@@ -37,9 +38,10 @@ const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
         torfl: grammarPoint.torfl ?? undefined,
         explanation: grammarPoint.explanation ?? undefined,
         hide: grammarPoint.hide ?? false,
+        labels: grammarPoint.labels,
       }}
     />
-  </form>
+  </Form>
 
   <div class="space-y-4 pt-5">
     <div>

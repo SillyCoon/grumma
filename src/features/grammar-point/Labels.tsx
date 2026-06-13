@@ -29,6 +29,7 @@ export const Labels = (props: {
   const search = () => rawSearch().trim();
 
   const [selected, setSelected] = createSignal<number[]>(props.selected);
+  const [assigning, setAssigning] = createSignal(false);
 
   const [labels, { mutate }] = createResource(
     () => !isServer,
@@ -69,6 +70,7 @@ export const Labels = (props: {
                 <div class="flex items-center gap-2">
                   <HtmlCheckbox
                     onChange={async (e) => {
+                      if (assigning()) return;
                       const prev = selected();
                       const result = setSelected((prev) => {
                         if (e.target.checked) {
@@ -76,6 +78,7 @@ export const Labels = (props: {
                         }
                         return prev.filter((id) => id !== label.id);
                       });
+                      setAssigning(true);
                       try {
                         await props.onAssign(result);
                         toast.success("Labels updated successfully!");
@@ -84,12 +87,15 @@ export const Labels = (props: {
                           "Failed to update labels. Please try again.",
                         );
                         setSelected(prev);
+                      } finally {
+                        setAssigning(false);
                       }
                     }}
                     name="labels[]"
                     value={label.id}
                     id={`label-${label.id}`}
                     checked={selected().includes(label.id)}
+                    disabled={assigning()}
                   />
                   <LabelChip color={label.color}>{label.name}</LabelChip>
                 </div>

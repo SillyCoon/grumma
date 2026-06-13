@@ -59,15 +59,14 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
               <Labels
                 selected={props.initialData?.labels ?? []}
                 onAssign={async (labelIds) => {
+                  await new Promise((resolve) => setTimeout(resolve, 1000)); // Artificial delay to prevent UI flickering
                   const result = await actions.changeLabels({
                     grammarPointId: props.initialData?.id as number,
                     labelIds,
                   });
                   if (result?.error) {
-                    toast.error(
-                      `Failed to update labels: ${
-                        result.error?.message ?? "Unknown error"
-                      }`,
+                    throw new Error(
+                      `Failed to update labels. Please try again., ${result.error?.message ?? "Unknown error"}`,
                     );
                   }
                 }}

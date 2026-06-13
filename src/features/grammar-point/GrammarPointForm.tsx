@@ -15,7 +15,6 @@ import { HtmlCheckbox } from "ui/html-checkbox";
 import type { Label } from "packages/grammar-sdk";
 import { Labels } from "./Labels";
 import { actions } from "astro:actions";
-import toast from "solid-toast";
 
 interface GrammarPointFormProps {
   initialData?: {

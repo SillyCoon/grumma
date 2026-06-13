@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For } from "solid-js";
+import { createEffect, createSignal, For } from "solid-js";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 import { Button } from "packages/ui/button";
 import { cn } from "packages/ui/utils";
@@ -8,22 +8,37 @@ import { SaveConfirmation } from "@components/common/SaveConfirmation";
 import type { GrammarPoint } from "packages/grammar-sdk";
 import type { Label } from "grammar-sdk";
 import { Badge } from "packages/ui/badge";
+import { TextField, TextFieldInput } from "packages/ui/text-field";
+import { searchGrammar } from "./search";
+import { IconButton } from "packages/ui/icon-button";
+import { Search } from "packages/ui/icons";
+import { GrammarPointWithLabels } from "./type";
 
 export const GrammarPointsTable = (props: {
   grammarPoints: GrammarPoint[];
   labels: Label[];
   error?: string;
 }) => {
-  const [parent, points, setPoints] = useDragAndDrop<
+  const grammarPoints = () =>
+    GrammarPointWithLabels(props.grammarPoints, props.labels);
+
+  const [rawSearch, setSearch] = createSignal("");
+  const search = () => rawSearch().toLowerCase().trim();
+  const sortEnabled = () => search() === "";
+
+  const [parent, rawPoints, setPoints, updateConfig] = useDragAndDrop<
     HTMLTableRowElement,
-    GrammarPoint
-  >(props.grammarPoints, {
+    GrammarPointWithLabels
+  >(grammarPoints(), {
     draggable: (el) => el.id !== "non-draggable",
   });
 
-  const labelsMap = createMemo(
-    () => new Map(props.labels.map((v) => [v.id, v])),
-  );
+  const points = () =>
+    search() ? searchGrammar(rawPoints(), search()) : rawPoints();
+
+  createEffect(() => {
+    updateConfig({ disabled: !sortEnabled() });
+  });
 
   if (props.error) {
     toast.error(props.error);
@@ -68,7 +83,7 @@ export const GrammarPointsTable = (props: {
     <div>
       <div class="flex flex-row justify-between">
         <h2 class="mb-4 font-semibold text-2xl">
-          Existing Grammar Points ({props.grammarPoints.length})
+          Existing Grammar Points ({grammarPoints().length})
         </h2>
         <SaveConfirmation title="grammar points order" onSave={updateOrder}>
           <Button
@@ -78,6 +93,29 @@ export const GrammarPointsTable = (props: {
           </Button>
         </SaveConfirmation>
       </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const data = new FormData(e.currentTarget);
+          const search = data.get("search")?.toString() ?? "";
+          setSearch(search);
+        }}
+      >
+        <TextField
+          class="my-4 flex flex-row items-center gap-2"
+          onChange={(v) => !v.length && setSearch("")}
+        >
+          <TextFieldInput
+            name="search"
+            type="search"
+            placeholder="Search grammar points..."
+          />
+          <IconButton type="submit">
+            <Search />
+          </IconButton>
+        </TextField>
+      </form>
+
       <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
         <table class="w-full text-sm">
           <thead>
@@ -107,8 +145,11 @@ export const GrammarPointsTable = (props: {
           </thead>
           <tbody ref={parent}>
             <For each={points()}>
-              {(gp, order) => {
-                const differentOrder = () => gp.order !== order() + 1;
+              {(gp, index) => {
+                const order = () => (sortEnabled() ? index() : gp.order - 1);
+
+                const differentOrder = () =>
+                  sortEnabled() && gp.order !== order() + 1;
                 return (
                   <tr
                     class="cursor-grab border-b transition hover:bg-slate-50 active:cursor-grabbing"
@@ -137,11 +178,7 @@ export const GrammarPointsTable = (props: {
                       )}
                     </td>
                     <td class="flex max-w-xs flex-row flex-wrap gap-1 px-6 py-3">
-                      <For
-                        each={gp.labels.map((labelId) =>
-                          labelsMap().get(labelId),
-                        )}
-                      >
+                      <For each={gp.labels}>
                         {(label) => {
                           if (!label) return null;
                           return (
@@ -226,7 +263,7 @@ export const GrammarPointsTable = (props: {
           </tfoot>
         </table>
 
-        {props.grammarPoints.length === 0 && (
+        {!grammarPoints().length && (
           <div class="px-6 py-12 text-center text-slate-500">
             <p>No grammar points yet. Create one using the form above!</p>
           </div>

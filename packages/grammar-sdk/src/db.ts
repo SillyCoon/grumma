@@ -369,8 +369,8 @@ export const putExercises = async (
 };
 
 export const getLabels = async (
-  db: DbClient,
   context: Context,
+  dbClient: DbClient = db,
 ): Promise<Result<Label[], string | AuthorizationError>> => {
   if (!Context.isAdmin(context)) {
     return err(
@@ -381,7 +381,7 @@ export const getLabels = async (
   }
 
   try {
-    const labels = await db.query.labels.findMany();
+    const labels = await dbClient.query.labels.findMany();
     return ok(LabelsDb.toLabels(labels));
   } catch (error) {
     return err(String(error));
@@ -423,7 +423,7 @@ export const updateLabel = async (
     );
   }
 
-  const existing = await getLabels(db, context);
+  const existing = await getLabels(context, db);
   if (existing.isErr()) {
     return err(existing.error);
   }

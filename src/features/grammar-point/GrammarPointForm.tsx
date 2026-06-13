@@ -12,6 +12,9 @@ import { Select, SelectContainer, SelectLabel, SelectOption } from "ui/select";
 import type { JSX } from "solid-js/jsx-runtime";
 import { ExplanationDisplay } from "@components/solid/grammar-point/ExplanationDisplay";
 import { HtmlCheckbox } from "ui/html-checkbox";
+import type { Label } from "packages/grammar-sdk";
+import { Labels } from "./Labels";
+import { actions } from "astro:actions";
 
 interface GrammarPointFormProps {
   initialData?: {
@@ -24,7 +27,9 @@ interface GrammarPointFormProps {
     torfl?: string;
     explanation?: string;
     hide?: boolean;
+    labels: number[];
   };
+  labels?: Label[];
   success?: boolean;
   error?: string;
   isLoading?: boolean;
@@ -46,7 +51,22 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
   return (
     <Card variant="outlined">
       <CardHeader>
-        <CardTitle>Grammar Point</CardTitle>
+        <CardTitle class="items-center-safe flex gap-4">
+          <span>Grammar Point</span>{" "}
+          {
+            <Show when={props.initialData?.id}>
+              <Labels
+                selected={props.initialData?.labels ?? []}
+                onAssign={async (labelIds) => {
+                  await actions.changeLabels({
+                    grammarPointId: props.initialData?.id as number,
+                    labelIds,
+                  });
+                }}
+              />
+            </Show>
+          }
+        </CardTitle>
       </CardHeader>
       <CardContent class="space-y-6">
         <HtmlCheckbox
@@ -61,13 +81,11 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             {props.error}
           </div>
         </Show>
-
         <Show when={props.success}>
           <div class="rounded border border-green-200 bg-green-50 p-3 text-green-800 text-sm">
             Grammar point saved successfully!
           </div>
         </Show>
-
         <div class="grid grid-cols-1 gap-4">
           {props.initialData?.id && (
             <input type="hidden" name="id" value={props.initialData.id} />
@@ -105,7 +123,6 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             />
           </TextField>
         </div>
-
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <SelectContainer>
             <SelectLabel for="torfl" class="flex flex-col">
@@ -130,7 +147,6 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             </Select>
           </SelectContainer>
         </div>
-
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <TextField value={structure()} onChange={setStructure}>
@@ -178,7 +194,6 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
           </Preview>
         </div>
         <div>{resolved()}</div>
-
         <div class="flex gap-3 pt-4">
           <Button type="submit" disabled={props.isLoading}>
             {props.isLoading

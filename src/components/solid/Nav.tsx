@@ -5,7 +5,6 @@ import { HelpNav } from "./HelpNav";
 import { NavButton } from "./NavButton";
 import { Show } from "solid-js";
 import { COMMUNITY_URL } from "~/libs/community";
-import { BiSolidLogOut } from "solid-icons/bi";
 import { IoLogOut } from "solid-icons/io";
 
 export const Nav = (props: {

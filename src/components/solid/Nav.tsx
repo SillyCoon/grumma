@@ -82,8 +82,14 @@ const LogoutButton = (props: { onClick?: () => void }) => {
         navigate("/");
       }}
     >
-      <button onClick={props.onClick} type="submit" class={NavButtonClass}>
-        <IoLogOut size={20} />
+      <button
+        onClick={props.onClick}
+        type="submit"
+        class={NavButtonClass}
+        aria-label="Logout"
+        title="Logout"
+      >
+        <IoLogOut size={20} aria-hidden="true" />
       </button>
     </form>
   );

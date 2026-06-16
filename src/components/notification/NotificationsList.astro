@@ -9,7 +9,7 @@ const notifications = await Astro.callAction(
 
 <div class="flex flex-col p-2">
   {
-    notifications.data?.length === 0 ? (
+    !notifications?.data?.length ? (
       <p class="text-sm text-white">No notifications</p>
     ) : (
       notifications.data?.map((notification) => (

@@ -6,6 +6,7 @@ import { HelpNav } from "../solid/HelpNav";
 import { contextFromAstro } from "~/libs/context";
 import ReviewNav from "../header/ReviewNav.astro";
 import ReviewNavWithBadge from "../header/ReviewNavWithBadge.astro";
+import Notifications from "../notification/Notifications.astro";
 
 const { user } = contextFromAstro(Astro);
 ---
@@ -29,6 +30,9 @@ const { user } = contextFromAstro(Astro);
   <NavButton text="Cram" link="/grammar?mode=cram" />
   <NavButton text="Community" link={COMMUNITY_URL} target="_blank" />
   <HelpNav client:load loggedIn={user.role !== "guest"} />
+  <div class="flex">
+    <Notifications />
+  </div>
 
   {user.role !== "guest" ? <LogoutButton /> : <LoginButton />}
 </>

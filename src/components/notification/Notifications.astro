@@ -1,0 +1,37 @@
+---
+import { NavButtonClass } from "ui/navigation-button";
+import { BsBellFill } from "solid-icons/bs";
+import NotificationsList from "./NotificationsList.astro";
+import Badge from "./Badge.astro";
+---
+
+<button
+  popovertarget="notifications"
+  type="submit"
+  class={NavButtonClass}
+  aria-label="Notifications"
+  title="Notifications"
+>
+  <div class="relative">
+    <Badge server:defer />
+    <BsBellFill size={20} aria-hidden="true" />
+  </div>
+</button>
+<div
+  id="notifications"
+  popover
+  class="popover-content bg-primary rounded-md shadow-lg p-2"
+>
+  <NotificationsList server:defer>
+    <p slot="fallback" class="text-sm text-white p-2">
+      Loading notifications...
+    </p>
+  </NotificationsList>
+</div>
+
+<style>
+  .popover-content {
+    position-area: bottom;
+    width: 300px;
+  }
+</style>

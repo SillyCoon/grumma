@@ -26,7 +26,7 @@ export const notifications = {
       }),
       z.undefined(),
     ]),
-    handler: async (input, context) => {
+    handler: async (_input, context) => {
       const { user } = contextFromAstro(context);
       if (user.role === "guest") {
         return [];

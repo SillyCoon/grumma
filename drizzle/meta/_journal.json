@@ -176,6 +176,13 @@
       "when": 1781581771787,
       "tag": "0024_pale_liz_osborn",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1781602974623,
+      "tag": "0025_simple_the_professor",
+      "breakpoints": true
     }
   ]
 }

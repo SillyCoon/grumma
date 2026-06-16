@@ -15,11 +15,16 @@ const getOne = async (page: number): Promise<TopicsResponse> => {
   const response = await fetch(
     `https://grumma.discourse.group/c/general/announcements/6.json?page=${page}`,
   );
-  return response.json();
+  if (response.ok) {
+    return response.json();
+  }
+  throw new Error(
+    `Failed to fetch topics: ${response.statusText}, status: ${response.status}, page: ${page}`,
+  );
 };
 
 export const getTopics = async ({ after }: { after: Date }) => {
-  const fromPage = 0;
+  let fromPage = 0;
   const {
     topic_list: { per_page, topics },
   } = await getOne(fromPage);
@@ -27,8 +32,8 @@ export const getTopics = async ({ after }: { after: Date }) => {
   let shouldFetchMore = topics.length >= per_page;
 
   while (shouldFetchMore) {
-    const nextPage = fromPage + 1;
-    const nextPageData = await getOne(nextPage);
+    fromPage += 1;
+    const nextPageData = await getOne(fromPage);
     topics.push(...nextPageData.topic_list.topics);
 
     shouldFetchMore = nextPageData.topic_list.topics.length >= per_page;

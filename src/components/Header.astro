@@ -5,6 +5,7 @@ import Logo from "./Logo.astro";
 import { HamburgerButton } from "./solid/HamburgerButton";
 import { Nav } from "./solid/Nav";
 import { isUserAdmin } from "libs/auth/admin";
+import Notifications from "./Notifications.astro";
 
 const user = Astro.locals.user;
 const reviewCount =
@@ -21,7 +22,13 @@ const reviewCount =
         loggedIn={!!user}
         reviewCount={reviewCount}
         isAdmin={isUserAdmin(user ?? undefined)}
-      />
+      >
+        <Notifications loggedIn={!!user} />
+      </Nav>
+    </div>
+
+    <div class="flex lg:hidden">
+      <Notifications loggedIn={!!user} />
     </div>
   </div>
 </header>

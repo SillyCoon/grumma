@@ -1,0 +1,65 @@
+---
+import { NavButtonClass } from "ui/navigation-button";
+import { BsBellFill } from "solid-icons/bs";
+import { NotificationBadge } from "ui/notification-badge";
+import { actions } from "astro:actions";
+
+const notifications = await Astro.callAction(
+  actions.getNotifications,
+  undefined,
+);
+
+const hasUnread = notifications.data?.some(
+  (notification) => !notification.read,
+);
+---
+
+<button
+  popovertarget="notifications"
+  type="submit"
+  class={NavButtonClass}
+  aria-label="Notifications"
+  title="Notifications"
+>
+  <div class="relative">
+    {hasUnread && <NotificationBadge size="sm" />}
+    <BsBellFill size={20} aria-hidden="true" />
+  </div>
+</button>
+<div
+  id="notifications"
+  popover
+  class="popover-content bg-primary rounded-md shadow-lg p-2"
+>
+  <div class="flex flex-col p-2">
+    {
+      notifications.data?.length === 0 ? (
+        <p class="text-sm text-white">No notifications</p>
+      ) : (
+        notifications.data?.map((notification) => (
+          <a
+            href={notification.link}
+            target="_blank"
+            class="flex items-start gap-2 rounded-md p-2 lg:hover:bg-secondary/20 lg:hover:shadow-md cursor-pointer"
+          >
+            <div class="flex-1">
+              <p class="text-sm text-white font-bold ">{notification.title}</p>
+              <p class="text-xs text-gray-100">
+                {new Intl.DateTimeFormat(undefined, {
+                  dateStyle: "medium",
+                }).format(new Date(notification.createdAt))}
+              </p>
+            </div>
+          </a>
+        ))
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .popover-content {
+    position-area: bottom;
+    width: 300px;
+  }
+</style>

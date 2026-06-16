@@ -3,7 +3,7 @@ import { navigate } from "astro:transitions/client";
 import { NavButtonClass } from "ui/navigation-button";
 import { HelpNav } from "./HelpNav";
 import { NavButton } from "./NavButton";
-import { Show } from "solid-js";
+import { children, type JSX, Show } from "solid-js";
 import { COMMUNITY_URL } from "~/libs/community";
 import { IoLogOut } from "solid-icons/io";
 
@@ -11,9 +11,12 @@ export const Nav = (props: {
   loggedIn?: boolean;
   isAdmin?: boolean;
   reviewCount?: number | null;
+  children?: JSX.Element;
   onClick?: () => void;
 }) => {
   const reviewCount = props.reviewCount || undefined;
+
+  const resolved = children(() => props.children);
 
   return (
     <>
@@ -56,6 +59,8 @@ export const Nav = (props: {
         target="_blank"
       />
       <HelpNav onClick={props.onClick} loggedIn={props.loggedIn} />
+
+      <div class="flex">{resolved()}</div>
 
       {props.loggedIn ? (
         <LogoutButton onClick={props.onClick} />

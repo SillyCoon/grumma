@@ -90,3 +90,15 @@ export const tour = grumma.table("tour", {
   type: text().notNull(),
   completed: boolean().notNull().default(false),
 });
+
+export const notificationSourceEnum = grumma.enum("notificationSource", [
+  "community",
+]);
+
+export const notificationsRead = grumma.table("notifications_read", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: text().notNull(),
+  notificationId: text().notNull(),
+  source: notificationSourceEnum().notNull(),
+  readAt: timestamp().notNull(),
+});

@@ -169,6 +169,13 @@
       "when": 1781176614088,
       "tag": "0023_swift_captain_stacy",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1781581771787,
+      "tag": "0024_pale_liz_osborn",
+      "breakpoints": true
     }
   ]
 }

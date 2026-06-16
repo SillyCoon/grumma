@@ -1,5 +1,5 @@
 import { z } from "astro/zod";
-import { defineAction } from "astro:actions";
+import { ActionError, defineAction } from "astro:actions";
 import { getTopics } from "packages/discourse-sdk";
 import { contextFromAstro } from "~/libs/context";
 
@@ -32,17 +32,25 @@ export const notifications = {
         return [];
       }
 
-      const topics = await getTopics({ after: DISCOURSE_COLLECTION_START });
+      try {
+        const topics = await getTopics({ after: DISCOURSE_COLLECTION_START });
 
-      return topics.map((topic) => ({
-        id: topic.id,
-        source: "discourse",
-        link: topic.link,
-        title: topic.title,
-        content: topic.excerpt,
-        createdAt: topic.createdAt,
-        read: false, // This would need to be tracked in a database for a real implementation;
-      }));
+        return topics.map((topic) => ({
+          id: topic.id,
+          source: "discourse",
+          link: topic.link,
+          title: topic.title,
+          content: topic.excerpt,
+          createdAt: topic.createdAt,
+          read: false, // This would need to be tracked in a database for a real implementation;
+        }));
+      } catch (error) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch notifications",
+          stack: error instanceof Error ? error.stack : undefined,
+        });
+      }
     },
   }),
 };

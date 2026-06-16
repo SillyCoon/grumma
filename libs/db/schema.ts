@@ -1,10 +1,12 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  index,
   integer,
   pgSchema,
   text,
   timestamp,
+  unique,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -90,3 +92,22 @@ export const tour = grumma.table("tour", {
   type: text().notNull(),
   completed: boolean().notNull().default(false),
 });
+
+export const notificationSourceEnum = grumma.enum("notificationSource", [
+  "community",
+]);
+
+export const notificationsRead = grumma.table(
+  "notifications_read",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    userId: text().notNull(),
+    notificationId: text().notNull(),
+    source: notificationSourceEnum().notNull(),
+    readAt: timestamp().notNull(),
+  },
+  (t) => [
+    unique().on(t.userId, t.notificationId, t.source),
+    index().on(t.userId),
+  ],
+);

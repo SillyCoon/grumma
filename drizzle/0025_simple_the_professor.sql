@@ -1,0 +1,2 @@
+CREATE INDEX "notifications_read_userId_index" ON "grumma"."notifications_read" USING btree ("userId");--> statement-breakpoint
+ALTER TABLE "grumma"."notifications_read" ADD CONSTRAINT "notifications_read_userId_notificationId_source_unique" UNIQUE("userId","notificationId","source");

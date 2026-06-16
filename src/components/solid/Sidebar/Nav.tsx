@@ -1,22 +1,16 @@
-import { actions } from "astro:actions";
-import { navigate } from "astro:transitions/client";
-import { NavButtonClass } from "ui/navigation-button";
-import { HelpNav } from "./HelpNav";
-import { NavButton } from "./NavButton";
-import { children, type JSX, Show } from "solid-js";
+import { HelpNav } from "../HelpNav";
+import { LoginButton, LogoutButton } from "../LoginLogoutButtons";
+import { NavButton } from "../NavButton";
+import { Show } from "solid-js";
 import { COMMUNITY_URL } from "~/libs/community";
-import { IoLogOut } from "solid-icons/io";
 
 export const Nav = (props: {
   loggedIn?: boolean;
   isAdmin?: boolean;
   reviewCount?: number | null;
-  children?: JSX.Element;
   onClick?: () => void;
 }) => {
   const reviewCount = props.reviewCount || undefined;
-
-  const resolved = children(() => props.children);
 
   return (
     <>
@@ -60,41 +54,11 @@ export const Nav = (props: {
       />
       <HelpNav onClick={props.onClick} loggedIn={props.loggedIn} />
 
-      <div class="flex">{resolved()}</div>
-
       {props.loggedIn ? (
         <LogoutButton onClick={props.onClick} />
       ) : (
         <LoginButton onClick={props.onClick} />
       )}
     </>
-  );
-};
-
-const LoginButton = (props: { onClick?: () => void }) => {
-  return <NavButton text="Login" link="/login" onClick={props.onClick} />;
-};
-
-const LogoutButton = (props: { onClick?: () => void }) => {
-  return (
-    <form
-      class="flex"
-      method="post"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        await actions.logout(new FormData());
-        navigate("/");
-      }}
-    >
-      <button
-        onClick={props.onClick}
-        type="submit"
-        class={NavButtonClass}
-        aria-label="Logout"
-        title="Logout"
-      >
-        <IoLogOut size={20} aria-hidden="true" />
-      </button>
-    </form>
   );
 };

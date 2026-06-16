@@ -1,0 +1,34 @@
+---
+import { COMMUNITY_URL } from "~/libs/community";
+import { LogoutButton, LoginButton } from "../solid/LoginLogoutButtons";
+import { NavButton } from "../solid/NavButton";
+import { HelpNav } from "../solid/HelpNav";
+import { contextFromAstro } from "~/libs/context";
+import ReviewNav from "../header/ReviewNav.astro";
+import ReviewNavWithBadge from "../header/ReviewNavWithBadge.astro";
+
+const { user } = contextFromAstro(Astro);
+---
+
+<>
+  {
+    user.role === "admin" && (
+      <NavButton text="Admin Panel" link="/admin/grammar" />
+    )
+  }
+  <NavButton
+    disabled={user.role === "guest"}
+    text="Dashboard"
+    link="/dashboard"
+  />
+  <NavButton disabled={user.role === "guest"} text="Learn" link="/sr/lesson" />
+  <ReviewNavWithBadge server:defer>
+    <ReviewNav reviewCount={"◌"} slot="fallback" />
+  </ReviewNavWithBadge>
+  <NavButton text="Grammar" link="/grammar/" />
+  <NavButton text="Cram" link="/grammar?mode=cram" />
+  <NavButton text="Community" link={COMMUNITY_URL} target="_blank" />
+  <HelpNav client:load loggedIn={user.role !== "guest"} />
+
+  {user.role !== "guest" ? <LogoutButton /> : <LoginButton />}
+</>

@@ -1,4 +1,4 @@
-import { Cache } from "../../index";
+import { CacheFactory, type Cache } from "../../index";
 import { eq } from "drizzle-orm";
 
 import {
@@ -15,7 +15,9 @@ import {
   test,
 } from "vitest";
 import { makeDb } from "../../../../libs/db";
-import { cache } from "../../../../libs/db/schema";
+import { cache as cacheTable } from "../../../../libs/db/schema";
+
+let cache: Cache;
 
 describe("Cache", () => {
   let postgresContainer: StartedPostgreSqlContainer;
@@ -31,6 +33,7 @@ describe("Cache", () => {
     );
 
     db = makeDb(postgresContainer.getConnectionUri());
+    cache = CacheFactory(db);
   }, 30000);
 
   afterAll(async () => {
@@ -38,7 +41,7 @@ describe("Cache", () => {
   });
 
   beforeEach(async () => {
-    await db.delete(cache).execute();
+    await db.delete(cacheTable).execute();
   });
 
   test("should replace existing entry with the same key", async () => {
@@ -46,10 +49,10 @@ describe("Cache", () => {
     const value1 = { foo: "bar" };
     const value2 = { foo: "baz" };
 
-    await Cache.set(key, value1, 60);
-    await Cache.set(key, value2, 60);
+    await cache.set(key, value1, 60);
+    await cache.set(key, value2, 60);
 
-    const cachedValue = await Cache.get<typeof value2>(key);
+    const cachedValue = await cache.get<typeof value2>(key);
     expect(cachedValue).toEqual(value2);
   });
 
@@ -57,8 +60,8 @@ describe("Cache", () => {
     const key = "testKey";
     const value = { foo: "bar" };
 
-    await Cache.set(key, value, 60);
-    const cachedValue = await Cache.get<typeof value>(key);
+    await cache.set(key, value, 60);
+    const cachedValue = await cache.get<typeof value>(key);
 
     expect(cachedValue).toEqual(value);
   });
@@ -66,51 +69,53 @@ describe("Cache", () => {
   test("should return null for expired entries", async () => {
     const key = "testKey";
     const value = { foo: "bar" };
-    await Cache.set(key, value, 1); // Set with 1 second TTL
+    await cache.set(key, value, 1); // Set with 1 second TTL
 
     // Wait for 2 seconds to ensure the entry has expired
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const cachedValue = await Cache.get<typeof value>(key);
+    const cachedValue = await cache.get<typeof value>(key);
     expect(cachedValue).toBeNull();
   });
 
   test("should delete expired entries", async () => {
     const key = "testKey";
     const value = { foo: "bar" };
-    await Cache.set(key, value, 1); // Set with 1 second TTL
+    await cache.set(key, value, 1); // Set with 1 second TTL
 
     // Wait for 2 seconds to ensure the entry has expired
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Try to get the expired entry
-    const cachedValue = await Cache.get<typeof value>(key);
+    const cachedValue = await cache.get<typeof value>(key);
     expect(cachedValue).toBeNull();
 
     // Check if the entry has been deleted from the database
     const data = await db
       .select()
-      .from(cache)
-      .where(eq(cache.key, key))
+      .from(cacheTable)
+      .where(eq(cacheTable.key, key))
       .execute();
     expect(data.length).toBe(0);
   });
 
   test("should return null for non-existent keys", async () => {
-    const cachedValue = await Cache.get("nonExistentKey");
+    const cachedValue = await cache.get("nonExistentKey");
     expect(cachedValue).toBeNull();
   });
 
   test("should handle parsing errors gracefully", async () => {
     const key = "testKey";
     // Insert an entry with invalid JSON value directly into the database
-    await db.insert(cache).values({
+    await db.insert(cacheTable).values({
       key,
-      value: "invalid json",
+      value: "some value",
       insertedAt: new Date(),
     });
 
-    const cachedValue = await Cache.get(key);
+    const cachedValue = await cache.get(key, () => {
+      throw new Error("Parsing error");
+    });
     expect(cachedValue).toBeNull();
   });
 });

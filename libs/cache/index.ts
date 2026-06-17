@@ -1,9 +1,14 @@
 import { eq } from "drizzle-orm";
 import { cache } from "libs/db/schema";
-import { db } from "libs/db";
+import type { DbClient } from "libs/db";
 import crypto from "node:crypto";
 
-const set = async (key: string, value: object, ttlSeconds?: number) => {
+const set = async (
+  db: DbClient,
+  key: string,
+  value: object,
+  ttlSeconds?: number,
+) => {
   const expiresAt = ttlSeconds
     ? new Date(Date.now() + ttlSeconds * 1000)
     : null;
@@ -27,17 +32,21 @@ const set = async (key: string, value: object, ttlSeconds?: number) => {
     .execute();
 };
 
-const setByHash = async (value: object, ttlSeconds?: number) => {
+const setByHash = async (db: DbClient, value: object, ttlSeconds?: number) => {
   const hash = crypto
     .createHash("sha256")
     .update(JSON.stringify(value))
     .digest("hex");
 
-  await set(hash, value, ttlSeconds);
+  await set(db, hash, value, ttlSeconds);
   return hash;
 };
 
-const get = async <T>(key: string, parser?: (value: unknown) => T) => {
+const get = async <T>(
+  db: DbClient,
+  key: string,
+  parser?: (value: unknown) => T,
+) => {
   const data = await db
     .select()
     .from(cache)
@@ -67,8 +76,15 @@ const get = async <T>(key: string, parser?: (value: unknown) => T) => {
   }
 };
 
-export const Cache = {
-  set,
-  get,
-  setByHash,
+export const CacheFactory = (db: DbClient) => {
+  return {
+    set: (key: string, value: object, ttlSeconds?: number) =>
+      set(db, key, value, ttlSeconds),
+    get: <T>(key: string, parser?: (value: unknown) => T) =>
+      get(db, key, parser),
+    setByHash: (value: object, ttlSeconds?: number) =>
+      setByHash(db, value, ttlSeconds),
+  };
 };
+
+export type Cache = ReturnType<typeof CacheFactory>;

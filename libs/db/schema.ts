@@ -3,6 +3,7 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   pgSchema,
   text,
   timestamp,
@@ -111,3 +112,13 @@ export const notificationsRead = grumma.table(
     index().on(t.userId),
   ],
 );
+
+const cacheSchema = pgSchema("cache");
+
+export const cache = cacheSchema.table("cache", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  key: text().notNull().unique(),
+  value: jsonb().notNull(),
+  insertedAt: timestamp().notNull(),
+  expiresAt: timestamp(),
+});

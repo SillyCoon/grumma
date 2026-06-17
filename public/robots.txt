@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://grumma.org/sitemap-index.xml
+Sitemap: https://grumma.org/sitemap.xml
 
 # Disallow admin and auth routes
 Disallow: /admin/

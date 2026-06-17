@@ -4,7 +4,6 @@ import { expect, test } from "vitest";
 import { Lesson } from "./Lesson";
 
 test("Lesson", () => {
-  // @ts-ignore - temporary
   const gp = mockGrammarPoint() as GrammarPoint;
   const { exercises, ...noEx } = gp;
 

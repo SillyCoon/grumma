@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { cache } from "libs/db/schema";
 import type { DbClient } from "libs/db";
 import crypto from "node:crypto";
@@ -60,7 +60,10 @@ const get = async <T>(
 
   if (entry.expiresAt && new Date(entry.expiresAt) < new Date()) {
     // Entry has expired, delete it
-    await db.delete(cache).where(eq(cache.key, key)).execute();
+    await db
+      .delete(cache)
+      .where(and(eq(cache.key, key), eq(cache.expiresAt, entry.expiresAt)))
+      .execute();
     return null;
   }
 

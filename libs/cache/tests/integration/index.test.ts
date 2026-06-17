@@ -5,7 +5,7 @@ import {
   PostgreSqlContainer,
   type StartedPostgreSqlContainer,
 } from "@testcontainers/postgresql";
-import { execSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import {
   afterAll,
   beforeAll,
@@ -28,9 +28,13 @@ describe("Cache", () => {
       .withExposedPorts({ container: 5432, host: 6548 })
       .start();
 
-    execSync(
-      `DATABASE_URL=${postgresContainer.getConnectionUri()} bunx --yes drizzle-kit push`,
-    );
+    execFileSync("bunx", ["--yes", "drizzle-kit", "push"], {
+      env: {
+        ...process.env,
+        DATABASE_URL: postgresContainer.getConnectionUri(),
+      },
+      stdio: "inherit",
+    });
 
     db = makeDb(postgresContainer.getConnectionUri());
     cache = CacheFactory(db);

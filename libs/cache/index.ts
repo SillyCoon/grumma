@@ -8,12 +8,23 @@ const set = async (key: string, value: object, ttlSeconds?: number) => {
     ? new Date(Date.now() + ttlSeconds * 1000)
     : null;
 
-  await db.insert(cache).values({
-    key,
-    value,
-    expiresAt,
-    insertedAt: new Date(),
-  });
+  await db
+    .insert(cache)
+    .values({
+      key,
+      value,
+      expiresAt,
+      insertedAt: new Date(),
+    })
+    .onConflictDoUpdate({
+      target: cache.key,
+      set: {
+        value,
+        expiresAt,
+        insertedAt: new Date(),
+      },
+    })
+    .execute();
 };
 
 const setByHash = async (value: object, ttlSeconds?: number) => {
@@ -26,7 +37,7 @@ const setByHash = async (value: object, ttlSeconds?: number) => {
   return hash;
 };
 
-const get = async (key: string) => {
+const get = async <T>(key: string, parser?: (value: unknown) => T) => {
   const data = await db
     .select()
     .from(cache)
@@ -45,7 +56,15 @@ const get = async (key: string) => {
     return null;
   }
 
-  return entry.value;
+  try {
+    if (parser) {
+      return parser(entry.value);
+    }
+    return entry.value as T;
+  } catch (error) {
+    console.error("Failed to parse cache value", error);
+    return null;
+  }
 };
 
 export const Cache = {

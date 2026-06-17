@@ -2,10 +2,13 @@ import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { getTopics } from "packages/discourse-sdk";
 import { contextFromAstro } from "~/libs/context";
+import { cache } from "libs/cache";
+import { Seq } from "immutable";
+import logger from "libs/logger";
 
 const DISCOURSE_COLLECTION_START = new Date("2026-06-15T00:00:00Z");
 
-type NotificationSource = "discourse";
+type NotificationSource = "community";
 
 export type Notification = {
   id: number;
@@ -31,20 +34,10 @@ export const notifications = {
       if (user.role === "guest") {
         return [];
       }
-
       try {
-        const topics = await getTopics({ after: DISCOURSE_COLLECTION_START });
-
-        return topics.map((topic) => ({
-          id: topic.id,
-          source: "discourse",
-          link: topic.link,
-          title: topic.title,
-          content: topic.excerpt,
-          createdAt: topic.createdAt,
-          read: false, // This would need to be tracked in a database for a real implementation;
-        }));
+        return getNotifications();
       } catch (error) {
+        logger.error(error, "Failed to fetch notifications");
         throw new ActionError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to fetch notifications",
@@ -53,4 +46,49 @@ export const notifications = {
       }
     },
   }),
+};
+
+const cacheKey = (source: NotificationSource) => `notifications-${source}`;
+
+const cacheNotifications = async (notifications: Notification[]) => {
+  if (!notifications.length) return null;
+
+  const notificationsBySource = Seq(notifications).groupBy(
+    (notification) => notification.source,
+  );
+
+  for (const [source, notifications] of notificationsBySource) {
+    await cache.set(cacheKey(source), notifications.toArray(), 60 * 60);
+  }
+};
+
+const getCachedNotifications = async (source: NotificationSource) => {
+  return cache.get<Notification[]>(
+    cacheKey(source),
+    (value) => value as Notification[],
+  );
+};
+
+const getNotifications = async (): Promise<Notification[]> => {
+  const cachedNotifications = await getCachedNotifications("community");
+  if (cachedNotifications) {
+    logger.info("[notifications] cache hit");
+    return cachedNotifications;
+  }
+  logger.info("[notifications] cache miss");
+
+  const topics = await getTopics({ after: DISCOURSE_COLLECTION_START });
+
+  const notifications: Notification[] = topics.map((topic) => ({
+    id: topic.id,
+    source: "community",
+    link: topic.link,
+    title: topic.title,
+    content: topic.excerpt,
+    createdAt: topic.createdAt,
+    read: true, // This would need to be tracked in a database for a real implementation;
+  }));
+
+  await cacheNotifications(notifications);
+  return notifications;
 };

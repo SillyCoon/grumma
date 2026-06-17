@@ -1,5 +1,5 @@
 import { createEffect, Show } from "solid-js";
-import { Nav } from "../Nav";
+import { Nav } from "./Nav";
 import { setSidebarOpen, sidebarOpen } from "./store";
 
 export const Sidebar = (props: { loggedIn?: boolean; isAdmin?: boolean }) => {

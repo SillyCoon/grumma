@@ -1,0 +1,17 @@
+---
+import { contextFromAstro } from "~/libs/context";
+import { NavButton } from "../solid/NavButton";
+
+const { user } = contextFromAstro(Astro);
+
+export type Props = {
+  reviewCount?: number | string;
+};
+---
+
+<NavButton
+  disabled={user.role === "guest"}
+  text="Review"
+  link="/sr/review"
+  badgeContent={Astro.props.reviewCount}
+/>

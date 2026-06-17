@@ -1,0 +1,15 @@
+---
+import { actions } from "astro:actions";
+import { NotificationBadge } from "ui/notification-badge";
+
+const notifications = await Astro.callAction(
+  actions.getNotifications,
+  undefined,
+);
+
+const hasUnread = notifications.data?.some(
+  (notification) => !notification.read,
+);
+---
+
+{hasUnread && <NotificationBadge size="sm" />}

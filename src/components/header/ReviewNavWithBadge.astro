@@ -1,0 +1,13 @@
+---
+import { GET as getReviewCount } from "src/pages/api/sr/review/count";
+
+import { contextFromAstro } from "~/libs/context";
+import ReviewNav from "./ReviewNav.astro";
+
+const { user } = contextFromAstro(Astro);
+
+const reviewCount =
+  user && ((await (await getReviewCount(Astro)).json()) as number | null);
+---
+
+<ReviewNav reviewCount={reviewCount || undefined} />

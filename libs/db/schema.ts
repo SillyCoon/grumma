@@ -113,7 +113,7 @@ export const notificationsRead = grumma.table(
   ],
 );
 
-const cacheSchema = pgSchema("cache");
+export const cacheSchema = pgSchema("cache");
 
 export const cache = cacheSchema.table("cache", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

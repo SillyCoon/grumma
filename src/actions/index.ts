@@ -20,7 +20,7 @@ import { extractUser } from "./utils";
 import { gpManagement } from "./gp-management";
 import { tour } from "./tour";
 import { contextFromAstro } from "~/libs/context";
-import { notifications } from "./notifications";
+import { notifications } from "../features/notifications/actions";
 
 export const SignupErrors = new Map([
   ["weak_password", "Password is too weak, please use 8 symbols or more"],

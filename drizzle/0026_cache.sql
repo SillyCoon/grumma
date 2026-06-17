@@ -6,15 +6,15 @@ CREATE UNLOGGED TABLE "cache"."cache" (
     "insertedAt" timestamp NOT NULL DEFAULT NOW(),
     "expiresAt" timestamp
 );
-CREATE INDEX idx_cache_key ON "cache"."cache" ("key");
-CREATE OR REPLACE PROCEDURE "cache"."expire_rows" (retention_period INTERVAL) AS $$ BEGIN
+CREATE OR REPLACE PROCEDURE "cache"."expire_rows" () AS $$ BEGIN
 DELETE FROM "cache"."cache"
-WHERE "insertedAt" < NOW() - retention_period;
+WHERE "expiresAt" IS NOT NULL
+    AND "expiresAt" < NOW();
 COMMIT;
 END;
 $$ LANGUAGE plpgsql;
 SELECT cron.schedule(
         '0 * * * *',
-        $$CALL "cache"."expire_rows"('1 hour');
+        $$CALL "cache"."expire_rows"();
 $$
 );

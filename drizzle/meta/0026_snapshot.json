@@ -4,6 +4,68 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "cache.cache": {
+      "name": "cache",
+      "schema": "cache",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "cache_id_seq",
+            "schema": "cache",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "insertedAt": {
+          "name": "insertedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "cache_key_unique": {
+          "name": "cache_key_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "key"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "grumma.exercise": {
       "name": "exercise",
       "schema": "grumma",
@@ -14,15 +76,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "exercise_id_seq",
+            "schema": "grumma",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "grumma",
-            "type": "always"
+            "cycle": false
           }
         },
         "grammarPointId": {
@@ -61,16 +123,16 @@
         "exercise_grammarPointId_grammar_point_id_fk": {
           "name": "exercise_grammarPointId_grammar_point_id_fk",
           "tableFrom": "exercise",
+          "tableTo": "grammar_point",
+          "schemaTo": "grumma",
           "columnsFrom": [
             "grammarPointId"
           ],
-          "tableTo": "grammar_point",
-          "schemaTo": "grumma",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -89,15 +151,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "feedback_id_seq",
+            "schema": "grumma",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "grumma",
-            "type": "always"
+            "cycle": false
           }
         },
         "userId": {
@@ -142,16 +204,16 @@
         "feedback_grammarPointId_grammar_point_tmp_id_fk": {
           "name": "feedback_grammarPointId_grammar_point_tmp_id_fk",
           "tableFrom": "feedback",
+          "tableTo": "grammar_point_tmp",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "grammarPointId"
           ],
-          "tableTo": "grammar_point_tmp",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -219,31 +281,31 @@
       "uniqueConstraints": {
         "grammar_point_shortTitle_unique": {
           "name": "grammar_point_shortTitle_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "shortTitle"
-          ],
-          "nullsNotDistinct": false
+          ]
         },
         "grammar_point_title_unique": {
           "name": "grammar_point_title_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "title"
-          ],
-          "nullsNotDistinct": false
+          ]
         },
         "grammar_point_detailedTitle_unique": {
           "name": "grammar_point_detailedTitle_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "detailedTitle"
-          ],
-          "nullsNotDistinct": false
+          ]
         },
         "grammar_point_englishTitle_unique": {
           "name": "grammar_point_englishTitle_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "englishTitle"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -260,15 +322,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "notifications_read_id_seq",
+            "schema": "grumma",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "grumma",
-            "type": "always"
+            "cycle": false
           }
         },
         "userId": {
@@ -309,9 +371,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {},
@@ -319,12 +381,12 @@
       "uniqueConstraints": {
         "notifications_read_userId_notificationId_source_unique": {
           "name": "notifications_read_userId_notificationId_source_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "userId",
             "notificationId",
             "source"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -341,15 +403,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "space_repetition_id_seq",
+            "schema": "grumma",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "grumma",
-            "type": "always"
+            "cycle": false
           }
         },
         "answer": {
@@ -400,16 +462,16 @@
         "space_repetition_grammarPointId_grammar_point_tmp_id_fk": {
           "name": "space_repetition_grammarPointId_grammar_point_tmp_id_fk",
           "tableFrom": "space_repetition",
+          "tableTo": "grammar_point_tmp",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "grammarPointId"
           ],
-          "tableTo": "grammar_point_tmp",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -428,15 +490,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "tour_id_seq",
+            "schema": "grumma",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "grumma",
-            "type": "always"
+            "cycle": false
           }
         },
         "userId": {
@@ -477,15 +539,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "acceptable_answer_id_seq",
+            "schema": "tmp",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "tmp",
-            "type": "always"
+            "cycle": false
           }
         },
         "answerId": {
@@ -533,16 +595,16 @@
         "acceptable_answer_answerId_exercise_part_id_fk": {
           "name": "acceptable_answer_answerId_exercise_part_id_fk",
           "tableFrom": "acceptable_answer",
+          "tableTo": "exercise_part",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "answerId"
           ],
-          "tableTo": "exercise_part",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -561,15 +623,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "always",
             "name": "exercise_part_id_seq",
+            "schema": "tmp",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "tmp",
-            "type": "always"
+            "cycle": false
           }
         },
         "exerciseId": {
@@ -630,16 +692,16 @@
         "exercise_part_exerciseId_exercise_tmp_id_fk": {
           "name": "exercise_part_exerciseId_exercise_tmp_id_fk",
           "tableFrom": "exercise_part",
+          "tableTo": "exercise_tmp",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "exerciseId"
           ],
-          "tableTo": "exercise_tmp",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -658,15 +720,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "byDefault",
             "name": "exercise_tmp_id_seq",
+            "schema": "tmp",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "tmp",
-            "type": "byDefault"
+            "cycle": false
           }
         },
         "grammarPointId": {
@@ -708,27 +770,27 @@
         "exercise_tmp_grammarPointId_grammar_point_tmp_id_fk": {
           "name": "exercise_tmp_grammarPointId_grammar_point_tmp_id_fk",
           "tableFrom": "exercise_tmp",
+          "tableTo": "grammar_point_tmp",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "grammarPointId"
           ],
-          "tableTo": "grammar_point_tmp",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "exercise_tmp_grammarPointId_order_unique": {
           "name": "exercise_tmp_grammarPointId_order_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "grammarPointId",
             "order"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -745,15 +807,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "byDefault",
             "name": "grammar_point_tmp_id_seq",
+            "schema": "tmp",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "tmp",
-            "type": "byDefault"
+            "cycle": false
           }
         },
         "shortTitle": {
@@ -832,17 +894,17 @@
       "uniqueConstraints": {
         "grammar_point_tmp_shortTitle_unique": {
           "name": "grammar_point_tmp_shortTitle_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "shortTitle"
-          ],
-          "nullsNotDistinct": false
+          ]
         },
         "grammar_point_tmp_order_unique": {
           "name": "grammar_point_tmp_order_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "order"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -859,15 +921,15 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
+            "type": "byDefault",
             "name": "label_id_seq",
+            "schema": "tmp",
             "increment": "1",
+            "startWith": "1",
             "minValue": "1",
             "maxValue": "2147483647",
-            "startWith": "1",
             "cache": "1",
-            "cycle": false,
-            "schema": "tmp",
-            "type": "byDefault"
+            "cycle": false
           }
         },
         "name": {
@@ -903,10 +965,10 @@
       "uniqueConstraints": {
         "label_name_unique": {
           "name": "label_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -935,30 +997,30 @@
         "label_to_grammar_point_labelId_label_id_fk": {
           "name": "label_to_grammar_point_labelId_label_id_fk",
           "tableFrom": "label_to_grammar_point",
+          "tableTo": "label",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "labelId"
           ],
-          "tableTo": "label",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "label_to_grammar_point_grammarPointId_grammar_point_tmp_id_fk": {
           "name": "label_to_grammar_point_grammarPointId_grammar_point_tmp_id_fk",
           "tableFrom": "label_to_grammar_point",
+          "tableTo": "grammar_point_tmp",
+          "schemaTo": "tmp",
           "columnsFrom": [
             "grammarPointId"
           ],
-          "tableTo": "grammar_point_tmp",
-          "schemaTo": "tmp",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -1003,13 +1065,14 @@
     }
   },
   "schemas": {
+    "cache": "cache",
     "grumma": "grumma",
     "tmp": "tmp"
   },
-  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

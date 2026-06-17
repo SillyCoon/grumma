@@ -9,9 +9,8 @@ const set = async (
   value: object,
   ttlSeconds?: number,
 ) => {
-  const expiresAt = ttlSeconds
-    ? new Date(Date.now() + ttlSeconds * 1000)
-    : null;
+  const expiresAt =
+    ttlSeconds !== undefined ? new Date(Date.now() + ttlSeconds * 1000) : null;
 
   await db
     .insert(cache)

@@ -1,7 +1,7 @@
-import pino from "pino";
+import { pino } from "pino";
 import { createGcpLoggingPinoConfig } from "@google-cloud/pino-logging-gcp-config";
 
-const logger = pino.pino(
+const logger = pino(
   createGcpLoggingPinoConfig(
     {
       serviceContext: {

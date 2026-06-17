@@ -1,9 +1,8 @@
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
-import { getTopics } from "packages/discourse-sdk";
+import { getTopics } from "discourse-sdk";
 import { contextFromAstro } from "~/libs/context";
 import { cache } from "libs/cache";
-import { Seq } from "immutable";
 import logger from "libs/logger";
 
 const DISCOURSE_COLLECTION_START = new Date("2026-06-15T00:00:00Z");
@@ -35,13 +34,12 @@ export const notifications = {
         return [];
       }
       try {
-        return getNotifications();
+        return await getNotifications();
       } catch (error) {
         logger.error(error, "Failed to fetch notifications");
         throw new ActionError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to fetch notifications",
-          stack: error instanceof Error ? error.stack : undefined,
         });
       }
     },
@@ -50,16 +48,11 @@ export const notifications = {
 
 const cacheKey = (source: NotificationSource) => `notifications-${source}`;
 
-const cacheNotifications = async (notifications: Notification[]) => {
-  if (!notifications.length) return null;
-
-  const notificationsBySource = Seq(notifications).groupBy(
-    (notification) => notification.source,
-  );
-
-  for (const [source, notifications] of notificationsBySource) {
-    await cache.set(cacheKey(source), notifications.toArray(), 60 * 60);
-  }
+const cacheNotifications = async (
+  source: NotificationSource,
+  notifications: Notification[],
+) => {
+  await cache.set(cacheKey(source), notifications, 60 * 60);
 };
 
 const getCachedNotifications = async (source: NotificationSource) => {
@@ -89,6 +82,6 @@ const getNotifications = async (): Promise<Notification[]> => {
     read: true, // This would need to be tracked in a database for a real implementation;
   }));
 
-  await cacheNotifications(notifications);
+  await cacheNotifications("community", notifications);
   return notifications;
 };

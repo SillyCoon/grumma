@@ -11,6 +11,7 @@ const PATHS_TO_IGNORE = [
   "grammar",
   "help",
   "privacy-policy",
+  "sitemap.xml",
 ];
 
 export const onRequest = defineMiddleware(

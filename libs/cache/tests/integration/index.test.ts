@@ -23,7 +23,7 @@ describe("Cache", () => {
 
   beforeAll(async () => {
     postgresContainer = await new PostgreSqlContainer("postgres:15.6-alpine")
-      .withExposedPorts({ container: 5432, host: 6546 })
+      .withExposedPorts({ container: 5432, host: 6547 })
       .start();
 
     execSync(

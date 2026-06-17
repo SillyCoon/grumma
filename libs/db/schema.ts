@@ -119,6 +119,6 @@ export const cache = cacheSchema.table("cache", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   key: text().notNull().unique(),
   value: jsonb().notNull(),
-  insertedAt: timestamp().notNull(),
+  insertedAt: timestamp().notNull().defaultNow(),
   expiresAt: timestamp(),
 });

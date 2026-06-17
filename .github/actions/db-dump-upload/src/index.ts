@@ -1,3 +1,4 @@
+// biome-ignore-all lint: script file
 import { createClient } from "@supabase/supabase-js";
 import * as fs from "fs";
 

@@ -5,14 +5,14 @@ import { contextFromAstro } from "~/libs/context";
 type SitemapUrl = {
   loc: string;
   changefreq?: string;
-  priority?: number;
+  priority?: number | string;
 };
 
 const staticPages: SitemapUrl[] = [
   {
     loc: "grammar",
     changefreq: "weekly",
-    priority: 1.0,
+    priority: "1.0",
   },
   {
     loc: "cram",

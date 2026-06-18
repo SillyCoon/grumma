@@ -23,9 +23,15 @@ const { user } = contextFromAstro(Astro);
     link="/dashboard"
   />
   <NavButton disabled={user.role === "guest"} text="Learn" link="/sr/lesson" />
-  <ReviewNavWithBadge server:defer>
-    <ReviewNav reviewCount={"◌"} slot="fallback" />
-  </ReviewNavWithBadge>
+  {
+    user.role === "guest" ? (
+      <ReviewNav reviewCount={undefined} />
+    ) : (
+      <ReviewNavWithBadge server:defer>
+        <ReviewNav reviewCount={"◌"} slot="fallback" />
+      </ReviewNavWithBadge>
+    )
+  }
   <NavButton text="Grammar" link="/grammar/" />
   <NavButton text="Cram" link="/grammar?mode=cram" />
   <NavButton text="Community" link={COMMUNITY_URL} target="_blank" />

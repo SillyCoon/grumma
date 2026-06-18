@@ -1,10 +1,9 @@
 ---
 import { actions } from "astro:actions";
 
-const notifications = await Astro.callAction(
-  actions.getNotifications,
-  undefined,
-);
+const notifications = Astro.locals.user
+  ? await Astro.callAction(actions.getNotifications, undefined)
+  : null;
 ---
 
 <div class="flex flex-col p-2">

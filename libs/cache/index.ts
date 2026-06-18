@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
-import { cache } from "libs/db/schema";
-import type { DbClient } from "libs/db";
+import { cache as cacheSchema } from "libs/db/schema";
+import { db, type DbClient } from "libs/db";
 import crypto from "node:crypto";
 
 const set = async (
@@ -13,7 +13,7 @@ const set = async (
     ttlSeconds !== undefined ? new Date(Date.now() + ttlSeconds * 1000) : null;
 
   await db
-    .insert(cache)
+    .insert(cacheSchema)
     .values({
       key,
       value,
@@ -21,7 +21,7 @@ const set = async (
       insertedAt: new Date(),
     })
     .onConflictDoUpdate({
-      target: cache.key,
+      target: cacheSchema.key,
       set: {
         value,
         expiresAt,
@@ -48,8 +48,8 @@ const get = async <T>(
 ) => {
   const data = await db
     .select()
-    .from(cache)
-    .where(eq(cache.key, key))
+    .from(cacheSchema)
+    .where(eq(cacheSchema.key, key))
     .execute();
 
   if (data.length === 0) {
@@ -61,8 +61,13 @@ const get = async <T>(
   if (entry.expiresAt && new Date(entry.expiresAt) < new Date()) {
     // Entry has expired, delete it
     await db
-      .delete(cache)
-      .where(and(eq(cache.key, key), eq(cache.expiresAt, entry.expiresAt)))
+      .delete(cacheSchema)
+      .where(
+        and(
+          eq(cacheSchema.key, key),
+          eq(cacheSchema.expiresAt, entry.expiresAt),
+        ),
+      )
       .execute();
     return null;
   }
@@ -90,3 +95,4 @@ export const CacheFactory = (db: DbClient) => {
 };
 
 export type Cache = ReturnType<typeof CacheFactory>;
+export const cache = CacheFactory(db);

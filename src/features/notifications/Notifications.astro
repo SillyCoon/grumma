@@ -35,3 +35,16 @@ import Badge from "./Badge.astro";
     width: 300px;
   }
 </style>
+
+<script>
+import { actions } from "astro:actions";
+
+  const popover = document.getElementById("notifications") as HTMLDetailsElement;
+  popover?.addEventListener('toggle', (e) => {
+    if (e.newState === 'closed') {
+      actions.readAll().catch((err) => {
+        console.error('Failed to mark notifications as read', err);
+      });
+    }
+  })
+</script>

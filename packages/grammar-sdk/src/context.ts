@@ -1,5 +1,7 @@
 export type Context = {
-  user: { role: "admin" | "user" | "guest" };
+  user:
+    | { role: "admin" | "user"; id: string }
+    | { role: "guest"; id?: undefined };
 };
 
 export const Context = {

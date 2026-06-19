@@ -1,5 +1,6 @@
 ---
 import { actions } from "astro:actions";
+import { NotificationBadge } from "packages/ui/notification-badge";
 
 const notifications = Astro.locals.user
   ? await Astro.callAction(actions.getNotifications, undefined)
@@ -12,10 +13,11 @@ const notifications = Astro.locals.user
       <p class="text-sm text-white">No notifications</p>
     ) : (
       notifications.data?.map((notification) => (
-        <a
+        <div>
+          <a
           href={notification.link}
           target="_blank"
-          class="flex items-start gap-2 rounded-md p-2 lg:hover:bg-secondary/20 lg:hover:shadow-md cursor-pointer"
+          class="flex relative items-start gap-2 rounded-md p-2 lg:hover:bg-secondary/20 lg:hover:shadow-md cursor-pointer"
         >
           <div class="flex-1">
             <p class="text-sm text-white font-bold ">{notification.title}</p>
@@ -25,7 +27,9 @@ const notifications = Astro.locals.user
               }).format(new Date(notification.createdAt))}
             </p>
           </div>
+          {!notification.read && <NotificationBadge size="sm" placement="center-right"/>}
         </a>
+        </div>
       ))
     )
   }

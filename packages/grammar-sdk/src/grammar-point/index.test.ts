@@ -30,7 +30,7 @@ describe("GrammarPoint", () => {
     ];
 
     const result = GrammarPoints.filterVisible(grammarPoints, {
-      user: { role: "admin" },
+      user: { role: "admin", id: "1" },
     });
     expect(result).toEqual(grammarPoints);
   });
@@ -80,7 +80,7 @@ describe("GrammarPoint", () => {
     ];
 
     const result = GrammarPoints.filterVisible(grammarPoints, {
-      user: { role: "admin" },
+      user: { role: "admin", id: "1" },
     });
     expect(result).toEqual(grammarPoints);
   });
@@ -130,7 +130,7 @@ describe("GrammarPoint", () => {
     ];
 
     const result = GrammarPoints.filterVisible(grammarPoints, {
-      user: { role: "admin" },
+      user: { role: "admin", id: "1" },
     });
     expect(result).toEqual(grammarPoints);
   });

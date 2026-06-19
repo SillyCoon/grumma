@@ -30,6 +30,7 @@ const settings = {
 const contextFromUser = (user: User): Context => ({
   user: {
     role: isUserAdmin(user) ? "admin" : "user",
+    id: user.id,
   },
 });
 

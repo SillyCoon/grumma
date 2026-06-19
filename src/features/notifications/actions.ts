@@ -117,17 +117,18 @@ const getCommunityNotifications = async (): Promise<SourceNotification[]> => {
 
 const getNotifications = async (userId: string): Promise<Notification[]> => {
   const cachedNotifications = await getCachedNotifications("community");
-  if (cachedNotifications?.every((notification) => notification.read)) {
-    logger.info("[notifications] full cache hit");
+
+  const getSourceNotifications = async (): Promise<SourceNotification[]> => {
+    if (!cachedNotifications) {
+      logger.info("[notifications] cache miss");
+      return await getCommunityNotifications();
+    }
+    logger.info("[notifications] cache hit");
     return cachedNotifications;
-  }
+  };
 
-  if (!cachedNotifications) {
-    logger.info("[notifications] cache miss");
-  }
-
-  const sourceNotifications =
-    cachedNotifications ?? (await getCommunityNotifications());
+  const sourceNotifications: SourceNotification[] =
+    await getSourceNotifications();
 
   const readNotifications = await getReadNotifications(userId);
 

@@ -43,5 +43,5 @@ const { user } = contextFromAstro(Astro);
       </div>
     )
   }
-  {user.role !== "guest" ? <LogoutButton /> : <LoginButton />}
+  {user.role !== "guest" ? <LogoutButton client:load /> : <LoginButton client:load />}
 </>

@@ -23,8 +23,8 @@ import { getGrammarPoint, putExercises } from "../../src/db";
 import type { Context } from "../../src/context";
 import type { Exercise } from "../../src/exercise";
 
-const adminContext: Context = { user: { role: "admin" } };
-const userContext: Context = { user: { role: "user" } };
+const adminContext: Context = { user: { role: "admin", id: "1" } };
+const userContext: Context = { user: { role: "user", id: "2" } };
 const guestContext: Context = { user: { role: "guest" } };
 
 const createExercise = (overrides: Partial<Exercise> = {}): Exercise => ({

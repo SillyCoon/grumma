@@ -55,7 +55,7 @@ describe("Exercise", () => {
         mockExercise({ id: 2, hide: false }),
       ];
       const result = Exercises.filterVisible(exercises, {
-        user: { role: "user" },
+        user: { role: "user", id: "2" },
       });
       expect(result).toEqual([exercises[1]]);
     });
@@ -75,7 +75,7 @@ describe("Exercise", () => {
         mockExercise({ id: 2, hide: false }),
       ];
       const result = Exercises.filterVisible(exercises, {
-        user: { role: "admin" },
+        user: { role: "admin", id: "1" },
       });
       expect(result).toEqual(exercises);
     });

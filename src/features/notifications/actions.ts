@@ -66,7 +66,7 @@ export const notifications = {
           .values(
             notifications.map((notification) => ({
               userId: user.id,
-              notificationId: `${notification.id}`,
+              notificationId: notification.id,
               source: notification.source,
               readAt: new Date(),
             })),

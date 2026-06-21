@@ -21,6 +21,7 @@ import { gpManagement } from "./gp-management";
 import { tour } from "./tour";
 import { contextFromAstro } from "~/libs/context";
 import { notifications } from "../features/notifications/actions";
+import { latestTopics } from "~/features/latest-topics/actions";
 
 export const SignupErrors = new Map([
   ["weak_password", "Password is too weak, please use 8 symbols or more"],
@@ -311,6 +312,7 @@ export const server = {
   ...gpManagement,
   ...tour,
   ...notifications,
+  ...latestTopics,
 };
 
 class UpdatePasswordFailed extends ActionError {

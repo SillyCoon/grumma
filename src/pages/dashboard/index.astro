@@ -9,6 +9,7 @@ import { BarList } from "ui/progress-bar-list";
 import { Skeleton } from "ui/skeleton";
 import { Streak } from "@components/solid/dashboard/Streak";
 import { DashboardTour } from "@components/solid/dashboard/DashboardTour";
+import LatestTopics from "~/features/latest-topics/LatestTopics.astro";
 
 const { data: dashboard } = await Astro.callAction(actions.dashboard, {
   today: new Date(),
@@ -102,5 +103,6 @@ const torfl =
         </WeekSchedule>
       </CardContent>
     </Card>
+    <LatestTopics />
   </section>
 </Layout>

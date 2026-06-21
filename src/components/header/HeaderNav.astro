@@ -27,7 +27,7 @@ const { user } = contextFromAstro(Astro);
     user.role === "guest" ? (
       <ReviewNav reviewCount={undefined} />
     ) : (
-      <ReviewNavWithBadge server:defer>
+      <ReviewNavWithBadge server:defer transition:persist>
         <ReviewNav reviewCount={"◌"} slot="fallback" />
       </ReviewNavWithBadge>
     )
@@ -43,5 +43,11 @@ const { user } = contextFromAstro(Astro);
       </div>
     )
   }
-  {user.role !== "guest" ? <LogoutButton client:load /> : <LoginButton client:load />}
+  {
+    user.role !== "guest" ? (
+      <LogoutButton client:load />
+    ) : (
+      <LoginButton client:load />
+    )
+  }
 </>

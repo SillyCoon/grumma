@@ -22,6 +22,15 @@
   }
 }
 
+@utility focus-ring {
+  &:focus-visible {
+    @apply ring-2 ring-ring ring-offset-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
 @utility step {
   counter-increment: step;
 

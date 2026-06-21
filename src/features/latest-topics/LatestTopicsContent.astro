@@ -1,0 +1,34 @@
+---
+import { contextFromAstro } from "~/libs/context";
+import { actions } from "astro:actions";
+import { ITEM_CLASS } from ".";
+
+const { user } = contextFromAstro(Astro);
+
+if (user.role === "guest") {
+  return null;
+}
+
+const latestTopics = await Astro.callAction(actions.getLatestTopics, null);
+
+if (!latestTopics.data) {
+  return null;
+}
+---
+
+{
+  latestTopics.data.map((topic) => (
+    <a class={ITEM_CLASS} href={topic.link} target="_blank">
+      <h3 class="text-sm font-medium">{topic.title}</h3>
+      <p class="text-xs text-secondary">
+        <span>{topic.categoryName}</span>
+        <span class="mx-1">•</span>
+        <span>
+          {Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(
+            new Date(topic.lastPostedAt),
+          )}
+        </span>
+      </p>
+    </a>
+  ))
+}

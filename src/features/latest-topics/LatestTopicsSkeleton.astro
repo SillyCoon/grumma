@@ -1,0 +1,9 @@
+---
+import { ITEM_CLASS } from ".";
+---
+
+{
+  Array.from({ length: 6 }).map(() => (
+    <div class={`${ITEM_CLASS} animate-pulse bg-secondary/20 h-17`} />
+  ))
+}

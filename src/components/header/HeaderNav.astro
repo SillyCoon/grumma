@@ -1,5 +1,4 @@
 ---
-import { COMMUNITY_URL } from "~/libs/community";
 import { LogoutButton, LoginButton } from "../solid/LoginLogoutButtons";
 import { NavButton } from "../solid/NavButton";
 import { HelpNav } from "../solid/HelpNav";
@@ -27,14 +26,13 @@ const { user } = contextFromAstro(Astro);
     user.role === "guest" ? (
       <ReviewNav reviewCount={undefined} />
     ) : (
-      <ReviewNavWithBadge server:defer>
+      <ReviewNavWithBadge server:defer transition:persist>
         <ReviewNav reviewCount={"◌"} slot="fallback" />
       </ReviewNavWithBadge>
     )
   }
   <NavButton text="Grammar" link="/grammar/" />
   <NavButton text="Cram" link="/grammar?mode=cram" />
-  <NavButton text="Community" link={COMMUNITY_URL} target="_blank" />
   <HelpNav client:load loggedIn={user.role !== "guest"} />
   {
     user.role !== "guest" && (
@@ -43,5 +41,11 @@ const { user } = contextFromAstro(Astro);
       </div>
     )
   }
-  {user.role !== "guest" ? <LogoutButton client:load /> : <LoginButton client:load />}
+  {
+    user.role !== "guest" ? (
+      <LogoutButton client:load />
+    ) : (
+      <LoginButton client:load />
+    )
+  }
 </>

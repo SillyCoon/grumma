@@ -37,7 +37,7 @@ const torfl =
 <Layout title="Dashboard" transition:persist>
   <DashboardTour completed={tourCompleted ?? true} client:only="solid-js" />
   <section
-    class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-3 md:grid-cols-2 md:gap-y-10 gap-5"
+    class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-3 md:grid-cols-2 md:gap-y-5 gap-5"
   >
     <DashboardCell
       data-tour="learn-card"
@@ -85,7 +85,7 @@ const torfl =
       </CardContent>
     </Card>
 
-    <Card class="col-span-1 row-span-2">
+    <Card class="col-span-1 row-span-2 h-fit">
       <CardHeader>
         <CardTitle>Review forecast</CardTitle>
       </CardHeader>

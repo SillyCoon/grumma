@@ -2,7 +2,6 @@ import { HelpNav } from "../HelpNav";
 import { LoginButton, LogoutButton } from "../LoginLogoutButtons";
 import { NavButton } from "../NavButton";
 import { Show } from "solid-js";
-import { COMMUNITY_URL } from "~/libs/community";
 
 export const Nav = (props: {
   loggedIn?: boolean;
@@ -45,12 +44,6 @@ export const Nav = (props: {
         text="Cram"
         link="/grammar?mode=cram"
         onClick={props.onClick}
-      />
-      <NavButton
-        text="Community"
-        link={COMMUNITY_URL}
-        onClick={props.onClick}
-        target="_blank"
       />
       <HelpNav onClick={props.onClick} loggedIn={props.loggedIn} />
 

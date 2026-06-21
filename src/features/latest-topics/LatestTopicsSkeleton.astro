@@ -1,9 +1,9 @@
 ---
-import LatestTopicContainer from "./LatestTopicContainer.astro";
+import { ITEM_CLASS } from ".";
 ---
 
 {
   Array.from({ length: 6 }).map(() => (
-    <LatestTopicContainer className="animate-pulse bg-secondary/20 h-17" />
+    <div class={`${ITEM_CLASS} animate-pulse bg-secondary/20 h-17`} />
   ))
 }

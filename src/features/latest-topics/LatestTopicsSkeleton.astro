@@ -1,0 +1,9 @@
+---
+import LatestTopicContainer from "./LatestTopicContainer.astro";
+---
+
+{
+  Array.from({ length: 6 }).map(() => (
+    <LatestTopicContainer className="animate-pulse bg-secondary/20 h-17" />
+  ))
+}

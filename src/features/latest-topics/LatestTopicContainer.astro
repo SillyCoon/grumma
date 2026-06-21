@@ -1,0 +1,16 @@
+---
+import { cn } from "packages/ui/utils";
+
+export type Props = {
+  className?: string;
+};
+---
+
+<div
+  class={cn(
+    Astro.props.className,
+    `block py-2 px-3 rounded-md hover:bg-secondary/10 active:bg-secondary/20 transition-colors`,
+  )}
+>
+  <slot />
+</div>

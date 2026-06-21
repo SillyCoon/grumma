@@ -59,17 +59,15 @@ export const getTopics = async ({ after }: { after: Date }) => {
 
 type LatestTopicsResponse = {
   topic_list: {
-    topics: [
-      {
-        id: number;
-        created_at: string;
-        last_posted_at: string;
-        unicode_title: string;
-        title: string;
-        category_id: number;
-        slug: string;
-      },
-    ];
+    topics: {
+      id: number;
+      created_at: string;
+      last_posted_at: string;
+      unicode_title: string;
+      title: string;
+      category_id: number;
+      slug: string;
+    }[];
   };
 };
 
@@ -83,12 +81,10 @@ export type LatestTopic = {
 };
 
 type SiteInfo = {
-  categories: [
-    {
-      id: number;
-      name: string;
-    },
-  ];
+  categories: {
+    id: number;
+    name: string;
+  }[];
 };
 
 const fetchJson = async <T>(url: URL): Promise<T> => {

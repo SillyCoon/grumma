@@ -50,7 +50,7 @@ const getLatestTopicsWithCache = async () => {
     },
   );
   if (cachedTopics) return cachedTopics;
-  const topics = await getLatestTopics();
+  const topics = (await getLatestTopics()).slice(0, 6);
   cache.set(cacheKey, topics, cacheDuration).catch((e) => {
     logger.error(e, "Failed to cache latest topics");
   });

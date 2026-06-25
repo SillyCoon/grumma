@@ -1,4 +1,4 @@
-import type { Context } from "./context";
+import { Context } from "./context";
 import { getGrammarPoint, getGrammarPoints } from "./db";
 import { GrammarPoint, GrammarPoints } from "./grammar-point";
 
@@ -7,7 +7,7 @@ const cacheDuration = 1000 * 60 * 30; // 30 minutes
 let cacheTimestamp: number | null = null;
 
 const getFromCache = async (context: Context, ids?: string[]) => {
-  if (context.user.role === "admin") {
+  if (Context.isAdmin(context)) {
     return null;
   }
   if (
@@ -27,6 +27,11 @@ const getFromCache = async (context: Context, ids?: string[]) => {
 const setCache = (grammarPoints: GrammarPoint[]) => {
   InMemoryCache = grammarPoints;
   cacheTimestamp = Date.now();
+};
+
+export const clearCache = () => {
+  InMemoryCache = null;
+  cacheTimestamp = null;
 };
 
 export const fetchGrammarPoint = async (
@@ -59,6 +64,7 @@ export const fetchAllGrammarPoints = async (
   context: Context,
 ): Promise<GrammarPoint[]> => {
   const cached = await getFromCache(context);
+
   if (cached) {
     return GrammarPoints.filterVisible(cached, context);
   }

@@ -19,6 +19,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "The Case of the Subject",
     englishTitle: "Who? What?",
     torfl: "A1",
+    hide: false,
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "The Case of Possession",
     englishTitle: "Whose? Of what?",
     torfl: "A1",
+    hide: false,
   },
   {
     id: 3,
@@ -37,6 +39,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "The Case of Indirect Object",
     englishTitle: "To whom? To what?",
     torfl: "A2",
+    hide: false,
   },
   {
     id: 4,
@@ -46,6 +49,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "The Case of Direct Object",
     englishTitle: "Whom? What?",
     torfl: "A1",
+    hide: false,
   },
   {
     id: 5,
@@ -55,6 +59,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "The Case of Agent",
     englishTitle: "By whom? By what?",
     torfl: "A2",
+    hide: false,
   },
   {
     id: 6,
@@ -64,6 +69,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "The Case of Location",
     englishTitle: "About whom? About what?",
     torfl: "A1",
+    hide: false,
   },
   {
     id: 7,
@@ -73,6 +79,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "Simple Present Actions",
     englishTitle: "I do",
     torfl: "A1",
+    hide: false,
   },
   {
     id: 8,
@@ -82,6 +89,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "Simple Past Actions",
     englishTitle: "I did",
     torfl: "A1",
+    hide: false,
   },
   {
     id: 9,
@@ -91,6 +99,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "Simple Future Actions",
     englishTitle: "I will do",
     torfl: "A2",
+    hide: false,
   },
   {
     id: 10,
@@ -100,6 +109,7 @@ const grammarPointsData: (typeof grammarPointsTmp.$inferInsert)[] = [
     detailedTitle: "Understanding Aspect in Russian",
     englishTitle: "Completed vs Ongoing Actions",
     torfl: "A2",
+    hide: true,
   },
 ];
 

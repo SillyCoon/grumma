@@ -1,0 +1,30 @@
+---
+import type { APIRoute } from "astro";
+import { contextFromAstro } from "~/libs/context";
+import { clearCache, Context } from "packages/grammar-sdk";
+import logger from "libs/logger";
+
+export const GET: APIRoute = async (_context) => {
+  const isAdmin = Context.isAdmin(contextFromAstro(_context));
+  logger.info(`User is admin: ${isAdmin}`);
+
+  if (isAdmin) {
+    logger.info("Clearing cache...");
+    clearCache();
+  } else {
+    return new Response(JSON.stringify({ message: "Forbidden" }), {
+      status: 403,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  return new Response(JSON.stringify({ message: "Cache cleared" }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+---

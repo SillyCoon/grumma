@@ -31,9 +31,11 @@ export function grammarPointsLoader(): LiveLoader<
     loadCollection: async ({ filter }) => {
       try {
         if (filter && "ids" in filter) {
-          return grammarPointsToEntries(
+          return {...grammarPointsToEntries(
             await fetchGrammarPoints(filter.ids, filter.context),
-          );
+          ), cacheHint: {
+            tags: [`grammar-points-${filter.context.user.role}-${filter.ids.join(",")}`],
+          }};
         }
 
         const context = filter?.context ?? { user: { role: "guest" } };

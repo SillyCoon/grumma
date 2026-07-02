@@ -10,9 +10,13 @@ const sessionResult = Astro.params.sessionId
       sessionId: Astro.params.sessionId,
     })
   : undefined;
-const grammar = await getLiveCollection("grammarPoints", {
+const { entries: grammar, error } = await getLiveCollection("grammarPoints", {
   context: contextFromAstro(Astro),
 });
+
+if (error) {
+  return Astro.redirect("/error");
+}
 ---
 
 <Layout title="Review results">
@@ -20,7 +24,7 @@ const grammar = await getLiveCollection("grammarPoints", {
     sessionResult?.data ? (
       <SessionResult
         sessionResult={sessionResult.data}
-        grammar={grammar.entries?.map((entry) => entry.data) ?? []}
+        grammar={grammar?.map((entry) => entry.data) ?? []}
       />
     ) : (
       <div>

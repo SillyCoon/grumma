@@ -5,9 +5,13 @@ import Layout from "../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
 import { getLiveCollection } from "astro:content";
 
-const grammar = await getLiveCollection("grammarPoints", {
+const { entries, error } = await getLiveCollection("grammarPoints", {
   context: contextFromAstro(Astro),
 });
+
+if (error) {
+  return Astro.redirect("/error");
+}
 
 const inReview = (await (await fetchGpInReview(Astro)).json()) as string[];
 const maybeMode = Astro.url.searchParams.get("mode");
@@ -17,7 +21,7 @@ const mode = maybeMode === "cram" ? "cram" : "nav";
 <Layout title="Grammar" topPadding={false} transition:persist>
   <Grammar
     client:load
-    grammar={grammar.entries?.map((entry) => entry.data) ?? []}
+    grammar={entries?.map((entry) => entry.data) ?? []}
     inReview={inReview}
     mode={mode}
   />

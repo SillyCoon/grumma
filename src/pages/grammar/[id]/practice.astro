@@ -7,10 +7,18 @@ import { getLiveCollection } from "astro:content";
 
 const ids = Astro.params.id?.split("-") ?? [];
 
-const { entries: grammarPoints } = await getLiveCollection("grammarPoints", {
-  ids,
-  context: contextFromAstro(Astro),
-});
+const { entries: grammarPoints, error } = await getLiveCollection(
+  "grammarPoints",
+  {
+    ids,
+    context: contextFromAstro(Astro),
+  },
+);
+
+if (error) {
+  return Astro.redirect("/error");
+}
+
 const exercises = simpleShuffle(
   (grammarPoints ?? []).flatMap((g) => g.data.exercises),
 );

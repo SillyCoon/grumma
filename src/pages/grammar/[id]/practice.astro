@@ -1,14 +1,27 @@
 ---
-import { fetchGrammarPoints } from "grammar-sdk";
 import { simpleShuffle } from "utils/array";
 import { Exercises } from "../../../components/solid/Exercise/Exercises";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
+import { getLiveCollection } from "astro:content";
 
 const ids = Astro.params.id?.split("-") ?? [];
 
-const grammarPoints = await fetchGrammarPoints(ids, contextFromAstro(Astro));
-const exercises = simpleShuffle(grammarPoints.flatMap((g) => g.exercises));
+const { entries: grammarPoints, error } = await getLiveCollection(
+  "grammarPoints",
+  {
+    ids,
+    context: contextFromAstro(Astro),
+  },
+);
+
+if (error) {
+  return Astro.redirect("/error");
+}
+
+const exercises = simpleShuffle(
+  (grammarPoints ?? []).flatMap((g) => g.data.exercises),
+);
 ---
 
 <Layout title="Practice">

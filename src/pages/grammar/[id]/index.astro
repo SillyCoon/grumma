@@ -2,24 +2,41 @@
 import { GET as fetchGpInReview } from "@api/sr/review/list";
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import { ReviewToggleButton } from "@components/solid/grammar-point/ReviewToggleButton";
-import { fetchGrammarPoint } from "grammar-sdk";
 import { Button } from "packages/ui/button";
 import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
+import { getLiveEntry } from "astro:content";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
 
-const grammarPoint = id
-  ? await fetchGrammarPoint(id, contextFromAstro(Astro))
-  : undefined;
+if (!id || isNaN(Number(id))) {
+  return Astro.redirect("/grammar");
+}
+
+const { entry: grammarPointEntry, error: grammarPointError } =
+  await getLiveEntry("grammarPoints", {
+    id,
+    context: contextFromAstro(Astro),
+  });
+
+if (grammarPointError) {
+  return Astro.redirect("/error");
+}
+
+if (!grammarPointEntry) {
+  return Astro.redirect("/grammar");
+}
+
 const inReview = id
   ? ((
       (await (await fetchGpInReview(Astro)).json()) ?? ([] as string[])
     )?.includes?.(id) ?? false)
   : false;
 const user = Astro.locals.user;
+
+const grammarPoint = grammarPointEntry.data;
 ---
 
 <Layout title="Grammar">

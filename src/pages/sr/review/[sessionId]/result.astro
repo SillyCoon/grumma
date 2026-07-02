@@ -2,7 +2,7 @@
 import { SessionResult } from "@components/solid/Exercise/SessionResult";
 import Layout from "@layouts/Layout.astro";
 import { actions } from "astro:actions";
-import { fetchAllGrammarPoints } from "grammar-sdk";
+import { getLiveCollection } from "astro:content";
 import { contextFromAstro } from "~/libs/context";
 
 const sessionResult = Astro.params.sessionId
@@ -10,13 +10,22 @@ const sessionResult = Astro.params.sessionId
       sessionId: Astro.params.sessionId,
     })
   : undefined;
-const grammar = await fetchAllGrammarPoints(contextFromAstro(Astro));
+const { entries: grammar, error } = await getLiveCollection("grammarPoints", {
+  context: contextFromAstro(Astro),
+});
+
+if (error) {
+  return Astro.redirect("/error");
+}
 ---
 
 <Layout title="Review results">
   {
     sessionResult?.data ? (
-      <SessionResult sessionResult={sessionResult.data} grammar={grammar} />
+      <SessionResult
+        sessionResult={sessionResult.data}
+        grammar={grammar?.map((entry) => entry.data) ?? []}
+      />
     ) : (
       <div>
         No session result found, probably it hasn't been calculated yet. Please

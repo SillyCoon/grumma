@@ -1,16 +1,22 @@
 ---
 import { SessionResult } from "@components/solid/Exercise/SessionResult";
 import Layout from "@layouts/Layout.astro";
-import { fetchAllGrammarPoints } from "grammar-sdk";
+import { getLiveCollection } from "astro:content";
 import { contextFromAstro } from "~/libs/context";
 
-const grammar = await fetchAllGrammarPoints(contextFromAstro(Astro));
+const { entries: grammar, error } = await getLiveCollection("grammarPoints", {
+  context: contextFromAstro(Astro),
+});
+
+if (error) {
+  return Astro.redirect("/error");
+}
 ---
 
 <Layout title="Practice results">
   <SessionResult
     client:only="solid-js"
     sessionResult={undefined}
-    grammar={grammar}
+    grammar={grammar?.map((entry) => entry.data) ?? []}
   />
 </Layout>

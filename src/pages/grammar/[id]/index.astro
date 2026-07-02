@@ -21,7 +21,11 @@ const { entry: grammarPointEntry, error: grammarPointError } =
     context: contextFromAstro(Astro),
   });
 
-if (!grammarPointEntry || grammarPointError) {
+if (grammarPointError) {
+  return Astro.redirect("/error");
+}
+
+if (!grammarPointEntry) {
   return Astro.redirect("/grammar");
 }
 

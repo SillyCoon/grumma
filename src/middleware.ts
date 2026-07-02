@@ -4,6 +4,7 @@ import { isUserAdmin } from "libs/auth/admin";
 
 const PATHS_TO_IGNORE = [
   "signin",
+  "signup",
   "register",
   "auth",
   "login",
@@ -12,6 +13,7 @@ const PATHS_TO_IGNORE = [
   "help",
   "privacy-policy",
   "sitemap.xml",
+  "error",
 ];
 
 export const onRequest = defineMiddleware(

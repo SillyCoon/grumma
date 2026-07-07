@@ -52,25 +52,47 @@ export const getGrammarPoint = async (
 
 export const getGrammarPoints = async (
   ids?: number[],
+  include: { exercises?: boolean } = { exercises: true },
   dbClient: DbClient = db,
 ): Promise<GrammarPoint[]> => {
-  const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
+  const mainQuery = {
     where: ids ? inArray(grammarPointsTmp.id, ids) : undefined,
     with: {
       labelsToGrammarPoints: { with: { label: true } },
-      exercises: {
-        with: {
-          parts: {
-            with: {
-              acceptableAnswers: true,
-            },
+    },
+  } as const;
+
+  const withExercises = {
+    exercises: {
+      with: {
+        parts: {
+          with: {
+            acceptableAnswers: true,
           },
         },
       },
     },
-  });
+  } as const;
 
-  return GrammarPointsDb.toGrammarPoints(grammarDto);
+  if (include.exercises) {
+    const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
+      ...mainQuery,
+      with: {
+        ...mainQuery.with,
+        ...withExercises,
+      },
+    });
+    return GrammarPointsDb.toGrammarPoints(grammarDto);
+  }
+
+  const grammarDto = await dbClient.query.grammarPointsTmp.findMany(mainQuery);
+
+  return GrammarPointsDb.toGrammarPoints(
+    grammarDto.map((dto) => ({
+      ...dto,
+      exercises: [],
+    })),
+  );
 };
 
 export class AuthorizationError extends Error {

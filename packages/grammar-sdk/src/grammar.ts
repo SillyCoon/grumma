@@ -62,7 +62,7 @@ export const fetchGrammarPoints = async (
 
 export const fetchAllGrammarPoints = async (
   context: Context,
-  include: { exercises?: boolean } = { exercises: true },
+  include: { exercises: boolean } = { exercises: true },
 ): Promise<GrammarPoint[]> => {
   const cached = await getFromCache(context);
 

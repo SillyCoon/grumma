@@ -62,6 +62,7 @@ export const fetchGrammarPoints = async (
 
 export const fetchAllGrammarPoints = async (
   context: Context,
+  include: { exercises: boolean } = { exercises: true },
 ): Promise<GrammarPoint[]> => {
   const cached = await getFromCache(context);
 
@@ -69,8 +70,11 @@ export const fetchAllGrammarPoints = async (
     return GrammarPoints.filterVisible(cached, context);
   }
 
-  const grammarPoints = await getGrammarPoints();
-  setCache(grammarPoints);
+  const grammarPoints = await getGrammarPoints(undefined, include);
+  // Cache only if everything is included
+  if (Object.values(include).every((v) => v)) {
+    setCache(grammarPoints);
+  }
   return GrammarPoints.filterVisible(grammarPoints, context);
 };
 

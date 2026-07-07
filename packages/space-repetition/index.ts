@@ -85,7 +85,9 @@ export const countStreak = async (
 
 export const getInReviewByTorfl = async (user: User) => {
   const schedule = await getSchedule(user);
-  const grammar = await fetchAllGrammarPoints(contextFromUser(user));
+  const grammar = await fetchAllGrammarPoints(contextFromUser(user), {
+    exercises: false,
+  });
 
   const grammarPointsById = IMap(grammar.map((v) => [v.id, v]));
 

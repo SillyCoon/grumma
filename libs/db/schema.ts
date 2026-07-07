@@ -61,21 +61,25 @@ export const exercisesRelations = relations(exercises, ({ one }) => ({
   }),
 }));
 
-export const spaceRepetitions = grumma.table("space_repetition", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  answer: text(),
-  answeredAt: timestamp().notNull(),
-  grammarPointId: integer()
-    .notNull()
-    .references(() => grammarPointsTmp.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-  isCorrect: boolean().notNull(),
-  reviewSessionId: uuid().notNull(),
-  stage: integer().notNull(),
-  userId: text().notNull(),
-});
+export const spaceRepetitions = grumma.table(
+  "space_repetition",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    answer: text(),
+    answeredAt: timestamp().notNull(),
+    grammarPointId: integer()
+      .notNull()
+      .references(() => grammarPointsTmp.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    isCorrect: boolean().notNull(),
+    reviewSessionId: uuid().notNull(),
+    stage: integer().notNull(),
+    userId: text().notNull(),
+  },
+  (table) => [index().on(table.userId)],
+);
 
 export const feedback = grumma.table("feedback", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

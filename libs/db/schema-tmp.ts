@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  index,
   integer,
   pgSchema,
   primaryKey,
@@ -52,7 +53,11 @@ export const exercisesTmp = grummaTmp.table(
     hide: boolean().notNull().default(true),
     ...createdAtUpdatedAt,
   },
-  (table) => [unique().on(table.grammarPointId, table.order)],
+  (table) => [
+    unique().on(table.grammarPointId, table.order),
+    // wonder why unique index is not used
+    index().on(table.grammarPointId),
+  ],
 );
 
 export const partTypeEnum = grummaTmp.enum("exercisePartType", [
@@ -60,18 +65,23 @@ export const partTypeEnum = grummaTmp.enum("exercisePartType", [
   "answer",
 ]);
 
-export const exercisePartsTmp = grummaTmp.table("exercise_part", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  exerciseId: integer()
-    .notNull()
-    .references(() => exercisesTmp.id),
-  order: integer().notNull(),
-  type: partTypeEnum().notNull(),
-  text: text().notNull(),
-  description: text(),
-  language: varchar({ length: 10 }).notNull().default("ru"),
-  ...createdAtUpdatedAt,
-});
+export const exercisePartsTmp = grummaTmp.table(
+  "exercise_part",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    exerciseId: integer()
+      .notNull()
+      .references(() => exercisesTmp.id),
+    order: integer().notNull(),
+    type: partTypeEnum().notNull(),
+    text: text().notNull(),
+    description: text(),
+    language: varchar({ length: 10 }).notNull().default("ru"),
+    ...createdAtUpdatedAt,
+  },
+  // wonder why foreign key index doesn't work
+  (table) => [index().on(table.exerciseId)],
+);
 
 export const variantEnum = grummaTmp.enum("acceptableAnswerVariant", [
   "correct",

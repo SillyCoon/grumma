@@ -33,7 +33,12 @@ export const LocalSessionResult = () => {
           grammarPointId: attempt.grammarPointId,
         };
       })
-      .filter((answer) => answer !== undefined) as {
+      .filter(
+        (answer) =>
+          answer !== undefined &&
+          answer.ru !== undefined &&
+          answer.en !== undefined,
+      ) as {
       ru: ExampleImpl;
       en: ExampleImpl;
       isCorrect: boolean;

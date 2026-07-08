@@ -59,7 +59,7 @@ const Accuracy = (props: {
     <Card class="max-h-40" variant="outlined">
       <CardHeader>
         <div class="text-center text-3xl">
-          {Math.floor((props.correct / props.total) * 100)}%
+          {props.total > 0 ? Math.floor((props.correct / props.total) * 100) : 0}%
         </div>
       </CardHeader>
       <CardContent>

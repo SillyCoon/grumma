@@ -1,21 +1,10 @@
 import type { GrammarPoint } from "../..";
-import type {
-  acceptableAnswersTmp,
-  exercisePartsTmp,
-  exercisesTmp,
-  grammarPointsTmp,
-  labels,
-} from "../../../../libs/db/schema-tmp";
+import type { grammarPointsTmp, labels } from "../../../../libs/db/schema-tmp";
 
 export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
   labelsToGrammarPoints: {
     label: typeof labels.$inferSelect;
   }[];
-  exercises: (typeof exercisesTmp.$inferSelect & {
-    parts: (typeof exercisePartsTmp.$inferSelect & {
-      acceptableAnswers?: (typeof acceptableAnswersTmp.$inferSelect)[];
-    })[];
-  })[];
 };
 
 export const GrammarPointDb = {

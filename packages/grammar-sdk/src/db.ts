@@ -35,15 +35,6 @@ export const getGrammarPoint = async (
     where: eq(grammarPointsTmp.id, id),
     with: {
       labelsToGrammarPoints: { with: { label: true } },
-      exercises: {
-        with: {
-          parts: {
-            with: {
-              acceptableAnswers: true,
-            },
-          },
-        },
-      },
     },
   });
 
@@ -63,12 +54,7 @@ export const getGrammarPoints = async (
 
   const grammarDto = await dbClient.query.grammarPointsTmp.findMany(mainQuery);
 
-  return GrammarPointsDb.toGrammarPoints(
-    grammarDto.map((dto) => ({
-      ...dto,
-      exercises: [],
-    })),
-  );
+  return GrammarPointsDb.toGrammarPoints(grammarDto);
 };
 
 export const getExercisesByGrammarPointIds = async (

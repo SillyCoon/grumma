@@ -1,4 +1,4 @@
-import type { Context } from "../context";
+import { Context } from "../context";
 import type { Exercise, ExercisePart } from "../exercise";
 
 export type Example = [string, string, string];
@@ -43,7 +43,7 @@ const makeExample = (parts: ExercisePart[]) =>
 export const FullExample = {
   isVisible(example: FullExample, context: Context): boolean {
     if (example.hide) {
-      return context.user.role === "admin";
+      return Context.isAdmin(context);
     }
     return true;
   },

@@ -2,7 +2,7 @@
 import { SessionResult } from "@components/solid/Exercise/SessionResult";
 import Layout from "@layouts/Layout.astro";
 import { actions } from "astro:actions";
-import { fetchExercisesByGrammarPointIds } from "grammar-sdk/src/grammar";
+import { fetchExercisesByGrammarPointIds } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 
 const sessionResult = Astro.params.sessionId

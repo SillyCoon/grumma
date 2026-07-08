@@ -9,7 +9,7 @@ import { contextFromAstro } from "~/libs/context";
 import { getLiveEntry } from "astro:content";
 import { fetchExamplesByGrammarPointId } from "grammar-sdk";
 import logger from "libs/logger";
-import type { FullExample } from "grammar-sdk/src/example";
+import type { Example } from "grammar-sdk";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
@@ -32,7 +32,7 @@ if (!grammarPointEntry) {
   return Astro.redirect("/grammar");
 }
 
-let examples: FullExample[] = [];
+let examples: Example[] = [];
 
 try {
   examples = await fetchExamplesByGrammarPointId(id, contextFromAstro(Astro));

@@ -19,7 +19,7 @@ try {
   return Astro.redirect("/error");
 }
 
-if (!rawExercises) {
+if (!rawExercises.length) {
   return Astro.redirect("/error");
 }
 

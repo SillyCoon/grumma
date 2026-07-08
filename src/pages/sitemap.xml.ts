@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { fetchAllGrammarPoints } from "packages/grammar-sdk";
+import { fetchAllGrammarPoints } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 
 type SitemapUrl = {

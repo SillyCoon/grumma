@@ -11,7 +11,7 @@ import {
 import { actions } from "astro:actions";
 import toast from "solid-toast";
 import { isServer } from "solid-js/web";
-import type { Label } from "packages/grammar-sdk";
+import type { Label } from "grammar-sdk";
 
 const LabelChip = (props: { children: string; color: string }) => {
   return (

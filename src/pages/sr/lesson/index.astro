@@ -3,7 +3,7 @@ import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import Layout from "../../../layouts/Layout.astro";
 
 import { getLessons } from "space-repetition";
-import { fetchExamplesByGrammarPointId } from "packages/grammar-sdk";
+import { fetchExamplesByGrammarPointId } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 
 if (!Astro.locals.user) {

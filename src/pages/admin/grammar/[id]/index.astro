@@ -3,10 +3,7 @@ import { actions } from "astro:actions";
 import AdminLayout from "../../../../layouts/AdminLayout.astro";
 import { GrammarPointForm } from "~/features/grammar-point/GrammarPointForm";
 import { ExercisesForm } from "~/features/exercise/create/ExercisesForm";
-import {
-  fetchExercisesByGrammarPointId,
-  fetchGrammarPoint,
-} from "packages/grammar-sdk";
+import { fetchExercisesByGrammarPointId, fetchGrammarPoint } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 import Form from "@components/astro/form.astro";
 

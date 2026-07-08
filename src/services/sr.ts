@@ -2,7 +2,7 @@ import { actions } from "astro:actions";
 import toast from "solid-toast";
 import type { Attempt, Stage } from "space-repetition";
 import { saveAttemptToSessionStorage } from "./practice";
-import type { Exercise } from "packages/grammar-sdk";
+import type { Exercise } from "grammar-sdk";
 
 export const clearPracticeSession = () => {
   globalThis?.sessionStorage?.removeItem?.("practice");

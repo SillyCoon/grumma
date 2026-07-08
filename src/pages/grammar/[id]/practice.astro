@@ -3,10 +3,7 @@ import { simpleShuffle } from "utils/array";
 import { Exercises } from "../../../components/solid/Exercise/Exercises";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
-import {
-  fetchExercisesByGrammarPointIds,
-  type Exercise,
-} from "packages/grammar-sdk";
+import { fetchExercisesByGrammarPointIds, type Exercise } from "grammar-sdk";
 
 const ids = Astro.params.id?.split("-") ?? [];
 

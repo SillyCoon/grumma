@@ -7,9 +7,9 @@ import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
 import { getLiveEntry } from "astro:content";
-import { fetchExamplesByGrammarPointId } from "packages/grammar-sdk";
+import { fetchExamplesByGrammarPointId } from "grammar-sdk";
 import logger from "libs/logger";
-import type { FullExample } from "packages/grammar-sdk/src/example";
+import type { FullExample } from "grammar-sdk/src/example";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;

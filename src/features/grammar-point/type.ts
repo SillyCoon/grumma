@@ -1,4 +1,4 @@
-import type { GrammarPoint, Label } from "packages/grammar-sdk";
+import type { GrammarPoint, Label } from "grammar-sdk";
 
 export type GrammarPointWithLabels = Omit<GrammarPoint, "labels"> & {
   labels: Label[];

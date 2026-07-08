@@ -95,8 +95,8 @@ export const fetchExamplesByGrammarPointId = async (
   grammarPointId: string,
   context: Context,
 ): Promise<FullExample[]> => {
-  const exercises = Exercises.filterVisible(
-    await fetchExercisesByGrammarPointId(grammarPointId, context),
+  const exercises = await fetchExercisesByGrammarPointId(
+    grammarPointId,
     context,
   );
 

@@ -14,14 +14,14 @@ const lesson = await getLessons(1, Astro.locals.user).then(
   (lessons) => lessons[0],
 );
 
+if (!lesson) {
+  return Astro.redirect("/sr/congratulations");
+}
+
 const examples = await fetchExamplesByGrammarPointId(
   lesson.id,
   contextFromAstro(Astro),
 );
-
-if (!lesson) {
-  return Astro.redirect("/sr/congratulations");
-}
 ---
 
 <Layout title="Lessons">

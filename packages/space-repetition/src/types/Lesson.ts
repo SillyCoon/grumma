@@ -11,10 +11,10 @@ export const Lesson = ({
 }: GrammarPoint & {
   exercises: Exercise[];
 }): Lesson | undefined => {
-  const lastExercise = Seq(exercises).minBy((e) => e.order);
-  if (!lastExercise) return undefined;
+  const firstExercise = Seq(exercises).minBy((e) => e.order);
+  if (!firstExercise) return undefined;
   return {
     ...gp,
-    exercise: lastExercise,
+    exercise: firstExercise,
   };
 };

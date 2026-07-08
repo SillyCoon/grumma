@@ -2,7 +2,7 @@
 import { SessionResult } from "@components/solid/Exercise/SessionResult";
 import Layout from "@layouts/Layout.astro";
 import { actions } from "astro:actions";
-import { getLiveCollection } from "astro:content";
+import { fetchExercisesByGrammarPointIds } from "packages/grammar-sdk/src/grammar";
 import { contextFromAstro } from "~/libs/context";
 
 const sessionResult = Astro.params.sessionId
@@ -10,11 +10,20 @@ const sessionResult = Astro.params.sessionId
       sessionId: Astro.params.sessionId,
     })
   : undefined;
-const { entries: grammar, error } = await getLiveCollection("grammarPoints", {
-  context: contextFromAstro(Astro),
-});
 
-if (error) {
+const attemptsGpIds = Array.from(
+  new Set(
+    sessionResult?.data?.attempts.map((attempt) => attempt.grammarPointId),
+  ),
+);
+let exercises: Awaited<ReturnType<typeof fetchExercisesByGrammarPointIds>> = {};
+
+try {
+  exercises = await fetchExercisesByGrammarPointIds(
+    attemptsGpIds,
+    contextFromAstro(Astro),
+  );
+} catch {
   return Astro.redirect("/error");
 }
 ---
@@ -22,10 +31,7 @@ if (error) {
 <Layout title="Review results">
   {
     sessionResult?.data ? (
-      <SessionResult
-        sessionResult={sessionResult.data}
-        grammar={grammar?.map((entry) => entry.data) ?? []}
-      />
+      <SessionResult sessionResult={sessionResult.data} exercises={exercises} />
     ) : (
       <div>
         No session result found, probably it hasn't been calculated yet. Please

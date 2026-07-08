@@ -1,14 +1,16 @@
-import type { GrammarPoint } from "grammar-sdk";
+import type { Exercise, GrammarPoint } from "grammar-sdk";
 import { Seq } from "immutable";
 
-export type Lesson = Omit<GrammarPoint, "exercises"> & {
-  exercise: GrammarPoint["exercises"][number];
+export type Lesson = GrammarPoint & {
+  exercise: Exercise;
 };
 
 export const Lesson = ({
   exercises,
   ...gp
-}: GrammarPoint): Lesson | undefined => {
+}: GrammarPoint & {
+  exercises: Exercise[];
+}): Lesson | undefined => {
   const lastExercise = Seq(exercises).minBy((e) => e.order);
   if (!lastExercise) return undefined;
   return {

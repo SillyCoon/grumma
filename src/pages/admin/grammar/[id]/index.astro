@@ -3,7 +3,10 @@ import { actions } from "astro:actions";
 import AdminLayout from "../../../../layouts/AdminLayout.astro";
 import { GrammarPointForm } from "~/features/grammar-point/GrammarPointForm";
 import { ExercisesForm } from "~/features/exercise/create/ExercisesForm";
-import { fetchGrammarPoint } from "packages/grammar-sdk";
+import {
+  fetchExercisesByGrammarPointId,
+  fetchGrammarPoint,
+} from "packages/grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 import Form from "@components/astro/form.astro";
 
@@ -14,6 +17,10 @@ if (!id || isNaN(Number(id))) {
 }
 
 const grammarPoint = await fetchGrammarPoint(id, contextFromAstro(Astro));
+const exercises = await fetchExercisesByGrammarPointId(
+  id,
+  contextFromAstro(Astro),
+);
 
 if (!grammarPoint) {
   return Astro.redirect("/admin/grammar");
@@ -46,14 +53,14 @@ const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
   <div class="space-y-4 pt-5">
     <div>
       <h2 class="text-2xl font-semibold mb-4">
-        Exercises ({grammarPoint.exercises.length})
+        Exercises ({exercises.length})
       </h2>
       <p class="text-sm text-slate-500">
         All changes are not visible to users until you push "Save exercises".
       </p>
     </div>
     <ExercisesForm
-      defaultExercises={grammarPoint.exercises}
+      defaultExercises={exercises}
       grammarPointId={+grammarPoint.id}
       client:only="solid-js"
     />

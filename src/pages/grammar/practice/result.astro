@@ -1,5 +1,5 @@
 ---
-import { SessionResult } from "@components/solid/Exercise/SessionResult";
+import { LocalSessionResult } from "@components/solid/Exercise/LocalSessionResult";
 import Layout from "@layouts/Layout.astro";
 import { getLiveCollection } from "astro:content";
 import { contextFromAstro } from "~/libs/context";
@@ -14,9 +14,5 @@ if (error) {
 ---
 
 <Layout title="Practice results">
-  <SessionResult
-    client:only="solid-js"
-    sessionResult={undefined}
-    grammar={grammar?.map((entry) => entry.data) ?? []}
-  />
+  <LocalSessionResult client:only="solid-js" />
 </Layout>

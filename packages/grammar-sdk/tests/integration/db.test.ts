@@ -19,7 +19,7 @@ import {
   exercisesTmp,
   grammarPointsTmp,
 } from "../../../../libs/db/schema-tmp";
-import { getGrammarPoint, putExercises } from "../../src/db";
+import { getExercisesByGrammarPointId, putExercises } from "../../src/db";
 import type { Context } from "../../src/context";
 import type { Exercise } from "../../src/exercise";
 
@@ -236,9 +236,9 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const created = await getGrammarPoint(1, db);
-      expect(created?.exercises.length).toBe(1);
-      expect(created?.exercises).toEqual(
+      const created = await getExercisesByGrammarPointId(1, db);
+      expect(created.length).toBe(1);
+      expect(created).toEqual(
         exercises.map(withAnyId).map((e) => ({
           ...e,
           parts: e.parts.map(withAnyId),
@@ -258,7 +258,7 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const created = (await getGrammarPoint(1, db))?.exercises;
+      const created = await getExercisesByGrammarPointId(1, db);
 
       expect(created).toEqual(
         exercises.map(withAnyId).map((e) => ({
@@ -309,13 +309,11 @@ describe("putExercises", () => {
       ];
 
       await putExercises(db, exercises, adminContext);
-      const result = await getGrammarPoint(1, db);
+      const result = await getExercisesByGrammarPointId(1, db);
 
-      expect(result?.exercises[0].parts).toHaveLength(3);
-      expect(result?.exercises[0].parts[0]).not.toHaveProperty(
-        "acceptableAnswers",
-      );
-      expect(result?.exercises[0].parts[1]).toMatchObject({
+      expect(result[0].parts).toHaveLength(3);
+      expect(result[0].parts[0]).not.toHaveProperty("acceptableAnswers");
+      expect(result[0].parts[1]).toMatchObject({
         acceptableAnswers: [
           { text: "Correct", description: "Good", variant: "correct" },
           { text: "Wrong", description: "Bad", variant: "incorrect" },
@@ -332,9 +330,9 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const created = await getGrammarPoint(1, db);
-      expect(created?.exercises.length).toBe(1);
-      expect(created?.exercises[0].hide).toBe(true);
+      const created = await getExercisesByGrammarPointId(1, db);
+      expect(created.length).toBe(1);
+      expect(created[0].hide).toBe(true);
     });
   });
 
@@ -359,8 +357,8 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const updated = await getGrammarPoint(1, db);
-      expect(updated?.exercises[0].hide).toBe(true);
+      const updated = await getExercisesByGrammarPointId(1, db);
+      expect(updated[0].hide).toBe(true);
     });
 
     test("should update exercise order", async () => {
@@ -383,8 +381,8 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const updated = await getGrammarPoint(1, db);
-      expect(updated?.exercises[0].order).toBe(5);
+      const updated = await getExercisesByGrammarPointId(1, db);
+      expect(updated[0].order).toBe(5);
     });
 
     test("should update exercise parts and translation parts", async () => {
@@ -474,7 +472,7 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const updated = (await getGrammarPoint(1, db))?.exercises;
+      const updated = await getExercisesByGrammarPointId(1, db);
 
       expect(updated).toEqual(
         update.map(withAnyId).map((e) => ({
@@ -567,12 +565,12 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const updated = (await getGrammarPoint(1, db))?.exercises;
+      const updated = await getExercisesByGrammarPointId(1, db);
 
       // @ts-expect-error - acceptableAnswers is optional in ExercisePart, but should be present in answer parts
-      expect(updated?.[0].parts[1].acceptableAnswers).toHaveLength(2);
+      expect(updated[0].parts[1].acceptableAnswers).toHaveLength(2);
       // @ts-expect-error - acceptableAnswers is optional in ExercisePart, but should be present in answer parts
-      expect(updated?.[0].parts[1].acceptableAnswers).toEqual(
+      expect(updated[0].parts[1].acceptableAnswers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             text: "Existing correct answer",
@@ -611,12 +609,12 @@ describe("putExercises", () => {
 
       expect(result.isOk()).toBe(true);
 
-      const allExercises = await getGrammarPoint(1, db);
+      const allExercises = await getExercisesByGrammarPointId(1, db);
 
-      expect(allExercises?.exercises.length).toBe(2);
-      expect(allExercises?.exercises[0].id).toBe(existing.id);
-      expect(allExercises?.exercises[0].hide).toBe(true);
-      expect(allExercises?.exercises[1].id).not.toBe(existing.id);
+      expect(allExercises.length).toBe(2);
+      expect(allExercises[0].id).toBe(existing.id);
+      expect(allExercises[0].hide).toBe(true);
+      expect(allExercises[1].id).not.toBe(existing.id);
     });
   });
 });

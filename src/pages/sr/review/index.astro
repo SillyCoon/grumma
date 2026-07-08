@@ -4,6 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import type { GrammarPointReview } from "space-repetition";
 import { GET as getReview } from "../../api/sr/review";
 
+// TODO: return exercise only
 const review = (await (await getReview(Astro)).json()) as GrammarPointReview[];
 if (!review.length) return Astro.redirect("/sr/review/no-reviews");
 ---

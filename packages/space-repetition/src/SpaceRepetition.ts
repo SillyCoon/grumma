@@ -1,10 +1,8 @@
 import { isBefore } from "@formkit/tempo";
 import type { Attempt } from "./types/Attempt";
-import { Lesson } from "./types/Lesson";
 import type { Stage } from "./types/Stage";
 import type { Schedule } from "./types/Schedule";
 import type { GrammarPoint } from "grammar-sdk";
-import type { GrammarPointReview } from "./types/GrammarPointReview";
 
 export interface Settings {
   stageMinutes: Record<Stage, number>;
@@ -30,13 +28,12 @@ export const calculateExerciseOrderByStage = (
 
 interface SpaceRepetition {
   repeatingGrammarPoints(): string[];
-  nextLessons(amount: number, grammar: GrammarPoint[]): Lesson[];
+  nextGrammarPointsForLessons(
+    amount: number,
+    grammarPoints: GrammarPoint[],
+  ): GrammarPoint[];
   getSchedule(algorithm: RepetitionAlgorithm, settings: Settings): Schedule;
-  nextRound(
-    algorithm: RepetitionAlgorithm,
-    settings: Settings,
-    grammar: GrammarPoint[],
-  ): GrammarPointReview[];
+  nextRound(algorithm: RepetitionAlgorithm, settings: Settings): Repetition[];
 }
 
 export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
@@ -44,9 +41,12 @@ export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
     return Array.from(new Set(attempts.map((t) => t.grammarPointId)).values());
   };
 
-  const nextLessons = (amount: number, grammar: GrammarPoint[]): Lesson[] => {
+  const nextGrammarPointsForLessons = (
+    amount: number,
+    grammarPoints: GrammarPoint[],
+  ): GrammarPoint[] => {
     const reviewMap = new Map(repeatingGrammarPoints().map((r) => [r, true]));
-    const gpNotInReview = grammar.filter((gp) => !reviewMap.get(gp.id));
+    const gpNotInReview = grammarPoints.filter((gp) => !reviewMap.has(gp.id));
 
     const result = gpNotInReview
       .toSorted(
@@ -54,9 +54,7 @@ export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
           (a.order ?? Number.MAX_SAFE_INTEGER) -
           (b.order ?? Number.MAX_SAFE_INTEGER),
       )
-      .slice(0, amount)
-      .map(Lesson)
-      .filter((v): v is Lesson => !!v);
+      .slice(0, amount);
     return result;
   };
 
@@ -64,34 +62,14 @@ export const SpaceRepetition = (attempts: Attempt[]): SpaceRepetition => {
     return algorithm.getSchedule(attempts, settings);
   };
 
-  const nextRound = (
-    algorithm: RepetitionAlgorithm,
-    settings: Settings,
-    grammar: GrammarPoint[],
-  ): GrammarPointReview[] => {
+  const nextRound = (algorithm: RepetitionAlgorithm, settings: Settings) => {
     const schedule = algorithm.getSchedule(attempts, settings);
-
-    return schedule
-      .filter((r) => isBefore(r.availableAt, new Date()))
-      .map((r) => {
-        const gp = grammar.find((gp) => gp.id === r.grammarPointId);
-
-        if (!gp) return undefined;
-        const { exercises, ...info } = gp;
-
-        return {
-          ...info,
-          exercise:
-            exercises[calculateExerciseOrderByStage(exercises.length, r.stage)],
-          stage: r.stage,
-        };
-      })
-      .filter((v): v is GrammarPointReview => !!v);
+    return schedule.filter((r) => isBefore(r.availableAt, new Date()));
   };
 
   return {
     repeatingGrammarPoints,
-    nextLessons,
+    nextGrammarPointsForLessons,
     getSchedule,
     nextRound,
   };

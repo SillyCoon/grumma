@@ -1,10 +1,14 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import { createLabel, exerciseSchema, getLabels } from "grammar-sdk";
+import {
+  createLabel,
+  exerciseSchema,
+  fetchExercisesByGrammarPointId,
+  getLabels,
+} from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 import {
   type AuthorizationError,
-  fetchGrammarPoint,
   createGrammarPoint,
   isAuthorizationError,
   putExercises,
@@ -111,17 +115,17 @@ export const gpManagement = {
       if (result.isErr()) {
         handleError(result.error);
       }
-      const gp = await fetchGrammarPoint(
+      const exercises = await fetchExercisesByGrammarPointId(
         input[0].grammarPointId,
         contextFromAstro(context),
       );
-      if (!gp) {
+      if (!exercises) {
         throw new ActionError({
           code: "NOT_FOUND",
           message: "Grammar point not found.",
         });
       }
-      return gp.exercises;
+      return exercises;
     },
   }),
   createLabel: defineAction({

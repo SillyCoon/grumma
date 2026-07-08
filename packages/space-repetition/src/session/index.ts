@@ -1,11 +1,17 @@
 import { Seq } from "immutable";
-import type { Attempt } from "../types/Attempt";
+import type { Attempt, LocalAttempt } from "../types/Attempt";
 
-export type Session = {
+type AttemptType<Local extends "local" | "remote"> = Local extends "local"
+  ? LocalAttempt
+  : Attempt;
+
+export type Session<Local extends "local" | "remote" = "remote"> = {
   sessionId: string;
-  attempts: Attempt[];
+  attempts: AttemptType<Local>[];
 };
-export function Session(attempts: Attempt[]): Session {
+export function Session<Local extends "local" | "remote" = "remote">(
+  attempts: AttemptType<Local>[],
+): Session<Local> {
   const sessionId = attempts.at(0)?.reviewSessionId;
   if (!sessionId || !attempts.every((a) => a.reviewSessionId === sessionId)) {
     throw new Error(
@@ -19,21 +25,23 @@ export function Session(attempts: Attempt[]): Session {
   };
 }
 
-export type SessionResult = {
+export type AnySessionResult = SessionResult<"local"> | SessionResult<"remote">;
+
+export type SessionResult<Local extends "local" | "remote" = "remote"> = {
   sessionId: string;
-  attempts: Attempt[];
+  attempts: (Local extends "local" ? LocalAttempt : Attempt)[];
   correct: number;
   total: number;
 };
 
 export namespace Session {
-  export const calculateResult = ({
+  export const calculateResult = <Local extends "local" | "remote" = "remote">({
     attempts,
     sessionId,
-  }: Session): SessionResult => {
+  }: Session<Local>): SessionResult<Local> => {
     const attemptsByGpStage = Seq(attempts).groupBy(
       (a) => `${a.grammarPointId}-${a.stage}`,
-    );
+    ) as Immutable.Map<string, Seq.Indexed<AttemptType<Local>>>;
 
     const meaningfulAttempts = Array.from(
       attemptsByGpStage
@@ -46,7 +54,7 @@ export namespace Session {
             .sort((a, b) => +a.answeredAt - +b.answeredAt)
             .last();
         })
-        .filter((a): a is Attempt => !!a)
+        .filter((a): a is AttemptType<Local> => !!a)
         .values(),
     );
 

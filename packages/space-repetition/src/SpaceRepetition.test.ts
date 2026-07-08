@@ -1,12 +1,6 @@
-import { describe, expect, test, vi } from "vitest";
-import {
-  calculateExerciseOrderByStage,
-  SpaceRepetition,
-} from "./SpaceRepetition";
+import { describe, expect, test } from "vitest";
+import { calculateExerciseOrderByStage } from "./SpaceRepetition";
 import type { Stage } from "./types/Stage";
-import type { RepetitionAlgorithm } from "./SpaceRepetition";
-import { mockGrammarPoint } from "grammar-sdk/mocks";
-import type { GrammarPoint } from "grammar-sdk";
 
 describe("calculateNextExerciseOrder", () => {
   test.each([
@@ -34,72 +28,5 @@ describe("calculateNextExerciseOrder", () => {
     expect(calculateExerciseOrderByStage(exercisesNumber, stage as Stage)).toBe(
       expected,
     );
-  });
-});
-
-describe("nextRound", () => {
-  test("loops to first exercise when stage exceeds number of exercises", () => {
-    const mockAlgorithm: RepetitionAlgorithm = {
-      getSchedule: vi.fn().mockReturnValue([
-        {
-          grammarPointId: "gp1",
-          stage: 4,
-          availableAt: new Date(0),
-        },
-      ]),
-    };
-
-    const settings = {
-      stageMinutes: { 0: 1, 1: 10, 2: 60, 3: 1440, 4: 10080 } as Record<
-        Stage,
-        number
-      >,
-      stageDowngradeMultiplier: 2,
-    };
-
-    const gp = mockGrammarPoint({ id: "gp1" });
-    const grammarPoints: GrammarPoint[] = [
-      {
-        ...gp,
-        torfl: "A1",
-        exercises: [
-          {
-            hide: false,
-            grammarPointId: "gp1",
-            parts: [],
-            translationParts: [],
-            order: 0,
-          },
-          {
-            hide: false,
-            grammarPointId: "gp1",
-            parts: [],
-            translationParts: [],
-            order: 1,
-          },
-          {
-            hide: false,
-            grammarPointId: "gp1",
-            parts: [],
-            translationParts: [],
-            order: 2,
-          },
-          {
-            hide: false,
-            grammarPointId: "gp1",
-            parts: [],
-            translationParts: [],
-            order: 3,
-          },
-        ],
-      },
-    ];
-
-    const sr = SpaceRepetition([]);
-    const result = sr.nextRound(mockAlgorithm, settings, grammarPoints);
-
-    expect(result).toHaveLength(1);
-    expect(result[0].exercise.order).toBe(0);
-    expect(result[0].stage).toBe(4);
   });
 });

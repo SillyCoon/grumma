@@ -1,7 +1,5 @@
 import { err, ok, type Result } from "neverthrow";
 import { Context } from "../context";
-import { FullExamples, type FullExample } from "../example";
-import { Exercises, type Exercise } from "../exercise";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
 import { Set } from "immutable";
 
@@ -10,9 +8,6 @@ export interface GrammarPoint {
   shortTitle: string;
   order: number;
   hide: boolean;
-
-  examples: FullExample[];
-  exercises: Exercise[];
 
   torfl?: string;
   detailedTitle?: string;
@@ -30,12 +25,10 @@ export type GrammarPointLabel = {
 
 export type CreateGrammarPoint = Omit<
   GrammarPoint,
-  "id" | "order" | "examples" | "exercises" | "hide" | "labels"
+  "id" | "order" | "examples" | "hide" | "labels"
 >;
 
-export type UpdateGrammarPoint = Partial<
-  Omit<GrammarPoint, "examples" | "exercises">
-> &
+export type UpdateGrammarPoint = Partial<Omit<GrammarPoint, "examples">> &
   Pick<GrammarPoint, "id">;
 
 export const GrammarPoint = {
@@ -46,8 +39,6 @@ export const GrammarPoint = {
     return GrammarPoint.isVisible(gp, context)
       ? {
           ...gp,
-          exercises: Exercises.filterVisible(gp.exercises, context),
-          examples: FullExamples.filterVisible(gp.examples, context),
         }
       : undefined;
   },

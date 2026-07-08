@@ -119,7 +119,7 @@ export const gpManagement = {
         input[0].grammarPointId,
         contextFromAstro(context),
       );
-      if (!exercises) {
+      if (!exercises.length) {
         throw new ActionError({
           code: "NOT_FOUND",
           message: "Grammar point not found.",

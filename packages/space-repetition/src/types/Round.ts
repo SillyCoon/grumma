@@ -1,3 +1,4 @@
 import type { Exercise } from "grammar-sdk";
+import type { Stage } from "./Stage";
 
-export type Round = Exercise;
+export type Round = { exercise: Exercise; stage: Stage };

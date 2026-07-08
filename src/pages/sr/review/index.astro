@@ -1,11 +1,13 @@
 ---
 import { Exercises } from "@components/solid/Exercise/Exercises";
 import Layout from "@layouts/Layout.astro";
-import type { GrammarPointReview } from "space-repetition";
-import { GET as getReview } from "../../api/sr/review";
+import { getNextRound } from "space-repetition";
 
-// TODO: return exercise only
-const review = (await (await getReview(Astro)).json()) as GrammarPointReview[];
+if (!Astro.locals.user) {
+  return Astro.redirect("/");
+}
+
+const review = await getNextRound(Astro.locals.user);
 if (!review.length) return Astro.redirect("/sr/review/no-reviews");
 ---
 

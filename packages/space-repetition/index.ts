@@ -28,6 +28,7 @@ import type { Schedule } from "./src/types/Schedule";
 import { countStreak as countStreakUtils } from "./src/utils";
 import { isUserAdmin } from "../../libs/auth/admin";
 import type { Round } from "./src/types/Round";
+import type { Stage } from "./src/types/Stage";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -105,7 +106,10 @@ export const getNextRound = async (user: User): Promise<Round[]> => {
     })
     .filter((v): v is Exercise => !!v);
 
-  return exercisesByGrammarPointIds;
+  return exercisesByGrammarPointIds.map((exercise, index) => ({
+    exercise,
+    stage: nextRound[index].stage as Stage,
+  }));
 };
 
 export const countNextRound = async (user: User): Promise<number> => {

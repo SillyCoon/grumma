@@ -1,6 +1,6 @@
 import { getLocalSessionResults } from "@services/practice";
 import { Example as ExampleImpl } from "grammar-sdk/example";
-import { createEffect, createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { CommonSessionResult } from "./CommonSessionResults";
 
 export const LocalSessionResult = () => {
@@ -8,7 +8,7 @@ export const LocalSessionResult = () => {
     getLocalSessionResults(),
   );
 
-  createEffect(() => {
+  onMount(() => {
     setSessionResult(getLocalSessionResults());
   });
 

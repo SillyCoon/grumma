@@ -2,6 +2,7 @@ import {
   fetchAllGrammarPoints,
   fetchExercisesByGrammarPointId,
   fetchExercisesByGrammarPointIds,
+  fetchGrammarPoints,
   type Context,
   type Exercise,
 } from "grammar-sdk";
@@ -82,34 +83,51 @@ export const getNextRound = async (user: User): Promise<Round[]> => {
   const spaceRepetition = SpaceRepetition(attempts);
   const nextRound = spaceRepetition.nextRound(algorithm, settings);
 
-  const exercisesByGrammarPointIds = Object.values(
-    await fetchExercisesByGrammarPointIds(
-      nextRound.map((r) => r.grammarPointId),
-      contextFromUser(user),
-    ),
-  )
-    .map((exercises, index) => {
-      if (!exercises || exercises.length === 0) {
+  const grammarPoints = await fetchGrammarPoints(
+    nextRound.map((r) => r.grammarPointId),
+    contextFromUser(user),
+  );
+
+  const exercises = await fetchExercisesByGrammarPointIds(
+    nextRound.map((r) => r.grammarPointId),
+    contextFromUser(user),
+  );
+
+  return grammarPoints
+    .toSorted((a, b) => a.order - b.order)
+    .map((gp) => {
+      const round = nextRound.find((r) => r.grammarPointId === gp.id);
+      const sortedExercises = exercises[gp.id]?.sort(
+        (a, b) => a.order - b.order,
+      );
+      if (!round || !sortedExercises) {
         console.warn(
-          "No exercises found for grammar point",
-          nextRound[index].grammarPointId,
+          `Round or exercises not found for grammar point ${gp.id}`,
+          round,
+          sortedExercises,
         );
         return undefined;
       }
-      const sortedExercises = exercises.sort((a, b) => a.order - b.order);
-      return sortedExercises[
-        calculateExerciseOrderByStage(
-          sortedExercises.length,
-          nextRound[index].stage,
-        )
-      ];
-    })
-    .filter((v): v is Exercise => !!v);
 
-  return exercisesByGrammarPointIds.map((exercise, index) => ({
-    exercise,
-    stage: nextRound[index].stage as Stage,
-  }));
+      const nextExercise =
+        sortedExercises[
+          calculateExerciseOrderByStage(sortedExercises.length, round.stage)
+        ];
+
+      if (!nextExercise) {
+        console.warn(
+          `Next exercise not found for grammar point ${gp.id} and stage ${round.stage}`,
+          sortedExercises,
+        );
+        return undefined;
+      }
+
+      return {
+        exercise: nextExercise,
+        stage: round.stage,
+      };
+    })
+    .filter((v): v is { exercise: Exercise; stage: Stage } => !!v);
 };
 
 export const countNextRound = async (user: User): Promise<number> => {

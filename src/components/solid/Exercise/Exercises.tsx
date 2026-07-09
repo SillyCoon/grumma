@@ -7,6 +7,7 @@ import { Spinner } from "ui/Spinner";
 import { simpleShuffle } from "utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { Exercise } from "./Exercise";
+import { Feedback } from "./Feedback";
 
 type ExerciseForReview = ExerciseType & { stage?: Stage };
 
@@ -67,6 +68,7 @@ export const Exercises = (props: {
   return (
     <Switch fallback={<Spinner />}>
       <Match when={exercise()}>
+        <Feedback exercise={exercise()} />
         <Exercise
           exercise={exercise() as ExerciseType}
           handleNext={handleNext}

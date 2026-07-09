@@ -1,7 +1,6 @@
 import type { Exercise } from "grammar-sdk/exercise";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
-import { Button } from "ui/button";
 import {
   Sheet,
   SheetContent,
@@ -10,6 +9,8 @@ import {
   SheetTrigger,
 } from "ui/sheet";
 import { FeedbackForm } from "./FeedbackForm";
+import { IconButton } from "ui/icon-button";
+import { AiFillBug } from "solid-icons/ai";
 
 export const Feedback = (props: {
   children?: JSXElement;
@@ -18,36 +19,14 @@ export const Feedback = (props: {
 }) => {
   const [open, setOpen] = createSignal(false);
 
-  // TODO: refactor
-  // add sonner
-  // const save = async (data: FormData) => {
-  //   const isAboutGrammarPoint = data.get("isAboutGrammarPoint") === "on";
-  //   try {
-  //     const request = {
-  //       message: data.get("message") as string,
-  //       email: data.get("email")?.length
-  //         ? (data.get("email") as string)
-  //         : undefined,
-  //       grammar:
-  //         isAboutGrammarPoint && props.exercise
-  //           ? {
-  //               grammarPointId: +props.exercise.grammarPointId,
-  //               exerciseOrder: props.exercise.order,
-  //             }
-  //           : undefined,
-  //     };
-  //     setOpen(false);
-  //     await actions.saveFeedback(request);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
-
   return (
     <Sheet open={open()} onOpenChange={setOpen} modal={false}>
-      <SheetTrigger>
-        {props.children ?? <Button variant="ghost">Found error?</Button>}
+      <SheetTrigger as="div" class="flex justify-end">
+        <IconButton variant="ghost">
+          <AiFillBug class="text-warning" title="Found error?" />
+        </IconButton>
       </SheetTrigger>
+
       <SheetContent position={props.position ?? "right"}>
         <SheetHeader>
           <SheetTitle>Thanks for getting in touch!</SheetTitle>

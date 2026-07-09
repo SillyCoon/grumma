@@ -13,7 +13,6 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "ui/sheet";
 import { Spinner } from "ui/Spinner";
 import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { AnswerResult } from "./AnswerResult";
-import { Feedback } from "./Feedback";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
 import { compareAnswer, normalizeAnswer, validAnswer } from "./utils";
@@ -115,7 +114,6 @@ export const Exercise = (props: ExerciseProps) => {
           </Sheet>
 
           <TransliterationRules />
-          <Feedback exercise={props.exercise} />
         </div>
 
         <AnswerResult

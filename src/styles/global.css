@@ -72,13 +72,13 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --info: 204 94% 94%;
+    --info: 205 71% 52%;
     --info-foreground: 199 89% 48%;
 
     --success: 145 60% 45%;
     --success-foreground: 0 0% 10%;
 
-    --warning: 35 91% 55%;
+    --warning: 22 88% 52%;
     --warning-foreground: 25 95% 53%;
 
     --error: 0 75% 50%;

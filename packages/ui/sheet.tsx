@@ -8,7 +8,9 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "packages/ui/utils";
 
 const Sheet = SheetPrimitive.Root;
-const SheetTrigger = SheetPrimitive.Trigger;
+const SheetTrigger = (props: ComponentProps<typeof SheetPrimitive.Trigger>) => (
+  <SheetPrimitive.Trigger class="outline-none" tabIndex={-1} {...props} />
+);
 const SheetClose = SheetPrimitive.CloseButton;
 
 const portalVariants = cva("fixed inset-0 z-50 flex", {

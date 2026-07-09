@@ -3,25 +3,27 @@ import { simpleShuffle } from "utils/array";
 import { Exercises } from "../../../components/solid/Exercise/Exercises";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
-import { getLiveCollection } from "astro:content";
+import { fetchExercisesByGrammarPointIds, type Exercise } from "grammar-sdk";
 
 const ids = Astro.params.id?.split("-") ?? [];
 
-const { entries: grammarPoints, error } = await getLiveCollection(
-  "grammarPoints",
-  {
-    ids,
-    context: contextFromAstro(Astro),
-  },
-);
+let rawExercises: Exercise[];
 
-if (error) {
+try {
+  rawExercises = Object.values(
+    await fetchExercisesByGrammarPointIds(ids, contextFromAstro(Astro)),
+  )
+    .flat()
+    .filter((e) => !!e);
+} catch (error) {
   return Astro.redirect("/error");
 }
 
-const exercises = simpleShuffle(
-  (grammarPoints ?? []).flatMap((g) => g.data.exercises),
-);
+if (!rawExercises.length) {
+  return Astro.redirect("/error");
+}
+
+const exercises = simpleShuffle(rawExercises);
 ---
 
 <Layout title="Practice">

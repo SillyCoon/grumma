@@ -66,6 +66,8 @@ export const Exercise = {
 
 export type UpdateExercise = Exercise & { id: number };
 
+export type ExercisesByGrammarPointId = Partial<Record<string, Exercise[]>>;
+
 export const Exercises = {
   filterVisible(exercises: Exercise[], context: Context) {
     return exercises.filter((ex) => Exercise.isVisible(ex, context));

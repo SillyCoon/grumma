@@ -2,19 +2,37 @@
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import Layout from "../../../layouts/Layout.astro";
 
-import type { Lesson } from "space-repetition";
-import { GET as getLessons } from "../../api/sr/lesson";
+import { getLessons } from "space-repetition";
+import { fetchExamplesByGrammarPointId } from "grammar-sdk";
+import { contextFromAstro } from "~/libs/context";
 
-const lesson = (await (await getLessons(Astro)).json())[0] as Lesson;
+if (!Astro.locals.user) {
+  return Astro.redirect("/");
+}
+
+const lesson = await getLessons(1, Astro.locals.user).then(
+  (lessons) => lessons[0],
+);
+
 if (!lesson) {
   return Astro.redirect("/sr/congratulations");
 }
+
+const examples = await fetchExamplesByGrammarPointId(
+  lesson.id,
+  contextFromAstro(Astro),
+);
 ---
 
 <Layout title="Lessons">
   {
     lesson && (
-      <GrammarPoint client:visible {...lesson} next="/sr/lesson/start" />
+      <GrammarPoint
+        client:visible
+        {...lesson}
+        examples={examples}
+        next="/sr/lesson/start"
+      />
     )
   }
 </Layout>

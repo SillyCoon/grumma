@@ -12,7 +12,7 @@ import { Select, SelectContainer, SelectLabel, SelectOption } from "ui/select";
 import type { JSX } from "solid-js/jsx-runtime";
 import { ExplanationDisplay } from "@components/solid/grammar-point/ExplanationDisplay";
 import { HtmlCheckbox } from "ui/html-checkbox";
-import type { Label } from "packages/grammar-sdk";
+import type { Label } from "grammar-sdk";
 import { Labels } from "./Labels";
 import { actions } from "astro:actions";
 

@@ -1,4 +1,7 @@
-import type { GrammarPoint as GrammarPointType } from "grammar-sdk";
+import type {
+  GrammarPoint as GrammarPointType,
+  Example as ExampleType,
+} from "grammar-sdk";
 import { For, Show } from "solid-js";
 import { Badge } from "ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
@@ -9,11 +12,12 @@ import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";
 import { StructureDisplay } from "./StructureDisplay";
 
-type Props = Omit<GrammarPointType, "exercises"> & {
+type Props = GrammarPointType & {
   explanation?: string;
   next?: string;
   backTo?: string;
   inReview?: boolean;
+  examples: ExampleType[];
 };
 
 export const GrammarPoint = (props: Props) => {

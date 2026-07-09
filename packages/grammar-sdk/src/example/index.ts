@@ -1,5 +1,5 @@
-import type { Context } from "../context";
-import type { ExercisePart } from "../exercise";
+import { Context } from "../context";
+import type { Exercise, ExercisePart } from "../exercise";
 
 export type Example = [string, string, string];
 
@@ -33,12 +33,27 @@ export type FullExample = {
   hide: boolean;
 };
 
+const makeExample = (parts: ExercisePart[]) =>
+  parts
+    .toSorted((a, b) => a.index - b.index)
+    .map((p) => p.text)
+    .concat(new Array(3).fill(""))
+    .slice(0, 3) as [string, string, string];
+
 export const FullExample = {
   isVisible(example: FullExample, context: Context): boolean {
     if (example.hide) {
-      return context.user.role === "admin";
+      return Context.isAdmin(context);
     }
     return true;
+  },
+  fromExercise(exercise: Exercise): FullExample {
+    return {
+      ru: makeExample(exercise.parts),
+      en: makeExample(exercise.translationParts),
+      order: exercise.order,
+      hide: exercise.hide,
+    };
   },
 };
 
@@ -47,5 +62,8 @@ export const FullExamples = {
     return examples.filter((example) =>
       FullExample.isVisible(example, context),
     );
+  },
+  fromExercises(exercises: Exercise[]): FullExample[] {
+    return exercises.map((e) => FullExample.fromExercise(e));
   },
 };

@@ -1,3 +1,4 @@
+import type { Exercise } from "grammar-sdk/exercise";
 import type { Stage } from "./Stage";
 
 export type Attempt = {
@@ -7,4 +8,8 @@ export type Attempt = {
   isCorrect: boolean;
   answeredAt: Date;
   reviewSessionId: string;
+};
+
+export type LocalAttempt = Attempt & {
+  exercise: Exercise;
 };

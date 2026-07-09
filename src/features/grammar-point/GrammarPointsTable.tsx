@@ -5,7 +5,7 @@ import { cn } from "packages/ui/utils";
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { SaveConfirmation } from "@components/common/SaveConfirmation";
-import type { GrammarPoint } from "packages/grammar-sdk";
+import type { GrammarPoint } from "grammar-sdk";
 import type { Label } from "grammar-sdk";
 import { Badge } from "packages/ui/badge";
 import { TextField, TextFieldInput } from "packages/ui/text-field";

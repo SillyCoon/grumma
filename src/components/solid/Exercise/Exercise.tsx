@@ -130,8 +130,9 @@ export const Exercise = (props: ExerciseProps) => {
 const LoadingGrammarPoint = (props: { grammarPointId: string }) => {
   const [gp] = createResource(
     { grammarPointId: props.grammarPointId },
-    actions.grammarPoint,
+    actions.grammarPointWithExamples,
   );
+
   let ref!: HTMLDivElement;
 
   return (

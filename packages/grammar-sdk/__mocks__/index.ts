@@ -11,11 +11,6 @@ export const mockGrammarPoint = (gp?: Partial<GrammarPoint>): GrammarPoint => ({
   englishTitle: `${faker.lorem.sentence()}`,
   order: faker.number.int({ min: 1, max: 100 }),
   structure: faker.string.sample(),
-  examples: [{ ru: mockExample(), en: mockExample(), order: 0, hide: false }],
-  exercises: Range(0, 12)
-    .map((i) => mockExercise({ grammarPointId: gp?.id, order: i }))
-    .toArray()
-    .toSorted((a, b) => a.order - b.order),
   torfl: "A1",
   hide: faker.datatype.boolean(),
   labels: faker.helpers.arrayElements(
@@ -47,3 +42,12 @@ export const mockExercise = (e?: Partial<Exercise>): Exercise => ({
   translationParts: [],
   ...e,
 });
+
+export const mockExercises = (
+  count: number,
+  grammarPointId?: string,
+): Exercise[] => {
+  return Range(0, count)
+    .map((i) => mockExercise({ grammarPointId, order: i }))
+    .toArray();
+};

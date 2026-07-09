@@ -34,15 +34,18 @@ export const Exercises = (props: {
   ) => {
     const e = exercise();
     if (e) {
-      saveAttempt({
-        answer: result.answer,
-        isCorrect: result.correct,
-        answeredAt: new Date(),
-        grammarPointId: e.grammarPointId,
-        reviewSessionId: sessionId,
-        stage: exercise()?.stage ?? 0,
-        exerciseOrder: e.order,
-      });
+      saveAttempt(
+        {
+          answer: result.answer,
+          isCorrect: result.correct,
+          answeredAt: new Date(),
+          grammarPointId: e.grammarPointId,
+          reviewSessionId: sessionId,
+          stage: exercise()?.stage ?? 0,
+          exerciseOrder: e.order,
+        },
+        e,
+      );
     }
 
     setExercisesLeft((left) =>

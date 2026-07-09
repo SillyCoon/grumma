@@ -35,15 +35,6 @@ export const getGrammarPoint = async (
     where: eq(grammarPointsTmp.id, id),
     with: {
       labelsToGrammarPoints: { with: { label: true } },
-      exercises: {
-        with: {
-          parts: {
-            with: {
-              acceptableAnswers: true,
-            },
-          },
-        },
-      },
     },
   });
 
@@ -52,7 +43,6 @@ export const getGrammarPoint = async (
 
 export const getGrammarPoints = async (
   ids?: number[],
-  include: { exercises?: boolean } = { exercises: true },
   dbClient: DbClient = db,
 ): Promise<GrammarPoint[]> => {
   const mainQuery = {
@@ -62,37 +52,45 @@ export const getGrammarPoints = async (
     },
   } as const;
 
-  const withExercises = {
-    exercises: {
-      with: {
-        parts: {
-          with: {
-            acceptableAnswers: true,
-          },
+  const grammarDto = await dbClient.query.grammarPointsTmp.findMany(mainQuery);
+
+  return GrammarPointsDb.toGrammarPoints(grammarDto);
+};
+
+export const getExercisesByGrammarPointIds = async (
+  grammarPointIds: number[],
+  dbClient: DbClient = db,
+): Promise<Exercise[]> => {
+  const exercisesDto = await dbClient.query.exercisesTmp.findMany({
+    where: inArray(exercisesTmp.grammarPointId, grammarPointIds),
+    with: {
+      parts: {
+        with: {
+          acceptableAnswers: true,
         },
       },
     },
-  } as const;
+  });
 
-  if (include.exercises) {
-    const grammarDto = await dbClient.query.grammarPointsTmp.findMany({
-      ...mainQuery,
-      with: {
-        ...mainQuery.with,
-        ...withExercises,
+  return exercisesDto.map(ExerciseDb.toExercise);
+};
+
+export const getExercisesByGrammarPointId = async (
+  grammarPointId: number,
+  dbClient: DbClient = db,
+): Promise<Exercise[]> => {
+  const exercisesDto = await dbClient.query.exercisesTmp.findMany({
+    where: eq(exercisesTmp.grammarPointId, grammarPointId),
+    with: {
+      parts: {
+        with: {
+          acceptableAnswers: true,
+        },
       },
-    });
-    return GrammarPointsDb.toGrammarPoints(grammarDto);
-  }
+    },
+  });
 
-  const grammarDto = await dbClient.query.grammarPointsTmp.findMany(mainQuery);
-
-  return GrammarPointsDb.toGrammarPoints(
-    grammarDto.map((dto) => ({
-      ...dto,
-      exercises: [],
-    })),
-  );
+  return exercisesDto.map(ExerciseDb.toExercise);
 };
 
 export class AuthorizationError extends Error {
@@ -222,6 +220,7 @@ export const updateGrammarPoint = async (
     .where(eq(grammarPointsTmp.id, +id));
 
   if (updateData?.labels) {
+    // biome-ignore lint/style/noNonNullAssertion: <not null>
     return changeLabels(db, +id, updateData.labels!);
   }
 
@@ -364,14 +363,18 @@ export const putExercises = async (
     return err("Grammar point ID is required to create exercises.");
   }
 
-  const existingExercises = await getGrammarPoint(+grammarPointId, db).then(
-    (gp) => gp?.exercises,
-  );
-  if (!existingExercises) {
+  const gp = await getGrammarPoint(+grammarPointId, db);
+
+  if (!gp) {
     return err(
       `Grammar point ${grammarPointId} should exist before creating exercises. Please create the grammar point first.`,
     );
   }
+
+  const existingExercises = await getExercisesByGrammarPointId(
+    +grammarPointId,
+    db,
+  );
 
   const validation = Exercises.validate(exercises);
   if (validation.isErr()) {

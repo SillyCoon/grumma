@@ -119,6 +119,7 @@ const exercisesData: (typeof exercisesTmp.$inferInsert)[] = Array.from(
     id: i + 1,
     grammarPointId: Math.floor(i / 4) + 1,
     order: i % 4,
+    hide: false,
   }),
 );
 

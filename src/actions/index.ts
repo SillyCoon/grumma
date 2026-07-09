@@ -1,7 +1,7 @@
 import { ActionError, defineAction } from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro/zod";
-import { fetchGrammarPoint } from "grammar-sdk";
+import { fetchExamplesByGrammarPointId, fetchGrammarPoint } from "grammar-sdk";
 import { db } from "libs/db";
 import { createSupabaseServerInstance } from "libs/supabase";
 import { saveFeedback } from "packages/feedback";
@@ -141,13 +141,29 @@ export const server = {
       };
     },
   }),
-  grammarPoint: defineAction({
+  grammarPointWithExamples: defineAction({
     accept: "json",
     input: z.object({
       grammarPointId: z.string(),
     }),
     handler: async (input, context) => {
-      return fetchGrammarPoint(input.grammarPointId, contextFromAstro(context));
+      const [gp, examples] = await Promise.all([
+        fetchGrammarPoint(input.grammarPointId, contextFromAstro(context)),
+        fetchExamplesByGrammarPointId(
+          input.grammarPointId,
+          contextFromAstro(context),
+        ),
+      ]);
+      if (!gp) {
+        throw new ActionError({
+          code: "NOT_FOUND",
+          message: "Grammar point not found",
+        });
+      }
+      return {
+        ...gp,
+        examples,
+      };
     },
   }),
   saveAttempt: defineAction({

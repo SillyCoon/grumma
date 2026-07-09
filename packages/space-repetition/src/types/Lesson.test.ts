@@ -1,17 +1,17 @@
-import type { GrammarPoint } from "grammar-sdk";
-import { mockGrammarPoint } from "grammar-sdk/mocks";
+import { mockExercises, mockGrammarPoint } from "grammar-sdk/mocks";
 import { expect, test } from "vitest";
 import { Lesson } from "./Lesson";
 
 test("Lesson", () => {
-  const gp = mockGrammarPoint() as GrammarPoint;
-  const { exercises, ...noEx } = gp;
+  const gp = mockGrammarPoint();
 
-  const result = Lesson(gp);
+  const exercises = mockExercises(12, gp.id);
+
+  const result = Lesson({ ...gp, exercises });
 
   expect(result?.exercise.order).toBe(0);
   expect(result).toEqual({
-    ...noEx,
-    exercise: gp.exercises.at(0),
+    ...gp,
+    exercise: exercises.at(0),
   });
 });

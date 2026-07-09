@@ -1,5 +1,12 @@
 import { Context } from "./context";
-import { getGrammarPoint, getGrammarPoints } from "./db";
+import {
+  getExercisesByGrammarPointId,
+  getExercisesByGrammarPointIds,
+  getGrammarPoint,
+  getGrammarPoints,
+} from "./db";
+import { type FullExample, FullExamples } from "./example";
+import { Exercises, type ExercisesByGrammarPointId } from "./exercise";
 import { GrammarPoint, GrammarPoints } from "./grammar-point";
 
 let InMemoryCache: GrammarPoint[] | null = null;
@@ -62,7 +69,6 @@ export const fetchGrammarPoints = async (
 
 export const fetchAllGrammarPoints = async (
   context: Context,
-  include: { exercises: boolean } = { exercises: true },
 ): Promise<GrammarPoint[]> => {
   const cached = await getFromCache(context);
 
@@ -70,12 +76,42 @@ export const fetchAllGrammarPoints = async (
     return GrammarPoints.filterVisible(cached, context);
   }
 
-  const grammarPoints = await getGrammarPoints(undefined, include);
-  // Cache only if everything is included
-  if (Object.values(include).every((v) => v)) {
-    setCache(grammarPoints);
-  }
+  const grammarPoints = await getGrammarPoints();
+  setCache(grammarPoints);
   return GrammarPoints.filterVisible(grammarPoints, context);
+};
+
+export const fetchExercisesByGrammarPointId = async (
+  grammarPointId: string,
+  context: Context,
+) => {
+  return Exercises.filterVisible(
+    await getExercisesByGrammarPointId(+grammarPointId),
+    context,
+  );
+};
+
+export const fetchExamplesByGrammarPointId = async (
+  grammarPointId: string,
+  context: Context,
+): Promise<FullExample[]> => {
+  const exercises = await fetchExercisesByGrammarPointId(
+    grammarPointId,
+    context,
+  );
+
+  return FullExamples.fromExercises(exercises);
+};
+
+export const fetchExercisesByGrammarPointIds = async (
+  grammarPointIds: string[],
+  context: Context,
+): Promise<ExercisesByGrammarPointId> => {
+  const exercises = Exercises.filterVisible(
+    await getExercisesByGrammarPointIds(grammarPointIds.map((id) => +id)),
+    context,
+  );
+  return Object.groupBy(exercises, (e) => e.grammarPointId);
 };
 
 export {

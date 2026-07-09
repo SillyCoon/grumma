@@ -1,10 +1,20 @@
-import { fetchAllGrammarPoints, type Context } from "grammar-sdk";
+import {
+  fetchAllGrammarPoints,
+  fetchExercisesByGrammarPointId,
+  fetchExercisesByGrammarPointIds,
+  fetchGrammarPoints,
+  type Context,
+  type Exercise,
+} from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
 import { db } from "../../libs/db";
 import type { User } from "../../src/models/user";
 import { NaiveAlgorithm } from "./src/NaiveAlgorithm";
 import { Session } from "./src/session";
-import { SpaceRepetition } from "./src/SpaceRepetition";
+import {
+  calculateExerciseOrderByStage,
+  SpaceRepetition,
+} from "./src/SpaceRepetition";
 import {
   addToRepetitions,
   getAttempts,
@@ -14,10 +24,12 @@ import {
 } from "./src/SpaceRepetitionRepository";
 import { MockStageSettings, StageSettings } from "./src/StageSettings";
 import type { Attempt } from "./src/types/Attempt";
-import type { Lesson } from "./src/types/Lesson";
+import { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
 import { countStreak as countStreakUtils } from "./src/utils";
 import { isUserAdmin } from "../../libs/auth/admin";
+import type { Round } from "./src/types/Round";
+import type { Stage } from "./src/types/Stage";
 
 const algorithm = NaiveAlgorithm;
 const settings = {
@@ -38,11 +50,24 @@ export const getLessons = async (
   amount: number,
   user: User,
 ): Promise<Lesson[]> => {
-  const grammarPoints = await fetchAllGrammarPoints(contextFromUser(user));
   const attempts = await getAttempts(db, user);
 
+  const grammarPoints = await fetchAllGrammarPoints(contextFromUser(user));
+
   const spaceRepetition = SpaceRepetition(attempts);
-  return spaceRepetition.nextLessons(amount, grammarPoints);
+  const nextGrammarPoints = spaceRepetition.nextGrammarPointsForLessons(
+    amount,
+    grammarPoints,
+  );
+  return Promise.all(
+    nextGrammarPoints.map(async (gp) => {
+      const exercises = await fetchExercisesByGrammarPointId(
+        gp.id,
+        contextFromUser(user),
+      );
+      return Lesson({ ...gp, exercises });
+    }),
+  ).then((lessons) => lessons.filter((l): l is Lesson => !!l));
 };
 
 export const addAttempt = async (
@@ -52,18 +77,57 @@ export const addAttempt = async (
   await saveAttempt(db, attempt, user);
 };
 
-export const getNextRound = async (user: User): Promise<Lesson[]> => {
+export const getNextRound = async (user: User): Promise<Round[]> => {
   const attempts = await getAttempts(db, user);
-  const grammarPoints = await fetchAllGrammarPoints(contextFromUser(user));
 
   const spaceRepetition = SpaceRepetition(attempts);
-  const nextRound = spaceRepetition.nextRound(
-    algorithm,
-    settings,
-    grammarPoints,
+  const nextRound = spaceRepetition.nextRound(algorithm, settings);
+
+  const grammarPoints = await fetchGrammarPoints(
+    nextRound.map((r) => r.grammarPointId),
+    contextFromUser(user),
   );
 
-  return nextRound;
+  const exercises = await fetchExercisesByGrammarPointIds(
+    nextRound.map((r) => r.grammarPointId),
+    contextFromUser(user),
+  );
+
+  return grammarPoints
+    .toSorted((a, b) => a.order - b.order)
+    .map((gp) => {
+      const round = nextRound.find((r) => r.grammarPointId === gp.id);
+      const sortedExercises = exercises[gp.id]?.sort(
+        (a, b) => a.order - b.order,
+      );
+      if (!round || !sortedExercises) {
+        console.warn(
+          `Round or exercises not found for grammar point ${gp.id}`,
+          round,
+          sortedExercises,
+        );
+        return undefined;
+      }
+
+      const nextExercise =
+        sortedExercises[
+          calculateExerciseOrderByStage(sortedExercises.length, round.stage)
+        ];
+
+      if (!nextExercise) {
+        console.warn(
+          `Next exercise not found for grammar point ${gp.id} and stage ${round.stage}`,
+          sortedExercises,
+        );
+        return undefined;
+      }
+
+      return {
+        exercise: nextExercise,
+        stage: round.stage,
+      };
+    })
+    .filter((v): v is { exercise: Exercise; stage: Stage } => !!v);
 };
 
 export const countNextRound = async (user: User): Promise<number> => {
@@ -85,9 +149,7 @@ export const countStreak = async (
 
 export const getInReviewByTorfl = async (user: User) => {
   const schedule = await getSchedule(user);
-  const grammar = await fetchAllGrammarPoints(contextFromUser(user), {
-    exercises: false,
-  });
+  const grammar = await fetchAllGrammarPoints(contextFromUser(user));
 
   const grammarPointsById = IMap(grammar.map((v) => [v.id, v]));
 
@@ -126,7 +188,7 @@ export const getSessionResult = async (user: User, sessionId: string) => {
   return Session.calculateResult(session);
 };
 
-export type { Attempt } from "./src/types/Attempt";
+export * from "./src/types/Attempt";
 export type { Lesson } from "./src/types/Lesson";
 export type { Schedule } from "./src/types/Schedule";
 export type { Stage } from "./src/types/Stage";

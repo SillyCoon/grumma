@@ -7,6 +7,9 @@ import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
 import { getLiveEntry } from "astro:content";
+import { fetchExamplesByGrammarPointId } from "grammar-sdk";
+import logger from "libs/logger";
+import type { Example } from "grammar-sdk";
 
 const { id } = Astro.params;
 const backTo = Astro.url.searchParams.get("backTo") ?? undefined;
@@ -29,6 +32,14 @@ if (!grammarPointEntry) {
   return Astro.redirect("/grammar");
 }
 
+let examples: Example[] = [];
+
+try {
+  examples = await fetchExamplesByGrammarPointId(id, contextFromAstro(Astro));
+} catch (error) {
+  logger.error(error);
+}
+
 const inReview = id
   ? ((
       (await (await fetchGpInReview(Astro)).json()) ?? ([] as string[])
@@ -47,6 +58,7 @@ const grammarPoint = grammarPointEntry.data;
           backTo={backTo}
           client:visible
           inReview={inReview}
+          examples={examples}
           {...grammarPoint}
         />
         <section class="flex flex-row gap-5 justify-center items-center mt-5">

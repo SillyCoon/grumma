@@ -5,9 +5,7 @@ import { GrammarPointsTable } from "~/features/grammar-point/GrammarPointsTable"
 import { fetchAllGrammarPoints, getLabels } from "grammar-sdk";
 import { contextFromAstro } from "~/libs/context";
 
-const grammarPointsList = await fetchAllGrammarPoints(contextFromAstro(Astro), {
-  exercises: false,
-});
+const grammarPointsList = await fetchAllGrammarPoints(contextFromAstro(Astro));
 const labels = await getLabels(contextFromAstro(Astro));
 
 if (labels.isErr()) {

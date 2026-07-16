@@ -11,6 +11,7 @@ import { Example } from "../example/Example";
 import { StartLesson } from "./StartLesson";
 import { Title } from "./Title";
 import { StructureDisplay } from "./StructureDisplay";
+import { ExplanationDisplay } from "./ExplanationDisplay";
 
 type Props = GrammarPointType & {
   explanation?: string;
@@ -81,10 +82,7 @@ export const GrammarPoint = (props: Props) => {
           <CardTitle>Explanation</CardTitle>
         </CardHeader>
         <CardContent>
-          <section
-            class="prose prose-slate max-w-none [&_strong]:text-secondary"
-            innerHTML={props.explanation ?? "Coming soon!"}
-          />
+          <ExplanationDisplay text={props.explanation} />
         </CardContent>
       </Card>
       {props.next && <StartLesson />}

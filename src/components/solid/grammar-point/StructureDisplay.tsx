@@ -5,7 +5,7 @@ interface StructureDisplayProps {
 export const StructureDisplay = (props: StructureDisplayProps) => {
   return (
     <section
-      class="prose whitespace-pre-line [&_b]:text-secondary [&_strong]:text-secondary"
+      class="prose whitespace-pre-line [&_b]:text-secondary [&_strong]:text-primary"
       innerHTML={props.structure?.length ? props.structure : "Coming soon!"}
     />
   );

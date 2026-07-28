@@ -1,0 +1,27 @@
+.anchorButton {
+  anchor-name: --my-tooltip;
+}
+
+.tooltip {
+  opacity: 0;
+  visibility: hidden;
+  position-anchor: --my-tooltip;
+  position: fixed;
+  position-area: bottom;
+  position-try-fallbacks: top;
+
+  background: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  pointer-events: none;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  transition-delay: 0.5s;
+}
+
+.anchorButton:hover + .tooltip {
+  visibility: visible;
+  opacity: 1;
+}

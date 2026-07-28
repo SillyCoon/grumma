@@ -16,6 +16,7 @@ import { AnswerResult } from "./AnswerResult";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
 import { compareAnswer, normalizeAnswer, validAnswer } from "./utils";
+import { WrapUp } from "./WrapUp";
 
 interface ExerciseProps {
   exercise: ExerciseType;
@@ -23,6 +24,8 @@ interface ExerciseProps {
     completed: ExerciseType,
     result: { answer: string; correct: boolean },
   ) => void;
+  onShowResults: () => void;
+  onFinishStarted: () => void;
 }
 
 export const Exercise = (props: ExerciseProps) => {
@@ -114,6 +117,10 @@ export const Exercise = (props: ExerciseProps) => {
           </Sheet>
 
           <TransliterationRules />
+          <WrapUp
+            onShowResults={props.onShowResults}
+            onFinishStarted={props.onFinishStarted}
+          />
         </div>
 
         <AnswerResult

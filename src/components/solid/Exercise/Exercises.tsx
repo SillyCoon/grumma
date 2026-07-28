@@ -18,6 +18,9 @@ export const Exercises = (props: {
   const [exercisesLeft, setExercisesLeft] = createSignal<ExerciseForReview[]>(
     simpleShuffle(props.exercises),
   );
+  const [exercisesStarted, setExercisesStarted] = createSignal<
+    ExerciseForReview[]
+  >([]);
 
   const exercise = () => exercisesLeft().at(0);
 
@@ -49,6 +52,8 @@ export const Exercises = (props: {
       );
     }
 
+    setExercisesStarted((started) => [...new Set([...started, completed])]);
+
     setExercisesLeft((left) =>
       result.correct
         ? left.filter((l) => l !== completed)
@@ -56,12 +61,20 @@ export const Exercises = (props: {
     );
   };
 
+  const showResults = () => {
+    const resultPage = isSr()
+      ? `/sr/review/${sessionId}/result`
+      : "/grammar/practice/result";
+    navigate(resultPage);
+  };
+
+  const finishStarted = () => {
+    setExercisesLeft(exercisesStarted());
+  };
+
   createEffect(() => {
     if (!exercise()) {
-      const resultPage = isSr()
-        ? `/sr/review/${sessionId}/result`
-        : "/grammar/practice/result";
-      navigate(resultPage);
+      showResults();
     }
   });
 
@@ -72,6 +85,8 @@ export const Exercises = (props: {
         <Exercise
           exercise={exercise() as ExerciseType}
           handleNext={handleNext}
+          onShowResults={showResults}
+          onFinishStarted={finishStarted}
         />
       </Match>
     </Switch>

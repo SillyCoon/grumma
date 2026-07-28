@@ -18,7 +18,7 @@ export const Exercises = (props: {
   const [exercisesLeft, setExercisesLeft] = createSignal<ExerciseForReview[]>(
     simpleShuffle(props.exercises),
   );
-  const [exercisesStarted, setExercisesStarted] = createSignal<
+  const [answeredWrongExercises, setAnsweredWrongExercises] = createSignal<
     ExerciseForReview[]
   >([]);
 
@@ -52,7 +52,10 @@ export const Exercises = (props: {
       );
     }
 
-    setExercisesStarted((started) => [...new Set([...started, completed])]);
+    !result.correct &&
+      setAnsweredWrongExercises((started) => [
+        ...new Set([...started, completed]),
+      ]);
 
     setExercisesLeft((left) =>
       result.correct
@@ -69,7 +72,7 @@ export const Exercises = (props: {
   };
 
   const finishStarted = () => {
-    setExercisesLeft(exercisesStarted());
+    setExercisesLeft(answeredWrongExercises());
   };
 
   createEffect(() => {

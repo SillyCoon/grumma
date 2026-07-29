@@ -64,6 +64,12 @@ export const Exercise = (props: ExerciseProps) => {
   };
 
   const checkAnswer = () => {
+    if (answer().trim() === "") {
+      return setAnswerState({
+        variant: "try-again",
+        description: "Answer cannot be empty",
+      });
+    }
     setAnswerState(
       findMatchingAnswer(props.exercise, answer()) ?? { variant: "incorrect" },
     );

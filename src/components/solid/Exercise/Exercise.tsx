@@ -3,7 +3,10 @@ import { SendButton } from "../generic/SendButton";
 import { Description } from "./Description";
 import { Task } from "./Task";
 
-import type { Exercise as ExerciseType } from "grammar-sdk/exercise";
+import type {
+  AnswerVariant,
+  Exercise as ExerciseType,
+} from "grammar-sdk/exercise";
 
 import { actions } from "astro:actions";
 import { FabButton } from "packages/ui/fab";
@@ -35,8 +38,7 @@ export const Exercise = (props: ExerciseProps) => {
 
   const [answer, setAnswer] = createSignal<string>("");
   const [answerState, setAnswerState] = createSignal<
-    | { variant: "correct" | "incorrect" | "try-again"; description?: string }
-    | undefined
+    { variant: AnswerVariant; description?: string } | undefined
   >(undefined);
 
   const [validationError, setValidationError] = createSignal<string>("");
@@ -70,7 +72,7 @@ export const Exercise = (props: ExerciseProps) => {
   const handleNext = () => {
     props.handleNext(props.exercise, {
       answer: answer(),
-      correct: isCorrect() ?? true,
+      correct: isCorrect(),
     });
     setAnswer("");
     setAnswerState(undefined);

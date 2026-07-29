@@ -1,11 +1,5 @@
-import type { Exercise } from "packages/grammar-sdk";
+import type { Exercise, AcceptableAnswer } from "grammar-sdk";
 import { compareAnswer } from "./utils";
-
-type PossibleAnswer = {
-  text: string;
-  variant: "correct" | "incorrect" | "try-again";
-  description?: string;
-};
 
 const getAllPossibleAnswers = (exercise: Exercise) => {
   const possibleAnswers = exercise.parts.find((v) => v.type === "answer");
@@ -27,7 +21,7 @@ const getAllPossibleAnswers = (exercise: Exercise) => {
 export const checkAnswer = (
   exercise: Exercise,
   answer: string,
-): PossibleAnswer | null => {
+): AcceptableAnswer | null => {
   const answers = getAllPossibleAnswers(exercise);
   const matchedAnswers = answers.filter((a) => compareAnswer(a.text, answer));
   if (!matchedAnswers.length) return null;
@@ -37,6 +31,11 @@ export const checkAnswer = (
       "Multiple possible answers matched for exercise, this should not happen",
       exercise,
       matchedAnswers,
+    );
+
+    const priority = ["correct", "try-again", "incorrect"];
+    matchedAnswers.sort(
+      (a, b) => priority.indexOf(a.variant) - priority.indexOf(b.variant),
     );
   }
 

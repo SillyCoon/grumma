@@ -17,13 +17,15 @@ export const Text = (index: number, text: string): Text => ({
   text,
 });
 
+const answerVariantSchema = z.enum(["correct", "incorrect", "try-again"]);
 export const acceptableAnswerSchema = z.object({
   id: z.number().int().positive().optional(),
   text: z.string().min(1, "Acceptable answer cannot be empty"),
   description: z.string().optional(),
-  variant: z.enum(["correct", "incorrect", "try-again"]),
+  variant: answerVariantSchema,
 });
 export type AcceptableAnswer = z.infer<typeof acceptableAnswerSchema>;
+export type AnswerVariant = z.infer<typeof answerVariantSchema>;
 
 export const answerSchema = z.object({
   id: z.number().int().positive().optional(),

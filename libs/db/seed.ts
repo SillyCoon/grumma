@@ -1679,17 +1679,12 @@ const seed = async () => {
       [];
 
     for (const p of answerParts) {
-      newAcceptableAnswers.push({
-        answerId: p.id,
-        text: p.text.trim(),
-        variant: "correct",
-      });
-
       const ex = exercisesDef.find((e) => e.id === p.exerciseId);
       if (!ex) continue;
 
       const langParts = p.language === "ru" ? ex.ruParts : ex.enParts;
-      const partDef = langParts.find((part) => part.type === "answer");
+      const partDef = langParts[p.order];
+      if (partDef?.type !== "answer") continue;
 
       if (partDef?.acceptableAnswers) {
         for (const def of partDef.acceptableAnswers) {

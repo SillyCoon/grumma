@@ -161,15 +161,15 @@ describe("checkAnswer", () => {
           acceptableAnswers: [
             {
               text: "собака",
-              variant: "correct" as const,
-            },
-            {
-              text: "собака",
               variant: "incorrect",
             },
             {
               text: "собака",
               variant: "try-again" as const,
+            },
+            {
+              text: "собака",
+              variant: "correct" as const,
             },
           ],
         },
@@ -194,11 +194,11 @@ describe("checkAnswer", () => {
           acceptableAnswers: [
             {
               text: "собака",
-              variant: "try-again" as const,
+              variant: "incorrect",
             },
             {
               text: "собака",
-              variant: "incorrect",
+              variant: "try-again" as const,
             },
           ],
         },

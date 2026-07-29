@@ -15,8 +15,10 @@ import { GrammarPoint } from "../grammar-point/GrammarPoint";
 import { AnswerResult } from "./AnswerResult";
 import { TransliterateInput } from "./TransliterateInput";
 import { TransliterationRules } from "./TransliterationRules";
-import { compareAnswer, normalizeAnswer, validAnswer } from "./utils";
+import { normalizeAnswer } from "./utils";
 import { WrapUp } from "./WrapUp";
+import { checkAnswer as findMatchingAnswer } from "~/features/exercise/do/domain";
+import { validAnswer } from "~/features/exercise/do/utils";
 
 interface ExerciseProps {
   exercise: ExerciseType;
@@ -32,12 +34,15 @@ export const Exercise = (props: ExerciseProps) => {
   let input!: HTMLInputElement;
 
   const [answer, setAnswer] = createSignal<string>("");
-  const [isCorrect, setIsCorrect] = createSignal<boolean | undefined>(
-    undefined,
-  );
+  const [answerState, setAnswerState] = createSignal<
+    | { variant: "correct" | "incorrect" | "try-again"; description?: string }
+    | undefined
+  >(undefined);
+
   const [validationError, setValidationError] = createSignal<string>("");
 
-  const notAnswered = () => isCorrect() === undefined;
+  const notAnswered = () => !answerState();
+  const isCorrect = () => answerState()?.variant === "correct";
 
   const correctAnswer = () =>
     normalizeAnswer(
@@ -49,22 +54,26 @@ export const Exercise = (props: ExerciseProps) => {
       setValidationError("Answer contains not allowed symbols!");
       return;
     }
-    if (notAnswered()) {
+    if (notAnswered() || answerState()?.variant === "try-again") {
       checkAnswer();
     } else {
       handleNext();
     }
   };
 
-  const checkAnswer = () =>
-    setIsCorrect(compareAnswer(correctAnswer(), answer()));
+  const checkAnswer = () => {
+    setAnswerState(
+      findMatchingAnswer(props.exercise, answer()) ?? { variant: "incorrect" },
+    );
+  };
+
   const handleNext = () => {
     props.handleNext(props.exercise, {
       answer: answer(),
       correct: isCorrect() ?? true,
     });
     setAnswer("");
-    setIsCorrect(undefined);
+    setAnswerState(undefined);
     input.focus();
   };
 
@@ -124,7 +133,8 @@ export const Exercise = (props: ExerciseProps) => {
         </div>
 
         <AnswerResult
-          isCorrect={isCorrect()}
+          variant={answerState()?.variant}
+          description={answerState()?.description}
           correctAnswer={correctAnswer() ?? ""}
         />
       </div>

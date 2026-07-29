@@ -1,5 +1,4 @@
 import type { Exercise } from "packages/grammar-sdk";
-import type { Answer } from "packages/grammar-sdk/src/exercise";
 import { compareAnswer } from "./utils";
 
 type PossibleAnswer = {

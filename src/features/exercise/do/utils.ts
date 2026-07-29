@@ -1,4 +1,3 @@
-
 export const compareAnswer = (correct: string, answer: string): boolean => {
   const normalizeForComparison = (str: string) =>
     str.trim().toLowerCase().replace(/ё/g, "е");

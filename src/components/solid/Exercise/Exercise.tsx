@@ -103,6 +103,7 @@ export const Exercise = (props: ExerciseProps) => {
             clear={!answer()}
             onInput={(str) => {
               setAnswer(normalizeAnswer(str));
+              setAnswerState(undefined);
               setValidationError("");
             }}
             class="focus h-[50px] grow rounded-xl border border-secondary/30 p-2 text-lg focus:outline-primary"

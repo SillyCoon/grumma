@@ -72,7 +72,9 @@ export type ExercisesByGrammarPointId = Partial<Record<string, Exercise[]>>;
 
 export const Exercises = {
   filterVisible(exercises: Exercise[], context: Context) {
-    return exercises.filter((ex) => Exercise.isVisible(ex, context));
+    return exercises
+      .filter((ex) => Exercise.isVisible(ex, context))
+      .toSorted((a, b) => a.order - b.order);
   },
   validateUpdate(updating: UpdateExercise[], existingExercises: Exercise[]) {
     if (existingExercises.length !== updating.length) {

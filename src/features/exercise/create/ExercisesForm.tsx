@@ -45,6 +45,26 @@ const filterEmptyParts = (exercise: Exercise): Exercise => ({
   ),
 });
 
+const filterEmptyAcceptableAnswers = (exercise: Exercise): Exercise => {
+  const filterFn = (part: Answer | Text) => {
+    if (part.type === "answer") {
+      return {
+        ...part,
+        acceptableAnswers: part.acceptableAnswers?.filter(
+          (answer) => answer.text.trim() !== "",
+        ),
+      };
+    }
+    return part;
+  };
+
+  return {
+    ...exercise,
+    parts: exercise.parts.map(filterFn),
+    translationParts: exercise.translationParts.map(filterFn),
+  };
+};
+
 export const ExercisesForm = (props: {
   grammarPointId: number;
   defaultExercises?: Exercise[];
@@ -166,7 +186,9 @@ export const ExercisesForm = (props: {
               onClick={async () => {
                 try {
                   const result = await actions.putExercises(
-                    unwrap(exercises).map(filterEmptyParts),
+                    unwrap(exercises)
+                      .map(filterEmptyParts)
+                      .map(filterEmptyAcceptableAnswers),
                   );
                   if (result.error) {
                     console.error(result.error);

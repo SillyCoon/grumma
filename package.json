@@ -3,6 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "setup-db": "bun run migrate && bun run seed",
+    "reset-db": "supabase db reset && bun run setup-db",
     "dev": "astro dev",
     "test": "vitest run --exclude '**/tests/integration/**'",
     "test:integration": "vitest run integration",
@@ -79,7 +81,7 @@
     "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
     "knip": "^5.66.2",
-    "supabase": "^2.76.17",
+    "supabase": "^2.111.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",

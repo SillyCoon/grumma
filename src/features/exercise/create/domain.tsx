@@ -5,6 +5,7 @@ import type {
   Exercise,
   ExercisePart,
 } from "grammar-sdk/exercise";
+import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 
 export const EmptyExercisePart = (order: number): ExercisePart => ({
   type: "text",
@@ -45,6 +46,11 @@ export const exercisesStore = (
     { name: key },
   );
 
+  const [parent, sortableExercises, setSortableExercises, updateConfig] =
+    useDragAndDrop<HTMLTableRowElement, Exercise>(exercises, {
+      dragHandle: ".drag-handle",
+    });
+
   const addAcceptableAnswer = (exerciseIndex: number, answerIndex: number) => {
     setExercises(exerciseIndex, "parts", answerIndex, (part) => {
       if (part.type !== "answer") return part;
@@ -84,7 +90,7 @@ export const exercisesStore = (
   };
 
   return {
-    exercises,
+    exercises: sortableExercises(),
     setExercises,
     clear: () => localStorage.removeItem(key),
     addAcceptableAnswer,
@@ -92,5 +98,7 @@ export const exercisesStore = (
     toggleHideExercise: (index: number) =>
       setExercises(index, "hide", (prev) => !prev),
     getAnswer,
+    disableSorting: (disabled: boolean) => updateConfig({ disabled }),
+    parent,
   };
 };

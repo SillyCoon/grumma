@@ -47,6 +47,26 @@ const filterEmptyParts = (exercise: Exercise): Exercise => ({
   ),
 });
 
+const filterEmptyAcceptableAnswers = (exercise: Exercise): Exercise => {
+  const filterFn = (part: Answer | Text) => {
+    if (part.type === "answer") {
+      return {
+        ...part,
+        acceptableAnswers: part.acceptableAnswers?.filter(
+          (answer) => answer.text.trim() !== "",
+        ),
+      };
+    }
+    return part;
+  };
+
+  return {
+    ...exercise,
+    parts: exercise.parts.map(filterFn),
+    translationParts: exercise.translationParts.map(filterFn),
+  };
+};
+
 export const ExercisesForm = (props: {
   grammarPointId: number;
   defaultExercises?: Exercise[];
@@ -182,19 +202,28 @@ export const ExercisesForm = (props: {
             <TooltipContent>Clear all local changes</TooltipContent>
           </Tooltip>
 
-          <Button
-            onClick={async () => {
-              try {
-                const result = await actions.putExercises(
-                  unwrap(exercises)
-                    .map(filterEmptyParts)
-                    .map((exercise, index) => ({
-                      ...exercise,
-                      order: index,
+            <Button
+              onClick={async () => {
+                try {
+                  const result = await actions.putExercises(
+                    unwrap(exercises)
+                      .map(filterEmptyParts)
+                      .map(filterEmptyAcceptableAnswers),
+                      .map((exercise, index) => ({
+                        ...exercise,
+                        order: index,
                     })),
-                );
-                if (result.error) {
-                  console.error(result.error);
+                  );
+                  if (result.error) {
+                    console.error(result.error);
+                    toast.error("Failed to save exercises");
+                  } else {
+                    setPreviewExercises(result.data);
+                    setExercises(result.data);
+                    clear();
+                    toast.success("Exercises saved successfully");
+                  }
+                } catch {
                   toast.error("Failed to save exercises");
                 } else {
                   setPreviewExercises(result.data);

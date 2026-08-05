@@ -202,28 +202,20 @@ export const ExercisesForm = (props: {
             <TooltipContent>Clear all local changes</TooltipContent>
           </Tooltip>
 
-            <Button
-              onClick={async () => {
-                try {
-                  const result = await actions.putExercises(
-                    unwrap(exercises)
-                      .map(filterEmptyParts)
-                      .map(filterEmptyAcceptableAnswers),
-                      .map((exercise, index) => ({
-                        ...exercise,
-                        order: index,
+          <Button
+            onClick={async () => {
+              try {
+                const result = await actions.putExercises(
+                  unwrap(exercises)
+                    .map(filterEmptyParts)
+                    .map(filterEmptyAcceptableAnswers)
+                    .map((exercise, index) => ({
+                      ...exercise,
+                      order: index,
                     })),
-                  );
-                  if (result.error) {
-                    console.error(result.error);
-                    toast.error("Failed to save exercises");
-                  } else {
-                    setPreviewExercises(result.data);
-                    setExercises(result.data);
-                    clear();
-                    toast.success("Exercises saved successfully");
-                  }
-                } catch {
+                );
+                if (result.error) {
+                  console.error(result.error);
                   toast.error("Failed to save exercises");
                 } else {
                   setPreviewExercises(result.data);

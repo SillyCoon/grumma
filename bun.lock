@@ -8,7 +8,7 @@
         "@astrojs/node": "11.0.2",
         "@astrojs/solid-js": "7.0.1",
         "@astrojs/ts-plugin": "1.10.10",
-        "@formkit/drag-and-drop": "^0.5.3",
+        "@formkit/drag-and-drop": "^0.6.1",
         "@google-cloud/pino-logging-gcp-config": "^1.3.5",
         "@kobalte/core": "^0.13.11",
         "@solid-primitives/autofocus": "^0.1.4",
@@ -351,7 +351,7 @@
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.9", "", {}, "sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg=="],
 
-    "@formkit/drag-and-drop": ["@formkit/drag-and-drop@0.5.3", "", {}, "sha512-VGQsKYc350OOMbz7wYt69YqDbn49x7RJ32eqiJieNke54nGZYmx18XEqTw0lBiJmH3RaiH6V45gB1u+tvI/TNw=="],
+    "@formkit/drag-and-drop": ["@formkit/drag-and-drop@0.6.1", "", { "peerDependencies": { "@marko/runtime-tags": ">=6.0.166" }, "optionalPeers": ["@marko/runtime-tags"] }, "sha512-DNKoPqdg9RW7k0zZlF2FH636Cc16V3tuGDVKWNHpSXr3amF4nmQZfieoLNVRxqWxXVFJq2DY+vf8SCD10JyjAA=="],
 
     "@formkit/tempo": ["@formkit/tempo@0.1.2", "", {}, "sha512-jNPPbjL8oj7hK3eHX++CwbR6X4GKQt+x00/q4yeXkwynXHGKL27dylYhpEgwrmediPP4y7s0XtN1if/M/JYujg=="],
 

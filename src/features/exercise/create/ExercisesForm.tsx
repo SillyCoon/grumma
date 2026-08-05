@@ -72,7 +72,7 @@ export const ExercisesForm = (props: {
   );
 
   createEffect(() => {
-    disableSorting(!hasCapacity() || !isEditing());
+    disableSorting(!isEditing());
   });
 
   const hasCapacity = () => exercises.length < MAX_EXERCISES;
@@ -186,7 +186,12 @@ export const ExercisesForm = (props: {
             onClick={async () => {
               try {
                 const result = await actions.putExercises(
-                  unwrap(exercises).map(filterEmptyParts),
+                  unwrap(exercises)
+                    .map(filterEmptyParts)
+                    .map((exercise, index) => ({
+                      ...exercise,
+                      order: index,
+                    })),
                 );
                 if (result.error) {
                   console.error(result.error);

@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { sql } from "drizzle-orm";
 import { db } from "./index";
 import {
   acceptableAnswersTmp,
@@ -1703,6 +1704,19 @@ const seed = async () => {
     console.log(
       `✅ Inserted ${newAcceptableAnswers.length} acceptable answers`,
     );
+
+    console.log("Syncing identity sequences...");
+    for (const [tableName, table] of [
+      ["tmp.grammar_point_tmp", grammarPointsTmp],
+      ["tmp.exercise_tmp", exercisesTmp],
+    ] as const) {
+      await db.execute(sql`
+        SELECT setval(
+          pg_get_serial_sequence(${tableName}, 'id'),
+          (SELECT COALESCE(MAX(id), 1) FROM ${table})
+        )
+      `);
+    }
 
     console.log("Seed completed successfully!");
     process.exit(0);

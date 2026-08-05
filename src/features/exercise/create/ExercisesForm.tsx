@@ -1,4 +1,5 @@
 import {
+  createEffect,
   createSignal,
   For,
   Match,
@@ -18,6 +19,7 @@ import { AiFillEye, AiFillEyeInvisible } from "solid-icons/ai";
 import { Tooltip, TooltipContent, TooltipTrigger } from "ui/tooltip";
 import { ExercisePreview } from "./ExercisePreview";
 import { ExerciseInput } from "./ExerciseInput";
+import { RiEditorDraggable } from "solid-icons/ri";
 
 const EmptyExercise = (order: number, grammarPointId: number): Exercise => ({
   grammarPointId: grammarPointId.toString(),
@@ -73,13 +75,25 @@ export const ExercisesForm = (props: {
   const [isEditing, setIsEditing] = createSignal(props.isEditing ?? false);
 
   const MAX_EXERCISES = 12;
-  const { exercises, setExercises, toggleHideExercise, clear } = exercisesStore(
+  const {
+    exercises,
+    setExercises,
+    toggleHideExercise,
+    clear,
+    disableSorting,
+    parent,
+  } = exercisesStore(
     props.grammarPointId,
     structuredClone(unwrap(props.defaultExercises)) ?? [],
   );
+
   const [previewExercises, setPreviewExercises] = createSignal<Exercise[]>(
     props.defaultExercises ?? [],
   );
+
+  createEffect(() => {
+    disableSorting(!isEditing());
+  });
 
   const hasCapacity = () => exercises.length < MAX_EXERCISES;
   return (
@@ -97,7 +111,7 @@ export const ExercisesForm = (props: {
         </Switch>
       </div>
 
-      <ol class="list-decimal pl-5">
+      <ol class="list-decimal pl-5" ref={parent}>
         <SolidSwitch>
           <Match when={isEditing()}>
             <For each={exercises}>
@@ -105,34 +119,38 @@ export const ExercisesForm = (props: {
                 const setExercise = setExercises.bind(null, index());
 
                 return (
-                  <li>
-                    <div class="flex flex-row justify-between">
-                      <ExerciseInput
-                        exercise={exercise}
-                        setExercise={setExercise}
-                      />
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <IconButton
-                            variant={exercise.hide ? "warning" : "success"}
-                            onClick={() => toggleHideExercise(index())}
-                          >
-                            <Show
-                              when={!exercise.hide}
-                              fallback={<AiFillEyeInvisible />}
+                  <div class="flex flex-row items-center gap-10">
+                    <RiEditorDraggable class="drag-handle cursor-grab active:cursor-grabbing" />
+
+                    <li>
+                      <div class="flex flex-row justify-between">
+                        <ExerciseInput
+                          exercise={exercise}
+                          setExercise={setExercise}
+                        />
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <IconButton
+                              variant={exercise.hide ? "warning" : "success"}
+                              onClick={() => toggleHideExercise(index())}
                             >
-                              <AiFillEye />
-                            </Show>
-                          </IconButton>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {exercise.hide
-                            ? "Hidden from users"
-                            : "Visible to users"}
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                  </li>
+                              <Show
+                                when={!exercise.hide}
+                                fallback={<AiFillEyeInvisible />}
+                              >
+                                <AiFillEye />
+                              </Show>
+                            </IconButton>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            {exercise.hide
+                              ? "Hidden from users"
+                              : "Visible to users"}
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </li>
+                  </div>
                 );
               }}
             </For>
@@ -149,66 +167,72 @@ export const ExercisesForm = (props: {
             </For>
           </Match>
         </SolidSwitch>
-        <Show when={isEditing()}>
-          <Button
-            variant={"ghost"}
-            disabled={!hasCapacity()}
-            class="w-full"
-            onClick={() =>
-              setExercises(
-                exercises.length,
-                EmptyExercise(exercises.length, props.grammarPointId),
-              )
-            }
-          >
-            <Show
-              when={hasCapacity()}
-              fallback={`Max number of exercises is ${MAX_EXERCISES}`}
-            >
-              + Add exercise
-            </Show>
-          </Button>
-          <div class="mt-4 ml-auto flex w-fit flex-row gap-2">
-            <Tooltip>
-              <TooltipTrigger>
-                <ResetConfirmation
-                  title="exercises"
-                  onReset={() => {
-                    clear();
-                    globalThis.location.reload();
-                  }}
-                />
-              </TooltipTrigger>
-              <TooltipContent>Clear all local changes</TooltipContent>
-            </Tooltip>
-
-            <Button
-              onClick={async () => {
-                try {
-                  const result = await actions.putExercises(
-                    unwrap(exercises)
-                      .map(filterEmptyParts)
-                      .map(filterEmptyAcceptableAnswers),
-                  );
-                  if (result.error) {
-                    console.error(result.error);
-                    toast.error("Failed to save exercises");
-                  } else {
-                    setPreviewExercises(result.data);
-                    setExercises(result.data);
-                    clear();
-                    toast.success("Exercises saved successfully");
-                  }
-                } catch {
-                  toast.error("Failed to save exercises");
-                }
-              }}
-            >
-              Save Exercises
-            </Button>
-          </div>
-        </Show>
       </ol>
+      <Show when={isEditing()}>
+        <Button
+          id="non-draggable"
+          variant={"ghost"}
+          disabled={!hasCapacity()}
+          class="w-full"
+          onClick={() =>
+            setExercises(
+              exercises.length,
+              EmptyExercise(exercises.length, props.grammarPointId),
+            )
+          }
+        >
+          <Show
+            when={hasCapacity()}
+            fallback={`Max number of exercises is ${MAX_EXERCISES}`}
+          >
+            + Add exercise
+          </Show>
+        </Button>
+        <div class="mt-4 ml-auto flex w-fit flex-row gap-2">
+          <Tooltip>
+            <TooltipTrigger>
+              <ResetConfirmation
+                title="exercises"
+                onReset={() => {
+                  clear();
+                  globalThis.location.reload();
+                }}
+              />
+            </TooltipTrigger>
+            <TooltipContent>Clear all local changes</TooltipContent>
+          </Tooltip>
+
+          <Button
+            onClick={async () => {
+              try {
+                const result = await actions.putExercises(
+                  unwrap(exercises)
+                    .map(filterEmptyParts)
+                    .map(filterEmptyAcceptableAnswers)
+                    .map((exercise, index) => ({
+                      ...exercise,
+                      order: index,
+                    })),
+                );
+                if (result.error) {
+                  console.error(result.error);
+                  toast.error("Failed to save exercises");
+                } else {
+                  setPreviewExercises(result.data);
+                  setExercises(result.data);
+                  clear();
+                  toast.success("Exercises saved successfully");
+                }
+              } catch (error) {
+                console.error(error);
+                toast.error("Failed to save exercises");
+              }
+            }}
+          >
+            Save Exercises
+          </Button>
+        </div>
+      </Show>
     </div>
   );
 };

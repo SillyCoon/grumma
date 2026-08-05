@@ -32,6 +32,14 @@ export type UpdateExerciseDb = CreateExerciseDb & {
   id: number;
 };
 
+export const ExercisesDb = {
+  toExercises: (exercises: ExerciseDb[]): Exercise[] => {
+    return exercises
+      .map(ExerciseDb.toExercise)
+      .toSorted((a, b) => a.order - b.order);
+  },
+};
+
 export const ExerciseDb = {
   toExercise: (e: ExerciseDb): Exercise => {
     return {

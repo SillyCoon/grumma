@@ -18,7 +18,7 @@ import { GrammarPointDb, GrammarPointsDb } from "./grammar-point/dto";
 import { err, ok, okAsync, ResultAsync, type Result } from "neverthrow";
 import { Context } from "./context";
 import { type Exercise, Exercises } from "./exercise";
-import { ExerciseDb, type PartToCreateDb } from "./exercise/dto";
+import { ExerciseDb, ExercisesDb, type PartToCreateDb } from "./exercise/dto";
 import {
   LabelDb,
   LabelsDb,
@@ -70,9 +70,13 @@ export const getExercisesByGrammarPointIds = async (
         },
       },
     },
+    orderBy: (exercisesTmp) => [
+      exercisesTmp.grammarPointId,
+      exercisesTmp.order,
+    ],
   });
 
-  return exercisesDto.map(ExerciseDb.toExercise);
+  return ExercisesDb.toExercises(exercisesDto);
 };
 
 export const getExercisesByGrammarPointId = async (
@@ -90,7 +94,7 @@ export const getExercisesByGrammarPointId = async (
     },
   });
 
-  return exercisesDto.map(ExerciseDb.toExercise);
+  return ExercisesDb.toExercises(exercisesDto);
 };
 
 export class AuthorizationError extends Error {
@@ -276,6 +280,8 @@ const createExercises = async (
 
   const exercisesToCreate = creating.map(ExerciseDb.fromExerciseToCreate);
 
+  console.log("Exercises to create before inserting:", exercisesToCreate);
+
   for (const exercise of exercisesToCreate) {
     const insertedExercise = await tx
       .insert(exercisesTmp)
@@ -326,6 +332,7 @@ const updateExercises = async (
   updating: (Exercise & { id: number })[],
 ): Promise<Result<true, string>> => {
   const updatingExercises = updating.map(ExerciseDb.fromExerciseToUpdate);
+
   for (const exercise of updatingExercises) {
     await tx
       .update(exercisesTmp)

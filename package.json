@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "@astrojs/node": "11.0.2",
-    "@astrojs/solid-js": "7.0.1",
+    "@astrojs/solid-js": "7.0.2",
     "@astrojs/ts-plugin": "1.10.10",
     "@formkit/drag-and-drop": "^0.6.1",
     "@google-cloud/pino-logging-gcp-config": "^1.3.5",

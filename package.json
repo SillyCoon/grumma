@@ -48,7 +48,7 @@
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "discourse-sdk": "workspace:*",
-    "dotenv": "^16.6.1",
+    "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "feedback": "workspace:*",
     "grammar-sdk": "workspace:*",

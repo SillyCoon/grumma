@@ -42,7 +42,7 @@
     "@supabase/supabase-js": "^2.99.1",
     "@tailwindcss/vite": "^4.2.1",
     "@types/canvas-confetti": "^1.9.0",
-    "astro": "7.0.9",
+    "astro": "7.1.1",
     "astro-loading-indicator": "^0.8.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",

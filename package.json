@@ -81,7 +81,7 @@
     "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
     "knip": "^5.66.2",
-    "supabase": "^2.111.0",
+    "supabase": "^2.112.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",

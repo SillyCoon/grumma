@@ -71,8 +71,8 @@ describe("Exercise", () => {
     });
     test("should not filter out hidden exercises for admin context", () => {
       const exercises = [
-        mockExercise({ id: 1, hide: true }),
-        mockExercise({ id: 2, hide: false }),
+        mockExercise({ id: 1, hide: true, order: 1 }),
+        mockExercise({ id: 2, hide: false, order: 2 }),
       ];
       const result = Exercises.filterVisible(exercises, {
         user: { role: "admin", id: "1" },

@@ -1,4 +1,4 @@
-import type { User } from "~/models/user";
+import type { User } from "./user";
 
 const ADMIN_EMAILS = new Set(
   (process.env.ADMIN_EMAILS || "").split(",").filter(Boolean),

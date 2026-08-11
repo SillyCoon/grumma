@@ -1,9 +1,9 @@
 {
-  "name": "discourse-sdk",
+  "name": "db",
   "module": "index.ts",
   "type": "module",
   "dependencies": {
-    "logger": "workspace:*"
+    "drizzle-orm": "^0.45.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

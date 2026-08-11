@@ -1,4 +1,4 @@
-import logger from "libs/logger";
+import logger from "logger";
 
 type TopicsResponse = {
   topic_list: {

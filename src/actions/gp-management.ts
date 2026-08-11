@@ -15,7 +15,7 @@ import {
   updateGrammarPoint,
   updateGrammarPointsOrder,
 } from "grammar-sdk";
-import { db } from "libs/db";
+import { db } from "db";
 
 const handleError = (error: string | AuthorizationError) => {
   if (isAuthorizationError(error)) {

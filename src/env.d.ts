@@ -2,7 +2,7 @@
 /// <reference types="astro/client" />
 /// <reference path="../.astro/types.d.ts" />
 
-import type { User } from "./models/user";
+import type { User } from "auth";
 
 interface ImportMetaEnv {
   readonly PUBLIC_API: string;

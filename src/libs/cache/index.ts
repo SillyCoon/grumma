@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
-import { cache as cacheSchema } from "libs/db/schema";
-import { db, type DbClient } from "libs/db";
+import { cache as cacheSchema } from "db/schema";
+import { db, type DbClient } from "db";
 import crypto from "node:crypto";
 
 const set = async (

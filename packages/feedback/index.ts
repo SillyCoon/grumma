@@ -1,5 +1,5 @@
-import type { DbClient } from "libs/db";
-import { feedback as feedbackSchema } from "../../libs/db/schema";
+import type { DbClient } from "db";
+import { feedback as feedbackSchema } from "db/schema";
 
 type Feedback = {
   message: string;

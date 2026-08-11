@@ -3,7 +3,7 @@ import type {
   acceptableAnswersTmp,
   exercisePartsTmp,
   exercisesTmp,
-} from "../../../../libs/db/schema-tmp";
+} from "db/schema-tmp";
 
 export type ExerciseDb = typeof exercisesTmp.$inferSelect & {
   parts: (typeof exercisePartsTmp.$inferSelect & {

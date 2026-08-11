@@ -8,7 +8,7 @@ import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
 import { getLiveEntry } from "astro:content";
 import { fetchExamplesByGrammarPointId } from "grammar-sdk";
-import logger from "libs/logger";
+import logger from "logger";
 import type { Example } from "grammar-sdk";
 
 const { id } = Astro.params;

@@ -1,5 +1,5 @@
 import { eq, inArray, sql } from "drizzle-orm";
-import { db, type DbClient, type Transaction } from "../../../libs/db";
+import { db, type DbClient, type Transaction } from "db";
 import {
   GrammarPoints,
   type CreateGrammarPoint,
@@ -13,7 +13,7 @@ import {
   grammarPointsTmp,
   labels,
   labelsToGrammarPoints,
-} from "../../../libs/db/schema-tmp";
+} from "db/schema-tmp";
 import { GrammarPointDb, GrammarPointsDb } from "./grammar-point/dto";
 import { err, ok, okAsync, ResultAsync, type Result } from "neverthrow";
 import { Context } from "./context";

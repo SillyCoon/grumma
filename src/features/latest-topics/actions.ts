@@ -1,8 +1,8 @@
 import { ActionError, defineAction } from "astro:actions";
 import { getLatestTopics, type LatestTopic } from "discourse-sdk";
 import { contextFromAstro } from "~/libs/context";
-import { cache } from "libs/cache";
-import logger from "libs/logger";
+import { cache } from "~/libs/cache";
+import logger from "logger";
 
 export const latestTopics = {
   getLatestTopics: defineAction({

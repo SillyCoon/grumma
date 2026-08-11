@@ -14,8 +14,8 @@ import {
   expect,
   test,
 } from "vitest";
-import { makeDb } from "../../../../libs/db";
-import { cache as cacheTable } from "../../../../libs/db/schema";
+import { makeDb } from "db";
+import { cache as cacheTable } from "db/schema";
 
 let cache: Cache;
 

@@ -7,8 +7,8 @@ import {
   type Exercise,
 } from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
-import { db } from "../../libs/db";
-import type { User } from "../../src/models/user";
+import { db } from "db";
+import type { User } from "auth";
 import { NaiveAlgorithm } from "./src/NaiveAlgorithm";
 import { Session } from "./src/session";
 import {
@@ -27,7 +27,7 @@ import type { Attempt } from "./src/types/Attempt";
 import { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
 import { countStreak as countStreakUtils } from "./src/utils";
-import { isUserAdmin } from "../../libs/auth/admin";
+import { isUserAdmin } from "../auth/admin";
 import type { Round } from "./src/types/Round";
 import type { Stage } from "./src/types/Stage";
 

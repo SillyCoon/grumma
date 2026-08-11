@@ -2,7 +2,7 @@
 import type { APIRoute } from "astro";
 import { contextFromAstro } from "~/libs/context";
 import { clearCache, Context } from "grammar-sdk";
-import logger from "libs/logger";
+import logger from "logger";
 
 export const GET: APIRoute = async (_context) => {
   const isAdmin = Context.isAdmin(contextFromAstro(_context));

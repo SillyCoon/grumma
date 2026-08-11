@@ -5,8 +5,10 @@
     ".": "./index.ts"
   },
   "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "catalog:"
+  },
   "peerDependencies": {
-    "@supabase/supabase-js": "^2.99.1",
     "typescript": "^5.0.0"
   }
 }

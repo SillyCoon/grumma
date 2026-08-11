@@ -7,6 +7,6 @@
     "@kobalte/core": "^0.13.13",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.6.0",
-    "class-variance-authority": "^0.7.1"
+    "class-variance-authority": "catalog:"
   }
 }

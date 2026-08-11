@@ -3,8 +3,8 @@
   "description": "UI components",
   "version": "1.0.0",
   "dependencies": {
-    "solid-js": "^1.9.4",
-    "@kobalte/core": "^0.13.7",
+    "solid-js": "^catalog:",
+    "@kobalte/core": "^0.13.13",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.6.0",
     "class-variance-authority": "^0.7.1"

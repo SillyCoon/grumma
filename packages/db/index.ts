@@ -5,7 +5,10 @@ import postgres from "postgres";
 import * as schema from "./schema";
 import * as tmpSchema from "./schema-tmp";
 
-const connectionString = process.env.DATABASE_URL ?? "";
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not set");
+}
 
 // Disable prefetch as it is not supported for "Transaction" pool mode
 const client = postgres(connectionString, { prepare: false });
@@ -17,5 +20,4 @@ export const makeDb = (connectionString: string) =>
     schema: { ...schema, ...tmpSchema },
   });
 
-export type Database = typeof db;
-export type Transaction = Parameters<Parameters<Database["transaction"]>[0]>[0];
+export type Transaction = Parameters<Parameters<DbClient["transaction"]>[0]>[0];

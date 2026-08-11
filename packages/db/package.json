@@ -3,7 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "dependencies": {
-    "drizzle-orm": "^0.45.2"
+    "drizzle-orm": "catalog:",
+    "dotenv": "catalog:",
+    "postgres": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

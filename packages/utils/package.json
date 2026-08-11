@@ -2,7 +2,7 @@
   "name": "utils",
   "type": "module",
   "dependencies": {
-    "@formkit/tempo": "^0.1.2",
+    "@formkit/tempo": "catalog:",
     "@digitallinguistics/transliterate": "^0.4.1"
   },
   "peerDependencies": {

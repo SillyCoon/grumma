@@ -7,8 +7,14 @@
     "./session": "./src/session/index.ts",
     "./src/SpaceRepetition": "./src/SpaceRepetition.ts"
   },
-  "devDependencies": {
+  "dependencies": {
+    "db": "workspace:*",
+    "grammar-sdk": "workspace:*",
     "auth": "workspace:*",
+    "immutable": "catalog:",
+    "@formkit/tempo": "catalog:"
+  },
+  "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {

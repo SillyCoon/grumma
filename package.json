@@ -25,9 +25,19 @@
     "seed": "bun packages/db/seed.ts",
     "studio": "drizzle-kit studio"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "catalog": {
+      "immutable": "^5.1.9",
+      "drizzle-orm": "^0.45.2",
+      "uuid": "^14.0.1",
+      "@formkit/tempo": "^0.1.2",
+      "dotenv": "^17.4.2",
+      "postgres": "^3.4.7"
+    }
+  },
   "dependencies": {
     "@astrojs/node": "11.0.2",
     "@astrojs/solid-js": "7.0.2",
@@ -42,21 +52,21 @@
     "@tailwindcss/vite": "^4.2.1",
     "@types/canvas-confetti": "^1.9.0",
     "astro": "7.1.1",
+    "immutable": "catalog:",
     "astro-loading-indicator": "^0.8.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "discourse-sdk": "workspace:*",
     "logger": "workspace:*",
-    "dotenv": "^17.4.2",
-    "drizzle-orm": "^0.45.2",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
     "feedback": "workspace:*",
     "grammar-sdk": "workspace:*",
     "db": "workspace:*",
-    "immutable": "^5.1.9",
     "intro.js": "^8.3.2",
     "neverthrow": "^8.2.0",
-    "postgres": "^3.4.7",
+    "postgres": "catalog:",
     "resend": "^4.8.0",
     "solid-icons": "^1.2.0",
     "solid-js": "^1.9.9",
@@ -68,7 +78,7 @@
     "tailwindcss-animate": "^1.0.7",
     "ui": "workspace:*",
     "utils": "workspace:*",
-    "uuid": "^14.0.1"
+    "uuid": "catalog:"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",

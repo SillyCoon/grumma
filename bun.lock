@@ -9,7 +9,6 @@
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.0",
-        "@faker-js/faker": "^9.9.0",
         "@playwright/test": "^1.58.2",
         "@tailwindcss/typography": "^0.5.19",
         "@testcontainers/postgresql": "^11.13.0",
@@ -66,6 +65,9 @@
         "immutable": "catalog:",
         "neverthrow": "catalog:",
       },
+      "devDependencies": {
+        "@faker-js/faker": "catalog:",
+      },
       "peerDependencies": {
         "typescript": "^5.0.0",
       },
@@ -97,6 +99,9 @@
         "db": "workspace:*",
         "grammar-sdk": "workspace:*",
         "immutable": "catalog:",
+      },
+      "devDependencies": {
+        "@faker-js/faker": "catalog:",
       },
       "peerDependencies": {
         "typescript": "^5.0.0",
@@ -167,13 +172,9 @@
       },
       "devDependencies": {
         "@astrojs/check": "0.9.9",
-        "@biomejs/biome": "2.5.0",
-        "@faker-js/faker": "^9.9.0",
-        "@playwright/test": "^1.58.2",
         "@tailwindcss/typography": "^0.5.19",
         "@testcontainers/postgresql": "^11.13.0",
         "@types/node": "^22.18.12",
-        "drizzle-kit": "^0.31.10",
         "tailwindcss": "^4.2.1",
         "vite": "^7.3.1",
         "vitest": "^3.2.4",
@@ -184,6 +185,7 @@
     },
   },
   "catalog": {
+    "@faker-js/faker": "^10.5.0",
     "@formkit/tempo": "^0.1.2",
     "@supabase/supabase-js": "^2.99.1",
     "class-variance-authority": "^0.7.1",
@@ -404,7 +406,7 @@
 
     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.25.12", "", { "os": "win32", "cpu": "x64" }, "sha512-alJC0uCZpTFrSL0CCDjcgleBXPnCrEAhTBILpeAp7M/OFgoqtAetfBzX0xM00MUsVVPpVjlPuMbREqnZCXaTnA=="],
 
-    "@faker-js/faker": ["@faker-js/faker@9.9.0", "", {}, "sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA=="],
+    "@faker-js/faker": ["@faker-js/faker@10.5.0", "", {}, "sha512-bsxD8WLS5lIj7aaoCx1YJkktqYj5vlBUE6HWzu2Q51ksrGJ0H737ECCKlFU7Yf8Br45z9t99frBp/J7kzbMPAg=="],
 
     "@floating-ui/core": ["@floating-ui/core@1.7.0", "", { "dependencies": { "@floating-ui/utils": "^0.2.9" } }, "sha512-FRdBLykrPPA6P76GGGqlex/e7fbe0F1ykgxHYNXQsH/iTEtjMj/f9bpY5oQqbjt5VgZvgz/uKXbGuROijh3VLA=="],
 

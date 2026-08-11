@@ -51,13 +51,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
-    "@biomejs/biome": "2.5.0",
-    "@faker-js/faker": "^9.9.0",
-    "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.19",
     "@testcontainers/postgresql": "^11.13.0",
     "@types/node": "^22.18.12",
-    "drizzle-kit": "^0.31.10",
     "tailwindcss": "^4.2.1",
     "vite": "^7.3.1",
     "vitest": "^3.2.4"

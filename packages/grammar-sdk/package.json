@@ -13,6 +13,9 @@
     "neverthrow": "catalog:",
     "immutable": "catalog:"
   },
+  "devDependencies": {
+    "@faker-js/faker": "catalog:"
+  },
   "peerDependencies": {
     "typescript": "^5.0.0"
   }

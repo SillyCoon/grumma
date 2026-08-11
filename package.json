@@ -32,7 +32,8 @@
       "neverthrow": "^8.2.0",
       "solid-js": "^1.9.9",
       "@supabase/supabase-js": "^2.99.1",
-      "class-variance-authority": "^0.7.1"
+      "class-variance-authority": "^0.7.1",
+      "@faker-js/faker": "^10.5.0"
     }
   },
   "dependencies": {
@@ -40,7 +41,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.0",
-    "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.19",
     "@testcontainers/postgresql": "^11.13.0",

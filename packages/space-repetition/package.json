@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./session": "./src/session/index.ts"
+    "./session": "./src/session/index.ts",
+    "./src/SpaceRepetition": "./src/SpaceRepetition.ts"
   },
   "devDependencies": {
     "auth": "workspace:*",

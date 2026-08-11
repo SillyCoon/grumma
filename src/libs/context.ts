@@ -1,5 +1,5 @@
 import type { ActionAPIContext } from "astro:actions";
-import { isUserAdmin } from "packages/auth/admin";
+import { isUserAdmin } from "auth";
 import type { Context } from "grammar-sdk";
 
 export const contextFromAstro = (context: ActionAPIContext): Context => {

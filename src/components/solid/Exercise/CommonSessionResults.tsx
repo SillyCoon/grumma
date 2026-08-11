@@ -2,7 +2,7 @@ import type { Example as ExampleImpl } from "grammar-sdk/example";
 import { For, Show } from "solid-js";
 import { Card, CardContent, CardHeader } from "ui/card";
 import { Example } from "../example/Example";
-import type { AnySessionResult } from "packages/space-repetition/src/session";
+import type { AnySessionResult } from "space-repetition/session";
 
 export const CommonSessionResult = ({
   answers,

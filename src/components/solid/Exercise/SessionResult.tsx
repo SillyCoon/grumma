@@ -4,7 +4,7 @@ import type {
 } from "grammar-sdk/exercise";
 import { Example as ExampleImpl } from "grammar-sdk/example";
 import type { SessionResult as SessionResultType } from "space-repetition/session";
-import { calculateExerciseOrderByStage } from "packages/space-repetition/src/SpaceRepetition";
+import { calculateExerciseOrderByStage } from "space-repetition/src/SpaceRepetition";
 import { CommonSessionResult } from "./CommonSessionResults";
 
 export const SessionResult = (props: {

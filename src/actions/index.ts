@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 import { fetchExamplesByGrammarPointId, fetchGrammarPoint } from "grammar-sdk";
 import { db } from "db";
 import { createSupabaseServerInstance } from "~/libs/supabase";
-import { saveFeedback } from "packages/feedback";
+import { saveFeedback } from "feedback";
 import type { Stage } from "space-repetition";
 import {
   addAttempt,

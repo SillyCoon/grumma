@@ -9,10 +9,8 @@
     "./mocks": "./__mocks__/index.ts"
   },
   "dependencies": {
-    "db": "workspace:*"
-  },
-  "devDependencies": {
-    "@types/bun": "latest"
+    "db": "workspace:*",
+    "neverthrow": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

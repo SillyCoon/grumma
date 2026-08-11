@@ -14,9 +14,6 @@
     "immutable": "catalog:",
     "@formkit/tempo": "catalog:"
   },
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
   "peerDependencies": {
     "typescript": "^5.0.0"
   }

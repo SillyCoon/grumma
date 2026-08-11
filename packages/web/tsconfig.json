@@ -1,0 +1,23 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@api/*": ["src/pages/api/*"],
+      "@services/*": ["src/services/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "~/*": ["./src/*"]
+    },
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "exclude": ["node_modules", "dist", "./apps/storybook"],
+  "include": [".astro/types.d.ts", "**/*"]
+}

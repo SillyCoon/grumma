@@ -40,6 +40,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "catalog:",
     "@biomejs/biome": "2.5.0",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.19",

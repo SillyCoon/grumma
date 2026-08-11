@@ -10,6 +10,7 @@
       "devDependencies": {
         "@biomejs/biome": "2.5.0",
         "@playwright/test": "^1.58.2",
+        "@supabase/supabase-js": "catalog:",
         "@tailwindcss/typography": "^0.5.19",
         "@testcontainers/postgresql": "^11.13.0",
         "@types/node": "^22.18.12",
@@ -25,10 +26,8 @@
     },
     "packages/auth": {
       "name": "auth",
-      "dependencies": {
-        "@supabase/supabase-js": "catalog:",
-      },
       "peerDependencies": {
+        "@supabase/supabase-js": "catalog:",
         "typescript": "^5.0.0",
       },
     },
@@ -114,7 +113,7 @@
         "@kobalte/core": "^0.13.13",
         "class-variance-authority": "catalog:",
         "clsx": "^2.1.1",
-        "solid-js": "^catalog:",
+        "solid-js": "catalog:",
         "tailwind-merge": "^2.6.0",
       },
     },

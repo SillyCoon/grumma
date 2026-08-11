@@ -1,5 +1,5 @@
 import type { GrammarPoint } from "grammar-sdk";
-import { Search } from "packages/ui/icons";
+import { Search } from "ui/icons";
 import { createSignal, For } from "solid-js";
 import { useDebounce } from "solid-utils";
 import { Button } from "ui/button";

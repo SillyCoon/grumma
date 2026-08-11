@@ -1,17 +1,17 @@
 import { createEffect, createSignal, For } from "solid-js";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
-import { Button } from "packages/ui/button";
-import { cn } from "packages/ui/utils";
+import { Button } from "ui/button";
+import { cn } from "ui/utils";
 import { actions } from "astro:actions";
 import { toast } from "solid-toast";
 import { SaveConfirmation } from "@components/common/SaveConfirmation";
 import type { GrammarPoint } from "grammar-sdk";
 import type { Label } from "grammar-sdk";
-import { Badge } from "packages/ui/badge";
-import { TextField, TextFieldInput } from "packages/ui/text-field";
+import { Badge } from "ui/badge";
+import { TextField, TextFieldInput } from "ui/text-field";
 import { searchGrammar } from "./search";
-import { IconButton } from "packages/ui/icon-button";
-import { Search } from "packages/ui/icons";
+import { IconButton } from "ui/icon-button";
+import { Search } from "ui/icons";
 import { GrammarPointWithLabels } from "./type";
 
 export const GrammarPointsTable = (props: {

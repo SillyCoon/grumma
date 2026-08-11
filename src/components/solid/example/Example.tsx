@@ -1,5 +1,5 @@
 import type { Example as ExampleSentence } from "grammar-sdk/example";
-import { ArrowForward } from "packages/ui/icons";
+import { ArrowForward } from "ui/icons";
 import { Show, createSignal } from "solid-js";
 import { Button } from "ui/button";
 import { Card, CardContent } from "ui/card";

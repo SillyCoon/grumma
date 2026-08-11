@@ -1,10 +1,6 @@
-import {
-  TextField,
-  TextFieldInput,
-  TextFieldTextArea,
-} from "packages/ui/text-field";
+import { TextField, TextFieldInput, TextFieldTextArea } from "ui/text-field";
 import { children, createSignal, For, Match, Switch } from "solid-js";
-import { Select, SelectOption } from "packages/ui/select";
+import { Select, SelectOption } from "ui/select";
 import {
   Dialog,
   DialogContent,
@@ -12,15 +8,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "packages/ui/dialog";
-import { Button } from "packages/ui/button";
-import { cn } from "packages/ui/utils";
+} from "ui/dialog";
+import { Button } from "ui/button";
+import { cn } from "ui/utils";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from "packages/ui/context-menu";
+} from "ui/context-menu";
 
 import type { SetStoreFunction } from "solid-js/store";
 import type { JSX } from "astro/jsx-runtime";

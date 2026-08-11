@@ -1,4 +1,4 @@
-import { Button } from "packages/ui/button";
+import { Button } from "ui/button";
 import {
   Dialog,
   DialogTrigger,
@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "packages/ui/dialog";
-import { IconButton } from "packages/ui/icon-button";
+} from "ui/dialog";
+import { IconButton } from "ui/icon-button";
 import { AiFillDelete } from "solid-icons/ai";
 
 export const DeleteConfirmation = (props: {

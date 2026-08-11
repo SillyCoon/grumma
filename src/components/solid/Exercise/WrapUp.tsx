@@ -1,4 +1,4 @@
-import { Button } from "packages/ui/button";
+import { Button } from "ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "packages/ui/dialog";
+} from "ui/dialog";
 import { createSignal } from "solid-js";
 
 export const WrapUp = (props: {

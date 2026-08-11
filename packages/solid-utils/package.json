@@ -2,7 +2,7 @@
   "name": "solid-utils",
   "module": "index.ts",
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "catalog:"
   },
   "type": "module",
   "dependencies": {

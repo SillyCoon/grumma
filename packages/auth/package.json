@@ -1,0 +1,12 @@
+{
+  "name": "auth",
+  "module": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@supabase/supabase-js": "^2.99.1",
+    "typescript": "^5.0.0"
+  }
+}

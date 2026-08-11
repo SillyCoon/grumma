@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createSupabaseServerInstance } from "libs/supabase";
+import { createSupabaseServerInstance } from "~/libs/supabase";
 
 export const GET: APIRoute = async ({ cookies, request, url, redirect }) => {
   const authCode = url.searchParams.get("code");

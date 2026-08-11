@@ -1,13 +1,9 @@
-import { Badge } from "packages/ui/badge";
-import { Button } from "packages/ui/button";
-import { HtmlCheckbox } from "packages/ui/html-checkbox";
+import { Badge } from "ui/badge";
+import { Button } from "ui/button";
+import { HtmlCheckbox } from "ui/html-checkbox";
 import { createResource, createSignal, For } from "solid-js";
 import styles from "./Labels.module.css";
-import {
-  TextField,
-  TextFieldInput,
-  TextFieldLabel,
-} from "packages/ui/text-field";
+import { TextField, TextFieldInput, TextFieldLabel } from "ui/text-field";
 import { actions } from "astro:actions";
 import toast from "solid-toast";
 import { isServer } from "solid-js/web";

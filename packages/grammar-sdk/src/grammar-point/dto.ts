@@ -1,5 +1,5 @@
 import type { GrammarPoint } from "../..";
-import type { grammarPointsTmp, labels } from "../../../../libs/db/schema-tmp";
+import type { grammarPointsTmp, labels } from "db/schema-tmp";
 
 export type GrammarPointDb = typeof grammarPointsTmp.$inferSelect & {
   labelsToGrammarPoints: {

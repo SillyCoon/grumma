@@ -1,6 +1,6 @@
 ---
 import { actions } from "astro:actions";
-import { NotificationBadge } from "packages/ui/notification-badge";
+import { NotificationBadge } from "ui/notification-badge";
 
 const notifications = Astro.locals.user
   ? await Astro.callAction(actions.getNotifications, undefined)
@@ -15,20 +15,22 @@ const notifications = Astro.locals.user
       notifications.data?.map((notification) => (
         <div>
           <a
-          href={notification.link}
-          target="_blank"
-          class="flex relative items-start gap-2 rounded-md p-2 lg:hover:bg-secondary/20 lg:hover:shadow-md cursor-pointer"
-        >
-          <div class="flex-1">
-            <p class="text-sm text-white font-bold ">{notification.title}</p>
-            <p class="text-xs text-gray-100">
-              {new Intl.DateTimeFormat(undefined, {
-                dateStyle: "medium",
-              }).format(new Date(notification.createdAt))}
-            </p>
-          </div>
-          {!notification.read && <NotificationBadge size="sm" placement="center-right"/>}
-        </a>
+            href={notification.link}
+            target="_blank"
+            class="flex relative items-start gap-2 rounded-md p-2 lg:hover:bg-secondary/20 lg:hover:shadow-md cursor-pointer"
+          >
+            <div class="flex-1">
+              <p class="text-sm text-white font-bold ">{notification.title}</p>
+              <p class="text-xs text-gray-100">
+                {new Intl.DateTimeFormat(undefined, {
+                  dateStyle: "medium",
+                }).format(new Date(notification.createdAt))}
+              </p>
+            </div>
+            {!notification.read && (
+              <NotificationBadge size="sm" placement="center-right" />
+            )}
+          </a>
         </div>
       ))
     )

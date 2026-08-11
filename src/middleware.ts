@@ -1,6 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
-import { createSupabaseServerInstance } from "libs/supabase";
-import { isUserAdmin } from "libs/auth/admin";
+import { createSupabaseServerInstance } from "~/libs/supabase";
+import { isUserAdmin } from "auth";
 
 const PATHS_TO_IGNORE = [
   "signin",

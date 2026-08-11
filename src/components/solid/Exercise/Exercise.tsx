@@ -9,8 +9,8 @@ import type {
 } from "grammar-sdk/exercise";
 
 import { actions } from "astro:actions";
-import { FabButton } from "packages/ui/fab";
-import { CloseIcon } from "packages/ui/icons";
+import { FabButton } from "ui/fab";
+import { CloseIcon } from "ui/icons";
 import { Button } from "ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "ui/sheet";
 import { Spinner } from "ui/Spinner";

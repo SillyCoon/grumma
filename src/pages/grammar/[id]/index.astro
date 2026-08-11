@@ -2,13 +2,13 @@
 import { GET as fetchGpInReview } from "@api/sr/review/list";
 import { GrammarPoint } from "@components/solid/grammar-point/GrammarPoint";
 import { ReviewToggleButton } from "@components/solid/grammar-point/ReviewToggleButton";
-import { Button } from "packages/ui/button";
+import { Button } from "ui/button";
 import { Anchor } from "ui/anchor";
 import Layout from "../../../layouts/Layout.astro";
 import { contextFromAstro } from "~/libs/context";
 import { getLiveEntry } from "astro:content";
 import { fetchExamplesByGrammarPointId } from "grammar-sdk";
-import logger from "libs/logger";
+import logger from "logger";
 import type { Example } from "grammar-sdk";
 
 const { id } = Astro.params;

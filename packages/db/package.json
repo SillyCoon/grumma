@@ -1,9 +1,11 @@
 {
-  "name": "discourse-sdk",
+  "name": "db",
   "module": "index.ts",
   "type": "module",
   "dependencies": {
-    "logger": "workspace:*"
+    "drizzle-orm": "catalog:",
+    "dotenv": "catalog:",
+    "postgres": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

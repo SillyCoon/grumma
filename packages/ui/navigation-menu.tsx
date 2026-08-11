@@ -4,7 +4,7 @@ import { splitProps } from "solid-js";
 import type { PolymorphicProps } from "@kobalte/core";
 import * as NavigationMenuPrimitive from "@kobalte/core/navigation-menu";
 
-import { cn } from "packages/ui/utils";
+import { cn } from "ui/utils";
 import { NavButtonClass } from "./navigation-button";
 
 const NavigationMenuItem = NavigationMenuPrimitive.Menu;

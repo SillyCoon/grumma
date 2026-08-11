@@ -4,7 +4,7 @@ import { splitProps } from "solid-js";
 import type { PolymorphicProps } from "@kobalte/core";
 import * as SwitchPrimitive from "@kobalte/core/switch";
 
-import { cn } from "packages/ui/utils";
+import { cn } from "ui/utils";
 
 const Switch = SwitchPrimitive.Root;
 const SwitchDescription = SwitchPrimitive.Description;

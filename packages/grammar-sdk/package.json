@@ -8,6 +8,9 @@
     "./exercise": "./src/exercise/index.ts",
     "./mocks": "./__mocks__/index.ts"
   },
+  "dependencies": {
+    "db": "workspace:*"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

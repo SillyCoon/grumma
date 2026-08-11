@@ -2,10 +2,9 @@
 import { ForgotPasswordForm } from "@components/solid/ForgotPassword";
 import Layout from "@layouts/Layout.astro";
 import { actions } from "astro:actions";
-import { Alert, AlertDescription } from "packages/ui/alert";
+import { Alert, AlertDescription } from "ui/alert";
 
 const result = Astro.getActionResult(actions.resetPassword);
-
 
 if (Astro.locals.user) {
   console.log("User is already logged in, redirecting to dashboard");

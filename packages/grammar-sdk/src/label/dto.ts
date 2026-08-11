@@ -1,4 +1,4 @@
-import type { labels } from "../../../../libs/db/schema-tmp";
+import type { labels } from "db/schema-tmp";
 import type { Label } from "./type";
 
 export type LabelDb = typeof labels.$inferSelect;

@@ -6,7 +6,7 @@ import {
   fetchGrammarPoint,
   fetchGrammarPoints,
 } from "grammar-sdk";
-import logger from "libs/logger";
+import logger from "logger";
 import { GrammarPointNotFoundError, GrammarPointsLoaderError } from "./errors";
 
 const grammarPointsToEntries = (grammarPoints: GrammarPoint[]) => ({

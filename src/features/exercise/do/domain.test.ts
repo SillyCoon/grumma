@@ -1,4 +1,4 @@
-import { mockExercise } from "packages/grammar-sdk/__mocks__";
+import { mockExercise } from "grammar-sdk/mocks";
 import { describe, expect, test } from "vitest";
 import { checkAnswer } from "./domain";
 

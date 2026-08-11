@@ -1,6 +1,6 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import type { APIRoute } from "astro";
-import { createSupabaseServerInstance } from "libs/supabase";
+import { createSupabaseServerInstance } from "~/libs/supabase";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   const requestUrl = new URL(request.url);

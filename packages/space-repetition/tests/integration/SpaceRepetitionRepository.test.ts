@@ -12,8 +12,8 @@ import {
   expect,
   test,
 } from "vitest";
-import { makeDb } from "../../../../libs/db";
-import { spaceRepetitions } from "../../../../libs/db/schema";
+import { makeDb } from "db";
+import { spaceRepetitions } from "db/schema";
 import {
   addToRepetitions,
   getAttempts,
@@ -21,7 +21,7 @@ import {
   saveAttempt,
 } from "../../src/SpaceRepetitionRepository";
 import type { Attempt } from "../../src/types/Attempt";
-import { grammarPointsTmp } from "../../../../libs/db/schema-tmp";
+import { grammarPointsTmp } from "db/schema-tmp";
 
 const mockAttempt = (grammarPointId: string): Attempt => {
   return {

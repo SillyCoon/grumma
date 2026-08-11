@@ -4,7 +4,15 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./session": "./src/session/index.ts"
+    "./session": "./src/session/index.ts",
+    "./src/SpaceRepetition": "./src/SpaceRepetition.ts"
+  },
+  "dependencies": {
+    "db": "workspace:*",
+    "grammar-sdk": "workspace:*",
+    "auth": "workspace:*",
+    "immutable": "catalog:",
+    "@formkit/tempo": "catalog:"
   },
   "devDependencies": {
     "@types/bun": "latest"

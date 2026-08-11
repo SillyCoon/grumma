@@ -1,6 +1,6 @@
 import { defineAction } from "astro:actions";
-import { db } from "libs/db";
-import { tour as tourSchema } from "libs/db/schema";
+import { db } from "db";
+import { tour as tourSchema } from "db/schema";
 import { extractUser } from "./utils";
 import { z } from "astro/zod";
 import { and, eq } from "drizzle-orm";

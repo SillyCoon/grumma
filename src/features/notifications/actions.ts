@@ -2,10 +2,10 @@ import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { getTopics } from "discourse-sdk";
 import { contextFromAstro } from "~/libs/context";
-import { cache } from "libs/cache";
-import logger from "libs/logger";
-import { db } from "libs/db";
-import { notificationsRead } from "libs/db/schema";
+import { cache } from "~/libs/cache";
+import logger from "logger";
+import { db } from "db";
+import { notificationsRead } from "db/schema";
 import { eq } from "drizzle-orm";
 
 const DISCOURSE_COLLECTION_START = new Date("2026-06-15T00:00:00Z");

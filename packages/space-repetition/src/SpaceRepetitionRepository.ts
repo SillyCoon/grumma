@@ -1,8 +1,8 @@
 import { and, eq } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
-import type { DbClient } from "../../../libs/db";
-import { spaceRepetitions } from "../../../libs/db/schema";
-import type { User } from "../../../src/models/user";
+import type { DbClient } from "db";
+import { spaceRepetitions } from "db/schema";
+import type { User } from "auth";
 import { Session } from "./session";
 import type { Attempt } from "./types/Attempt";
 import type { Stage } from "./types/Stage";

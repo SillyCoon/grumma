@@ -12,13 +12,13 @@ import {
   test,
 } from "vitest";
 import { err } from "neverthrow";
-import { makeDb } from "../../../../libs/db";
+import { makeDb } from "db";
 import {
   acceptableAnswersTmp,
   exercisePartsTmp,
   exercisesTmp,
   grammarPointsTmp,
-} from "../../../../libs/db/schema-tmp";
+} from "db/schema-tmp";
 import { getExercisesByGrammarPointId, putExercises } from "../../src/db";
 import type { Context } from "../../src/context";
 import type { Exercise } from "../../src/exercise";

@@ -1,4 +1,4 @@
-import { Button } from "packages/ui/button";
+import { Button } from "ui/button";
 import {
   Dialog,
   DialogTrigger,
@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "packages/ui/dialog";
+} from "ui/dialog";
 import { createSignal, type JSX } from "solid-js";
 
 export const SaveConfirmation = (props: {

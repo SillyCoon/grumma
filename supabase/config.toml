@@ -41,7 +41,7 @@ max_client_conn = 100
 
 [db.seed]
 # If enabled, seeds the database after migrations during a db reset.
-# Disabled: seeding is now handled by Drizzle ORM via `bun run seed`
+# Disabled: seeding is now handled by Drizzle ORM via `pnpm run seed`
 enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory. For example:

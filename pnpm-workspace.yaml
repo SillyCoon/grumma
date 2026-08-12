@@ -6,6 +6,7 @@ allowBuilds:
   esbuild: true
   protobufjs: true
   ssh2: true
+  workerd: true
 syncInjectedDepsAfterScripts:
   - build
 injectWorkspacePackages: true
@@ -25,3 +26,7 @@ catalog:
 minimumReleaseAgeExclude:
   - "@astrojs/node@11.1.1"
   - astro@7.2.1
+  - '@astrojs/cloudflare@14.2.1'
+  - '@astrojs/underscore-redirects@1.0.4'
+  - miniflare@5.20260804.1-alpha
+  - wrangler@4.121.0

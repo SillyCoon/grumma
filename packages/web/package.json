@@ -58,7 +58,7 @@
     "@types/node": "^22.18.12",
     "tailwindcss": "^4.2.1",
     "vite": "^7.3.1",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.10"
   },
   "peerDependencies": {
     "typescript": "catalog:"

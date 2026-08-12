@@ -1,17 +1,7 @@
 import { pino } from "pino";
-import { createGcpLoggingPinoConfig } from "@google-cloud/pino-logging-gcp-config";
 
-const logger = pino(
-  createGcpLoggingPinoConfig(
-    {
-      serviceContext: {
-        service: "grumma",
-      },
-    },
-    {
-      level: "info",
-    },
-  ),
-);
+const logger = pino({
+  level: "info",
+});
 
 export default logger;

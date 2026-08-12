@@ -11,7 +11,9 @@
   "dependencies": {
     "db": "workspace:*",
     "neverthrow": "catalog:",
-    "immutable": "catalog:"
+    "immutable": "catalog:",
+    "zod": "4.4.3",
+    "drizzle-orm": "catalog:"
   },
   "devDependencies": {
     "@faker-js/faker": "catalog:"

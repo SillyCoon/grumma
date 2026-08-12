@@ -76,7 +76,7 @@ jobs:
   migrate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bunx --yes drizzle-kit migrate
@@ -88,7 +88,7 @@ jobs:
       id-token: "write"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Google Auth
         id: auth

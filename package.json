@@ -19,11 +19,11 @@
     "pnpm": ">=11"
   },
   "scripts": {
-    "setup-db": "bun run migrate && bun run seed",
-    "reset-db": "supabase db reset && bun run setup-db",
+    "setup-db": "pnpm run migrate && pnpm run seed",
+    "reset-db": "supabase db reset && pnpm run setup-db",
     "test": "vitest run --exclude '**/tests/integration/**'",
     "test:integration": "vitest run integration",
-    "test:e2e": "bunx playwright test",
+    "test:e2e": "pnpm exec playwright test",
     "check": "biome check .",
     "format": "biome format . --write",
     "lint": "biome lint .",
@@ -31,7 +31,7 @@
     "knip": "knip",
     "migrate": "drizzle-kit migrate",
     "generate-migration": "drizzle-kit generate",
-    "seed": "bun packages/db/seed.ts",
+    "seed": "pnpm exec tsx packages/db/seed.ts",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {

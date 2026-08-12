@@ -29,7 +29,7 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: "google-github-actions/auth@v3"
+        uses: "google-github-actions/auth@v3.0.0"
         with:
           token_format: "access_token"
           workload_identity_provider: "${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}"
@@ -82,7 +82,7 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: "google-github-actions/auth@v3"
+        uses: "google-github-actions/auth@v3.0.0"
         with:
           project_id: "${{ env.PROJECT_ID }}"
           workload_identity_provider: "${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}"

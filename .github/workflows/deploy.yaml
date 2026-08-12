@@ -33,7 +33,7 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: "google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed"
+        uses: "google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093"
         with:
           token_format: "access_token"
           workload_identity_provider: "${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}"
@@ -93,7 +93,7 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: "google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed"
+        uses: "google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093"
         with:
           project_id: "${{ env.PROJECT_ID }}"
           workload_identity_provider: "${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}"

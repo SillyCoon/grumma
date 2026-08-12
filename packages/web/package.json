@@ -54,7 +54,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@tailwindcss/typography": "^0.5.19",
-    "@testcontainers/postgresql": "^11.13.0",
+    "@testcontainers/postgresql": "^12.1.0",
     "@types/node": "^22.18.12",
     "tailwindcss": "^4.2.1",
     "vite": "^7.3.1",

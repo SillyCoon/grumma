@@ -74,7 +74,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 - `pnpm run check` - Run formatting and linting with Biome
 - `pnpm run test` - Run unit tests with Vitest
 - `pnpm run test:integration` - Run integration tests
-- `pnpm run migrate` - Run database migrations and seed with mock data
+- `pnpm run migrate` - Run database migrations
 - `pnpm run seed` - Seed the database with mock data (run separately if needed)
 
 ### Additional notes

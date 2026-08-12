@@ -38,7 +38,7 @@
     "logger": "workspace:*",
     "neverthrow": "^8.2.0",
     "postgres": "catalog:",
-    "resend": "^4.8.0",
+    "resend": "^6.18.1",
     "sharp": "^0.35.3",
     "solid-icons": "^1.2.0",
     "solid-js": "catalog:",

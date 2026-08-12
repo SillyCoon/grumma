@@ -7,6 +7,6 @@
   "type": "module",
   "peerDependencies": {
     "@supabase/supabase-js": "catalog:",
-    "typescript": "^5.0.0"
+    "typescript": "catalog:"
   }
 }

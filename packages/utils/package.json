@@ -6,6 +6,6 @@
     "@digitallinguistics/transliterate": "^0.4.1"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "catalog:"
   }
 }

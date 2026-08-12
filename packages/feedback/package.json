@@ -2,6 +2,9 @@
   "name": "feedback",
   "module": "index.ts",
   "type": "module",
+  "dependencies": {
+    "db": "workspace:*"
+  },
   "peerDependencies": {
     "typescript": "catalog:"
   }

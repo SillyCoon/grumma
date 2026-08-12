@@ -12,7 +12,9 @@
     "grammar-sdk": "workspace:*",
     "auth": "workspace:*",
     "immutable": "catalog:",
-    "@formkit/tempo": "catalog:"
+    "@formkit/tempo": "catalog:",
+    "drizzle-orm": "catalog:",
+    "uuid": "catalog:"
   },
   "devDependencies": {
     "@faker-js/faker": "catalog:"

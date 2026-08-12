@@ -1,4 +1,4 @@
-import { z } from "astro/zod";
+import { z } from "zod";
 import { Context } from "../context";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
 import { Set } from "immutable";

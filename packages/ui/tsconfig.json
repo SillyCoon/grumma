@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+    "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "baseUrl": ".",
+    "paths": {
+      "ui/*": ["./*"]
+    },
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+}

@@ -58,7 +58,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
    pnpm seed
    ```
 
-6. **Start the development server**
+5. **Start the development server**
 
    ```bash
    pnpm --filter="web" run dev

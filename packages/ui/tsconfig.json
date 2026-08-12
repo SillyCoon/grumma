@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-    "compilerOptions": {
+  "compilerOptions": {
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
@@ -13,5 +13,5 @@
       "ui/*": ["./*"]
     },
     "typeRoots": ["node_modules/@types", "src/types"]
-  },
+  }
 }

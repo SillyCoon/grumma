@@ -18,7 +18,7 @@ jobs:
         with:
           cache: true
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
+        run: pnpm exec playwright install --with-deps --ignore-scripts
       - name: Run Playwright tests
         env:
           E2E_BASE_URL: ${{ inputs.e2e-base-url }}

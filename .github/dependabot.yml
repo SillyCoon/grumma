@@ -2,7 +2,13 @@
 
 version: 2
 updates:
-  - package-ecosystem: "bun"
-    directory: "/"
+  - package-ecosystem: npm
+    directories:
+      - /
+      - /packages/*
     schedule:
-      interval: "weekly"
+      interval: weekly
+  - package-ecosystem: "github-actions"
+    directory: /
+    schedule:
+      interval: weekly

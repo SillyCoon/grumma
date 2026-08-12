@@ -5,7 +5,6 @@ updates:
   - package-ecosystem: npm
     directories:
       - /
-      - /packages/*
     schedule:
       interval: weekly
   - package-ecosystem: "github-actions"

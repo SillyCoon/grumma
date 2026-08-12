@@ -34,9 +34,6 @@
     "seed": "bun packages/db/seed.ts",
     "studio": "drizzle-kit studio"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "tailwindcss-animate": "^1.0.7"
   },

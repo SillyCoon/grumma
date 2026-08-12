@@ -8,13 +8,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c
         with:
-          node-version: "22"
-      - run: bun install
-      - run: bun run check
-      - run: bun run --filter="*" build
-      - run: bun run test
-      - run: bun run test:integration
+          cache: true
+      - run: pnpm run check
+      - run: pnpm run --filter="*" build
+      - run: pnpm run test
+      - run: pnpm run test:integration

@@ -2,12 +2,28 @@
   "name": "gramma",
   "type": "module",
   "version": "0.0.1",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.x",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.21.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=11"
+  },
   "scripts": {
-    "setup-db": "bun run migrate && bun run seed",
-    "reset-db": "supabase db reset && bun run setup-db",
+    "setup-db": "pnpm run migrate && pnpm run seed",
+    "reset-db": "supabase db reset && pnpm run setup-db",
     "test": "vitest run --exclude '**/tests/integration/**'",
     "test:integration": "vitest run integration",
-    "test:e2e": "bunx playwright test",
+    "test:e2e": "pnpm exec playwright test",
     "check": "biome check .",
     "format": "biome format . --write",
     "lint": "biome lint .",
@@ -15,34 +31,16 @@
     "knip": "knip",
     "migrate": "drizzle-kit migrate",
     "generate-migration": "drizzle-kit generate",
-    "seed": "bun packages/db/seed.ts",
+    "seed": "pnpm exec tsx packages/db/seed.ts",
     "studio": "drizzle-kit studio"
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "catalog": {
-      "immutable": "^5.1.9",
-      "drizzle-orm": "^0.45.2",
-      "uuid": "^14.0.1",
-      "@formkit/tempo": "^0.1.2",
-      "dotenv": "^17.4.2",
-      "postgres": "^3.4.7",
-      "neverthrow": "^8.2.0",
-      "solid-js": "^1.9.9",
-      "@supabase/supabase-js": "^2.99.1",
-      "class-variance-authority": "^0.7.1",
-      "@faker-js/faker": "^10.5.0"
-    }
   },
   "dependencies": {
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "catalog:",
     "@biomejs/biome": "2.5.0",
     "@playwright/test": "^1.58.2",
+    "@supabase/supabase-js": "catalog:",
     "@tailwindcss/typography": "^0.5.19",
     "@testcontainers/postgresql": "^11.13.0",
     "@types/node": "^22.18.12",

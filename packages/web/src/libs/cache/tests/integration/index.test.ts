@@ -28,7 +28,7 @@ describe("Cache", () => {
       .withExposedPorts({ container: 5432, host: 6548 })
       .start();
 
-    execFileSync("bunx", ["--yes", "drizzle-kit", "push"], {
+    execFileSync("pnpm", ["drizzle-kit", "push"], {
       env: {
         ...process.env,
         DATABASE_URL: postgresContainer.getConnectionUri(),

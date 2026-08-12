@@ -13,19 +13,16 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c
         with:
-          node-version: lts/*
-      - uses: oven-sh/setup-bun@v2
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+          cache: true
       - name: Install Playwright Browsers
-        run: bunx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps --ignore-scripts
       - name: Run Playwright tests
         env:
           E2E_BASE_URL: ${{ inputs.e2e-base-url }}
-        run: bunx playwright test
+        run: pnpm exec playwright test
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

@@ -120,7 +120,7 @@ describe("putExercises", () => {
 
     const connectionUri = postgresContainer.getConnectionUri();
 
-    execSync(`DATABASE_URL=${connectionUri} bunx --yes drizzle-kit push`);
+    execSync(`DATABASE_URL=${connectionUri} pnpm exec drizzle-kit push`);
 
     db = makeDb(connectionUri);
 

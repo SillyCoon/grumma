@@ -44,7 +44,7 @@ describe("SpaceRepetitionRepository", () => {
       .start();
 
     execSync(
-      `DATABASE_URL=${postgresContainer.getConnectionUri()} bunx --yes drizzle-kit push`,
+      `DATABASE_URL=${postgresContainer.getConnectionUri()} pnpm exec drizzle-kit push`,
     );
 
     db = makeDb(postgresContainer.getConnectionUri());

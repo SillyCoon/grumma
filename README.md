@@ -14,7 +14,8 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) (package manager and runtime)
+- [pnpm](https://pnpm.io/) (package manager)
+- [node](https://nodejs.org/en) (runtime)
 - [Docker](https://www.docker.com/) (for local Supabase and PostgreSQL)
 - [Supabase CLI](https://supabase.com/docs/guides/cli) (for managing local development database)
 
@@ -25,7 +26,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
    ```bash
    git clone https://github.com/SillyCoon/grumma.git
    cd grumma
-   bun install
+   pnpm install
    ```
 
 2. **Set up local Supabase and database**
@@ -33,7 +34,7 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
    Start the local Supabase stack (includes PostgreSQL, Auth, and other services):
 
    ```bash
-   bunx supabase start
+   pnpm exec supabase start
    ```
 
    This will start services and output connection URLs.
@@ -53,34 +54,33 @@ Meanwhile you can use `process.env...` to access env variables passed in runtime
 4. **Apply migration and seed the database**
 
    ```bash
-   bun migrate
-   bun seed
+   pnpm migrate
+   pnpm seed
    ```
 
-6. **Start the development server**
+5. **Start the development server**
 
    ```bash
-   bun run dev
+   pnpm --filter="web" run dev
    ```
 
    The app will be available at `http://localhost:4321`
 
 ### Development commands
 
-- `bun run dev` - Start the development server
-- `bun run build` - Build the project for production
-- `bun run preview` - Preview the production build locally
-- `bun run type-check` - Run TypeScript type checking with `astro check`
-- `bun run check` - Run formatting and linting with Biome
-- `bun run test` - Run unit tests with Vitest
-- `bun run test:integration` - Run integration tests
-- `bun run migrate` - Run database migrations and seed with mock data
-- `bun run seed` - Seed the database with mock data (run separately if needed)
+- `pnpm --filter="web" run dev` - Start the development server
+- `pnpm --filter="web" run build` - Build the project for production
+- `pnpm --filter="web" run preview` - Preview the production build locally
+- `pnpm run check` - Run formatting and linting with Biome
+- `pnpm run test` - Run unit tests with Vitest
+- `pnpm run test:integration` - Run integration tests
+- `pnpm run migrate` - Run database migrations
+- `pnpm run seed` - Seed the database with mock data (run separately if needed)
 
 ### Additional notes
 
-- The project is a monorepo using Bun workspaces. Packages are located in `packages/` and `libs/` directories.
+- The project is a monorepo using pnpm workspaces. Packages are located in `packages/`.
 - Local environment variables can be set in `.env`
 - Supabase authentication is configured in `supabase/config.toml` for local development
-- Database schema and migrations are managed with Drizzle ORM in `drizzle/` and `libs/db/`
-- Mock seed data is defined in `libs/db/seed.ts` using Drizzle ORM (10 grammar points, 40 exercises) and storage files in `supabase/storage/explanations/`
+- Database schema and migrations are managed with Drizzle ORM in `drizzle/` and `packages/db/`
+- Mock seed data is defined in `packages/db/seed.ts` using Drizzle ORM (10 grammar points, 40 exercises) and storage files in `supabase/storage/explanations/`

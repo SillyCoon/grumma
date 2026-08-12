@@ -20,7 +20,7 @@ jobs:
     outputs:
       image: ${{ vars.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
       - name: Install cosign
         uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
@@ -78,7 +78,7 @@ jobs:
       id-token: "write"
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
       - name: Google Auth
         id: auth

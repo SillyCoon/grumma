@@ -20,6 +20,6 @@
     "@faker-js/faker": "catalog:"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "catalog:"
   }
 }

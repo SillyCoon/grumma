@@ -16,7 +16,8 @@ RUN pnpm deploy --filter=web --prod /prod/web
 
 FROM node:24-alpine AS runtime
 WORKDIR /app
-COPY --from=build /prod/web ./dist
+COPY --from=build --chown=node:node /prod/web ./dist
+USER node
 
 ENV HOST=0.0.0.0
 ENV PORT=8080

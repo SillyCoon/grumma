@@ -19,7 +19,7 @@
     "@solid-primitives/autofocus": "^0.1.4",
     "@solid-primitives/refs": "^1.1.2",
     "@solid-primitives/storage": "4.3.3",
-    "@supabase/ssr": "^0.9.0",
+    "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "catalog:",
     "@tailwindcss/vite": "^4.2.1",
     "@types/canvas-confetti": "^1.9.0",

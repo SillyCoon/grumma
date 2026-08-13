@@ -1,0 +1,16 @@
+{
+  "name": "Node.js & TypeScript",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": ["4321:4321"],
+  "postCreateCommand": "pnpm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "astro-build.astro-vscode"
+      ]
+    }
+  }
+}

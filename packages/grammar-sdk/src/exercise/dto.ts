@@ -21,14 +21,14 @@ export type PartToCreateDb = Omit<
   >[];
 };
 
-export type CreateExerciseDb = Omit<
+type CreateExerciseDb = Omit<
   typeof exercisesTmp.$inferSelect,
   "id" | "createdAt" | "updatedAt"
 > & {
   parts: PartToCreateDb[];
 };
 
-export type UpdateExerciseDb = CreateExerciseDb & {
+type UpdateExerciseDb = CreateExerciseDb & {
   id: number;
 };
 

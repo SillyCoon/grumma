@@ -1,5 +1,4 @@
 import {
-  createBrowserClient,
   createServerClient,
   parseCookieHeader,
   type CookieOptionsWithName,
@@ -46,14 +45,4 @@ export function createSupabaseServerInstance(
   );
 
   return supabase;
-}
-
-/**
- * @deprecated Despite the name, should not be used on client
- */
-export function createSupabaseClientInstance() {
-  return createBrowserClient(
-    process.env.SUPABASE_URL ?? "",
-    process.env.SUPABASE_KEY ?? "",
-  );
 }

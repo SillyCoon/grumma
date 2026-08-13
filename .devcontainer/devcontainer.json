@@ -7,10 +7,7 @@
   "postCreateCommand": "pnpm install",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "biomejs.biome",
-        "astro-build.astro-vscode"
-      ]
+      "extensions": ["biomejs.biome", "astro-build.astro-vscode"]
     }
   }
 }

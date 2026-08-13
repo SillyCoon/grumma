@@ -4,6 +4,8 @@ ENV PATH="$PNPM_HOME/bin:$PATH"
 RUN corepack enable
 WORKDIR /app
 
-RUN apt update \
-  && apt install -y curl gh git \
-  && apt clean
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl gh git \
+  && rm -rf /var/lib/apt/lists/*
+
+USER node

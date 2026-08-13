@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
     "baseUrl": ".",
     "typeRoots": ["node_modules/@types", "src/types"]
   },

@@ -442,6 +442,7 @@ export const createLabel = async (
   }
 };
 
+/** @public */
 export const updateLabel = async (
   db: DbClient,
   update: UpdateLabel,

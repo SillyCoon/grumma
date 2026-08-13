@@ -7,7 +7,7 @@ import type {
 } from "grammar-sdk/exercise";
 import { useDragAndDrop } from "@formkit/drag-and-drop/solid";
 
-export const EmptyExercisePart = (order: number): ExercisePart => ({
+const EmptyExercisePart = (order: number): ExercisePart => ({
   type: "text",
   text: "",
   index: order,

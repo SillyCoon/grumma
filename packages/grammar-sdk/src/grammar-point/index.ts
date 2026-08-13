@@ -17,12 +17,6 @@ export interface GrammarPoint {
   labels: number[];
 }
 
-export type GrammarPointLabel = {
-  id: number;
-  name: string;
-  color: string;
-};
-
 export type CreateGrammarPoint = Omit<
   GrammarPoint,
   "id" | "order" | "examples" | "hide" | "labels"

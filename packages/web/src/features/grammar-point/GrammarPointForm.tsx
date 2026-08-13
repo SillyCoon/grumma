@@ -199,29 +199,6 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             <ExplanationDisplay text={explanation()} />
           </Preview>
         </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <TextField value={explanation()} onChange={setExplanation}>
-              <TextFieldLabel for="explanation">Explanation{""}</TextFieldLabel>
-              <TextFieldTextArea
-                id="explanation"
-                name="explanation"
-                placeholder="e.g. Представьте себе кролика..."
-                rows="4"
-              >
-                {explanation()}
-              </TextFieldTextArea>
-            </TextField>
-
-            <p class="mt-1 text-slate-500 text-xs">
-              Supports HTML and line breaks
-            </p>
-          </div>
-
-          <Preview>
-            <ExplanationDisplay text={explanation()} />
-          </Preview>
-        </div>
         <div>{resolved()}</div>
         <div class="flex gap-3 pt-4">
           <Button type="submit" disabled={props.isLoading}>

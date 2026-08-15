@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/helpers4/devcontainer/pnpm-store:1": {
+      "version": "1.0.7",
+      "resolved": "ghcr.io/helpers4/devcontainer/pnpm-store@sha256:fca3484bd17e53cc295808598f4a4cd8e8719b86e6cb5893270ce1cdca4f503c",
+      "integrity": "sha256:fca3484bd17e53cc295808598f4a4cd8e8719b86e6cb5893270ce1cdca4f503c"
+    }
+  }
+}

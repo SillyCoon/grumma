@@ -3,11 +3,20 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "forwardPorts": ["4321:4321"],
+  "forwardPorts": [4321],
+  "portsAttributes": {
+    "4321": {
+      "label": "Astro",
+      "onAutoForward": "openBrowser"
+    }
+  },
   "postCreateCommand": "pnpm install",
   "customizations": {
     "vscode": {
       "extensions": ["biomejs.biome", "astro-build.astro-vscode"]
     }
+  },
+  "features": {
+    "ghcr.io/helpers4/devcontainer/pnpm-store:1": {}
   }
 }

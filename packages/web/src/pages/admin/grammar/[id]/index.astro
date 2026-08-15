@@ -43,6 +43,7 @@ const updateResult = Astro.getActionResult(actions.updateGrammarPoint);
         explanation: grammarPoint.explanation ?? undefined,
         hide: grammarPoint.hide ?? false,
         labels: grammarPoint.labels,
+        note: grammarPoint.note ?? undefined,
       }}
     />
   </Form>

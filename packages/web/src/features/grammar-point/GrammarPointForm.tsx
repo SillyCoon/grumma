@@ -28,6 +28,7 @@ interface GrammarPointFormProps {
     explanation?: string;
     hide?: boolean;
     labels: number[];
+    note?: string;
   };
   labels?: Label[];
   success?: boolean;
@@ -199,6 +200,16 @@ export const GrammarPointForm = (props: GrammarPointFormProps) => {
             <ExplanationDisplay text={explanation()} />
           </Preview>
         </div>
+        <div>
+          <TextField value={props.initialData?.note}>
+            <TextFieldLabel for="note">Admin Note</TextFieldLabel>
+            <TextFieldTextArea id="note" name="note" rows="4">
+              {props.initialData?.note}
+            </TextFieldTextArea>
+          </TextField>
+          <p class="mt-1 text-slate-500 text-xs">Visible to admin only</p>
+        </div>
+
         <div>{resolved()}</div>
         <div class="flex gap-3 pt-4">
           <Button type="submit" disabled={props.isLoading}>

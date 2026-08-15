@@ -40,6 +40,7 @@ export const gpManagement = {
       structure: z.string().optional(),
       explanation: z.string().optional(),
       torfl: z.string().optional(),
+      note: z.string().optional(),
     }),
     handler: async (input, context) => {
       const result = await createGrammarPoint(input, contextFromAstro(context));
@@ -71,6 +72,7 @@ export const gpManagement = {
       englishTitle: z.string().optional(),
       torfl: z.string().optional(),
       hide: z.boolean(),
+      note: z.string().optional(),
     }),
     handler: async (input, context) => {
       const result = await updateGrammarPoint(

@@ -20,6 +20,7 @@ export const GrammarPointDb = {
       explanation: g.explanation ?? undefined,
       labels: g.labelsToGrammarPoints.map((l) => l.label.id),
       hide: g.hide,
+      note: g.note ?? undefined,
     };
   },
 };

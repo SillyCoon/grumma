@@ -15,6 +15,7 @@ export interface GrammarPoint {
   structure?: string;
   explanation?: string;
   labels: number[];
+  note?: string;
 }
 
 export type CreateGrammarPoint = Omit<

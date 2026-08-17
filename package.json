@@ -47,7 +47,7 @@
     "@types/node": "^26.2.0",
     "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
-    "knip": "^6.32.0",
+    "knip": "^6.32.2",
     "supabase": "^2.112.0",
     "tailwindcss": "^4.2.1",
     "tsx": "^4.23.12",

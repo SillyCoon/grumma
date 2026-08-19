@@ -20,11 +20,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: oven-sh/setup-bun@v2
-
-    - name: Install dependencies
-      shell: bash
-      run: bun install
+    - uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2
+      with:
+        cache: true
 
     - name: Upload to Supabase Storage
       shell: bash
@@ -34,4 +32,4 @@ runs:
         BUCKET: ${{ inputs.bucket }}
         FILE_PATH: ${{ inputs.path }}
         FILE: ${{ inputs.file }}
-      run: bun ${{ github.action_path }}/src/index.ts
+      run: pnpm exec tsx ${{ github.action_path }}/src/index.ts

@@ -341,6 +341,9 @@ importers:
 
   packages/grammar-sdk:
     dependencies:
+      auth:
+        specifier: workspace:*
+        version: link:../auth
       db:
         specifier: workspace:*
         version: link:../db

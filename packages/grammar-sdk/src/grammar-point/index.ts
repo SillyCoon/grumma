@@ -1,5 +1,5 @@
 import { err, ok, type Result } from "neverthrow";
-import { Context } from "../context";
+import { Context } from "auth";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
 import { Set } from "immutable";
 

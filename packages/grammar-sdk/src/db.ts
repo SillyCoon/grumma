@@ -16,7 +16,7 @@ import {
 } from "db/schema-tmp";
 import { GrammarPointDb, GrammarPointsDb } from "./grammar-point/dto";
 import { err, ok, okAsync, ResultAsync, type Result } from "neverthrow";
-import { Context } from "./context";
+import { Context } from "auth";
 import { type Exercise, Exercises } from "./exercise";
 import { ExerciseDb, ExercisesDb, type PartToCreateDb } from "./exercise/dto";
 import {

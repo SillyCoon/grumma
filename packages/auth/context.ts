@@ -1,3 +1,6 @@
+import { isUserAdmin } from "./admin";
+import type { User } from "./user";
+
 export type Context = {
   user:
     | { role: "admin" | "user"; id: string }
@@ -13,5 +16,13 @@ export const Context = {
   },
   isGuest(ctx: Context) {
     return ctx.user.role === "guest";
+  },
+  fromUser(user: User): Context {
+    return {
+      user: {
+        role: isUserAdmin(user) ? "admin" : "user",
+        id: user.id,
+      },
+    };
   },
 };

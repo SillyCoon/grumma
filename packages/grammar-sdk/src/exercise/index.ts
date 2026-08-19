@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Context } from "../context";
+import { Context } from "auth";
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <expected>
 import { Set } from "immutable";
 import { err, ok } from "neverthrow";

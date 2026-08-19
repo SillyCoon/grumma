@@ -13,7 +13,8 @@
     "neverthrow": "catalog:",
     "immutable": "catalog:",
     "zod": "4.4.3",
-    "drizzle-orm": "catalog:"
+    "drizzle-orm": "catalog:",
+    "auth": "workspace:*"
   },
   "devDependencies": {
     "@faker-js/faker": "catalog:"

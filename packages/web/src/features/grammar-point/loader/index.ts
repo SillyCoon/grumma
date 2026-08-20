@@ -1,6 +1,5 @@
 import type { LiveLoader } from "astro/loaders";
 import {
-  type Context,
   type GrammarPoint,
   fetchAllGrammarPoints,
   fetchGrammarPoint,
@@ -8,6 +7,7 @@ import {
 } from "grammar-sdk";
 import logger from "logger";
 import { GrammarPointNotFoundError, GrammarPointsLoaderError } from "./errors";
+import type { Context } from "auth";
 
 const grammarPointsToEntries = (grammarPoints: GrammarPoint[]) => ({
   entries: grammarPoints.map(grammarPointToEntry),

@@ -11,10 +11,11 @@ import github from "/public/github-mark.svg";
 import telegram from "/public/telegram.svg";
 import coffee from "/public/coffee.svg";
 import { Anchor } from "ui/anchor";
-import { isUserAdmin } from "auth";
+import { Context } from "auth";
 import { MdOutlinePrivacy_tip as PrivacyIcon } from "solid-icons/md";
 import { MdOutlineContact_support as SupportIcon } from "solid-icons/md";
 import { COMMUNITY_URL } from "~/libs/community";
+import { contextFromAstro } from "~/libs/context";
 
 interface Props {
   title: string;
@@ -30,7 +31,7 @@ const {
   fluid,
 } = Astro.props;
 const loggedIn = !!Astro.locals.user;
-const isAdmin = isUserAdmin(Astro.locals.user ?? undefined);
+const isAdmin = Context.isAdmin(contextFromAstro(Astro));
 const topPadding = Astro.props.topPadding ?? true;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---

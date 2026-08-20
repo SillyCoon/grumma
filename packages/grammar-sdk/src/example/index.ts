@@ -1,4 +1,4 @@
-import { Context } from "../context";
+import { Context } from "auth";
 import type { Exercise, ExercisePart } from "../exercise";
 
 export type Example = [string, string, string];

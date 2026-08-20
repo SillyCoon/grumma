@@ -1,16 +1,10 @@
 import type { ActionAPIContext } from "astro:actions";
-import { isUserAdmin } from "auth";
-import type { Context } from "grammar-sdk";
+import { Context } from "auth";
 
 export const contextFromAstro = (context: ActionAPIContext): Context => {
   const user = context.locals.user;
   if (!user) {
     return { user: { role: "guest", id: undefined } };
   }
-  return {
-    user: {
-      id: user.id,
-      role: isUserAdmin(user) ? "admin" : "user",
-    },
-  };
+  return Context.fromUser(user);
 };

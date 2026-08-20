@@ -3,12 +3,11 @@ import {
   fetchExercisesByGrammarPointId,
   fetchExercisesByGrammarPointIds,
   fetchGrammarPoints,
-  type Context,
   type Exercise,
 } from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
 import { db } from "db";
-import type { User } from "auth";
+import { Context, type User } from "auth";
 import { NaiveAlgorithm } from "./src/NaiveAlgorithm";
 import { Session } from "./src/session";
 import {
@@ -27,7 +26,6 @@ import type { Attempt } from "./src/types/Attempt";
 import { Lesson } from "./src/types/Lesson";
 import type { Schedule } from "./src/types/Schedule";
 import { countStreak as countStreakUtils } from "./src/utils";
-import { isUserAdmin } from "auth";
 import type { Round } from "./src/types/Round";
 import type { Stage } from "./src/types/Stage";
 
@@ -39,20 +37,13 @@ const settings = {
     : StageSettings,
 };
 
-const contextFromUser = (user: User): Context => ({
-  user: {
-    role: isUserAdmin(user) ? "admin" : "user",
-    id: user.id,
-  },
-});
-
 export const getLessons = async (
   amount: number,
   user: User,
 ): Promise<Lesson[]> => {
   const attempts = await getAttempts(db, user);
 
-  const grammarPoints = await fetchAllGrammarPoints(contextFromUser(user));
+  const grammarPoints = await fetchAllGrammarPoints(Context.fromUser(user));
 
   const spaceRepetition = SpaceRepetition(attempts);
   const nextGrammarPoints = spaceRepetition.nextGrammarPointsForLessons(
@@ -63,7 +54,7 @@ export const getLessons = async (
     nextGrammarPoints.map(async (gp) => {
       const exercises = await fetchExercisesByGrammarPointId(
         gp.id,
-        contextFromUser(user),
+        Context.fromUser(user),
       );
       return Lesson({ ...gp, exercises });
     }),
@@ -85,12 +76,12 @@ export const getNextRound = async (user: User): Promise<Round[]> => {
 
   const grammarPoints = await fetchGrammarPoints(
     nextRound.map((r) => r.grammarPointId),
-    contextFromUser(user),
+    Context.fromUser(user),
   );
 
   const exercises = await fetchExercisesByGrammarPointIds(
     nextRound.map((r) => r.grammarPointId),
-    contextFromUser(user),
+    Context.fromUser(user),
   );
 
   return grammarPoints
@@ -149,7 +140,7 @@ export const countStreak = async (
 
 export const getInReviewByTorfl = async (user: User) => {
   const schedule = await getSchedule(user);
-  const grammar = await fetchAllGrammarPoints(contextFromUser(user));
+  const grammar = await fetchAllGrammarPoints(Context.fromUser(user));
 
   const grammarPointsById = IMap(grammar.map((v) => [v.id, v]));
 

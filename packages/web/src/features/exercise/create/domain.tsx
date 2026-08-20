@@ -46,7 +46,7 @@ export const exercisesStore = (
     { name: key },
   );
 
-  const [parent, sortableExercises, setSortableExercises, updateConfig] =
+  const [parent, sortableExercises, _setSortableExercises, updateConfig] =
     useDragAndDrop<HTMLTableRowElement, Exercise>(exercises, {
       dragHandle: ".drag-handle",
     });

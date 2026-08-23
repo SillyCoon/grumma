@@ -1,0 +1,23 @@
+---
+import { alphabet } from "./lib";
+import Letter from "./Letter.astro";
+---
+
+{
+  (
+    <div class="alphabet">
+      {alphabet.map(({ ru, hint, image }) => (
+        <Letter ru={ru} hint={hint} image={image} />
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .alphabet {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+</style>

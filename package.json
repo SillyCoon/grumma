@@ -20,6 +20,7 @@
   },
   "scripts": {
     "dev": "pnpm run --filter=web dev",
+    "deploy": "pnpm run build && wrangler deploy",
     "setup-db": "pnpm run migrate && pnpm run seed",
     "reset-db": "supabase db reset && pnpm run setup-db",
     "test": "vitest run --exclude '**/tests/integration/**'",

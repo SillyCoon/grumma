@@ -10,7 +10,7 @@ syncInjectedDepsAfterScripts:
   - build
 injectWorkspacePackages: true
 catalog:
-  "@faker-js/faker": ^10.5.0
+  "@faker-js/faker": ^10.6.0
   "@formkit/tempo": ^0.1.2
   "@supabase/supabase-js": ^2.112.3
   class-variance-authority: ^0.7.1

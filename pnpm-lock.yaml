@@ -455,8 +455,8 @@ importers:
         specifier: 7.0.2
         version: 7.0.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(solid-js@1.9.14)(tsx@4.23.12)(yaml@2.9.0)
       '@astrojs/ts-plugin':
-        specifier: 1.10.10
-        version: 1.10.10(typescript@5.9.3)
+        specifier: 1.10.11
+        version: 1.10.11(typescript@5.9.3)
       '@formkit/drag-and-drop':
         specifier: ^0.6.1
         version: 0.6.1
@@ -690,8 +690,8 @@ packages:
     resolution: {integrity: sha512-C1TLn5sPJr0x4vk56piHWKbnqlEB8BKyte5Y45V02U+D7BGO5eMqZDH5aPjnkXQWJggvmsTXxH03QMZ9NgWLzQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
 
-  '@astrojs/ts-plugin@1.10.10':
-    resolution: {integrity: sha512-US1czRBD43THzzwSyWJwPRX9VDBYbHmJKnpJAsmqT7Uun5UYvcMNNOfDyZxp5bKTNiApvA8HrjwUhYso8CE2Iw==}
+  '@astrojs/ts-plugin@1.10.11':
+    resolution: {integrity: sha512-W7Fmbaw81mcecFgJWgfY8FX7G7nCiooiakgd8ZAVprglEo81W2HzXh2I+okmAorCZLICl4PeEELkpGzrEXze4g==}
 
   '@astrojs/yaml2ts@0.2.4':
     resolution: {integrity: sha512-8oddpOae35pJsXPQXhTkM0ypfKPskVsh2bCxRtbf7e+/Epw2nReakFYpLKjZMEr75CsoF203PMnCocpfz0s69A==}
@@ -4899,7 +4899,7 @@ snapshots:
       is-docker: 4.0.0
       package-manager-detector: 1.8.0
 
-  '@astrojs/ts-plugin@1.10.10(typescript@5.9.3)':
+  '@astrojs/ts-plugin@1.10.11(typescript@5.9.3)':
     dependencies:
       '@astrojs/compiler': 2.13.1
       '@astrojs/yaml2ts': 0.2.4

@@ -31,7 +31,7 @@ const cacheKey = "discourse_latest_topics";
 const cacheDuration = 10 * 60 * 1000; // 10 minutes
 
 const getLatestTopicsWithCache = async () => {
-  const cachedTopics = await cache.get<LatestTopic[]>(
+  const cachedTopics = await cache().get<LatestTopic[]>(
     cacheKey,
     (v: unknown): LatestTopic[] => {
       if (!Array.isArray(v)) {
@@ -51,8 +51,10 @@ const getLatestTopicsWithCache = async () => {
   );
   if (cachedTopics) return cachedTopics;
   const topics = (await getLatestTopics()).slice(0, 6);
-  cache.set(cacheKey, topics, cacheDuration).catch((e) => {
-    logger.error(e, "Failed to cache latest topics");
-  });
+  cache()
+    .set(cacheKey, topics, cacheDuration)
+    .catch((e) => {
+      logger.error(e, "Failed to cache latest topics");
+    });
   return topics;
 };

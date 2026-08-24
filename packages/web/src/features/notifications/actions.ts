@@ -4,7 +4,7 @@ import { getTopics } from "discourse-sdk";
 import { contextFromAstro } from "~/libs/context";
 import { cache } from "~/libs/cache";
 import logger from "logger";
-import { db } from "db";
+import { defaultDb } from "db";
 import { notificationsRead } from "db/schema";
 import { eq } from "drizzle-orm";
 
@@ -61,7 +61,7 @@ export const notifications = {
       try {
         const notifications = await getNotifications(user.id);
 
-        await db
+        await defaultDb()
           .insert(notificationsRead)
           .values(
             notifications.map((notification) => ({
@@ -90,11 +90,11 @@ const cacheNotifications = async (
   source: NotificationSource,
   notifications: Notification[],
 ) => {
-  await cache.set(cacheKey(source), notifications, 60 * 60);
+  await cache().set(cacheKey(source), notifications, 60 * 60);
 };
 
 const getCachedNotifications = async (source: NotificationSource) => {
-  return cache.get<Notification[]>(
+  return cache().get<Notification[]>(
     cacheKey(source),
     (value) => value as Notification[],
   );
@@ -146,7 +146,7 @@ const getNotifications = async (userId: string): Promise<Notification[]> => {
 const getReadNotifications = async (
   userId: string,
 ): Promise<Map<`${string}-${NotificationSource}`, boolean>> => {
-  const rows = await db
+  const rows = await defaultDb()
     .select()
     .from(notificationsRead)
     .where(eq(notificationsRead.userId, userId));

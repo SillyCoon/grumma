@@ -1,5 +1,5 @@
 import { defineAction } from "astro:actions";
-import { db } from "db";
+import { defaultDb } from "db";
 import { tour as tourSchema } from "db/schema";
 import { extractUser } from "./utils";
 import { z } from "astro/zod";
@@ -13,7 +13,7 @@ export const tour = {
     }),
     handler: async ({ type }, context) => {
       const user = extractUser(context);
-      await db.insert(tourSchema).values({
+      await defaultDb().insert(tourSchema).values({
         userId: user.id,
         type,
         completed: true,
@@ -27,7 +27,7 @@ export const tour = {
     }),
     handler: async ({ type }, context) => {
       const user = extractUser(context);
-      await db
+      await defaultDb()
         .delete(tourSchema)
         .where(and(eq(tourSchema.userId, user.id), eq(tourSchema.type, type)));
     },
@@ -39,7 +39,7 @@ export const tour = {
     }),
     handler: async ({ type }, context) => {
       const user = extractUser(context);
-      const tourEntry = await db
+      const tourEntry = await defaultDb()
         .select()
         .from(tourSchema)
         .where(and(eq(tourSchema.userId, user.id), eq(tourSchema.type, type)))

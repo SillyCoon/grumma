@@ -6,7 +6,7 @@ import {
   type Exercise,
 } from "grammar-sdk";
 import { Map as IMap, Seq } from "immutable";
-import { db } from "db";
+import { defaultDb } from "db";
 import { Context, type User } from "auth";
 import { NaiveAlgorithm } from "./src/NaiveAlgorithm";
 import { Session } from "./src/session";
@@ -41,7 +41,7 @@ export const getLessons = async (
   amount: number,
   user: User,
 ): Promise<Lesson[]> => {
-  const attempts = await getAttempts(db, user);
+  const attempts = await getAttempts(defaultDb(), user);
 
   const grammarPoints = await fetchAllGrammarPoints(Context.fromUser(user));
 
@@ -65,11 +65,11 @@ export const addAttempt = async (
   attempt: Attempt,
   user: User,
 ): Promise<void> => {
-  await saveAttempt(db, attempt, user);
+  await saveAttempt(defaultDb(), attempt, user);
 };
 
 export const getNextRound = async (user: User): Promise<Round[]> => {
-  const attempts = await getAttempts(db, user);
+  const attempts = await getAttempts(defaultDb(), user);
 
   const spaceRepetition = SpaceRepetition(attempts);
   const nextRound = spaceRepetition.nextRound(algorithm, settings);
@@ -130,7 +130,7 @@ export const countStreak = async (
   timezone: string,
   user: User,
 ): Promise<number> => {
-  const attempts = await getAttempts(db, user);
+  const attempts = await getAttempts(defaultDb(), user);
   return countStreakUtils(
     today,
     timezone,
@@ -161,7 +161,7 @@ export const getInReviewByTorfl = async (user: User) => {
 };
 
 export const getSchedule = async (user: User): Promise<Schedule> => {
-  const attempts = await getAttempts(db, user);
+  const attempts = await getAttempts(defaultDb(), user);
   const spaceRepetition = SpaceRepetition(attempts);
   return spaceRepetition.getSchedule(algorithm, settings);
 };
@@ -169,13 +169,13 @@ export const getSchedule = async (user: User): Promise<Schedule> => {
 export const listGrammarPointsInReview = async (
   user: User,
 ): Promise<string[]> => {
-  const attempts = await getAttempts(db, user);
+  const attempts = await getAttempts(defaultDb(), user);
   const spaceRepetition = SpaceRepetition(attempts);
   return spaceRepetition.repeatingGrammarPoints();
 };
 
 export const getSessionResult = async (user: User, sessionId: string) => {
-  const session = await getSession(db, user, sessionId);
+  const session = await getSession(defaultDb(), user, sessionId);
   return Session.calculateResult(session);
 };
 

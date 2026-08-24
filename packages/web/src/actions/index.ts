@@ -2,7 +2,7 @@ import { ActionError, defineAction } from "astro:actions";
 import { PUBLIC_URL } from "astro:env/server";
 import { z } from "astro/zod";
 import { fetchExamplesByGrammarPointId, fetchGrammarPoint } from "grammar-sdk";
-import { db } from "db";
+import { defaultDb } from "db";
 import { createSupabaseServerInstance } from "~/libs/supabase";
 import { saveFeedback } from "feedback";
 import type { Stage } from "space-repetition";
@@ -238,7 +238,7 @@ export const server = {
     }),
     handler: async (feedback, context) => {
       const user = extractUser(context);
-      await saveFeedback(db, {
+      await saveFeedback(defaultDb(), {
         ...feedback,
         userId: user.id,
         createdAt: new Date(),
@@ -252,7 +252,7 @@ export const server = {
     }),
     handler: async ({ grammarPointId }, context) => {
       const user = extractUser(context);
-      await addToRepetitions(db, user, grammarPointId, new Date());
+      await addToRepetitions(defaultDb(), user, grammarPointId, new Date());
       return { success: true };
     },
   }),
@@ -263,7 +263,7 @@ export const server = {
     }),
     handler: async ({ grammarPointId }, context) => {
       const user = extractUser(context);
-      await removeFromRepetitions(db, user, grammarPointId);
+      await removeFromRepetitions(defaultDb(), user, grammarPointId);
       return { success: true };
     },
   }),

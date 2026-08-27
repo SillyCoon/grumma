@@ -4,7 +4,7 @@ import { cn } from "ui/utils";
 
 const PartsPreview = (props: { parts: ExercisePart[] }) => {
   return (
-    <div class={cn("inline-flex grow flex-wrap gap-1")}>
+    <div class={cn("inline-flex grow flex-wrap whitespace-pre")}>
       <For each={props.parts}>
         {(part) => (
           <div>

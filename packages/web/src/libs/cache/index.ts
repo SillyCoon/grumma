@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { cache as cacheSchema } from "db/schema";
-import { db, type DbClient } from "db";
+import { defaultDb, type DbClient } from "db";
 import crypto from "node:crypto";
 
 const set = async (
@@ -95,4 +95,4 @@ export const CacheFactory = (db: DbClient) => {
 };
 
 export type Cache = ReturnType<typeof CacheFactory>;
-export const cache = CacheFactory(db);
+export const cache = () => CacheFactory(defaultDb());

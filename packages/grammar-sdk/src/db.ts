@@ -1,5 +1,5 @@
 import { eq, inArray, sql } from "drizzle-orm";
-import { db, type DbClient, type Transaction } from "db";
+import { type DbClient, type Transaction, defaultDb } from "db";
 import {
   GrammarPoints,
   type CreateGrammarPoint,
@@ -29,7 +29,7 @@ import {
 
 export const getGrammarPoint = async (
   id: number,
-  dbClient: DbClient = db,
+  dbClient: DbClient = defaultDb(),
 ): Promise<GrammarPoint | undefined> => {
   const grammarDto = await dbClient.query.grammarPointsTmp.findFirst({
     where: eq(grammarPointsTmp.id, id),
@@ -43,7 +43,7 @@ export const getGrammarPoint = async (
 
 export const getGrammarPoints = async (
   ids?: number[],
-  dbClient: DbClient = db,
+  dbClient: DbClient = defaultDb(),
 ): Promise<GrammarPoint[]> => {
   const mainQuery = {
     where: ids ? inArray(grammarPointsTmp.id, ids) : undefined,
@@ -59,7 +59,7 @@ export const getGrammarPoints = async (
 
 export const getExercisesByGrammarPointIds = async (
   grammarPointIds: number[],
-  dbClient: DbClient = db,
+  dbClient: DbClient = defaultDb(),
 ): Promise<Exercise[]> => {
   const exercisesDto = await dbClient.query.exercisesTmp.findMany({
     where: inArray(exercisesTmp.grammarPointId, grammarPointIds),
@@ -81,7 +81,7 @@ export const getExercisesByGrammarPointIds = async (
 
 export const getExercisesByGrammarPointId = async (
   grammarPointId: number,
-  dbClient: DbClient = db,
+  dbClient: DbClient = defaultDb(),
 ): Promise<Exercise[]> => {
   const exercisesDto = await dbClient.query.exercisesTmp.findMany({
     where: eq(exercisesTmp.grammarPointId, grammarPointId),
@@ -132,7 +132,7 @@ export const createGrammarPoint = async (
   }
   const maxOrder = GrammarPoints.maxOrder(grammarPoints);
 
-  const created = await db
+  const created = await defaultDb()
     .insert(grammarPointsTmp)
     .values({
       ...data,
@@ -218,6 +218,8 @@ export const updateGrammarPoint = async (
     return err("At least one field is required to update a grammar point.");
   }
 
+  const db = defaultDb();
+
   await db
     .update(grammarPointsTmp)
     .set(updateData)
@@ -261,7 +263,7 @@ export const updateGrammarPointsOrder = async (
           ) AS v(id, new_order)
           WHERE o.id = v.id
         `;
-  await db.execute(sqlUpdate);
+  await defaultDb().execute(sqlUpdate);
 
   return ok(true);
 };
@@ -402,7 +404,7 @@ export const putExercises = async (
 
 export const getLabels = async (
   context: Context,
-  dbClient: DbClient = db,
+  dbClient: DbClient = defaultDb(),
 ): Promise<Result<Label[], string | AuthorizationError>> => {
   if (!Context.isAdmin(context)) {
     return err(

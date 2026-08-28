@@ -15,7 +15,7 @@ import {
   updateGrammarPoint,
   updateGrammarPointsOrder,
 } from "grammar-sdk";
-import { db } from "db";
+import { defaultDb } from "db";
 
 const handleError = (error: string | AuthorizationError) => {
   if (isAuthorizationError(error)) {
@@ -112,7 +112,11 @@ export const gpManagement = {
     accept: "json",
     input: exerciseSchema.array().min(1),
     handler: async (input, context) => {
-      const result = await putExercises(db, input, contextFromAstro(context));
+      const result = await putExercises(
+        defaultDb(),
+        input,
+        contextFromAstro(context),
+      );
       if (result.isErr()) {
         handleError(result.error);
       }
@@ -136,7 +140,7 @@ export const gpManagement = {
     }),
     handler: async (input, context) => {
       const result = await createLabel(
-        db,
+        defaultDb(),
         {
           color: `#${Math.floor(Math.random() * 0x1000000)
             .toString(16)
@@ -156,7 +160,7 @@ export const gpManagement = {
   getLabels: defineAction({
     accept: "json",
     handler: async (_input, context) => {
-      const result = await getLabels(contextFromAstro(context), db);
+      const result = await getLabels(contextFromAstro(context), defaultDb());
       if (result.isErr()) {
         handleError(result.error);
       }

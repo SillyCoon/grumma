@@ -16,6 +16,7 @@ const { user } = contextFromAstro(Astro);
       <NavButton text="Admin Panel" link="/admin/grammar" />
     )
   }
+  <NavButton text="Alphabet" link="/alphabet" />
   <NavButton
     disabled={user.role === "guest"}
     text="Dashboard"

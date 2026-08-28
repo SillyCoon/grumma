@@ -4,6 +4,8 @@ import solid from "@astrojs/solid-js";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField, logHandlers, memoryCache } from "astro/config";
 
+import alpinejs from "@astrojs/alpinejs";
+
 export default defineConfig({
   site: "https://grumma.org",
   security: {
@@ -19,7 +21,7 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [solid()],
+  integrations: [solid(), alpinejs()],
   vite: {
     plugins: [tailwindcss()],
   },

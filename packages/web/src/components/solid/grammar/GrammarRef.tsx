@@ -18,6 +18,7 @@ interface GrammarRefProps {
   detailedTitle?: string;
   englishTitle?: string;
   inReview?: boolean;
+  hide?: boolean;
   mode?: Mode;
   onClick?: () => void;
 }
@@ -61,8 +62,13 @@ export const GrammarRef = (props: GrammarRefProps) => {
                   </div>
 
                   {props.inReview && (
-                    <Badge variant="success" class="min-w-[77px]">
+                    <Badge variant="success" class="min-w-19.25">
                       In review
+                    </Badge>
+                  )}
+                  {props.hide && (
+                    <Badge variant="info" class="min-w-19.25">
+                      Admin Only
                     </Badge>
                   )}
                 </div>

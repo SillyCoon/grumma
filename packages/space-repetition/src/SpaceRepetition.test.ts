@@ -24,9 +24,12 @@ describe("calculateNextExerciseOrder", () => {
     [5, 8, 3],
     [5, 9, 4],
     [5, 10, 0],
-  ])("returns correct exercise order for exercisesNumber=%i and stage=%i", (exercisesNumber: number, stage: number, expected: number) => {
-    expect(calculateExerciseOrderByStage(exercisesNumber, stage as Stage)).toBe(
-      expected,
-    );
-  });
+  ])(
+    "returns correct exercise order for exercisesNumber=%i and stage=%i",
+    (exercisesNumber: number, stage: number, expected: number) => {
+      expect(
+        calculateExerciseOrderByStage(exercisesNumber, stage as Stage),
+      ).toBe(expected);
+    },
+  );
 });

@@ -55,6 +55,9 @@ export const GrammarPoint = (props: Props) => {
         <Show when={props.inReview}>
           <Badge variant="success">In review</Badge>
         </Show>
+        <Show when={props.hide}>
+          <Badge variant="info">Admin only</Badge>
+        </Show>
       </div>
 
       <Card variant="outlined">

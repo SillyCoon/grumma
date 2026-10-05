@@ -321,8 +321,8 @@ importers:
   packages/ui:
     dependencies:
       '@kobalte/core':
-        specifier: ^0.13.13
-        version: 0.13.13(solid-js@1.9.14)
+        specifier: ^0.13.14
+        version: 0.13.14(solid-js@1.9.14)
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1
@@ -1535,8 +1535,8 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@kobalte/core@0.13.13':
-    resolution: {integrity: sha512-czBC+IQdOgJoW7DJjeh0rht7SPmTPgWsKg7Jo3RHMfwx028WxJtDylx9dJuJuD/GUae15+E4nYafu8LwuixFYQ==}
+  '@kobalte/core@0.13.14':
+    resolution: {integrity: sha512-SBVB1lnvYbYt2x3t7fG0lo5fGLEbHQ6PII3NDPva8vD5e2v53On84ZVQiuIk0XI/55R4GQhden7Yem+R/XR8uQ==}
     peerDependencies:
       solid-js: ^1.9.8
 
@@ -5499,7 +5499,7 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@kobalte/core@0.13.13(solid-js@1.9.14)':
+  '@kobalte/core@0.13.14(solid-js@1.9.14)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@internationalized/number': 3.6.7

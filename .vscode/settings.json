@@ -10,5 +10,6 @@
     "torfl"
   ],
   "editor.codeActionsOnSave": {
-  }
+  },
+   "js/ts.inlayHints.parameterNames.enabled": "all"
 }

@@ -85,7 +85,7 @@ url = "https://nodejs.org/dist/v24.22.3/node-v24.22.3-win-x64.zip"
 [[tools.pnpm]]
 version = "12.21.0"
 backend = "aqua:pnpm/pnpm"
-specifiers = ["latest"]
+specifiers = ["12.21.0"]
 
 [tools.pnpm."platforms.linux-arm64"]
 checksum = "sha256:6c5913a48c93b3a556b71c3bd9bf12c6bf9fbfbbbd2dcbd1d52a85c539751b9e"

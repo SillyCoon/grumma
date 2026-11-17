@@ -9,10 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024
-        with:
-          cache: true
-      - run: pnpm run check
-      - run: pnpm run --filter="*" build
-      - run: pnpm run test
-      - run: pnpm run test:integration
+      - uses: jdx/mise-action@236a21c3b91f5db6d4e174b348674a0f0caac06d
+      - run: mise run build
+      - run: mise run test
+      - run: mise run integration-test

@@ -1,7 +1,8 @@
 {
-  "name": "Node.js & TypeScript",
-  "build": {
-    "dockerfile": "Dockerfile"
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/mise:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
   },
   "forwardPorts": [4321],
   "portsAttributes": {
@@ -10,13 +11,27 @@
       "onAutoForward": "openBrowser"
     }
   },
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "sudo chown -R vscode:vscode /mnt/mise-data && mise install --locked && pnpm install && supabase start",
   "customizations": {
     "vscode": {
-      "extensions": ["biomejs.biome", "astro-build.astro-vscode"]
+      "extensions": [
+        "biomejs.biome",
+        "astro-build.astro-vscode",
+        "hverlin.mise-vscode"
+      ]
     }
   },
-  "features": {
-    "ghcr.io/helpers4/devcontainer/pnpm-store:1": {}
-  }
+  "containerEnv": {
+    "MISE_DATA_DIR": "/mnt/mise-data"
+  },
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/mnt/mise-data/shims"
+  },
+  "mounts": [
+    {
+      "source": "mise-data-volume",
+      "target": "/mnt/mise-data",
+      "type": "volume"
+    }
+  ]
 }

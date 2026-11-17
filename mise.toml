@@ -1,0 +1,49 @@
+[settings]
+lockfile = true
+idiomatic_version_file_enable_tools = ["pnpm"]
+
+[tools]
+gh = "latest"
+node = "24"
+supabase = "latest"
+
+[tasks.install]
+description = "Install dependencies with pnpm"
+run = "pnpm install"
+sources = ["package.json", "pnpm-lock.yaml", "mise.toml"]
+outputs = ["node_modules/.pnpm/lock.yaml"]
+
+[tasks.build]
+description = "Run the build script from package.json"
+run = "pnpm run --filter='*' build"
+depends = ["install", "check"]
+
+[tasks.dev]
+description = "Run the dev script from package.json"
+run = "pnpm run dev"
+depends = ["install"]
+
+[tasks.test]
+description = "Run the test script from package.json"
+run = "pnpm run test"
+depends = ["install"]
+
+[tasks.integration-test]
+description = "Run the integration test script from package.json"
+run = "pnpm run test:integration"
+depends = ["install"]
+
+[tasks.setup-db]
+description = "Run the setup-db script from package.json"
+run = "pnpm run setup-db"
+depends = ["install"]
+
+[tasks.reset-db]
+description = "Run the reset-db script from package.json"
+run = "pnpm run reset-db"
+depends = ["install"]
+
+[tasks.check]
+description = "Run the check script from package.json"
+run = "pnpm run check"
+depends = ["install"]

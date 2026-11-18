@@ -14,7 +14,7 @@ catalog:
   "@formkit/tempo": ^0.1.2
   "@supabase/supabase-js": ^2.112.3
   class-variance-authority: ^0.7.1
-  dotenv: ^17.4.2
+  dotenv: ^18.0.5
   drizzle-orm: ^0.45.2
   immutable: ^5.1.9
   neverthrow: ^8.2.0

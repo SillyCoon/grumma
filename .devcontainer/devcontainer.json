@@ -22,7 +22,9 @@
     }
   },
   "containerEnv": {
-    "MISE_DATA_DIR": "/mnt/mise-data"
+    "MISE_DATA_DIR": "/mnt/mise-data",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_GLOBAL": "/home/vscode/.config/git/config"
   },
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/mnt/mise-data/shims"

@@ -25,16 +25,8 @@ const EmptyExercise = (order: number, grammarPointId: number): Exercise => ({
   grammarPointId: grammarPointId.toString(),
   order,
   hide: true,
-  parts: [
-    Text(0, "Левая часть предложения "),
-    Answer(1, "ответ"),
-    Text(2, " правая часть предложения."),
-  ],
-  translationParts: [
-    Text(0, "Left part of the sentence "),
-    Answer(1, "answer"),
-    Text(2, " right part of the sentence."),
-  ],
+  parts: [Text(0, ""), Answer(1, ""), Text(2, "")],
+  translationParts: [Text(0, ""), Answer(1, ""), Text(2, "")],
 });
 
 const filterEmptyParts = (exercise: Exercise): Exercise => ({

@@ -141,6 +141,25 @@
   }
 }
 
+[contenteditable][data-placeholder][data-empty="true"] {
+  position: relative;
+  min-width: 14rem;
+}
+
+[contenteditable][data-placeholder][data-empty="true"]::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--muted-foreground);
+  white-space: pre;
+  pointer-events: none;
+}
+
+[contenteditable][data-placeholder][data-empty="true"]:focus::before {
+  content: none;
+}
+
 @layer base {
   * {
     @apply border-border;

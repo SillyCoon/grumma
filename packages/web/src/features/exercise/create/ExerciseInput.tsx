@@ -28,6 +28,23 @@ import type {
   Text,
 } from "grammar-sdk/exercise";
 
+type PlaceholderLanguage = "ru" | "en";
+const TEXT_PLACEHOLDERS: Record<PlaceholderLanguage, Record<number, string>> = {
+  ru: {
+    0: "Левая часть предложения ",
+    2: " правая часть предложения.",
+  },
+  en: {
+    0: "Left part of the sentence ",
+    2: " right part of the sentence.",
+  },
+} as const;
+
+const ANSWER_PLACEHOLDERS: Record<PlaceholderLanguage, string> = {
+  ru: "ответ",
+  en: "answer",
+} as const;
+
 const AcceptableAnswers = (props: {
   answer: Answer;
   onChange: SetStoreFunction<AcceptableAnswer[]>;
@@ -171,14 +188,30 @@ const EditAnswer = (props: {
   );
 };
 
-const TextPart = (props: { text: Text; onChange: SetStoreFunction<Text> }) => {
+const TextPart = (props: {
+  text: Text;
+  language: PlaceholderLanguage;
+  onChange: SetStoreFunction<Text>;
+}) => {
   const initialValue = props.text.text;
+  const placeholder = () => TEXT_PLACEHOLDERS[props.language][props.text.index];
   return (
+    // biome-ignore lint/a11y/useSemanticElements: contentEditable span is required for auto-sizing inline text
     <span
       class="inline-block min-w-5 border-gray-400 border-b outline-none"
       contentEditable
+      role="textbox"
+      tabIndex={0}
+      aria-label={placeholder()}
+      data-placeholder={placeholder()}
+      data-empty={props.text.text.trim().length === 0}
       onInput={(e) => {
         props.onChange("text", e.currentTarget.textContent ?? "");
+      }}
+      onBlur={(event) => {
+        if (!(event.currentTarget.textContent ?? "").trim()) {
+          event.currentTarget.textContent = "";
+        }
       }}
     >
       {initialValue}
@@ -188,6 +221,7 @@ const TextPart = (props: { text: Text; onChange: SetStoreFunction<Text> }) => {
 
 const AnswerPart = (props: {
   answer: Answer;
+  language: "ru" | "en";
   onChange: SetStoreFunction<Answer>;
 }) => {
   const [open, setOpen] = createSignal(false);
@@ -201,7 +235,11 @@ const AnswerPart = (props: {
       />
 
       <ContextMenuTrigger as="span">
-        <PlainAnswerPart answer={props.answer} onChange={props.onChange} />
+        <PlainAnswerPart
+          answer={props.answer}
+          language={props.language}
+          onChange={props.onChange}
+        />
       </ContextMenuTrigger>
       <ContextMenuContent>
         <ContextMenuItem onClick={() => setOpen(true)}>
@@ -214,12 +252,14 @@ const AnswerPart = (props: {
 
 const PlainAnswerPart = (props: {
   answer: Answer;
+  language: "ru" | "en";
   onChange: SetStoreFunction<Answer>;
 }) => {
   return (
     <input
       class="inline-block min-w-5 border-success border-b text-success outline-none"
       value={props.answer.text}
+      placeholder={ANSWER_PLACEHOLDERS[props.language]}
       onChange={(e) => props.onChange("text", e.currentTarget.value ?? "")}
     />
   );
@@ -234,12 +274,14 @@ const Part = (props: {
       <Match when={props.part.type === "answer"}>
         <AnswerPart
           answer={props.part as Answer}
+          language="ru"
           onChange={props.onChange as SetStoreFunction<Answer>}
         />
       </Match>
       <Match when={props.part.type === "text"}>
         <TextPart
           text={props.part as Text}
+          language="ru"
           onChange={props.onChange as SetStoreFunction<Text>}
         />
       </Match>
@@ -256,12 +298,14 @@ const TranslationPart = (props: {
       <Match when={props.part.type === "answer"}>
         <PlainAnswerPart
           answer={props.part as Answer}
+          language="en"
           onChange={props.onChange as SetStoreFunction<Answer>}
         />
       </Match>
       <Match when={props.part.type === "text"}>
         <TextPart
           text={props.part as Text}
+          language="en"
           onChange={props.onChange as SetStoreFunction<Text>}
         />
       </Match>
